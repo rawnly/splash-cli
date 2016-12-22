@@ -45,5 +45,5 @@ Get the `/photos` path.
 <br>
 <br>
 <h5 align="center">
-Made with :love: in 🇮🇹
+Made with a  ⌨️   in 🇮🇹
 </h5>
