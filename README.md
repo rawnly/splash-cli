@@ -1,7 +1,7 @@
 # Splash
 Set your wallpaper with beautiful photos token by [unsplash](http://unsplash.com)
 
-![screen](res/screenshot.png)
+![screen](https://cloud.githubusercontent.com/assets/11269635/21428069/726d08c8-c858-11e6-81b0-f4fdc351ac9a.png)
 > Got the same setup [here](http://github.com/Rawnly/dot-files)
 
 ## Installation
@@ -24,7 +24,7 @@ If you want improve this module, you can do it!
 5. And then `git pull` to improve
 
 ## Usage
-![](res/demonstration.gif)
+![](https://cloud.githubusercontent.com/assets/11269635/21428079/7b24cc80-c858-11e6-8dc3-2e164d23804a.gif)
 > All the photos are stored in the module directory
 
 ```bash
