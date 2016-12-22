@@ -1,0 +1,20 @@
+{
+  "name": "splash-cli",
+  "version": "0.1.1",
+  "description": "Unsplash Wallpapers for your desktop",
+  "main": "index.js",
+  "author": "Federico Vitale <fedevitale99@gmail.com> (https://github.com/Rawnly)",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "license-md": "^0.3.6",
+    "ora": "^0.4.0",
+    "osx-wallpaper": "^1.0.1",
+    "randomstring": "^1.1.5",
+    "request": "^2.79.0",
+    "wallpaper": "^2.3.0"
+  },
+  "bin": {
+    "splash": "./index.js"
+  }
+}

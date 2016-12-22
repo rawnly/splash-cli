@@ -1,0 +1,13 @@
+{
+  "name": "deromanize",
+  "repo": "retrofox/deromanize",
+  "description": "Convert a string in roman numerical format to a number",
+  "author": "Damian Suarez <rdsuarez@gmail.com>",
+  "version": "0.1.0",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "scripts": [
+    "index.js"
+  ]
+}

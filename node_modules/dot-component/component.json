@@ -1,0 +1,13 @@
+{
+  "name": "dot",
+  "version": "0.1.0",
+  "keywords": ["dot"],
+  "scripts": ["index.js"],
+  "dependencies": {
+    "component/type": "*"
+  },
+  "devDependencies": {
+    "visionmedia/mocha": "*",
+    "learnboost/expect.js": "*"
+  }
+}
