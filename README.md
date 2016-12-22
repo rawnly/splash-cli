@@ -1,4 +1,7 @@
 # Splash
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/df39aef5f5a14b62a8cf4701a7962c29)](https://www.codacy.com/app/fedevitale99/splash-cli?utm_source=github.com&utm_medium=referral&utm_content=Rawnly/splash-cli&utm_campaign=badger)
+
 Set your wallpaper with beautiful photos token by [unsplash](http://unsplash.com)
 
 ![screen](https://cloud.githubusercontent.com/assets/11269635/21428069/726d08c8-c858-11e6-81b0-f4fdc351ac9a.png)
