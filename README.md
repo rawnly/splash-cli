@@ -5,8 +5,6 @@ Set your wallpaper with beautiful photos token by [unsplash](http://unsplash.com
 > Got the same setup [here](http://github.com/Rawnly/dot-files)
 
 ## Installation
-> Warning! Api rate limit is now 50 requests per hour, i'm waiting for unsplash approvation.
-
 
 To install `splash-cli` you must use **npm** ( as always ) and do the following:
 
