@@ -37,7 +37,7 @@ If you want improve this module, you can do it!
 ### --clean
 Clean all `splash-cli` photo caches.
 ```bash
-	$ splash -c 		# or --clear
+	$ splash -c 		# or --clean
 ```
 
 ### --path
