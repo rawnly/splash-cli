@@ -1,6 +1,6 @@
 # Splash
 
-[![Codacy grade](https://img.shields.io/codacy/grade/e27821fb6289410b8f58338c7e0bc686.svg)](https://github.com/Rawnly/splash-cli)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/df39aef5f5a14b62a8cf4701a7962c29)](https://www.codacy.com/app/fedevitale99/splash-cli?utm_source=github.com&utm_medium=referral&utm_content=Rawnly/splash-cli&utm_campaign=badger)
 [![npm](https://img.shields.io/npm/v/npm.svg)](github.com/Rawnly/splash-cli)
 [![npm](https://img.shields.io/npm/l/express.svg)](github.com/Rawnly/splash-cli)
 
