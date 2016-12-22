@@ -1,4 +1,4 @@
-# Splash 
+# Splash
 Set your wallpaper with beautiful photos token by [unsplash](http://unsplash.com)
 
 ![screen](res/screenshot.png)
@@ -17,19 +17,19 @@ To install `splash-cli` you must use **npm** ( as always ) and do the following:
 #### Dev Installation
 If you want improve this module, you can do it!
 
-1. Download the latest release
+1. Download the [latest release](https://github.com/Rawnly/splash-cli/releases)
 2. Open your shell and `cd` into project folder
 3. Edit files and whatever you want
 4. Link with `npm link` to test it out
 5. And then `git pull` to improve
 
-## Usage 
+## Usage
 ![](res/demonstration.gif)
 > All the photos are stored in the module directory
 
-```bash 
+```bash
 	$ splash
-    # Start download random photo 
+    # Start download random photo
     # and set it as wallpaper
 ```
 
