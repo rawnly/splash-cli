@@ -115,7 +115,7 @@ function del(directory) {
     });
 
     if ( !files[1] ) {
-      spinner.stopAndPersist('⚠️');
+      spinner.succeed();
     } else {
       spinner.fail();
     }
