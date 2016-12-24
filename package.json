@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Unsplash Wallpapers for your desktop",
   "main": "index.js",
   "author": "Federico Vitale <fedevitale99@gmail.com> (https://github.com/Rawnly)",
