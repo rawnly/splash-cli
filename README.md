@@ -29,19 +29,19 @@ To install `splash-cli` you must use **npm** ( as always ) and do the following:
 ```
 
 ## Options
-- ###CLEAN
+- ### CLEAN
 Clean all `splash-cli` photo caches.
 ```bash
 	$ splash -c 		# or --clean
 ```
 
-- ###PATH
+- ### PATH
 Get the `/photos` path.
 ```bash
 	$ splash -p 		# or --path
 ```
 
-- ###INFO
+- ### INFO
 Normal usage but when finish to download the photo prints **ID**, **EXIF** and **author url**.
 ```bash
 	$ splash -i   # or --info
@@ -51,7 +51,7 @@ Normal usage but when finish to download the photo prints **ID**, **EXIF** and *
 ```
 ![info](https://cloud.githubusercontent.com/assets/16429579/21467813/7c7c4de4-c9fa-11e6-92db-adffb3e091a5.png)
 
-- ###ID
+- ### ID
 Get the image from **ID**. You can get the image id on [unsplash website](https://unsplash.com) by opening an image and grab the **ID** from the url.
 If you ever have downloaded the photo with **splash-cli** and is in the `/photos/` folder it will not be downloaded again.
 ```bash
@@ -59,7 +59,7 @@ If you ever have downloaded the photo with **splash-cli** and is in the `/photos
 ```
 > unsplash.com/?photo=`EXAMPLE_PHOTO_ID`
 
-- ###Check
+- ### Check
 Check for updates.
 ```bash
 	$ splash --check 		 #no shortcut
@@ -70,9 +70,9 @@ Check for updates.
 <br>
 
 ## TODO
-- [x] Implement other flags
-- [ ] Electron application
-- [ ]
+- [x] Implement other flags.
+- [ ] Electron application.
+- [ ] Update screenshots and gifs in this file.
 
 ## Related
 - [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinner.
