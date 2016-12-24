@@ -67,8 +67,14 @@ Get the image from **ID**. You can get the image id on [unsplash website](https:
 If you ever have downloaded the photo with **splash-cli** and is in the `/photos/` folder it will not be downloaded again.
 
 ```bash
-	$ splash --id YJ9ygJAVzmO
+	$ splash --id YJ9ygJAVzmO		 	# no shortcut
 ```
+### --check
+Check for updates.
+```bash
+	$ splash --check 		 # no shortcut
+```
+
 
 <br>
 <br>
