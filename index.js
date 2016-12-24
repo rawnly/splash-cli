@@ -9,7 +9,8 @@ const request = require('request');
 const https = require('https');
 const colors = require('colors');
 const program = require('commander');
-var mkdirp = require('mkdirp');
+const mkdirp = require('mkdirp');
+const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
 
 // Url elements
@@ -44,6 +45,7 @@ if (program.path) {
   });
 
   console.log(__dirname + '/photos/');
+  updateNotifier({pkg}).notify();
 
 } else if (program.clean) {
 
@@ -52,6 +54,7 @@ if (program.path) {
   });
 
   del(__dirname + '/photos/');
+  updateNotifier({pkg}).notify();
 
 } else if ( program.id ) {
 
@@ -100,6 +103,7 @@ if (program.path) {
                   photo_name = photo.id;
 
                   download(__dirname + `/photos/${photo_name}.jpg`, photo_url);
+                  updateNotifier({pkg}).notify();
               });
           }
       });
@@ -142,6 +146,7 @@ if (program.path) {
               photo_name = photo.id;
 
               download(__dirname + `/photos/${photo_name}.jpg`, photo_url);
+              updateNotifier({pkg}).notify();
           });
       }
   });

@@ -10,6 +10,7 @@
     "mkdirp": "^0.5.1",
     "ora": "^0.4.0",
     "request": "^2.79.0",
+    "update-notifier": "^1.0.3",
     "wallpaper": "^2.3.0"
   },
   "bin": {
