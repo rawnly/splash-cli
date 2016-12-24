@@ -39,13 +39,14 @@ program.version(pkg.version)
 
 program.parse(process.argv);
 
+updateNotifier({pkg}).notify();
+
 if (program.path) {
   mkdirp(__dirname + '/photos/', (err) => {
     if (err) {console.log(err)};
   });
 
   console.log(__dirname + '/photos/');
-  updateNotifier({pkg}).notify();
 
 } else if (program.clean) {
 
@@ -54,7 +55,6 @@ if (program.path) {
   });
 
   del(__dirname + '/photos/');
-  updateNotifier({pkg}).notify();
 
 } else if ( program.id ) {
 
@@ -103,7 +103,7 @@ if (program.path) {
                   photo_name = photo.id;
 
                   download(__dirname + `/photos/${photo_name}.jpg`, photo_url);
-                  updateNotifier({pkg}).notify();
+
               });
           }
       });
@@ -146,7 +146,7 @@ if (program.path) {
               photo_name = photo.id;
 
               download(__dirname + `/photos/${photo_name}.jpg`, photo_url);
-              updateNotifier({pkg}).notify();
+
           });
       }
   });
