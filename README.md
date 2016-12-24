@@ -38,46 +38,57 @@ If you want improve this module, you can do it!
 ```
 
 ## Options
-### --clean
+- ### CLEAN
 Clean all `splash-cli` photo caches.
 ```bash
 	$ splash -c 		# or --clean
 ```
 
-### --path
+- ### PATH
 Get the `/photos` path.
 ```bash
 	$ splash -p 		# or --path
 ```
 
-### --info
+- ### INFO
 Normal usage but when finish to download the photo prints **ID**, **EXIF** and **author url**.
 ```bash
 	$ splash -i   # or --info
+
 	# You can also combine it with --id
 	$ splash -i --id EXAMPLE_PHOTO_ID
 ```
 ![info](https://cloud.githubusercontent.com/assets/16429579/21467813/7c7c4de4-c9fa-11e6-92db-adffb3e091a5.png)
 
-### --id
+- ### ID
 Get the image from **ID**. You can get the image id on [unsplash website](https://unsplash.com) by opening an image and grab the **ID** from the url.
-
+If you ever have downloaded the photo with **splash-cli** and is in the `/photos/` folder it will not be downloaded again.
+```bash
+	$ splash --id YJ9ygJAVzmO #no shortcut
+```
 > unsplash.com/?photo=`EXAMPLE_PHOTO_ID`
 
-If you ever have downloaded the photo with **splash-cli** and is in the `/photos/` folder it will not be downloaded again.
-
-```bash
-	$ splash --id YJ9ygJAVzmO		 	# no shortcut
-```
-### --check
+- ### Check
 Check for updates.
 ```bash
-	$ splash --check 		 # no shortcut
+	$ splash --check 		 #no shortcut
 ```
 
 
 <br>
 <br>
+
+## TODO
+- [x] Implement other flags
+- [ ] Electron application
+- [ ]
+
+## Related
+- [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinner.
+- [boxen](https://github.com/sindresorhus/boxen) - Create boxes in the terminal.
+- [unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
+- [wallpaper](https://github.com/sindresorhus/wallpaper) - Get or set the desktop wallpaper.
+
 <h5 align="center">
 Made with a  ⌨️   in 🇮🇹
 </h5>

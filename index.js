@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 // Modules
+const chalk = require('chalk');
 const path = require('path');
 const wallpaper = require('wallpaper');
 const ora = require('ora');
@@ -124,7 +125,7 @@ if (program.path) {
       if ( !error ) {
         if ( update.current !== update.latest ) {
           console.log("");
-          console.log(boxen(`Update Available! ${update.current.gray} ==> ${update.latest.green}\n` + '\n npm install -g splash-cli'.bold, { padding: 1, margin: 1, align: 'center', borderColor: 'yellow', borderStyle: 'double' }));
+          console.log(boxen(`Update Available!\n ${update.current.gray + ' ==> ' + update.latest.green}\n\n` + chalk.yellow('npm install -g splash-cli'), { padding: 1, margin: 1, align: 'center', borderColor: 'yellow', borderStyle: 'double' }));
           console.log("");
         } else {
           console.log(`Latest release installed! ${update.latest.green}`);
