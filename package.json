@@ -7,8 +7,8 @@
   "license": "MIT",
   "dependencies": {
     "colors": "^1.1.2",
+    "mkdirp": "^0.5.1",
     "ora": "^0.4.0",
-    "randomstring": "^1.1.5",
     "request": "^2.79.0",
     "wallpaper": "^2.3.0"
   },
