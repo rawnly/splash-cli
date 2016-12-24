@@ -6,7 +6,9 @@
   "author": "Federico Vitale <fedevitale99@gmail.com> (https://github.com/Rawnly)",
   "license": "MIT",
   "dependencies": {
+    "boxen": "^0.8.1",
     "colors": "^1.1.2",
+    "commander": "^2.9.0",
     "mkdirp": "^0.5.1",
     "ora": "^0.4.0",
     "request": "^2.79.0",

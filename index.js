@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Modules
-const http = require('http');
+const path = require('path');
 const wallpaper = require('wallpaper');
 const ora = require('ora');
 const fs = require('fs');
@@ -12,6 +12,13 @@ const program = require('commander');
 const mkdirp = require('mkdirp');
 const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
+const boxen = require('boxen');
+const notifier = updateNotifier({
+  pkg,
+  updateCheckInterval: 1000 * 60 * 60 * 24
+});
+
+notifier.notify();
 
 // Url elements
 const token = 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34';
@@ -29,17 +36,17 @@ var photo,
     file,
     photo_list,
     photo_name,
-    path = __dirname + "/data.json";
+    pth = __dirname + "/data.json";
 
 program.version(pkg.version)
 .option('-p, --path', 'Return the download directory.')
 .option('-c --clean', 'Delete all downloaded photos.')
-.option('-i --info', 'Display main photos infos')
-.option('--id <id>', 'Get photo from the id.');
+.option('-i --info', 'Display main photos infos.')
+.option('--id <id>', 'Get photo from the id.')
+.option('--check', 'Check for updates.')
 
 program.parse(process.argv);
 
-updateNotifier({pkg}).notify();
 
 if (program.path) {
   mkdirp(__dirname + '/photos/', (err) => {
@@ -87,7 +94,7 @@ if (program.path) {
                       spinner.succeed();
                   }
 
-                  file = fs.readFileSync(path, 'utf-8', (err) => {
+                  file = fs.readFileSync(pth, 'utf-8', (err) => {
                     if ( err ) {
                       throw err;
                     }
@@ -110,6 +117,21 @@ if (program.path) {
     }
   });
 
+} else if (program.check) {
+  var check = updateNotifier({
+    pkg,
+    callback: (error, update) => {
+      if ( !error ) {
+        if ( update.current !== update.latest ) {
+          console.log("");
+          console.log(boxen(`Update Available! ${update.current.gray} ==> ${update.latest.green}\n` + '\n npm install -g splash-cli'.bold, { padding: 1, margin: 1, align: 'center', borderColor: 'yellow', borderStyle: 'double' }));
+          console.log("");
+        } else {
+          console.log(`Latest release installed! ${update.latest.green}`);
+        }
+      }
+    }
+  })
 } else {
   // Init
   mkdirp(__dirname + '/photos/', (err) => {
@@ -130,7 +152,7 @@ if (program.path) {
                   spinner.succeed();
               }
 
-              file = fs.readFileSync(path, 'utf-8', (err) => {
+              file = fs.readFileSync(pth, 'utf-8', (err) => {
                 if ( err ) {
                   throw err;
                 }
@@ -244,4 +266,8 @@ function del(directory) {
     }
 
   });
+}
+
+join = () => {
+  path.join;
 }
