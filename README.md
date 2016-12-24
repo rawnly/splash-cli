@@ -53,7 +53,7 @@ Get the `/photos` path.
 ### --info
 Normal usage but when finish to download the photo prints **ID**, **EXIF** and **author url**.
 ```bash
-	$ splash --i   # or --info
+	$ splash -i   # or --info
 	# You can also combine it with --id
 	$ splash -i --id EXAMPLE_PHOTO_ID
 ```
