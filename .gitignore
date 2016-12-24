@@ -28,4 +28,5 @@ Temporary Items
 # End of https://www.gitignore.io/api/osx
 yarn.lock
 data.json
-photos/*.jpg
+photos/
+data.json
