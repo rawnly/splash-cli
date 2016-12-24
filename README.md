@@ -49,6 +49,24 @@ Get the `/photos` path.
 ```bash
 	$ splash -p 		# or --path
 ```
+
+### --info
+Normal usage but when finish to download the photo prints **ID**, **EXIF** and **author url**.
+```bash
+	$ splash --i   # or --info
+```
+
+### --id
+Get the image from **ID**. You can get the image id on [unsplash website](https://unsplash.com) by opening an image and grab the **ID** from the url.
+
+> unsplash.com/?photo=`EXAMPLE_PHOTO_ID`
+
+If you ever have downloaded the photo with **splash-cli** and is in the `/photos/` folder it will not be downloaded again.
+
+```bash
+	$ splash --id YJ9ygJAVzmO
+```
+
 <br>
 <br>
 <h5 align="center">
