@@ -191,44 +191,44 @@ function download(filename, url) {
 
 			if ( program.info ) {
 				console.log('');
-				console.log('ID: ' + photo.id);
+				console.log(`ID: ${photo.id.yellow}`);
 				console.log('');
 
 				if ( photo.exif !== undefined ) {
 					if (photo.exif.make) {
 						console.log('Make: '.yellow.bold + photo.exif.make);
 					} else {
-						console.log('Make: '.yellow.bold + 'Unknown');
+						console.log('Make: '.yellow.bold + '--');
 					}
 					if (photo.exif.model) {
 						console.log('Model: '.yellow.bold + photo.exif.model);
 					} else {
-						console.log('Model: '.yellow.bold + 'Unknown');
+						console.log('Model: '.yellow.bold + '--');
 					}
 					if (photo.exif.exposure_time) {
 						console.log('Shutter Speed: '.yellow.bold + photo.exif.exposure_time);
 					} else {
-						console.log('Shutter Speed: '.yellow.bold + 'Unknown');
+						console.log('Shutter Speed: '.yellow.bold + '--');
 					}
 					if (photo.exif.aperture) {
 						console.log('Aperture:'.yellow.bold + ' f/' + photo.exif.aperture);
 					} else {
-						console.log('Aperture: '.yellow.bold + 'Unknown');
+						console.log('Aperture: '.yellow.bold + ' f/' + '--');
 					}
 					if (photo.exif.focal_length) {
-						console.log('Focal Length: '.yellow.bold + photo.exif.focal_length);
+						console.log('Focal Length: '.yellow.bold + photo.exif.focal_length + 'mm');
 					} else {
-						console.log('Focal Length: '.yellow.bold + 'Unknown');
+						console.log('Focal Length: '.yellow.bold + '--');
 					}
 					if (photo.exif.iso) {
 						console.log('ISO: '.yellow.bold + photo.exif.iso);
 					} else {
-						console.log('ISO: '.yellow.bold + 'Unknown');
+						console.log('ISO: '.yellow.bold + '--');
 					}
 				}
 				console.log('');
 				console.log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
-				console.log('Profile URL: ' + photo.user.links.self);
+				console.log('Profile URL: ' + photo.user.links.html);
 			} else {
 				console.log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
 			}
