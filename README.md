@@ -1,7 +1,7 @@
 # Splash
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/df39aef5f5a14b62a8cf4701a7962c29)](https://www.codacy.com/app/fedevitale99/splash-cli?utm_source=github.com&utm_medium=referral&utm_content=Rawnly/splash-cli&utm_campaign=badger)
-[![Downloads][downloads-image]][npm-url] 
+[![Downloads][downloads-image]][npm-url]
 ![version](https://img.shields.io/badge/version-1.4.0-brightgreen.svg)
 
 Set your wallpaper with beautiful photos token by [unsplash](http://unsplash.com)
@@ -82,6 +82,7 @@ Check for updates.
 <h5 align="center">
 Made with a  ⌨️   in 🇮🇹
 </h5>
+
 
 [npm-url]: https://npmjs.org/package/splash-cli
 [downloads-image]: http://img.shields.io/npm/dm/splash-cli.svg
