@@ -30,3 +30,4 @@ yarn.lock
 data.json
 photos/
 data.json
+.eslintrc
