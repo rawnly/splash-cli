@@ -44,7 +44,7 @@ program.version(pkg.version)
 .option('-c --clean', 'Delete all downloaded photos.')
 .option('-i --info', 'Display main photos infos.')
 .option('--id <id>', 'Get photo from the id.')
-.option('--check', 'Check for updates.')
+.option('--check', 'Check for updates.');
 
 program.parse(process.argv);
 
