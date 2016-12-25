@@ -268,7 +268,3 @@ function del(directory) {
 
   });
 }
-
-join = () => {
-  path.join;
-}
