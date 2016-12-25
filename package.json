@@ -30,9 +30,11 @@
   "bin": {
     "splash": "./index.js"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^3.12.2"
+  },
   "scripts": {
-    "test": "./index.js --check"
+    "test": "./node_modules/eslint/bin/eslint.js index.js"
   },
   "repository": {
     "type": "git",
