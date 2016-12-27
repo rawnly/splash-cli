@@ -21,6 +21,12 @@ module.exports = function (req, time) {
 	// request and is connected. Abort the request if there is no activity
 	// on the socket for more than `time` milliseconds.
 	req.on('socket', function assign(socket) {
+		// Socket may come from Agent pool and may be already connected
+		// .connecting is for node 6.x and ._connecting is fallback for older releases
+		if (!(socket.connecting || socket._connecting)) {
+			return;
+		}
+
 		socket.on('connect', function connect() {
 			clear();
 

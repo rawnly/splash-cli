@@ -34,7 +34,7 @@ Time in milliseconds to wait for `connect` event on socket and also time to wait
 
 Or you can pass Object with following fields:
 
-- `connnect` - time to wait for connection
+- `connect` - time to wait for connection
 - `socket`  - time to wait for activity on socket
 
 ## License
