@@ -2,6 +2,7 @@
 
 // Modules
 require('colors');
+const os = require('os');
 const chalk = require('chalk');
 const path = require('path');
 const wallpaper = require('wallpaper');
@@ -14,6 +15,7 @@ const mkdirp = require('mkdirp');
 const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
 const boxen = require('boxen');
+
 const notifier = updateNotifier({ pkg, updateCheckInterval: 1000 * 60 * 60 * 24 });
 
 notifier.notify();
@@ -29,9 +31,10 @@ var spinner = new ora({
 	spinner: 'earth'
 });
 
-var photo, photo_url,creator, file, photo_name, pth, join;
+var photo, photo_url, creator, file, photo_name, pth, join, pic_dir;
 
 join = path.join;
+pic_dir = path.join(os.homedir(), 'Pictures', 'splash_photos/' );
 pth = join(__dirname, 'data.json');
 
 program.version(pkg.version)
@@ -39,40 +42,56 @@ program.version(pkg.version)
 .option('-c --clean', 'Delete all downloaded photos.')
 .option('-i --info', 'Display main photos infos.')
 .option('--id <id>', 'Get photo from the id.')
-.option('--check', 'Check for updates.');
+.option('--check', 'Check for updates.')
+.option('-l --list', 'Return photo list');
 
 program.parse(process.argv);
 
+if ( program.list ) {
+	
+	fs.readdir( pic_dir, (err, files) => {
+		if (err) {
+			console.log(err);
+		} else {
+			if ( files[0] ) {
+				files.forEach((item) => {
+					console.log(item);
+				});
+			} else {
+				console.log('==> Directory is empty'.yellow);
+			}
+		}
+	});
 
-if (program.path) {
-	mkdirp(__dirname + '/photos/', (err) => {
+} else if (program.path) {
+	mkdirp(pic_dir, (err) => {
 		if (err) {console.log(err);}
 	});
 
-	console.log(__dirname + '/photos/');
+	console.log(pic_dir);
 
 } else if (program.clean) {
 
-	mkdirp(__dirname + '/photos/', (err) => {
+	mkdirp(pic_dir, (err) => {
 		if (err) {console.log(err);}
 	});
 
-	del(__dirname + '/photos/');
+	del(pic_dir);
 
 } else if ( program.id ) {
 
 	var id = program.id;
 	var api_url_id = 'https://api.unsplash.com/photos/' + id + '?client_id=' + token;
 
-	mkdirp(__dirname + '/photos/', (err) => {
+	mkdirp(pic_dir, (err) => {
 		if (err) {console.log(err);}
 	});
 
   // Init
-	fs.access(__dirname + '/photos/' + id + '.jpg', (err) => {
+	fs.access(pic_dir + '/' + id + '.jpg', (err) => {
 		if (!err) {
 			console.log('==> '.yellow.bold + 'You have this photo locally!');
-			wallpaper.set(__dirname + '/photos/' + id + '.jpg');
+			wallpaper.set(pic_dir + '/' + id + '.jpg');
 		} else {
       // Show spinner
 			spinner.start();
@@ -130,7 +149,7 @@ if (program.path) {
 	});
 } else {
   // Init
-	mkdirp(__dirname + '/photos/', (err) => {
+	mkdirp(pic_dir, (err) => {
 		if (err) {console.log(err);}
 	});
   // Show spinner
@@ -163,7 +182,7 @@ if (program.path) {
 
 				photo_name = photo.id;
 
-				download(__dirname + `/photos/${photo_name}.jpg`, photo_url);
+				download(pic_dir + `/${photo_name}.jpg`, photo_url);
 
 			});
 		}
@@ -186,7 +205,7 @@ function download(filename, url) {
 
 	https.get(url, function(response) {
 		response.pipe(file).on('finish', () => {
-			wallpaper.set(__dirname + '/photos/' + photo_name + '.jpg');
+			wallpaper.set(pic_dir + '/' + photo_name + '.jpg');
 			spinner.succeed();
 
 			if ( program.info ) {
