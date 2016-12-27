@@ -70,8 +70,10 @@ Check for updates.
 
 ## TODO
 - [x] Implement other flags.
-- [ ] Electron application.
+- [x] Electron application.
 - [ ] Update screenshots and gifs in this file.
+
+If you want give me some help read the [todo list](docs/todo.md).
 
 ## Related
 - [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinner.
