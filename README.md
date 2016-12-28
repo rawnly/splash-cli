@@ -63,8 +63,11 @@ Check for updates.
 ```bash
 	$ splash --check 		 #no shortcut
 ```
-
-
+- <h3>List</h3>
+List of the downloaded photos
+```bash
+	$ splash -l 			# or --list 
+```
 <br>
 <br>
 
