@@ -2,6 +2,7 @@
 
 // Modules
 require('colors');
+const dns = require('dns');
 const os = require('os');
 const chalk = require('chalk');
 const path = require('path');
@@ -15,7 +16,7 @@ const mkdirp = require('mkdirp');
 const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
 const boxen = require('boxen');
-
+const clear = require('clear');
 const notifier = updateNotifier({ pkg, updateCheckInterval: 1000 * 60 * 60 * 24 });
 
 notifier.notify();
@@ -34,7 +35,7 @@ var spinner = new ora({
 var photo, photo_url, creator, file, photo_name, pth, join, pic_dir;
 
 join = path.join;
-pic_dir = path.join(os.homedir(), 'Pictures', 'splash_photos/' );
+pic_dir = join(os.homedir(), 'Pictures', 'splash_photos/' );
 pth = join(__dirname, 'data.json');
 
 program.version(pkg.version)
@@ -47,60 +48,120 @@ program.version(pkg.version)
 
 program.parse(process.argv);
 
-if ( program.list ) {
-	
-	fs.readdir( pic_dir, (err, files) => {
-		if (err) {
-			console.log(err);
+
+checkInternet(function (isOnline) {
+	spinner.text = 'Checking your connection...';
+	spinner.start();
+
+	if (isOnline) {
+		spinner.stop();
+		spinner.text = 'Connecting to Unsplash';
+		if ( program.list ) {
+
+			fs.readdir( pic_dir, (err, files) => {
+				if (err) {
+					console.log(err);
+				} else {
+					if ( files[0] ) {
+						files.forEach((item) => {
+							console.log(item);
+						});
+					} else {
+						console.log('==> Directory is empty'.yellow);
+					}
+				}
+			});
+
+		} else if (program.path) {
+			mkdirp(pic_dir, (err) => {
+				if (err) {console.log(err);}
+			});
+
+			console.log(pic_dir);
+
+		} else if (program.clean) {
+
+			mkdirp(pic_dir, (err) => {
+				if (err) {console.log(err);}
+			});
+
+			del(pic_dir);
+
+		} else if ( program.id ) {
+
+			var id = program.id;
+			var api_url_id = 'https://api.unsplash.com/photos/' + id + '?client_id=' + token;
+
+			mkdirp(pic_dir, (err) => {
+				if (err) {console.log(err);}
+			});
+
+			fs.access(pic_dir + `/${id}.jpg`, (err) => {
+				if (!err) {
+					console.log('==> '.yellow.bold + 'You have this photo locally!');
+					wallpaper.set(pic_dir + `/${id}.jpg`);
+				} else {
+					spinner.start();
+
+					request(api_url_id, function(error, response, body) {
+						if (!error && response.statusCode == 200) {
+							fs.writeFile(__dirname + '/data.json', body, (err) => {
+
+								if (err) {
+									spinner.fail();
+									console.log(err);
+								} else {
+									spinner.text = 'Connected!';
+									spinner.succeed();
+								}
+
+								file = fs.readFileSync(pth, 'utf-8', (err) => {
+									if ( err ) {
+										throw err;
+									}
+								});
+
+								photo = JSON.parse(file);
+								photo_url = photo.urls.raw;
+								creator = {
+									fullname: photo.user.name,
+									username: '@' + photo.user.username
+								};
+
+								photo_name = photo.id;
+
+								download(pic_dir + `/${photo_name}.jpg`, photo_url);
+
+							});
+						}
+					});
+				}
+			});
+
+		} else if (program.check) {
+			updateNotifier({
+				pkg,
+				callback: (error, update) => {
+					if ( !error ) {
+						if ( update.current !== update.latest ) {
+							console.log('');
+							console.log(boxen(`Update Available!\n ${update.current.gray + ' ==> ' + update.latest.green}\n\n` + chalk.yellow('npm install -g splash-cli'), { padding: 1, margin: 1, align: 'center', borderColor: 'yellow', borderStyle: 'double' }));
+							console.log('');
+						} else {
+							console.log(`Latest release installed! ${update.latest.green}`);
+						}
+					}
+				}
+			});
 		} else {
-			if ( files[0] ) {
-				files.forEach((item) => {
-					console.log(item);
-				});
-			} else {
-				console.log('==> Directory is empty'.yellow);
-			}
-		}
-	});
-
-} else if (program.path) {
-	mkdirp(pic_dir, (err) => {
-		if (err) {console.log(err);}
-	});
-
-	console.log(pic_dir);
-
-} else if (program.clean) {
-
-	mkdirp(pic_dir, (err) => {
-		if (err) {console.log(err);}
-	});
-
-	del(pic_dir);
-
-} else if ( program.id ) {
-
-	var id = program.id;
-	var api_url_id = 'https://api.unsplash.com/photos/' + id + '?client_id=' + token;
-
-	mkdirp(pic_dir, (err) => {
-		if (err) {console.log(err);}
-	});
-
-  // Init
-	fs.access(pic_dir + '/' + id + '.jpg', (err) => {
-		if (!err) {
-			console.log('==> '.yellow.bold + 'You have this photo locally!');
-			wallpaper.set(pic_dir + '/' + id + '.jpg');
-		} else {
-      // Show spinner
+			mkdirp(pic_dir, (err) => {
+				if (err) {console.log(err);}
+			});
 			spinner.start();
-
-      // Start request
-			request(api_url_id, function(error, response, body) {
+			request(api_url, function(error, response, body) {
 				if (!error && response.statusCode == 200) {
 					fs.writeFile(__dirname + '/data.json', body, (err) => {
-                  // if error when writing then fail() else success;
+            // if error when writing then fail() else success;
 						if (err) {
 							spinner.text = 'Can\'t connect. Check your connection!';
 							spinner.fail();
@@ -124,70 +185,26 @@ if ( program.list ) {
 
 						photo_name = photo.id;
 
-						download(__dirname + `/photos/${photo_name}.jpg`, photo_url);
+						download(pic_dir + `/${photo_name}.jpg`, photo_url);
 
 					});
 				}
 			});
 		}
-	});
-
-} else if (program.check) {
-	updateNotifier({
-		pkg,
-		callback: (error, update) => {
-			if ( !error ) {
-				if ( update.current !== update.latest ) {
-					console.log('');
-					console.log(boxen(`Update Available!\n ${update.current.gray + ' ==> ' + update.latest.green}\n\n` + chalk.yellow('npm install -g splash-cli'), { padding: 1, margin: 1, align: 'center', borderColor: 'yellow', borderStyle: 'double' }));
-					console.log('');
-				} else {
-					console.log(`Latest release installed! ${update.latest.green}`);
-				}
-			}
-		}
-	});
-} else {
-  // Init
-	mkdirp(pic_dir, (err) => {
-		if (err) {console.log(err);}
-	});
-  // Show spinner
-	spinner.start();
-  // Start request
-	request(api_url, function(error, response, body) {
-		if (!error && response.statusCode == 200) {
-			fs.writeFile(__dirname + '/data.json', body, (err) => {
-              // if error when writing then fail() else success;
-				if (err) {
-					spinner.text = 'Can\'t connect. Check your connection!';
-					spinner.fail();
-				} else {
-					spinner.text = 'Connected!';
-					spinner.succeed();
-				}
-
-				file = fs.readFileSync(pth, 'utf-8', (err) => {
-					if ( err ) {
-						throw err;
-					}
-				});
-
-				photo = JSON.parse(file);
-				photo_url = photo.urls.raw;
-				creator = {
-					fullname: photo.user.name,
-					username: '@' + photo.user.username
-				};
-
-				photo_name = photo.id;
-
-				download(pic_dir + `/${photo_name}.jpg`, photo_url);
-
-			});
-		}
-	});
-}
+	} else {
+		clear();
+		spinner.stop();
+		console.log('');
+		console.log('');
+		console.log(`
+			I'm sorry, it seems i have trouble to connect to UNSPLASH.\n
+			If your `.bold + 'internet connection'.rainbow.bold + ` works well, then visit https://unsplash.com
+			maybe it's down or blocked...
+		`.bold);
+		console.log('');
+		console.log('');
+	}
+});
 
 
 function download(filename, url) {
@@ -249,6 +266,7 @@ function download(filename, url) {
 				console.log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
 				console.log('Profile URL: ' + photo.user.links.html);
 			} else {
+				console.log('');
 				console.log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
 			}
 
@@ -280,5 +298,15 @@ function del(directory) {
 			spinner.stopAndPersist('==>'.yellow.bold);
 		}
 
+	});
+}
+
+function checkInternet(cb) {
+	dns.lookup('unsplash.com',function(err) {
+		if (err && err.code == 'ENOTFOUND') {
+			cb(false);
+		} else {
+			cb(true);
+		}
 	});
 }
