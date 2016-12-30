@@ -12,6 +12,7 @@ module.exports = function defFunc(ajv) {
       return expr;
     },
     metaSchema: {
+      type: 'array',
       items: {
         type: 'string',
         format: 'json-pointer'

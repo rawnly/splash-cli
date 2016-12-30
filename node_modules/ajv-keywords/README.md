@@ -18,6 +18,7 @@ Custom JSON-Schema keywords for [ajv](https://github.com/epoberezkin/ajv) valida
   - [range and exclusiveRange](#range-and-exclusiverange)
   - [propertyNames](#propertynames)
   - [if/then/else](#ifthenelse)
+  - [prohibited](#prohibited)
   - [deepProperties](#deepproperties)
   - [deepRequired](#deeprequired)
   - [regexp](#regexp)
@@ -192,6 +193,28 @@ ajv.validate(schema, invalidItems); // false
 ```
 
 This keyword is [proposed](https://github.com/json-schema-org/json-schema-spec/issues/180) for the future version of JSON-Schema standard.
+
+
+### `prohibited`
+
+This keyword allows to prohibit that any of the properties in the list is present in the object.
+
+This keyword applies only to objects. If the data is not an object, the validation succeeds.
+
+The value of this keyword should be an array of strings, each string being a property name. For data object to be valid none of the properties in this array should be present in the object.
+
+```
+var schema = { prohibited: ['foo', 'bar']};
+
+var validData = { baz: 1 };
+var alsoValidData = {};
+
+var invalidDataList = [
+  { foo: 1 },
+  { bar: 2 },
+  { foo: 1, bar: 2}
+];
+```
 
 
 ### `deepRequired`

@@ -8,6 +8,7 @@ module.exports = {
   'typeof': require('./typeof'),
   dynamicDefaults: require('./dynamicDefaults'),
   'if': require('./if'),
+  prohibited: require('./prohibited'),
   deepProperties: require('./deepProperties'),
   deepRequired: require('./deepRequired')
   // formatMinimum: require('./formatMinimum'),
