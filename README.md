@@ -63,6 +63,7 @@ Check for updates.
 ```bash
 	$ splash --check 		 #no shortcut
 ```
+
 - <h3>List</h3>
 Print an array with the list of the downloaded photos
 ```bash
