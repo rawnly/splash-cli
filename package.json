@@ -22,6 +22,7 @@
     "clear": "^0.0.1",
     "colors": "^1.1.2",
     "commander": "^2.9.0",
+    "jsonfile": "^2.4.0",
     "mkdirp": "^0.5.1",
     "ora": "^0.4.0",
     "request": "^2.79.0",

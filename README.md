@@ -64,10 +64,17 @@ Check for updates.
 	$ splash --check 		 #no shortcut
 ```
 - <h3>List</h3>
-List of the downloaded photos
+Print an array with the list of the downloaded photos
 ```bash
-	$ splash -l 			# or --list 
+	$ splash -l 			# or --list
 ```
+
+- <h4> Export </h4>
+Export the photos list to a local file (`./splashList.json`).
+```bash
+	$ splash -l --export #or splash --list --export
+```
+
 <br>
 <br>
 
@@ -76,7 +83,7 @@ List of the downloaded photos
 - [x] Electron application.
 - [ ] Update screenshots and gifs in this file.
 
-If you want give me some help read the [todo list](docs/todo.md).
+If you want give me some help read the [todo list](docs/todo.md) or [this](rawnly.github.io/splash-cli).
 
 ## Related
 - [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinner.

@@ -17,7 +17,9 @@ const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
 const boxen = require('boxen');
 const clear = require('clear');
+const jsonfile = require('jsonfile');
 const notifier = updateNotifier({ pkg, updateCheckInterval: 1000 * 60 * 60 * 24 });
+
 
 notifier.notify();
 
@@ -44,6 +46,7 @@ program.version(pkg.version)
 .option('-i --info', 'Display main photos infos.')
 .option('--id <id>', 'Get photo from the id.')
 .option('--check', 'Check for updates.')
+.option('--export', 'Export list')
 .option('-l --list', 'Return photo list');
 
 program.parse(process.argv);
@@ -56,22 +59,74 @@ checkInternet(function (isOnline) {
 	if (isOnline) {
 		spinner.stop();
 		spinner.text = 'Connecting to Unsplash';
-		if ( program.list ) {
 
+		if ( program.list && !program.export ) {
 			fs.readdir( pic_dir, (err, files) => {
 				if (err) {
 					console.log(err);
 				} else {
 					if ( files[0] ) {
+						// Sort list by name
+						files.sort();
+						let list = [];
 						files.forEach((item) => {
-							console.log(item);
+							// Remove .jpg
+							item = item.slice(0, item.length - 4);
+							list.push(item);
 						});
+
+						clear();
+
+						console.log('');
+						console.log(list.length.toString().yellow.bold + ' Photos');
+						console.log('');
+
+						list.sort();
+
+						list = JSON.stringify(list);
+						list = JSON.parse(list);
+
+						console.log(list);
+						console.log('');
+
 					} else {
 						console.log('==> Directory is empty'.yellow);
 					}
 				}
 			});
 
+		} else if (program.list && program.export) {
+			fs.readdir(pic_dir, (err, files) => {
+				files.sort();
+				let list = [];
+				files.forEach((item) => {
+					// Remove .jpg
+					item = item.slice(0, item.length - 4);
+					list.push(item);
+				});
+
+				clear();
+
+				console.log('');
+				console.log(list.length.toString().yellow.bold + ' Photos');
+				console.log('');
+
+				list.sort();
+
+				list = JSON.stringify(list);
+				list = JSON.parse(list);
+
+				console.log(list);
+				console.log('');
+
+				// Write file
+				files = JSON.stringify(files);
+				files = JSON.parse(files);
+
+				jsonfile.writeFile('./splashList.json', files, (err) => {
+					if ( err ) return err;
+				});
+			});
 		} else if (program.path) {
 			mkdirp(pic_dir, (err) => {
 				if (err) {console.log(err);}
