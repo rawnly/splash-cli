@@ -85,13 +85,14 @@ Export the photos list to a local file (`./splashList.json`).
 - [x] Electron application.
 - [ ] Update screenshots and gifs in this file.
 
-If you want give me some help read the [todo list](docs/todo.md) or [this](rawnly.github.io/splash-cli).
+If you want give me some **help** read the [todo list](docs/todo.md) or [this](rawnly.github.io/splash-cli).
 
 ## Related
 - [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinner.
 - [boxen](https://github.com/sindresorhus/boxen) - Create boxes in the terminal.
 - [unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
 - [wallpaper](https://github.com/sindresorhus/wallpaper) - Get or set the desktop wallpaper.
+- [simple-download](https://github.com/rawnly/simple-download) - Simple nodeJS Downloader
 
 <h5 align="center">
 Made with a  ⌨️   in 🇮🇹
