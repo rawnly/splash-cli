@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "Unsplash Wallpapers for your desktop",
   "main": "index.js",
   "author": {
