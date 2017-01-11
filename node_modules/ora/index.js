@@ -66,7 +66,7 @@ class Ora {
 			return this;
 		}
 
-		cliCursor.hide();
+		cliCursor.hide(this.stream);
 		this.render();
 		this.id = setInterval(this.render.bind(this), this.interval);
 
@@ -81,7 +81,7 @@ class Ora {
 		this.id = null;
 		this.frameIndex = 0;
 		this.clear();
-		cliCursor.show();
+		cliCursor.show(this.stream);
 
 		return this;
 	}

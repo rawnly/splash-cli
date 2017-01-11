@@ -2,7 +2,7 @@
 module.exports = function generate_allOf(it, $keyword) {
   var out = ' ';
   var $schema = it.schema[$keyword];
-  var $schemaPath = it.schemaPath + '.' + $keyword;
+  var $schemaPath = it.schemaPath + it.util.getProperty($keyword);
   var $errSchemaPath = it.errSchemaPath + '/' + $keyword;
   var $breakOnError = !it.opts.allErrors;
   var $it = it.util.copy(it);

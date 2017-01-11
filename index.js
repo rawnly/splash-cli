@@ -62,7 +62,7 @@ checkInternet(function (isOnline) {
 		spinner.stop();
 		spinner.text = 'Connecting to Unsplash';
 
-		if ( program.download.length ) {
+		if ( program.download ) {
 			mkdirp(pic_dir, (err) => {
 				if (err) {console.log(err);}
 			});
