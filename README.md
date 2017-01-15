@@ -5,10 +5,15 @@
 ![version](https://img.shields.io/badge/version-1.4.0-brightgreen.svg)
 [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli)
 
+---
+#### <p align="center"> I'm looking for mainteiners! ( <a href="mailto:fedevitale99@gmail.com">Contact</a> ) </p>
+---
+
 Set your wallpaper with beautiful photos from [unsplash](http://unsplash.com)
 
 ![screen](https://cloud.githubusercontent.com/assets/16429579/21467810/3f37f348-c9fa-11e6-9c6a-82fa8364f5e6.png)
 > Got the same setup [here](http://github.com/Rawnly/dot-files)
+
 
 ## Installation
 
