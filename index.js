@@ -18,8 +18,7 @@ const pkg = require('./package.json');
 const boxen = require('boxen');
 const clear = require('clear');
 const jsonfile = require('jsonfile');
-const notifier = updateNotifier({ pkg, updateCheckInterval: 1000 * 60 * 60 * 24 });
-const down_load = require('simple-download');
+const notifier = updateNotifier({ pkg, updateCheckInterval: 1000 * 60 * 60 });
 
 notifier.notify();
 
@@ -44,7 +43,6 @@ program.version(pkg.version)
 .option('-p, --path', 'Return the download directory.')
 .option('-c --clean', 'Delete all downloaded photos.')
 .option('-i --info', 'Display main photos infos.')
-.option('-d --download <id>', 'Download photo without set it as wallpaper')
 .option('--id <id>', 'Get photo from the id.')
 .option('--check', 'Check for updates.')
 .option('--export', 'Export list')
@@ -62,27 +60,7 @@ checkInternet(function (isOnline) {
 		spinner.stop();
 		spinner.text = 'Connecting to Unsplash';
 
-		if ( program.download ) {
-			mkdirp(pic_dir, (err) => {
-				if (err) {console.log(err);}
-			});
-
-			var download_id = program.download,
-				download_url = 'https://api.unsplash.com/photos/' + download_id + '?client_id=' + token,
-				download_name =  download_id + '.jpg';
-
-
-			fs.access(join(pic_dir, download_name), (err) => {
-				if (!err) {
-					console.log(`ERROR: ${ download_id + '.jpg' } is already on your machine!`);
-					return;
-				}
-				down_load(download_id + '.jpg', download_url, pic_dir, () => {
-					console.log(download_id, 'Downloaded!');
-				});
-			});
-
-		} else if ( program.list && !program.export ) {
+		if ( program.list && !program.export ) {
 			fs.readdir( pic_dir, (err, files) => {
 				if (err) {
 					console.log(err);
