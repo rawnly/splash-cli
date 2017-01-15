@@ -29,18 +29,6 @@ To install `splash-cli` you must use **npm** (as always) and do the following:
 ```
 
 ## Options
-- <h3>CLEAN</h3>
-Clean all `splash-cli` photo caches.
-```bash
-	$ splash -c 		# or --clean
-```
-
-- <h3>PATH</h3>
-Get the `/photos` path.
-```bash
-	$ splash -p 		# or --path
-```
-
 - <h3>INFO</h3>
 Normal usage but when finish to download the photo prints **ID**, **EXIF** and **author url**.
 ```bash
@@ -54,11 +42,23 @@ Normal usage but when finish to download the photo prints **ID**, **EXIF** and *
 - <h3> ID </h3>
 Get the image from **ID**. You can get the image id on the [unsplash website](https://unsplash.com) by opening an image and grabbing the **ID** from the url.
 
-If you have ever downloaded the photo with **splash-cli** and it is in the `/photos/` folder it will not be downloaded again.
+If you have ever downloaded the photo with **splash-cli** and it is in the `~/Pictures/splash_photos/` folder it will not be downloaded again.
 ```bash
 	$ splash --id YJ9ygJAVzmO #no shortcut
 ```
-> unsplash.com/?photo=`EXAMPLE_PHOTO_ID`
+> https://unsplash.com/?photo=`EXAMPLE_PHOTO_ID`
+
+- <h3>CLEAN</h3>
+Delete all downloaded photos.
+```bash
+	$ splash -c 		# or --clean
+```
+
+- <h3>PATH</h3>
+Get the download path.
+```bash
+	$ splash -p 		# or --path
+```
 
 - <h3>Check</h3>
 Check for updates.
@@ -71,11 +71,11 @@ Print an array with the list of the downloaded photos.
 ```bash
 	$ splash -l 			# or --list
 ```
+> File names are photos id
 
-- <h4> Export </h4>
-Export the photos list to a local file (`./splashList.json`).
+You can also export it with `--export`
 ```bash
-	$ splash -l --export #or splash --list --export
+	$ splash -l --export 
 ```
 
 <br>
