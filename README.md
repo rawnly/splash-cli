@@ -5,14 +5,14 @@
 ![version](https://img.shields.io/badge/version-1.4.0-brightgreen.svg)
 [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli)
 
-Set your wallpaper with beautiful photos token by [unsplash](http://unsplash.com)
+Set your wallpaper with beautiful photos from [unsplash](http://unsplash.com)
 
 ![screen](https://cloud.githubusercontent.com/assets/16429579/21467810/3f37f348-c9fa-11e6-9c6a-82fa8364f5e6.png)
 > Got the same setup [here](http://github.com/Rawnly/dot-files)
 
 ## Installation
 
-To install `splash-cli` you must use **npm** ( as always ) and do the following:
+To install `splash-cli` you must use **npm** (as always) and do the following:
 
 ```bash
 	$ npm i -g splash-cli
@@ -52,8 +52,9 @@ Normal usage but when finish to download the photo prints **ID**, **EXIF** and *
 ![info](https://cloud.githubusercontent.com/assets/16429579/21467813/7c7c4de4-c9fa-11e6-92db-adffb3e091a5.png)
 
 - <h3> ID </h3>
-Get the image from **ID**. You can get the image id on [unsplash website](https://unsplash.com) by opening an image and grab the **ID** from the url.
-If you ever have downloaded the photo with **splash-cli** and is in the `/photos/` folder it will not be downloaded again.
+Get the image from **ID**. You can get the image id on the [unsplash website](https://unsplash.com) by opening an image and grabbing the **ID** from the url.
+
+If you have ever downloaded the photo with **splash-cli** and it is in the `/photos/` folder it will not be downloaded again.
 ```bash
 	$ splash --id YJ9ygJAVzmO #no shortcut
 ```
@@ -66,7 +67,7 @@ Check for updates.
 ```
 
 - <h3>List</h3>
-Print an array with the list of the downloaded photos
+Print an array with the list of the downloaded photos.
 ```bash
 	$ splash -l 			# or --list
 ```
