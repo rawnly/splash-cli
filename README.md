@@ -71,12 +71,11 @@ Print an array with the list of the downloaded photos.
 ```bash
 	$ splash -l 			# or --list
 ```
-> File names are photos id
-
 You can also export it with `--export`
 ```bash
-	$ splash -l --export 
+	$ splash -l --export
 ```
+> NOTE: File names are photos id
 
 <br>
 <br>
