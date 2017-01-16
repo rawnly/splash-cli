@@ -1,15 +1,15 @@
 # To Do List
 To Do list for [splash][sp]
 ## Done
-- [x] Release the basic [Electron][electron] [app](https://github.com/rawnly/splash). 👍
+- [x] ~~Release the basic [Electron][electron] [app](https://github.com/rawnly/splash).~~ 👍
 
 ## Writing  
-- [x] Write a good readme file, with **screenshots** and **gifs**
+- [x] ~~Write a good readme file, with **screenshots** and **gifs**~~
 
 ## [Application](https://github.com/rawnly/splash)
-- [x] Main window with photo grid
-- [ ] Add sidebar menu to main window 
-- [x] Add hystory of downloads with photo thumb
+- [x] ~~Main window with photo grid~~
+- [ ] Add sidebar menu to main window
+- [x] ~~Add hystory of downloads with photo thumb~~
 
 ## From pull
 - [ ] Update wallpaper every week/month automatically with newest photo.
