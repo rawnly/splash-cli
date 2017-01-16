@@ -87,8 +87,8 @@ You can also export it with `--export`
 
 ## TODO
 - [x] Implement other flags.
-- [x] Electron application.
-- [ ] Update screenshots and gifs in this file.
+- [x] [Electron application](https://github.com/rawnly/splash).
+- [x] Update screenshots and gifs in this file.
 
 If you want give me some **help** read the [todo list](docs/todo.md) or [this](rawnly.github.io/splash-cli).
 
