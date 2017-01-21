@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli)
 
 ---
-#### <p align="center"> I'm looking for mainteiners! ( <a href="mailto:fedevitale99@gmail.com">Contact</a> ) </p>
+#### <p align="center"> New Version! 1.7.0 ( <a href="mailto:https://npmjs.org/packages/splash-cli">Download Now</a> ) </p>
 ---
 
 Set your wallpaper with beautiful photos from [unsplash](http://unsplash.com)
@@ -34,7 +34,21 @@ To install `splash-cli` you must use **npm** (as always) and do the following:
 ```
 
 ## Options
+- <h3> SAVE </h3>
+Option: `--save [path]` <br>
+Shortcut: `-s` <br>
+<br>
+
+Save the downloaded photo to a local folder if specified, or to the usually `~/Pictures/splash_photos`
+```bash
+	$ splash --save ~/Desktop
+	# not ~/Desktop/
+```
+
 - <h3>INFO</h3>
+Option: `--info` <br>
+Shortcut: `-i` <br>
+<br>
 Normal usage but when finish to download the photo prints **ID**, **EXIF** and **author url**.
 ```bash
 	$ splash -i   # or --info
@@ -45,6 +59,9 @@ Normal usage but when finish to download the photo prints **ID**, **EXIF** and *
 ![info](https://cloud.githubusercontent.com/assets/16429579/21467813/7c7c4de4-c9fa-11e6-92db-adffb3e091a5.png)
 
 - <h3> ID </h3>
+Option: `--id <id>` <br>
+Shortcut: `none` <br>
+<br>
 Get the image from **ID**. You can get the image id on the [unsplash website](https://unsplash.com) by opening an image and grabbing the **ID** from the url.
 
 If you have ever downloaded the photo with **splash-cli** and it is in the `~/Pictures/splash_photos/` folder it will not be downloaded again.
@@ -54,27 +71,39 @@ If you have ever downloaded the photo with **splash-cli** and it is in the `~/Pi
 > https://unsplash.com/?photo=`EXAMPLE_PHOTO_ID`
 
 - <h3>CLEAN</h3>
+Option: `--clean` <br>
+Shortcut: `-c` <br>
+<br>
 Delete all downloaded photos.
 ```bash
-	$ splash -c 		# or --clean
+	$ splash -c 		
 ```
 
 - <h3>PATH</h3>
+Option: `--path` <br>
+Shortcut: `-p` <br>
+<br>
 Get the download path.
 ```bash
-	$ splash -p 		# or --path
+	$ splash -p 		
 ```
 
 - <h3>Check</h3>
+Option: `--check` <br>
+Shortcut: `none` <br>
+<br>
 Check for updates.
 ```bash
-	$ splash --check 		 #no shortcut
+	$ splash --check 		 
 ```
 
 - <h3>List</h3>
+Option: `--list` <br>
+Shortcut: `-l` <br>
+<br>
 Print an array with the list of the downloaded photos.
 ```bash
-	$ splash -l 			# or --list
+	$ splash -l 		
 ```
 You can also export it with `--export`
 ```bash
@@ -86,9 +115,9 @@ You can also export it with `--export`
 <br>
 
 ## TODO
-- [x] Implement other flags.
-- [x] Electron application.
-- [ ] Update screenshots and gifs in this file.
+- [ ] Implement other flags.
+- [x] ~Electron application.~
+- [x] ~Update screenshots and gifs in this file.~
 
 If you want give me some **help** read the [todo list](docs/todo.md) or [this](rawnly.github.io/splash-cli).
 

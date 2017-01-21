@@ -2,6 +2,7 @@
 
 // Modules
 require('colors');
+require('chili-js');
 const dns = require('dns');
 const os = require('os');
 const chalk = require('chalk');
@@ -20,7 +21,6 @@ const clear = require('clear');
 const jsonfile = require('jsonfile');
 const notifier = updateNotifier({ pkg, updateCheckInterval: 1000 * 60 * 60 });
 
-notifier.notify();
 
 // Url elements
 const token = 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34';
@@ -40,14 +40,15 @@ pic_dir = join(os.homedir(), 'Pictures', 'splash_photos/' );
 pth = join(__dirname, 'data.json');
 
 program.version(pkg.version)
-.option('-p, --path', 'Return the download directory.')
-.option('-c --clean', 'Delete all downloaded photos.')
-.option('-i --info', 'Display main photos infos.')
-.option('--id <id>', 'Get photo from the id.')
-.option('--check', 'Check for updates.')
-.option('--export', 'Export list')
-.option('-l --list', 'Return photo list');
-
+// .option('-h --help', 'Return this message')
+.option('-p, --path', 'output the download directory.')
+.option('-l --list', 'output photo list')
+.option('-c --clean', 'delete all downloaded photos.')
+.option('-i --info', 'display main photos infos.')
+.option('-s --save [path]', 'Save the image to a local path')
+.option('--id <id>', 'get photo from the id.')
+.option('--export', 'export a photo list')
+.option('--check', 'check for updates.');
 
 program.parse(process.argv);
 
@@ -60,7 +61,43 @@ checkInternet(function (isOnline) {
 		spinner.stop();
 		spinner.text = 'Connecting to Unsplash';
 
-		if ( program.list && !program.export ) {
+		if (program.save) {
+			spinner.start();
+			request(api_url, function(error, response, body) {
+				if (!error && response.statusCode == 200) {
+					fs.writeFile(__dirname + '/data.json', body, (err) => {
+						// if error when writing then fail() else success;
+						if (err) {
+							spinner.text = 'Can\'t connect. Check your connection!';
+							spinner.fail();
+						} else {
+							spinner.text = 'Connected!';
+							spinner.succeed();
+						}
+
+						file = fs.readFileSync(pth, 'utf-8', (err) => {
+							if ( err ) {
+								throw err;
+							}
+						});
+
+						photo = JSON.parse(file);
+						photo_url = photo.urls.raw;
+						creator = {
+							fullname: photo.user.name,
+							username: '@' + photo.user.username
+						};
+
+						photo_name = photo.id;
+						let directory = (program.save.length) ? program.save + `/${photo_name}.jpg` : pic_dir + `${photo_name}.jpg`;
+						down_load(directory, photo_url);
+
+					});
+				}
+			});
+
+
+		} else if ( program.list && !program.export ) {
 			fs.readdir( pic_dir, (err, files) => {
 				if (err) {
 					console.log(err);
@@ -261,6 +298,72 @@ checkInternet(function (isOnline) {
 	}
 });
 
+function down_load(filename, url) {
+	spinner.spinner = {
+		frames: [
+			'🚀'
+		]
+	};
+	spinner.text = 'Making something awsome';
+	spinner.start();
+
+	var file;
+
+	file = fs.createWriteStream(filename);
+
+	https.get(url, function(response) {
+		response.pipe(file).on('finish', () => {
+			spinner.succeed();
+
+			if ( program.info ) {
+				console.log('');
+				console.log(`ID: ${photo.id.yellow}`);
+				console.log('');
+
+				if ( photo.exif !== undefined ) {
+					if (photo.exif.make) {
+						console.log('Make: '.yellow.bold + photo.exif.make);
+					} else {
+						console.log('Make: '.yellow.bold + '--');
+					}
+					if (photo.exif.model) {
+						console.log('Model: '.yellow.bold + photo.exif.model);
+					} else {
+						console.log('Model: '.yellow.bold + '--');
+					}
+					if (photo.exif.exposure_time) {
+						console.log('Shutter Speed: '.yellow.bold + photo.exif.exposure_time);
+					} else {
+						console.log('Shutter Speed: '.yellow.bold + '--');
+					}
+					if (photo.exif.aperture) {
+						console.log('Aperture:'.yellow.bold + ' f/' + photo.exif.aperture);
+					} else {
+						console.log('Aperture: '.yellow.bold + ' f/' + '--');
+					}
+					if (photo.exif.focal_length) {
+						console.log('Focal Length: '.yellow.bold + photo.exif.focal_length + 'mm');
+					} else {
+						console.log('Focal Length: '.yellow.bold + '--');
+					}
+					if (photo.exif.iso) {
+						console.log('ISO: '.yellow.bold + photo.exif.iso);
+					} else {
+						console.log('ISO: '.yellow.bold + '--');
+					}
+				}
+				console.log('');
+				console.log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
+				console.log('Profile URL: ' + photo.user.links.html);
+			} else {
+				console.log('');
+				console.log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
+			}
+
+			console.log('');
+		});
+	});
+}
 
 function download(filename, url) {
 	spinner.spinner = {
@@ -360,6 +463,7 @@ function checkInternet(cb) {
 	dns.lookup('unsplash.com',function(err) {
 		if (err && err.code == 'ENOTFOUND') {
 			cb(false);
+			notifier.notify();
 		} else {
 			cb(true);
 		}
