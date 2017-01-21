@@ -115,9 +115,15 @@ You can also export it with `--export`
 <br>
 
 ## TODO
+<<<<<<< HEAD
 - [ ] Implement other flags.
 - [x] ~Electron application.~
 - [x] ~Update screenshots and gifs in this file.~
+=======
+- [x] Implement other flags.
+- [x] [Electron application](https://github.com/rawnly/splash).
+- [x] Update screenshots and gifs in this file.
+>>>>>>> 963958062e137f0bb0792a9b06e53921c0bcc38c
 
 If you want give me some **help** read the [todo list](docs/todo.md) or [this](rawnly.github.io/splash-cli).
 
