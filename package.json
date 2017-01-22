@@ -1,0 +1,50 @@
+{
+  "name": "splash-cli",
+  "version": "1.7.2",
+  "description": "Unsplash photos as your wallpaper",
+  "main": "index.js",
+  "author": {
+    "name": "Federico Vitale",
+    "username": "Rawnly",
+    "email": "fedevitale99@gmail.com",
+    "home": "https://github.com/Rawnly"
+  },
+  "license": "MIT",
+  "keywords": [
+    "splash",
+    "wallpaper",
+    "unsplash",
+    "commandline",
+    "got"
+  ],
+  "dependencies": {
+    "boxen": "^0.8.1",
+    "chili-js": "^1.0.1",
+    "clear": "^0.0.1",
+    "colors": "^1.1.2",
+    "commander": "^2.9.0",
+    "got": "^6.7.1",
+    "jsonfile": "^2.4.0",
+    "mkdirp": "^0.5.1",
+    "ora": "^0.4.0",
+    "update-notifier": "^1.0.3",
+    "wallpaper": "^2.3.0"
+  },
+  "bin": {
+    "splash": "./index.js"
+  },
+  "devDependencies": {
+    "eslint": "^3.12.2"
+  },
+  "scripts": {
+    "test": "./node_modules/eslint/bin/eslint.js index.js; exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rawnly/splash-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Rawnly/splash-cli/issues"
+  },
+  "homepage": "https://github.com/Rawnly/splash-cli#readme"
+}
