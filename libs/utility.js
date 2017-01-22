@@ -1,50 +1,51 @@
 require('./variables');
-module.exports = infos = () => {
-  if ( program.info ) {
-    log('');
-    log(`ID: ${photo.id.yellow}`);
-    log('');
 
-    if ( photo.exif !== undefined ) {
-      if (photo.exif.make) {
-        log('Make: '.yellow.bold + photo.exif.make);
-      } else {
-        log('Make: '.yellow.bold + '--');
-      }
-      if (photo.exif.model) {
-        log('Model: '.yellow.bold + photo.exif.model);
-      } else {
-        log('Model: '.yellow.bold + '--');
-      }
-      if (photo.exif.exposure_time) {
-        log('Shutter Speed: '.yellow.bold + photo.exif.exposure_time);
-      } else {
-        log('Shutter Speed: '.yellow.bold + '--');
-      }
-      if (photo.exif.aperture) {
-        log('Aperture:'.yellow.bold + ' f/' + photo.exif.aperture);
-      } else {
-        log('Aperture: '.yellow.bold + ' f/' + '--');
-      }
-      if (photo.exif.focal_length) {
-        log('Focal Length: '.yellow.bold + photo.exif.focal_length + 'mm');
-      } else {
-        log('Focal Length: '.yellow.bold + '--');
-      }
-      if (photo.exif.iso) {
-        log('ISO: '.yellow.bold + photo.exif.iso);
-      } else {
-        log('ISO: '.yellow.bold + '--');
-      }
-    }
-    log('');
-    log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
-    log('Profile URL: ' + photo.user.links.html);
-  } else {
-    log('');
-    log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
-  }
-}
+module.exports = infos = () => {
+	if ( program.info ) {
+		log('');
+		log(`ID: ${photo.id.yellow}`);
+		log('');
+
+		if ( photo.exif !== undefined ) {
+			if (photo.exif.make) {
+				log('Make: '.yellow.bold + photo.exif.make);
+			} else {
+				log('Make: '.yellow.bold + '--');
+			}
+			if (photo.exif.model) {
+				log('Model: '.yellow.bold + photo.exif.model);
+			} else {
+				log('Model: '.yellow.bold + '--');
+			}
+			if (photo.exif.exposure_time) {
+				log('Shutter Speed: '.yellow.bold + photo.exif.exposure_time);
+			} else {
+				log('Shutter Speed: '.yellow.bold + '--');
+			}
+			if (photo.exif.aperture) {
+				log('Aperture:'.yellow.bold + ' f/' + photo.exif.aperture);
+			} else {
+				log('Aperture: '.yellow.bold + ' f/' + '--');
+			}
+			if (photo.exif.focal_length) {
+				log('Focal Length: '.yellow.bold + photo.exif.focal_length + 'mm');
+			} else {
+				log('Focal Length: '.yellow.bold + '--');
+			}
+			if (photo.exif.iso) {
+				log('ISO: '.yellow.bold + photo.exif.iso);
+			} else {
+				log('ISO: '.yellow.bold + '--');
+			}
+		}
+		log('');
+		log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
+		log('Profile URL: ' + photo.user.links.html);
+	} else {
+		log('');
+		log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
+	}
+};
 
 module.exports = down_load = (filename, url) => {
 	spinner.spinner = {
@@ -65,12 +66,12 @@ module.exports = down_load = (filename, url) => {
 				wallpaper.set(filename);
 			}
 
-      infos()
+			infos();
 
-			log('')
+			log('');
 		});
 	});
-}
+};
 
 
 module.exports = download = (filename, url) => {
@@ -90,7 +91,7 @@ module.exports = download = (filename, url) => {
 		response.pipe(file).on('finish', () => {
 
       // Set the wallpaper
-      wallpaper.set(`${pic_dir}/${photo_name}.jpg`);
+			wallpaper.set(`${pic_dir}/${photo_name}.jpg`);
       // Stop the spinner
 			spinner.succeed();
 
@@ -100,7 +101,7 @@ module.exports = download = (filename, url) => {
 			log('');
 		});
 	});
-}
+};
 
 // Delete elements
 module.exports = del = (directory) => {
@@ -118,9 +119,9 @@ module.exports = del = (directory) => {
 		if ( files[0] ) {
 			files.forEach(file => {
 				fs.unlink( join(directory, file) );
-        log(`Removing ${file} from ${directory}`)
+				log(`Removing ${file} from ${directory}`);
 			});
-      spinner.succeed()
+			spinner.succeed();
 
 		} else {
 			spinner.text = 'The directory is empty!'.bold;
@@ -128,7 +129,7 @@ module.exports = del = (directory) => {
 		}
 
 	});
-}
+};
 
 // Check internet connection
 module.exports = checkInternet = (callback) => {
@@ -140,46 +141,46 @@ module.exports = checkInternet = (callback) => {
 			callback(true);
 		}
 	});
-}
+};
 
 
 
 module.exports = splash = (url, callback) => {
-  got(url).then(response => {
-    let body = response.body;
-    write(pic_dir + '/.splash_datas.json', body, (err) => {
-      if (err) {
-        spinner.text = 'Can\'t connect. Check your connection!';
-        spinner.fail();
-      } else {
-        spinner.text = 'Connected!';
-        spinner.succeed();
-      }
+	got(url).then(response => {
+		let body = response.body;
+		write(pic_dir + '/.splash_datas.json', body, (err) => {
+			if (err) {
+				spinner.text = 'Can\'t connect. Check your connection!';
+				spinner.fail();
+			} else {
+				spinner.text = 'Connected!';
+				spinner.succeed();
+			}
 
-      file = readSync(data_pth, 'utf-8', (err) => {
-        if ( err ) {
-          throw err;
-        }
-      })
+			file = readSync(data_pth, 'utf-8', (err) => {
+				if ( err ) {
+					throw err;
+				}
+			});
 
-      photo = jparse(file);
+			photo = jparse(file);
 
-      creator = {
-        fullname: photo.user.name,
-        username: '@' + photo.user.username
-      };
+			creator = {
+				fullname: photo.user.name,
+				username: '@' + photo.user.username
+			};
 
-      let data = {
-        url: photo.urls.raw,
-        name: photo.id
-      }
+			let data = {
+				url: photo.urls.raw,
+				name: photo.id
+			};
 
-      photo_url = data.url;
-      photo_name = data.name;
+			photo_url = data.url;
+			photo_name = data.name;
 
-      callback(data)
-    })
-  }).catch((err) => {
-    log(err.response.body)
-  })
-}
+			callback(data);
+		});
+	}).catch((err) => {
+		log(err.response.body);
+	});
+};
