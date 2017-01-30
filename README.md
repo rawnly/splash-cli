@@ -7,7 +7,7 @@
 [![NPM](https://nodei.co/npm/splash-cli.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/splash-cli/)
 
 ---
-#### <p align="center"> New Version! 1.7.2 ( <a href="https://npmjs.org/packages/splash-cli">Download Now</a> ) </p>
+#### <p align="center"> New Version! 1.8.0 ( <a href="https://npmjs.org/packages/splash-cli">Download Now</a> ) </p>
 ---
 
 Set your wallpaper with beautiful photos from [unsplash](http://unsplash.com)
