@@ -1,45 +1,59 @@
 #!/usr/bin/env node
 
 require('./libs/variables');
-
-fs.exists( join(__dirname, 'libs', '.prefs') , (exists) => {
-	if (!exists) {
-		console.log(`Preference file created at ${join(__dirname, '.prefs').yellow}`);
-		log('');
-		log('');
-
-		fs.writeFile( join(__dirname, 'libs', '.prefs'), `${home}/Pictures/splash_photos` );
-	} else {
-		pic_dir = fs.readFileSync( join(__dirname, 'libs', '.prefs'), 'utf-8' );
-	}
-});
-
 require('./libs/utility');
+
+var splash = require('./libs/core');
+
 
 program.version(pkg.version)
 .option('-p, --path', 'output the download directory.')
 .option('-l --list', 'output photo list')
 .option('-c --clean', 'delete all downloaded photos.')
+.option('-u --update', 'Update to latest version')
 .option('-i --info', 'display main photos infos.')
 .option('-s --save [path]', 'Save the image to a local path')
 .option('-d --dir [path]', 'Set the default "splash_photos" directory')
 .option('--id <id>', 'get photo from the id.')
-.option('--set', 'Optional for --save (required --save), set the saved photo as wallpaper')
+.option('--set', 'optional for --save (required --save), set the saved photo as wallpaper')
 .option('--export', 'export a photo list')
+.option('--restore', 'restore default options')
 .option('--check', 'check for updates.');
 
 program.parse(process.argv);
 
 checkInternet((conn) => {
 	if (conn) {
-		if (program.path) {
-			mkdirp(pic_dir, (err) => {
+
+		if (program.restore) {
+			config.set('pic_dir', join(home, 'Pictures', 'splash_photos'));
+			firstRun.clear();
+
+		// Program Path
+		} else if (program.path) {
+
+			mkdirp(config.get('pic_dir'), (err) => {
 				err ? log(err) : err;
 			});
+			log(config.get('pic_dir'));
 
-			log(pic_dir);
-		} else if (program.list) {
-			fs.readdir( pic_dir, (err, files) => {
+		// Program List
+	} else if (program.update) {
+		execa('yarn').then(() => {
+			execa('yarn', ['global', 'add', 'splash-cli'], (res) => {
+				log(res.stdout)
+				log('Done!')
+			})
+		}).catch((err) => {
+			if ( err ) {
+				execa('npm', ['install', '--global', 'splash-cli'], (res) => {
+					log(res.stdout)
+				})
+			}
+		})
+	} else if (program.list) {
+
+			fs.readdir( config.get('pic_dir'), (err, files) => {
 				if (err) { log(err); } else {
 					if ( files[0] ) {
 
@@ -81,84 +95,75 @@ checkInternet((conn) => {
 					}
 				}
 			});
+
+		// Check for updates
 		} else if (program.check) {
 			log('');
-			console.log('OOPS!');
-			console.log('I\'m sorry! but the --check flag is momentaneally disabled for bugfix');
-			console.log('');
+			log('Depracated! Use "--update"!');
+			log('');
+
+		// Clean photos
 		} else if (program.clean) {
 
-			mkdirp(pic_dir, (err) => {
+			mkdirp(config.get('pic_dir'), (err) => {
 				if (err) {log(err);}
 			});
 
-			del(pic_dir);
+			del( config.get('pic_dir') );
 
+		// Save photo
 		} else if (program.save) {
 
-			splash(api_url, (data) => {
-				let directory = (program.save.length) ? join(program.save, data.name + '.jpg') : join(pic_dir, data.name + '.jpg');
-				down_load(directory, photo_url);
+			splash(api_url, (data, photo) => {
+				let directory = (program.save.length) ? join(program.save, data.name + '.jpg') : join(config.get('pic_dir'), data.name + '.jpg');
+				down_load(directory, data.url, photo);
 			});
 
+		// Get by id
 		} else if (program.id) {
 
 			var id = program.id;
 			var api_url_id = 'https://api.unsplash.com/photos/' + id + '?client_id=' + token;
 
-			mkdirp(pic_dir, (err) => {
+			mkdirp(config.get('pic_dir'), (err) => {
 				if (err) {log(err);}
 			});
 
-			fs.exists( join(pic_dir, `${id}.jpg`), (exists) => {
+			fs.exists( join(config.get('pic_dir'), `${id}.jpg`), (exists) => {
 				if (!exists) {
-					splash(api_url_id, (data) => {
-					download( join(pic_dir, data.name + '.jpg'), data.url );
-				});
+					splash(api_url_id, (data, photo) => {
+						download( join(config.get('pic_dir'), data.name + '.jpg'), data.url, data.name, photo);
+					});
+
 				} else {
 					log(`You have this photo (${id}.jpg) locally!`);
-					wallpaper.set( join(pic_dir, id + '.jpg') );
+					wallpaper.set( join(config.get('pic_dir'), `${id}.jpg`) );
 				}
 			});
 
+
+		// DIR
 		} else if (program.dir) {
 
 			if (!program.dir.length) {
-				program.dir = pic_dir;
-			}
-
-			fs.exists(join(__dirname, 'libs', '.prefs'), (exists) => {
-				if (exists) {
-				if (program.dir.includes('~')) {
-				program.dir == join(home, program.dir.split('~')[1]);
-			}
-
-				fs.writeFile(join(__dirname, 'libs', '.prefs'), program.dir, (err) => {
-				if (!err) {
-					console.log(`${program.dir} is the new store directory`);
-				} else {
-					throw err;
-				}
-			});
+				program.dir = config.get('pic_dir');
+				log('No dir provided')
 			} else {
 				if (program.dir.includes('~')) {
-				program.dir == join(home, program.dir.split('~')[1]);
+					program.dir == join(home, program.dir.split('~')[1]);
+				}
+
+				config.set('pic_dir', program.dir)
+				log('Changed to ' + config.get('pic_dir'))
 			}
 
-				fs.writeFile(join(__dirname, 'libs', '.prefs'), program.dir, (err) => {
-				if (!err) {
-					console.log(`Changed from ${pic_dir} to ${program.dir}`);
-				} else {
-					throw err;
-				}
-			});
-			}
-			});
+
 		} else {
-			splash(api_url, (data) => {
-				download(join(pic_dir, data.name + '.jpg'), data.url);
+			splash(api_url, (data, photo) => {
+				download(join(config.get('pic_dir'), data.name + '.jpg'), data.url, data.name, photo);
 			});
 		}
+
 	} else {
 		clear();
 		spinner.stop();

@@ -1,5 +1,11 @@
 # Changelog
-- 1.7.2 ([**Latest**][latest])
+- 1.8.0 ([**Latest**][latest])
+	* Better `--dir` & `--save` directories management.
+	* Added [`conf`](https://github.com/sindresorhus/conf) module
+	* Added `--update`
+	* Added `--restore`, its restore settings to defaults
+	* Removed `.prefs` and `data.json` files.
+- 1.7.2
 	* Replaced [`request`](https://github/request/request) module with [`got`](https://github.com/sindresorhus/got) module
 	* Implemented `--dir` option
 	* Implemented `--set` option to `--save` flag

@@ -328,15 +328,15 @@ function (match, p1) {
 }],
 
 // trailing wildcard
-[/(\\\/)?\\\*$/, function (match, p1) {
-  return p1 === '\\/'
-  // 'a/*' does not match 'a/'
-  // 'a/*' matches 'a/a'
-  // 'a/'
-  ? '\\/[^/]+(?=$|\\/$)'
-
-  // or it will match everything after
-  : '';
+[/(\^|\\\/)?\\\*$/, function (match, p1) {
+  return (p1
+  // '/*' does not match ''
+  // '/*' does not match everything
+  // 'abc/*' does not match 'abc/'
+  ? p1 + '[^/]+'
+  // 'a*' matches 'a'
+  // 'a*' matches 'aa'
+  : '[^/]*') + '(?=$|\\/$)';
 }], [
 // unescape
 /\\\\\\/g, function () {

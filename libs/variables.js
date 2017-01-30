@@ -16,6 +16,11 @@ module.exports = updateNotifier = require('update-notifier');
 module.exports = boxen          = require('boxen');
 module.exports = clear 					= require('clear');
 module.exports = jsonfile 			= require('jsonfile');
+module.exports = conf 					= require('conf');
+module.exports = firstRun 			= require('first-run');
+module.exports = execa 					= require('execa');
+
+module.exports = config 				= new conf();
 
 // Auto Updates & Package json
 module.exports = pkg       			= require('../package.json');
@@ -35,13 +40,8 @@ module.exports = spinner = new ora({
 	spinner: 'earth'
 });
 
-// Various paths
-module.exports = pic_dir = join(home, 'Pictures', 'splash_photos');
-module.exports = data_pth = join(pic_dir, '.splash_datas.json')
-
-// Photo infos and others
-module.exports = photo      = undefined;
-module.exports = photo_url  = undefined;
-module.exports = creator    = undefined;
-module.exports = file       = undefined;
-module.exports = photo_name = undefined;
+if ( firstRun() ) {
+	config.set('pic_dir', join(home, 'Pictures', 'splash_photos'))
+	log(`Hello ${user}, all photos are stored in ${config.get('pic_dir')}`)
+	log('')
+}

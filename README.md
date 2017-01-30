@@ -4,6 +4,7 @@
 [![Downloads][downloads-image]][npm-url]
 ![version](https://img.shields.io/badge/version-1.4.0-brightgreen.svg)
 [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli)
+[![NPM](https://nodei.co/npm/splash-cli.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/splash-cli/)
 
 ---
 #### <p align="center"> New Version! 1.7.2 ( <a href="https://npmjs.org/packages/splash-cli">Download Now</a> ) </p>
@@ -104,16 +105,14 @@ Get the download path.
 	$ splash -p 		
 ```
 
-- <h3>Check</h3>
+- <h3>Update</h3>
 
-#### WARN: Momentaneally `disabled` (1.7.2)
-
-Option: `--check` <br>
-Shortcut: `none` <br>
+Option: `--update` <br>
+Shortcut: `-u` <br>
 <br>
-Check for updates.
+Download  and install the latest version.
 ```bash
-	$ splash --check 		 
+	$ splash --update 		 
 ```
 
 - <h3>List</h3>

@@ -1,59 +1,67 @@
 require('./variables');
+require('./core');
+var pic_dir = config.get('pic_dir');
 
-module.exports = infos = () => {
+module.exports = infos = (matrice) => {
+
+	let creator = {
+		fullname: matrice.user.name,
+		username: `@${matrice.user.username}`
+	}
+
 	if ( program.info ) {
 		log('');
-		log(`ID: ${photo.id.yellow}`);
+		log(`ID: ${matrice.id.yellow}`);
 		log('');
 
-		if ( photo.exif !== undefined ) {
-			if (photo.exif.make) {
-				log('Make: '.yellow.bold + photo.exif.make);
+		if ( matrice.exif !== undefined ) {
+			if (matrice.exif.make) {
+				log('Make: '.yellow.bold + matrice.exif.make);
 			} else {
 				log('Make: '.yellow.bold + '--');
 			}
-			if (photo.exif.model) {
-				log('Model: '.yellow.bold + photo.exif.model);
+			if (matrice.exif.model) {
+				log('Model: '.yellow.bold + matrice.exif.model);
 			} else {
 				log('Model: '.yellow.bold + '--');
 			}
-			if (photo.exif.exposure_time) {
-				log('Shutter Speed: '.yellow.bold + photo.exif.exposure_time);
+			if (matrice.exif.exposure_time) {
+				log('Shutter Speed: '.yellow.bold + matrice.exif.exposure_time);
 			} else {
 				log('Shutter Speed: '.yellow.bold + '--');
 			}
-			if (photo.exif.aperture) {
-				log('Aperture:'.yellow.bold + ' f/' + photo.exif.aperture);
+			if (matrice.exif.aperture) {
+				log('Aperture:'.yellow.bold + ' f/' + matrice.exif.aperture);
 			} else {
 				log('Aperture: '.yellow.bold + ' f/' + '--');
 			}
-			if (photo.exif.focal_length) {
-				log('Focal Length: '.yellow.bold + photo.exif.focal_length + 'mm');
+			if (matrice.exif.focal_length) {
+				log('Focal Length: '.yellow.bold + matrice.exif.focal_length + 'mm');
 			} else {
 				log('Focal Length: '.yellow.bold + '--');
 			}
-			if (photo.exif.iso) {
-				log('ISO: '.yellow.bold + photo.exif.iso);
+			if (matrice.exif.iso) {
+				log('ISO: '.yellow.bold + matrice.exif.iso);
 			} else {
 				log('ISO: '.yellow.bold + '--');
 			}
 		}
 		log('');
 		log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
-		log('Profile URL: ' + photo.user.links.html);
+		log('Profile URL: ' + matrice.user.links.html);
 	} else {
 		log('');
 		log('Shooted by: ' + creator.fullname.cyan.bold + ' (' + creator.username.yellow + ')' );
 	}
 };
 
-module.exports = down_load = (filename, url) => {
+module.exports = down_load = (filename, url, m) => {
 	spinner.spinner = {
 		frames: [
 			'🚀'
 		]
 	};
-	spinner.text = 'Making something awsome';
+	spinner.text = ' Making something awsome';
 	spinner.start();
 
 	let file = fs.createWriteStream(filename);
@@ -66,7 +74,7 @@ module.exports = down_load = (filename, url) => {
 				wallpaper.set(filename);
 			}
 
-			infos();
+			infos(m);
 
 			log('');
 		});
@@ -74,7 +82,7 @@ module.exports = down_load = (filename, url) => {
 };
 
 
-module.exports = download = (filename, url) => {
+module.exports = download = (filename, url, photo, m) => {
 
 	spinner.spinner = {
 		frames: [
@@ -82,7 +90,7 @@ module.exports = download = (filename, url) => {
 		]
 	};
 
-	spinner.text = 'Making something awsome';
+	spinner.text = ' Making something awsome';
 	spinner.start();
 
 	let file = fs.createWriteStream(filename);
@@ -91,13 +99,15 @@ module.exports = download = (filename, url) => {
 		response.pipe(file).on('finish', () => {
 
       // Set the wallpaper
-			wallpaper.set(`${pic_dir}/${photo_name}.jpg`);
+			wallpaper.set(`${pic_dir}/${photo}.jpg`);
+
       // Stop the spinner
 			spinner.succeed();
 
       // Log photo infos
-			infos();
+			infos(m);
 
+			// Blank spacer
 			log('');
 		});
 	});
@@ -110,22 +120,30 @@ module.exports = del = (directory) => {
 
 		spinner.spinner = {
 			frames: [
-				'🚀'
+				'✗',
+				'✘',
+				'✖︎'
 			]
 		};
-		spinner.text = 'Making something awsome';
+		spinner.text = 'Deleting something awsome...';
 		spinner.start();
 
-		if ( files[0] ) {
+		if ( files[1].includes('.jpg') ) {
 			files.forEach(file => {
-				fs.unlink( join(directory, file) );
-				log(`Removing ${file} from ${directory}`);
+				if ( file.includes('.jpg') ) {
+					fs.unlink( join(directory, `${file}`), () => {
+						log(`✖︎ Removing ${file.toString().yellow} from ${directory.toString().inverse}`);
+					});
+				}
 			});
 			spinner.succeed();
+			log('')
+
 
 		} else {
 			spinner.text = 'The directory is empty!'.bold;
-			spinner.stopAndPersist('==>'.yellow.bold);
+			spinner.stopAndPersist('\n✦'.yellow.bold);
+			log('')
 		}
 
 	});
@@ -140,47 +158,5 @@ module.exports = checkInternet = (callback) => {
 		} else {
 			callback(true);
 		}
-	});
-};
-
-
-
-module.exports = splash = (url, callback) => {
-	got(url).then(response => {
-		let body = response.body;
-		write(pic_dir + '/.splash_datas.json', body, (err) => {
-			if (err) {
-				spinner.text = 'Can\'t connect. Check your connection!';
-				spinner.fail();
-			} else {
-				spinner.text = 'Connected!';
-				spinner.succeed();
-			}
-
-			file = readSync(data_pth, 'utf-8', (err) => {
-				if ( err ) {
-					throw err;
-				}
-			});
-
-			photo = jparse(file);
-
-			creator = {
-				fullname: photo.user.name,
-				username: '@' + photo.user.username
-			};
-
-			let data = {
-				url: photo.urls.raw,
-				name: photo.id
-			};
-
-			photo_url = data.url;
-			photo_name = data.name;
-
-			callback(data);
-		});
-	}).catch((err) => {
-		log(err.response.body);
 	});
 };
