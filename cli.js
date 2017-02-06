@@ -64,7 +64,7 @@ function sp(action, flags) {
         if ( value ) {
           require('./options/update')()
         } else {
-          log('i need an interet connection!')
+          log('I need an internet connection!')
           process.exit()
         }
       })
@@ -83,7 +83,7 @@ function sp(action, flags) {
         if ( value ) {
           require('./options/save')(flags)
         } else {
-          log('i need an interet connection!')
+          log('I need an internet connection!')
           process.exit()
         }
       })
@@ -94,7 +94,7 @@ function sp(action, flags) {
         if ( value ) {
           require('./options/id')(flags)
         } else {
-          log('I need an interet connection!')
+          log('I need an internet connection!')
           process.exit()
         }
       })
@@ -111,7 +111,7 @@ function sp(action, flags) {
     				download(join(config.get('pic_dir'), data.name + '.jpg'), data.url, data.name, photo, flags);
     			})
         } else {
-          log('I need an interet connection!')
+          log('I need an internet connection!')
           process.exit()
         }
       })
