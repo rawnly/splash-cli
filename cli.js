@@ -9,16 +9,16 @@ const cli = meow(`
     $ splash [--flags]
 
   ` + `Help`.yellow.bold + `
-    -l --list [extra flags]    ` + `# List of downloaded photos.`.gray + `
-    -s --save [path] [--extra] ` + `# Save photo without setting it as wallpaper.`.gray + `
-    -d --dir [path]            ` + `# Set the main download directory.`.gray + `
-    -u --update                ` + `# Update to latest version.`.gray + `
-    -i --info                  ` + `# Get EXIF infos and Photographer infos.`.gray + `
-    -c --clean                 ` + `# Delete all downloaded photos.`.gray + `
-    --id <id | photo_url>      ` + `# Get image by photo ID or URL.`.gray + `
-    --restore                  ` + `# Restore settings to default.`.gray + `
-    --set                      ` + `# Set the saved photo [--save] as wallpaper.`.gray + `
-    --export                   ` + `# Export the photo list [--list].`.gray + `
+    -l --list [extra flags]          ` + `# List of downloaded photos.`.gray + `
+    -s --save [path] [--extra]       ` + `# Save photo without setting it as wallpaper.`.gray + `
+    -d --dir [path]                  ` + `# Set the main download directory.`.gray + `
+    -u --update                      ` + `# Update to latest version.`.gray + `
+    -i --info                        ` + `# Get EXIF infos and Photographer infos.`.gray + `
+    -c --clean                       ` + `# Delete all downloaded photos.`.gray + `
+    --id <id | photo_url>            ` + `# Get image by photo ID or URL.`.gray + `
+    --restore                        ` + `# Restore settings to default.`.gray + `
+    --set                            ` + `# Set the saved photo [--save] as wallpaper.`.gray + `
+    --export                         ` + `# Export the photo list [--list].`.gray + `
 
   ` + `Example Combinations`.yellow.bold + `
     ${chalk.green('1) Export photo list: ')}      ${chalk.green.inverse('$ splash --list --export')}

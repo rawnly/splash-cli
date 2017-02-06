@@ -10,13 +10,15 @@ module.exports = (fl) => {
     return normalize(string).match( urlRegex ) ? normalize(string).split('?photo=')[1] : string;
   }
 
-  var id = parse(fl.id);
-
+  var id = parse(fl.id) ? parse(fl.id) : fl.id;
   var api_url_id = 'https://api.unsplash.com/photos/' + id + '?client_id=' + token;
 
   mkdirp(config.get('pic_dir'), (err) => {
     if (err) {log(err);}
   });
+
+  log(id)
+
 
   fs.exists( join(config.get('pic_dir'), `${id}.jpg`), (exists) => {
     if (!exists) {

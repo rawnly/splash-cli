@@ -9,5 +9,4 @@ module.exports = () => {
   });
 
   del( config.get('pic_dir') );
-  del( join(config.get('pic_dir'), 'thumbs') );
 }

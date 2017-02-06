@@ -34,7 +34,7 @@ module.exports = (fl) => {
         log('');
 
         if ( fl.export ) {
-          jsonfile.writeFile('./list.json', list, (err) => {
+          fs.writeFile('./list.json', jparse(list), (err) => {
             if ( err ) { return err; } else {
               log( 'File written at: ' + 'list.txt'.gray );
             }
@@ -42,7 +42,7 @@ module.exports = (fl) => {
         }
 
       } else {
-        log('==> Directory is empty'.gray);
+        log('# The directory is empty'.gray);
       }
     }
   })

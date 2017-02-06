@@ -121,7 +121,7 @@ module.exports = del = (directory) => {
 		spinner.text = 'Deleting something awsome...';
 		spinner.start();
 
-		if ( files[0] !== 'thumbs' && files[0] !== '.DS_Store' ) {
+		if ( files ) {
 			files.forEach(file => {
 				if ( file.includes('.jpg') ) {
 					fs.unlink( join(directory, `${file}`), () => {
