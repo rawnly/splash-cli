@@ -5,10 +5,10 @@ require('./libs/utility');
 const splash = require('./libs/core');
 
 const cli = meow(`
-  ` + `Usage`.yellow.bold + `
+  ` + `# Usage`.yellow.bold + `
     $ splash [--flags]
 
-  ` + `Help`.yellow.bold + `
+  ` + `# Help`.yellow.bold + `
     -l --list [extra flags]          ` + `# List of downloaded photos.`.gray + `
     -s --save [path] [--extra]       ` + `# Save photo without setting it as wallpaper.`.gray + `
     -d --dir [path]                  ` + `# Set the main download directory.`.gray + `
@@ -20,7 +20,7 @@ const cli = meow(`
     --set                            ` + `# Set the saved photo [--save] as wallpaper.`.gray + `
     --export                         ` + `# Export the photo list [--list].`.gray + `
 
-  ` + `Example Combinations`.yellow.bold + `
+  ` + `# Example Combinations`.yellow.bold + `
     ${chalk.green('1) Export photo list: ')}      ${chalk.green.inverse('$ splash --list --export')}
     ${chalk.green('2) Get photo id info:')}       ${chalk.green.inverse('$ splash -i --id <id | url>')}
     ${chalk.green('3) Set saved photo as \n       wallpaper and get infos:')} ${chalk.green.inverse(`$ splash -i --save ${colors.underline('~/Desktop')} --set`)}
