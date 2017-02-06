@@ -26,4 +26,4 @@
 - 1.3.x
 	* Auto Update with [`update-notifier`](https://github,com/sindresorhus/updupdate-notifier)
 
-	[latest]: https://github.com/rawnly/splash-cli/releases/latest
+[latest]: https://github.com/rawnly/splash-cli/releases/latest

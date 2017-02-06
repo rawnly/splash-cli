@@ -1,6 +1,6 @@
 {
   "name": "js-tokens",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "Simon Lydell",
   "license": "MIT",
   "description": "A regex that tokenizes JavaScript.",

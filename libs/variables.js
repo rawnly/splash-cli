@@ -1,21 +1,25 @@
-require('colors');
 require('chili-js');
 
 // Modules
+<<<<<<< HEAD
 module.exports = normalize      = require('normalize-url');
 module.exports = urlRegex       = require('url-regex');
 module.exports = dns 						= require('dns');
+=======
+module.exports = colors         = require('colors');
+module.exports = chalk         = require('chalk');
+module.exports = meow           = require('meow');
+module.exports = normalize      = require('normalize-url');
+module.exports = urlRegex       = require('url-regex');
+>>>>>>> ed6f399a6e968b5a825969a6c6e58f7055f1fde3
 module.exports = isOnline       = require('is-online');
 module.exports = wallpaper 			= require('wallpaper');
 module.exports = ora       			= require('ora');
 module.exports = got 			 			= require('got');
 module.exports = https 		 			= require('https');
-module.exports = program   			= require('commander');
 module.exports = mkdirp    			= require('mkdirp');
 module.exports = updateNotifier = require('update-notifier');
-module.exports = boxen          = require('boxen');
 module.exports = clear 					= require('clear');
-module.exports = jsonfile 			= require('jsonfile');
 module.exports = conf 					= require('conf');
 module.exports = firstRun 			= require('first-run');
 module.exports = execa 					= require('execa');
@@ -26,7 +30,7 @@ module.exports = config 				= new conf();
 module.exports = pkg       			= require('../package.json');
 module.exports = notifier 			= updateNotifier({
 	pkg,
-	updateCheckInterval: 1000 * 60 * 60
+	updateCheckInterval: 1000
 });
 
 // API data
@@ -42,6 +46,6 @@ module.exports = spinner = new ora({
 
 if ( firstRun() ) {
 	config.set('pic_dir', join(home, 'Pictures', 'splash_photos'))
-	log(`Hello ${user}, all photos are stored in ${config.get('pic_dir')}`)
+	log(`Hello ${colors.bold(user.toString().capitalize())}, all photos are stored in ${colors.yellow.underline(config.get('pic_dir'))}`)
 	log('')
 }

@@ -2,7 +2,7 @@
   "name": "splash-cli",
   "version": "1.8.0",
   "description": "Unsplash photos as your wallpaper",
-  "main": "index.js",
+  "main": "cli.js",
   "author": {
     "name": "Federico Vitale",
     "username": "Rawnly",
@@ -15,20 +15,25 @@
     "wallpaper",
     "unsplash",
     "commandline",
-    "got"
+    "got",
+    "meow",
+    "photo"
   ],
   "dependencies": {
-    "boxen": "^0.8.1",
+    "chalk": "^1.1.3",
     "chili-js": "^1.0.1",
     "clear": "^0.0.1",
     "colors": "^1.1.2",
-    "commander": "^2.9.0",
     "conf": "^0.12.0",
     "execa": "^0.6.0",
     "first-run": "^1.2.0",
     "got": "^6.7.1",
     "is-online": "^6.1.0",
+<<<<<<< HEAD
     "jsonfile": "^2.4.0",
+=======
+    "meow": "^3.7.0",
+>>>>>>> ed6f399a6e968b5a825969a6c6e58f7055f1fde3
     "mkdirp": "^0.5.1",
     "normalize-url": "^1.9.0",
     "ora": "^0.4.0",
@@ -37,13 +42,13 @@
     "wallpaper": "^2.3.0"
   },
   "bin": {
-    "splash": "./index.js"
+    "splash": "./cli.js"
   },
   "devDependencies": {
     "eslint": "^3.12.2"
   },
   "scripts": {
-    "test": "./node_modules/eslint/bin/eslint.js index.js; exit 0"
+    "test": "./node_modules/eslint/bin/eslint.js cli.js; exit 0"
   },
   "repository": {
     "type": "git",
