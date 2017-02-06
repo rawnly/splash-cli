@@ -7,7 +7,6 @@ var splash = require('./libs/core');
 
 
 program.version(pkg.version)
-.option('-p, --path', 'output the download directory.')
 .option('-l --list', 'output photo list')
 .option('-c --clean', 'delete all downloaded photos.')
 .option('-u --update', 'Update to latest version')
@@ -21,28 +20,22 @@ program.version(pkg.version)
 
 program.parse(process.argv);
 
-checkInternet((conn) => {
-	if (conn) {
+isOnline().then(status => {
+	if (status) {
 
 		if (program.restore) {
 			config.set('pic_dir', join(home, 'Pictures', 'splash_photos'));
 			firstRun.clear();
 
+			log(`Settings restored to defaults!`.yellow)
+
 		// Program Path
-		} else if (program.path) {
-
-			mkdirp(config.get('pic_dir'), (err) => {
-				err ? log(err) : err;
-			});
-			log(config.get('pic_dir'));
-
-		// Program List
-	} else if (program.update) {
-		execa('npm', ['install', '--global', 'splash-cli'], (res) => {
-			log(res.stdout)
-		})
-	} else if (program.list) {
-
+		} else if (program.update) {
+			execa('npm', ['install', '--global', 'splash-cli'], (res) => {
+				log(res.stdout)
+			})
+			// List
+		} else if (program.list) {
 			fs.readdir( config.get('pic_dir'), (err, files) => {
 				if (err) { log(err); } else {
 					if ( files[0] ) {
@@ -131,7 +124,7 @@ checkInternet((conn) => {
 
 			if (!program.dir.length) {
 				program.dir = config.get('pic_dir');
-				log('No dir provided')
+				log(`Actual directory => ${config.get('pic_dir').toString().yellow}`)
 			} else {
 				if (program.dir.includes('~')) {
 					program.dir == join(home, program.dir.split('~')[1]);
@@ -161,4 +154,4 @@ checkInternet((conn) => {
 		console.log('');
 		console.log('');
 	}
-});
+})

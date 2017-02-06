@@ -1,5 +1,10 @@
 # Changelog
-- 1.8.0 ([**Latest**][latest])
+- 2.0.0 ([**Latest**][latest])
+	* Removed `commander.js`
+	* Added `meow`
+	* Better **folder tree**
+	* Better **AutoUpdate**
+- 1.8.0
 	* Better `--dir` & `--save` directories management.
 	* Added [`conf`](https://github.com/sindresorhus/conf) module
 	* Added `--update`

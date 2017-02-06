@@ -27,10 +27,13 @@
     "execa": "^0.6.0",
     "first-run": "^1.2.0",
     "got": "^6.7.1",
+    "is-online": "^6.1.0",
     "jsonfile": "^2.4.0",
     "mkdirp": "^0.5.1",
+    "normalize-url": "^1.9.0",
     "ora": "^0.4.0",
     "update-notifier": "^1.0.3",
+    "url-regex": "^4.0.0",
     "wallpaper": "^2.3.0"
   },
   "bin": {
