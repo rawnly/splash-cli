@@ -1,17 +1,17 @@
 require('chili-js');
 
-// Modules
+
 <<<<<<< HEAD
 module.exports = normalize      = require('normalize-url');
 module.exports = urlRegex       = require('url-regex');
 module.exports = dns 						= require('dns');
-=======
+//=======
 module.exports = colors         = require('colors');
 module.exports = chalk         = require('chalk');
 module.exports = meow           = require('meow');
 module.exports = normalize      = require('normalize-url');
 module.exports = urlRegex       = require('url-regex');
->>>>>>> ed6f399a6e968b5a825969a6c6e58f7055f1fde3
+
 module.exports = isOnline       = require('is-online');
 module.exports = wallpaper 			= require('wallpaper');
 module.exports = ora       			= require('ora');
