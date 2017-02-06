@@ -1,7 +1,7 @@
 require('chili-js');
 
 
-<<<<<<< HEAD
+
 module.exports = normalize      = require('normalize-url');
 module.exports = urlRegex       = require('url-regex');
 module.exports = dns 						= require('dns');
