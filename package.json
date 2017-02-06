@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Unsplash photos as your wallpaper",
   "main": "cli.js",
   "author": {
@@ -29,9 +29,8 @@
     "first-run": "^1.2.0",
     "got": "^6.7.1",
     "is-online": "^6.1.0",
-    "meow": "~3.7.0",
-    "jsonfile": "^2.4.0",
     "meow": "^3.7.0",
+    "jsonfile": "^2.4.0",
     "mkdirp": "^0.5.1",
     "normalize-url": "^1.9.0",
     "ora": "^0.4.0",
