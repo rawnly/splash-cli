@@ -29,11 +29,8 @@
     "first-run": "^1.2.0",
     "got": "^6.7.1",
     "is-online": "^6.1.0",
-<<<<<<< HEAD
     "jsonfile": "^2.4.0",
-=======
     "meow": "^3.7.0",
->>>>>>> ed6f399a6e968b5a825969a6c6e58f7055f1fde3
     "mkdirp": "^0.5.1",
     "normalize-url": "^1.9.0",
     "ora": "^0.4.0",
