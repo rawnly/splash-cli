@@ -1,15 +1,16 @@
 require('./variables');
 require('./core');
+
 var pic_dir = config.get('pic_dir');
 
-module.exports = infos = (matrice) => {
+module.exports = infos = (matrice, fl) => {
 
 	let creator = {
 		fullname: matrice.user.name,
 		username: `@${matrice.user.username}`
 	}
 
-	if ( program.info ) {
+	if ( fl.info ) {
 		log('');
 		log(`ID: ${matrice.id.yellow}`);
 		log('');
@@ -55,7 +56,7 @@ module.exports = infos = (matrice) => {
 	}
 };
 
-module.exports = down_load = (filename, url, m) => {
+module.exports = down_load = (filename, url, m, fl) => {
 	spinner.spinner = {
 		frames: [
 			'🚀'
@@ -70,11 +71,11 @@ module.exports = down_load = (filename, url, m) => {
 		response.pipe(file).on('finish', () => {
 			spinner.succeed();
 
-			if (program.set) {
+			if (fl.set) {
 				wallpaper.set(filename);
 			}
 
-			infos(m);
+			infos(m, fl);
 
 			log('');
 		});
@@ -82,15 +83,8 @@ module.exports = down_load = (filename, url, m) => {
 };
 
 
-module.exports = download = (filename, url, photo, m) => {
-
-	spinner.spinner = {
-		frames: [
-			'🚀'
-		]
-	};
-
-	spinner.text = ' Making something awsome';
+module.exports = download = (filename, url, photo, m, fl) => {
+	spinner.text = 'Making something awsome';
 	spinner.start();
 
 	let file = fs.createWriteStream(filename);
@@ -105,7 +99,7 @@ module.exports = download = (filename, url, photo, m) => {
 			spinner.succeed();
 
       // Log photo infos
-			infos(m);
+			infos(m, fl);
 
 			// Blank spacer
 			log('');
@@ -117,7 +111,6 @@ module.exports = download = (filename, url, photo, m) => {
 module.exports = del = (directory) => {
 
 	fs.readdir(directory, function (err, files) {
-
 		spinner.spinner = {
 			frames: [
 				'✗',
@@ -128,7 +121,7 @@ module.exports = del = (directory) => {
 		spinner.text = 'Deleting something awsome...';
 		spinner.start();
 
-		if ( files[1].includes('.jpg') ) {
+		if ( files[0] !== 'thumbs' && files[0] !== '.DS_Store' ) {
 			files.forEach(file => {
 				if ( file.includes('.jpg') ) {
 					fs.unlink( join(directory, `${file}`), () => {
@@ -138,7 +131,6 @@ module.exports = del = (directory) => {
 			});
 			spinner.succeed();
 			log('')
-
 
 		} else {
 			spinner.text = 'The directory is empty!'.bold;

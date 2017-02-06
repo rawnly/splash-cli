@@ -17,6 +17,6 @@ module.exports = (url, callback) => {
 
 	}).catch((err) => {
     spinner.fail();
-		log(err.response.body);
+		log(err);
 	});
 };

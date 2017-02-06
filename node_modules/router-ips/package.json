@@ -1,0 +1,39 @@
+{
+  "name": "router-ips",
+  "version": "1.0.0",
+  "description": "List of common default router IP addresses",
+  "license": "MIT",
+  "repository": "sindresorhus/router-ips",
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "xo && ava"
+  },
+  "files": [
+    "index.js",
+    "router-ips.json"
+  ],
+  "keywords": [
+    "word",
+    "words",
+    "list",
+    "array",
+    "json",
+    "ip",
+    "ips",
+    "address",
+    "addresses",
+    "router",
+    "default"
+  ],
+  "devDependencies": {
+    "ava": "*",
+    "xo": "*"
+  }
+}
