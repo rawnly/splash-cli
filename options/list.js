@@ -21,6 +21,13 @@ module.exports = (fl) => {
 
         clear();
 
+        if ( !list.length > 0 ) {
+          log()
+          log('Splash:'.yellow + ' No photos found'.gray)
+          log()
+          process.exit()
+        }
+
         log('');
         log(list.length.toString().yellow.bold + ' Photos');
         log('');
@@ -30,19 +37,25 @@ module.exports = (fl) => {
         list = jstringify(list);
         list = jparse(list);
 
-        log(list);
-        log('');
+        if ( !fl.export ) {
+          log(list);
+          log('');
+        }
 
-        if ( fl.export ) {
-          fs.writeFile('./list.json', jparse(list), (err) => {
+        if ( fl.export && list.length > 0 ) {
+          fs.writeFile('./list.json', jstringify(list), (err) => {
             if ( err ) { return err; } else {
-              log( 'File written at: ' + 'list.txt'.gray );
+              log('---')
+              log( 'File written at: ' + './list.json'.blue );
+              log('')
             }
           });
         }
 
       } else {
-        log('# The directory is empty'.gray);
+        log('---')
+        log(colors.yellow('Splash:') + ' The directory is empty'.gray);
+        log('')
       }
     }
   })

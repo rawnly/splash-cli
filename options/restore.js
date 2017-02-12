@@ -8,6 +8,6 @@ module.exports = () => {
   firstRun.clear();
 
   log()
-  log(`=> Settings restored to default.`.gray)
+  log(`${colors.yellow('Splash:')} Settings restored to default.`.gray)
   log()
 }

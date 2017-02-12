@@ -109,7 +109,7 @@ module.exports = download = (filename, url, photo, m, fl) => {
 
 // Delete elements
 module.exports = del = (directory) => {
-
+	log()
 	fs.readdir(directory, function (err, files) {
 		spinner.spinner = {
 			frames: [
@@ -125,7 +125,7 @@ module.exports = del = (directory) => {
 			files.forEach(file => {
 				if ( file.includes('.jpg') ) {
 					fs.unlink( join(directory, `${file}`), () => {
-						log(`✖︎ Removing ${file.toString().yellow} from ${directory.toString().inverse}`);
+						log(`✖︎ Removing ${file.toString().yellow} from ${directory.toString().blue}`);
 					});
 				}
 			});

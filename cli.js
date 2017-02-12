@@ -9,29 +9,42 @@ const cli = meow(`
     $ splash [--flags]
 
   ` + `# Help`.yellow.bold + `
-    -l --list [extra flags]          ` + `# List of downloaded photos.`.gray + `
-    -s --save [path] [--extra]       ` + `# Save photo without setting it as wallpaper.`.gray + `
-    -d --dir [path]                  ` + `# Set the main download directory.`.gray + `
-    -u --update                      ` + `# Update to latest version.`.gray + `
-    -i --info                        ` + `# Get EXIF infos and Photographer infos.`.gray + `
-    -c --clean                       ` + `# Delete all downloaded photos.`.gray + `
-    --id <id | photo_url>            ` + `# Get image by photo ID or URL.`.gray + `
-    --restore                        ` + `# Restore settings to default.`.gray + `
-    --set                            ` + `# Set the saved photo [--save] as wallpaper.`.gray + `
-    --export                         ` + `# Export the photo list [--list].`.gray + `
 
-  ` + `# Example Combinations`.yellow.bold + `
-    ${chalk.green('1) Export photo list: ')}      ${chalk.green.inverse('$ splash --list --export')}
-    ${chalk.green('2) Get photo id info:')}       ${chalk.green.inverse('$ splash -i --id <id | url>')}
-    ${chalk.green('3) Set saved photo as \n       wallpaper and get infos:')} ${chalk.green.inverse(`$ splash -i --save ${colors.underline('~/Desktop')} --set`)}
-`, {
+    ${colors.blue.bold('## Search options')}
+
+      -u --user <username>
+      -f --featured
+      -w --width <px>
+      -h --heigth <px>
+      -i --info                        ` + `# Get EXIF infos and Photographer infos.`.gray + `
+
+      --collection <collection_ID>     ` + `# Filter by collection`.gray + `
+      --id <id | photo_url>            ` + `# Get image by photo ID or URL.`.gray + `
+
+
+    ${colors.blue.bold('## Other commands')}
+
+      -l --list [extra flags]          ` + `# List of downloaded photos.`.gray + `
+      -s --save [path] [extra flags]   ` + `# Save photo without setting it as wallpaper.`.gray + `
+      -d --dir [path]                  ` + `# Set the main download directory.`.gray + `
+      -u --update                      ` + `# Update to latest version.`.gray + `
+      -c --clean                       ` + `# Delete all downloaded photos.`.gray + `
+
+      --restore                        ` + `# Restore settings to default.`.gray + `
+      --set                            ` + `# Set the saved photo [--save] as wallpaper.`.gray + `
+      --export                         ` + `# Export the photo list [--list].`.gray, {
+
   alias: {
     l: 'list',
     c: 'clean',
     i: 'info',
     s: 'save',
     d: 'dir',
-    u: 'update'
+    u: 'update',
+    w: 'width',
+    h: 'heigth',
+    u: 'user',
+    f: 'featured'
   }
 })
 
@@ -107,11 +120,28 @@ function sp(action, flags) {
       // Splash Classic
       isOnline().then((value) => {
         if ( value ) {
-          splash(api_url, (data, photo) => {
+          let url = '';
+          // let base = 'https://api.unsplash.com/photos/random?count=1';
+          // let client = `client_id=${token}`;
+
+          if ( flags.heigth && flags.width ) {
+            url = `${api_url}&&w=${flags.width}&&h=${flags.heigth}`
+          } else if ( flags.user ) {
+            url = `${api_url}&&username=${flags.user}`
+          } else if ( flags.featured ) {
+            url = `${api_url}&&featured=${flags.featured}`
+          } else if ( flags.collection ) {
+            url = `${api_url}&&collection=${flags.collection}`
+          } else {
+            url = `${api_url}`
+          }
+
+          splash(url, (data, photo) => {
     				download(join(config.get('pic_dir'), data.name + '.jpg'), data.url, data.name, photo, flags);
     			})
+
         } else {
-          log('I need an internet connection!')
+          log(colors.yellow('Splash:') + ' I need an internet connection!')
           process.exit()
         }
       })
