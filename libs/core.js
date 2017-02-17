@@ -16,7 +16,10 @@ module.exports = (url, callback) => {
     callback(data, photo)
 
 	}).catch((err) => {
-    spinner.fail();
-		log(err);
+		clear()
+    spinner.stop();
+		log()
+		log('Splash Error: '.yellow + err.message)
+		log()
 	});
 };

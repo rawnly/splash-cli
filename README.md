@@ -1,7 +1,7 @@
 # Splash
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/df39aef5f5a14b62a8cf4701a7962c29)](https://www.codacy.com/app/fedevitale99/splash-cli?utm_source=github.com&utm_medium=referral&utm_content=Rawnly/splash-cli&utm_campaign=badger)
-[![Downloads][downloads-image]][npm-url]
+[![Downloads][downloads]][npm-url]
 [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli)
 
 Set your wallpaper with beautiful photos from [unsplash](http://unsplash.com)
@@ -24,7 +24,7 @@ To install `splash-cli` you must use **npm** (as always) and do the following:
 
 ## Usage
 ![](https://cloud.githubusercontent.com/assets/11269635/21428079/7b24cc80-c858-11e6-8dc3-2e164d23804a.gif)
-> All the photos are stored by default in `~/Pictures/splash_photos` [edit this value](#flags)
+> All the photos are stored by default in `~/Pictures/splash_photos` [Use `--dir` to edit](#dir)
 
 ```bash
 	$ splash [--flags]
@@ -146,5 +146,5 @@ Made with a  ⌨️   in 🇮🇹
 
 [latest]: https://github.com/rawnly/splash-cli/releases/latest
 [npm-url]: https://npmjs.org/package/splash-cli
-[downloads-image]: http://img.shields.io/npm/dm/splash-cli.svg
+[downloads]:http://img.shields.io/npm/dm/splash-cli.svg
 [npm-image]: http://img.shields.io/npm/v/splash-cli.svg
