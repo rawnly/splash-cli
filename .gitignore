@@ -33,3 +33,7 @@ data.json
 photos/
 testing.js
 .prefs
+
+## Node
+node_modules
+.npm-debug.log

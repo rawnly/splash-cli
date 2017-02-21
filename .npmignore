@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/osx
 
+## Node
+node_modules
+.npm-debug.log
 
 ### OSX ###
 *.DS_Store
