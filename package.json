@@ -43,7 +43,7 @@
     "splash": "./cli.js"
   },
   "devDependencies": {
-    
+    "ava": "^0.18.2"
   },
   "scripts": {
     "build": "np",
