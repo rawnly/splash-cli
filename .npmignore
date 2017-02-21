@@ -4,6 +4,7 @@
 ## Node
 node_modules
 .npm-debug.log
+testingFolder
 
 ### OSX ###
 *.DS_Store

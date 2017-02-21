@@ -63,14 +63,34 @@ module.exports = down_load = (filename, url, m, fl) => {
 		]
 	};
 	spinner.text = ' Making something awsome';
-	spinner.start();
+
+  if (!fl.progress) {
+    spinner.start();
+  }
 
 	let file = fs.createWriteStream(filename);
 
 	https.get(url, function(response) {
-		response.pipe(file).on('finish', () => {
-			spinner.succeed();
+    if ( fl.progress ) {
+      var len = parseInt(response.headers['content-length'], 10);
+      var bar = new ProgressBar('↓ '.yellow + ':percent'.red + ' [:bar] :elapsed' + 's', {
+        complete: '↓',
+        incomplete: ' ',
+        total: len,
+        width: 15,
+        clear: true
+      });
 
+      response.on('data', function (chunk) {
+        load.tick(chunk.length, {
+          'passphrase': 'Making something awsome'
+        });
+      });
+    }
+
+		response.pipe(file).on('finish', () => {
+
+      spinner.succeed();
 			if (fl.set) {
 				wallpaper.set(filename);
 			}
@@ -85,18 +105,40 @@ module.exports = down_load = (filename, url, m, fl) => {
 
 module.exports = download = (filename, url, photo, m, fl) => {
 	spinner.text = 'Making something awsome';
-	spinner.start();
+  if ( !fl.progress ) {
+    spinner.start();
+  }
+
 
 	let file = fs.createWriteStream(filename);
 
 	https.get(url, function(response) {
-		response.pipe(file).on('finish', () => {
 
+    if ( fl.progress ) {
+      var len = parseInt(response.headers['content-length'], 10);
+      var bar = new ProgressBar('↓ '.yellow + ':percent'.red + ' [:bar] :elapsed' + 's', {
+        complete: '=',
+        incomplete: ' ',
+        width: 20,
+        total: len,
+        clear: true
+      });
+
+      response.on('data', function (chunk) {
+        bar.tick(chunk.length, {
+          'passphrase': 'Making something awsome'
+        });
+      });
+    }
+
+
+		response.pipe(file).on('finish', () => {
       // Set the wallpaper
 			wallpaper.set(`${pic_dir}/${photo}.jpg`);
 
       // Stop the spinner
-			spinner.succeed();
+      spinner.succeed();
+
 
       // Log photo infos
 			infos(m, fl);
@@ -111,31 +153,30 @@ module.exports = download = (filename, url, photo, m, fl) => {
 module.exports = del = (directory) => {
 	log()
 	fs.readdir(directory, function (err, files) {
-		spinner.spinner = {
-			frames: [
-				'✗',
-				'✘',
-				'✖︎'
-			]
-		};
-		spinner.text = 'Deleting something awsome...';
-		spinner.start();
+    let imgs = [];
+    files.forEach((item) => {
+      if (item.includes('.jpg')) {
+        imgs.push(item)
+      }
+    })
+		if ( imgs[0] ) {
+      var bar = new ProgressBar('Deleted: '+':current'.green+' of '+':total'.green+`files from ${pic_dir.toString().blue}`, {
+        total: imgs.length
+      });
+      log('')
 
-		if ( files ) {
 			files.forEach(file => {
 				if ( file.includes('.jpg') ) {
 					fs.unlink( join(directory, `${file}`), () => {
-						log(`✖︎ Removing ${file.toString().yellow} from ${directory.toString().blue}`);
+            bar.tick(1)
 					});
 				}
 			});
-			spinner.succeed();
-			log('')
 
 		} else {
-			spinner.text = 'The directory is empty!'.bold;
-			spinner.stopAndPersist('\n✦'.yellow.bold);
-			log('')
+      log('')
+      console.log('\n✦'.yellow.bold + 'The directory is empty!');
+      log('')
 		}
 
 	});

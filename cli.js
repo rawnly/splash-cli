@@ -9,13 +9,16 @@ const cli = meow(`
     $ splash [--flags]
 
   ` + `# Help`.yellow.bold + `
+    ${colors.blue.bold('## Standard')}
+    -h --help                           ${colors.gray('# Display this message')}
+    -v --version                        ${colors.gray('# Display splash version')}
 
     ${colors.blue.bold('## Search options')}
 
-      -u --user <username>
-      -f --featured
-      -w --width <px>
-      -h --heigth <px>
+      -u --user <username>              ${colors.gray('# Pick random image from selected user')}
+      -f --featured                     ${colors.gray('# Pick random image from featured photos')}
+      -w --width <px>                   ${colors.gray('# image width')}
+      -h --heigth <px>                  ${colors.gray('# image height')}
       -i --info                        ` + `# Get EXIF infos and Photographer infos.`.gray + `
 
       --collection <collection_ID>     ` + `# Filter by collection`.gray + `
@@ -30,6 +33,7 @@ const cli = meow(`
       -u --update                      ` + `# Update to latest version.`.gray + `
       -c --clean                       ` + `# Delete all downloaded photos.`.gray + `
 
+      --progress                            # show progressbar during downloads
       --restore                        ` + `# Restore settings to default.`.gray + `
       --set                            ` + `# Set the saved photo [--save] as wallpaper.`.gray + `
       --export                         ` + `# Export the photo list [--list].`.gray, {
@@ -44,7 +48,9 @@ const cli = meow(`
     w: 'width',
     h: 'heigth',
     u: 'user',
-    f: 'featured'
+    f: 'featured',
+    v: 'version',
+    h: 'help'
   }
 })
 

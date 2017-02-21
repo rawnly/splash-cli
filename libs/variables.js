@@ -1,5 +1,7 @@
 require('chili-js');
 
+module.exports = figlet         = require('figlet');
+module.exports = ProgressBar    = require('progress');
 module.exports = normalize      = require('normalize-url');
 module.exports = urlRegex       = require('url-regex');
 module.exports = dns 						= require('dns');
@@ -21,6 +23,7 @@ module.exports = clear 					= require('clear');
 module.exports = conf 					= require('conf');
 module.exports = firstRun 			= require('first-run');
 module.exports = execa 					= require('execa');
+
 
 module.exports = config 				= new conf();
 
@@ -45,5 +48,7 @@ module.exports = spinner = new ora({
 if ( firstRun() ) {
 	config.set('pic_dir', join(home, 'Pictures', 'splash_photos'))
 	log(`Hello ${colors.bold(user.toString().capitalize())}, all photos are stored in ${colors.yellow.underline(config.get('pic_dir'))}`)
+  log('');
 	log('')
+  console.log(figlet.textSync('Splash'));
 }
