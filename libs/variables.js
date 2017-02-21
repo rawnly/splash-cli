@@ -46,9 +46,9 @@ module.exports = spinner = new ora({
 });
 
 if ( firstRun() ) {
-	config.set('pic_dir', join(home, 'Pictures', 'splash_photos'))
-	log(`Hello ${colors.bold(user.toString().capitalize())}, all photos are stored in ${colors.yellow.underline(config.get('pic_dir'))}`)
+	config.set('pic_dir', join(home, 'Pictures', 'splash_photos'));
+	log(`Hello ${colors.bold(user.toString().capitalize())}, all photos are stored in ${colors.yellow.underline(config.get('pic_dir'))}`);
   log('');
-	log('')
+	log('');
   console.log(figlet.textSync('Splash'));
 }

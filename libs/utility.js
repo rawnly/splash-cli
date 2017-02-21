@@ -8,7 +8,7 @@ module.exports = infos = (matrice, fl) => {
 	let creator = {
 		fullname: matrice.user.name,
 		username: `@${matrice.user.username}`
-	}
+	};
 
 	if ( fl.info ) {
 		log('');
@@ -151,32 +151,32 @@ module.exports = download = (filename, url, photo, m, fl) => {
 
 // Delete elements
 module.exports = del = (directory) => {
-	log()
+	log();
 	fs.readdir(directory, function (err, files) {
     let imgs = [];
     files.forEach((item) => {
       if (item.includes('.jpg')) {
-        imgs.push(item)
+        imgs.push(item);
       }
-    })
+    });
 		if ( imgs[0] ) {
       var bar = new ProgressBar('Deleted: '+':current'.green+' of '+':total'.green+`files from ${pic_dir.toString().blue}`, {
         total: imgs.length
       });
-      log('')
+      log('');
 
 			files.forEach(file => {
 				if ( file.includes('.jpg') ) {
 					fs.unlink( join(directory, `${file}`), () => {
-            bar.tick(1)
+            bar.tick(1);
 					});
 				}
 			});
 
 		} else {
-      log('')
+      log('');
       console.log('\n✦'.yellow.bold + 'The directory is empty!');
-      log('')
+      log('');
 		}
 
 	});
