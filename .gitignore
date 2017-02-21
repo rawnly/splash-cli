@@ -5,7 +5,6 @@ clean.sh
 .AppleDouble
 .LSOverride
 
-*-beta.js
 
 # Icon must end with two \r
 Icon
@@ -37,3 +36,10 @@ testing.js
 ## Node
 node_modules
 .npm-debug.log
+
+## yarn
+yarn.lock
+yarn*.*
+
+## Beta files
+*-beta.js
