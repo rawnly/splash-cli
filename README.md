@@ -1,9 +1,7 @@
 # Splash
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/df39aef5f5a14b62a8cf4701a7962c29)](https://www.codacy.com/app/fedevitale99/splash-cli?utm_source=github.com&utm_medium=referral&utm_content=Rawnly/splash-cli&utm_campaign=badger)
-
 [![Downloads][downloads]][npm-url]
-
 [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli)
 
 Set your wallpaper with beautiful photos from [unsplash](http://unsplash.com)
@@ -22,7 +20,6 @@ To install `splash-cli` you must use **npm** (as always) and do the following:
 	# or
 	$ yarn global add splash-cli
 ```
-
 
 ## Usage
 ![](https://cloud.githubusercontent.com/assets/11269635/21428079/7b24cc80-c858-11e6-8dc3-2e164d23804a.gif)
@@ -43,8 +40,8 @@ I've tested it on **macOS 10.12.2** and **windows 10**. Unfortunatley I actually
 
 	Set the default download directory.
 	```bash
-		$ splash --dir ~/Desktop
-		# //=> `~/Pictures/splash_photos` ==> `~/Desktop`
+        $ splash --dir ~/Desktop
+        # //=> `~/Pictures/splash_photos` ==> `~/Desktop`
 	```
 
 	else you can use this option to get the current download directory
@@ -52,7 +49,7 @@ I've tested it on **macOS 10.12.2** and **windows 10**. Unfortunatley I actually
 	```bash
 		$ splash --dir
 		# //=> At the moment the directory is '~/Pictures/splash_photos'
-```
+    ```
 
 - ###  SAVE
 	Option: `--save [path]` <br>
@@ -104,7 +101,7 @@ I've tested it on **macOS 10.12.2** and **windows 10**. Unfortunatley I actually
 		$ splash --clean 		
 	```
 
-- ### RESTORE
+- ### RESTORE
 	Option: `--restore` <br>
 	<br>
 	Restore default settings.
@@ -146,7 +143,10 @@ I've tested it on **macOS 10.12.2** and **windows 10**. Unfortunatley I actually
 Made with a  ⌨️   in 🇮🇹
 </h5>
 
+
 [latest]: https://github.com/rawnly/splash-cli/releases/latest
+
+
 [npm-url]: https://npmjs.org/package/splash-cli
 [downloads]:http://img.shields.io/npm/dm/splash-cli.svg
 [npm-image]: http://img.shields.io/npm/v/splash-cli.svg
