@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Unsplash photos as your wallpaper",
   "main": "cli.js",
   "author": {
@@ -56,7 +56,7 @@
   "scripts": {
     "build": "np",
     "test": "ava",
-		"grammar": "eslint cli.js"
+    "grammar": "eslint cli.js"
   },
   "repository": {
     "type": "git",
