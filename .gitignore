@@ -43,3 +43,5 @@ yarn*.*
 
 ## Beta files
 *-beta.js
+
+libs/variables.js

@@ -1,10 +1,43 @@
-require('./variables');
+'use strict';
 require('./core');
+require('chili-js');
 
-var pic_dir = config.get('pic_dir');
+// API data
+const token   = 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34';
+const api_url = 'https://api.unsplash.com/photos/random?client_id=' + token;
 
-module.exports = infos = (matrice, fl) => {
+// Modules
+const figlet          = require('figlet');
+const ProgressBar     = require('progress');
+const normalize       = require('normalize-url');
+const urlRegex        = require('url-regex');
+const dns 						= require('dns');
+const colors          = require('colors');
+const chalk         	= require('chalk');
+const meow            = require('meow');
+const isOnline        = require('is-online');
+const wallpaper 			= require('wallpaper');
+const ora       			= require('ora');
+const got 			 			= require('got');
+const https 		 			= require('https');
+const mkdirp    			= require('mkdirp');
+const updateNotifier  = require('update-notifier');
+const clear 					= require('clear');
+const conf 					  = require('conf');
+const firstRun 			  = require('first-run');
+const execa 					= require('execa');
+const config 				  = new conf();
+const spinner = new ora({
+	text: 'Connecting to Unsplash',
+	color: 'yellow',
+	spinner: 'earth'
+});
 
+
+
+let pic_dir = config.get('pic_dir');
+
+function infos(matrice, fl) {
 	let creator = {
 		fullname: matrice.user.name,
 		username: `@${matrice.user.username}`
@@ -56,7 +89,7 @@ module.exports = infos = (matrice, fl) => {
 	}
 };
 
-module.exports = down_load = (filename, url, m, fl) => {
+function down_load(filename, url, m, fl) {
 	spinner.spinner = {
 		frames: [
 			'🚀'
@@ -103,7 +136,7 @@ module.exports = down_load = (filename, url, m, fl) => {
 };
 
 
-module.exports = download = (filename, url, photo, m, fl) => {
+function download(filename, url, photo, m, fl) {
 	spinner.text = 'Making something awsome';
   if ( !fl.progress ) {
     spinner.start();
@@ -150,7 +183,7 @@ module.exports = download = (filename, url, photo, m, fl) => {
 };
 
 // Delete elements
-module.exports = del = (directory) => {
+function del(directory) {
 	log();
 	fs.readdir(directory, function (err, files) {
     let imgs = [];
@@ -179,17 +212,5 @@ module.exports = del = (directory) => {
       log('');
 		}
 
-	});
-};
-
-// Check internet connection
-module.exports = checkInternet = (callback) => {
-	dns.lookup('unsplash.com',function(err) {
-		if (err && err.code == 'ENOTFOUND') {
-			callback(false);
-			notifier.notify();
-		} else {
-			callback(true);
-		}
 	});
 };
