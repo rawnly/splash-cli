@@ -3,7 +3,7 @@
 [![Downloads][downloads]][npm-url]
 [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli)
 
-Unsplash's photos as your wallpaper [unsplash](unsplash)
+[Unsplash](unsplash)'s photos as your wallpaper 
 
 ![screen](https://cloud.githubusercontent.com/assets/16429579/21467810/3f37f348-c9fa-11e6-9c6a-82fa8364f5e6.png)
 > The terminal app in the screenshot is [Hyper](https://hyper.is), with [hyper-sierra-vibrancy](https://npmjs.org/package/hyper-sierra-vibrancy) theme, [**oh-my-zsh**](https://github.com/robbyrussell/oh-my-zsh) shell with the `hyperzsh` **ZSH-THEME**.
