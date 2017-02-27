@@ -31,10 +31,18 @@ To install `splash-cli` you must use a **node package manager** who can be [yarn
 - No photos copyright problems with the "**[do whatever you want](https://unsplash.com/license)**" license.
 - Combine more flags for optimal usage ([documentation here](docs/api.md))
 
+---
+## Clients doing the same things
+- ### MultiPlatform
+  * [autosplash](https://github.com/rawnly/autosplash) (**testing version**) - Periodically download and set unsplash photos as wallpaper.
+
+- ### macOS
+  * [unsplash-wallpaper](https://github.com/leonspok/Unsplash-Wallpaper) - Periodically changes desktop wallpaper with a stunning [unsplash](unsplash) photo.
+
+----
+
 ## Related
 - [unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
-- [autosplash](https://github.com/rawnly/autosplash) (**testing version**) - Periodically download and set unsplash photos as wallpaper. 
-
 
 [latest]: https://github.com/rawnly/splash-cli/releases/latest
 [npm-url]: https://npmjs.org/package/splash-cli
