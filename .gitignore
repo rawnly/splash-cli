@@ -41,7 +41,4 @@ node_modules
 yarn.lock
 yarn*.*
 
-## Beta files
-*-beta.js
-
-libs/variables.js
+*.jpg
