@@ -10,7 +10,6 @@
 ## Installation
 To install `splash-cli` you must use a **node package manager** such as [yarn](yarn) or [npm](npm).
 
-
 ```bash
 	$ npm i -g splash-cli
 ```
@@ -19,10 +18,10 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](y
 ![usage](https://cloud.githubusercontent.com/assets/11269635/21428079/7b24cc80-c858-11e6-8dc3-2e164d23804a.gif)
 > To learn how to use **Splash** type `splash --help` into your terminal after installation, or view [the docs here](docs/api.md).
 
-## Copyright
+## Photos Copyright
 All photos are copyright free and fall under the [do whatever you want](https://unsplash.com/license) license.
 
-## Platforms
+## Similar (GUI) applications
 - ### MultiPlatform
   * [autosplash](https://github.com/rawnly/autosplash) (**testing version**) - Periodically download and set unsplash photos as wallpaper.
 
@@ -31,6 +30,13 @@ All photos are copyright free and fall under the [do whatever you want](https://
 
 ## Related
 - [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
+
+<br>
+-
+I hope you enjoyed this project, if you, drop a :star: ! It's free!  
+
+---
+
 
 [latest]: https://github.com/rawnly/splash-cli/releases/latest
 [npm-url]: https://npmjs.org/package/splash-cli
