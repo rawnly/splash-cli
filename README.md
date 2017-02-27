@@ -1,6 +1,7 @@
 
 # Splash
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/df39aef5f5a14b62a8cf4701a7962c29)](https://www.codacy.com/app/fedevitale99/splash-cli?utm_source=github.com&utm_medium=referral&utm_content=Rawnly/splash-cli&utm_campaign=badger) [![Downloads][downloads]][npm-url] [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli) ![code-style](https://img.shields.io/badge/code--style-airbnb-blue.svg?colorA=ECCC46&colorB=DF2E53&style=flat-square)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/df39aef5f5a14b62a8cf4701a7962c29)](https://www.codacy.com/app/fedevitale99/splash-cli?utm_source=github.com&utm_medium=referral&utm_content=Rawnly/splash-cli&utm_campaign=badger) [![Downloads][downloads]][npm-url] [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](https://travis-ci.org/Rawnly/splash-cli)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 ### Get Beautiful Wallpapers from [Unsplash.com](unsplash) Automatically
 
 ---

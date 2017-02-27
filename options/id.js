@@ -1,9 +1,9 @@
 // Modules
+const path = require('path');
+const fs = require('fs');
 const normalize = require('normalize-url');
 const wallpaper = require('wallpaper');
 const Conf = require('conf');
-const path = require('path');
-const fs = require('fs');
 const urlRegex = require('url-regex');
 const mkdirp = require('mkdirp');
 const download = require('../libs/download');
@@ -15,7 +15,7 @@ const join = path.join;
 const config = new Conf();
 
 // Init
-module.exports = (fl) => {
+module.exports = fl => {
   function parse(string) {
     return normalize(string).match(urlRegex) ? normalize(string).split('?photo=')[1] : string;
   }
@@ -23,15 +23,16 @@ module.exports = (fl) => {
   const id = parse(fl.id) ? parse(fl.id) : fl.id;
   const apiUrlID = `https://api.unsplash.com/photos/${id}?client_id=${token}`;
 
-  mkdirp(config.get('pic_dir'), (err) => {
-    if (err) { log(err); }
+  mkdirp(config.get('pic_dir'), err => {
+    if (err) {
+      throw new Error(err);
+    }
   });
 
   log(id);
 
-
-  fs.exists(join(config.get('pic_dir'), `${id}.jpg`), (exists) => {
-    if (!exists) {
+  fs.exists(join(config.get('pic_dir'), `${id}.jpg`), exists => {
+    if (exists === false) {
       splash(apiUrlID, (data, photo) => {
         download(join(config.get('pic_dir'), `${data.name}.jpg`), data.url, data.name, photo, fl);
       });

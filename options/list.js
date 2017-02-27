@@ -1,8 +1,8 @@
-
+#!/usr/bin/env node
 // Modules
-const Conf = require('conf');
 const fs = require('fs');
-const colors = require('colors');
+const Conf = require('conf');
+const chalk = require('chalk');
 const clear = require('clear');
 
 // Variables
@@ -12,14 +12,15 @@ const config = new Conf();
 const log = console.log;
 
 // Init
-module.exports = (fl) => {
+module.exports = fl => {
   fs.readdir(config.get('pic_dir'), (err, files) => {
-    if (err) { log(err); } else if (files[0]) {
-      files.sort();
-
+    if (err) {
+      throw new Error(err);
+    } else if (files[0]) {
       let list = [];
 
-      files.forEach((item) => {
+      files.sort();
+      files.forEach(item => {
         if (item.charAt(0) !== '.' && item !== 'thumbs') {
           const newItem = item.slice(0, item.length - 4);
           list.push(newItem);
@@ -30,13 +31,13 @@ module.exports = (fl) => {
 
       if (!list.length > 0) {
         log();
-        log('Splash:'.yellow + ' No photos found'.gray);
+        log(chalk.yellow('Splash:') + chalk.gray(' No photos found'));
         log();
         process.exit();
       }
 
       log('');
-      log(`${list.length.toString().yellow.bold} Photos`);
+      log(`${chalk.yellow.bold(list.length)} Photos`);
       log('');
 
       list.sort();
@@ -50,16 +51,18 @@ module.exports = (fl) => {
       }
 
       if (fl.export && list.length > 0) {
-        fs.writeFile('./list.json', jstringify(list), (error) => {
-          if (error) throw new Error(err);
+        fs.writeFile('./list.json', jstringify(list), error => {
+          if (error) {
+            throw new Error(err);
+          }
           log('---');
-          log(`File written at: ${'./list.json'.blue}`);
+          log(`File written at: ${chalk.blue('./list.json')}`);
           log('');
         });
       }
     } else {
       log('---');
-      log(colors.yellow('Splash:') + ' The directory is empty'.gray);
+      log(chalk.yellow('Splash:') + chalk.gray(' The directory is empty'));
       log('');
     }
   });

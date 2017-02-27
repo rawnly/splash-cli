@@ -1,25 +1,25 @@
 // Modules
+const https = require('https');
+const fs = require('fs');
 const ProgressBar = require('progress');
 const wallpaper = require('wallpaper');
 const Ora = require('ora');
-const https = require('https');
-const fs = require('fs');
 const Conf = require('conf');
-
-const config = new Conf();
-const log = console.log;
-const spinner = new Ora({ text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth' });
 const Thief = require('color-thief');
-
-const thief = new Thief();
 const tiny = require('tinycolor2');
 const darkMode = require('dark-mode');
+const chalk = require('chalk');
+
+const config = new Conf();
+const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
+const thief = new Thief();
+const log = console.log;
 
 // Functions
 function infos(matrice, fl) {
   const creator = {
     fullname: matrice.user.name,
-    username: `@${matrice.user.username}`,
+    username: `@${matrice.user.username}`
   };
 
   if (fl.info) {
@@ -29,34 +29,34 @@ function infos(matrice, fl) {
 
     if (matrice.exif !== undefined) {
       if (matrice.exif.make) {
-        log('Make: '.yellow.bold + matrice.exif.make);
+        log(chalk.yellow.bold('Make: ') + matrice.exif.make);
       } else {
-        log(`${'Make: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('Make: ')}--`);
       }
       if (matrice.exif.model) {
-        log('Model: '.yellow.bold + matrice.exif.model);
+        log(chalk.yellow.bold('Model: ') + matrice.exif.model);
       } else {
-        log(`${'Model: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('Model: ')}--`);
       }
       if (matrice.exif.exposure_time) {
-        log('Shutter Speed: '.yellow.bold + matrice.exif.exposure_time);
+        log(chalk.yellow.bold('Shutter Speed: ') + matrice.exif.exposure_time);
       } else {
-        log(`${'Shutter Speed: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('Shutter Speed: ')}--`);
       }
       if (matrice.exif.aperture) {
-        log(`${'Aperture:'.yellow.bold} f/${matrice.exif.aperture}`);
+        log(`${chalk.yellow.bold('Aperture:')} f/${matrice.exif.aperture}`);
       } else {
-        log(`${'Aperture: '.yellow.bold} f/--`);
+        log(`${chalk.yellow.bold('Aperture:')} f/--`);
       }
       if (matrice.exif.focal_length) {
-        log(`${'Focal Length: '.yellow.bold + matrice.exif.focal_length}mm`);
+        log(`${chalk.yellow.bold('Focal Length: ') + matrice.exif.focal_length}mm`);
       } else {
-        log(`${'Focal Length: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('Focal Length: ')}--`);
       }
       if (matrice.exif.iso) {
-        log('ISO: '.yellow.bold + matrice.exif.iso);
+        log(chalk.yellow.bold('ISO: ') + matrice.exif.iso);
       } else {
-        log(`${'ISO: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('ISO: ')}--`);
       }
     }
     log('');
@@ -74,10 +74,9 @@ function download(filename, photo, fl) {
     spinner.start();
   }
 
-
   const file = fs.createWriteStream(filename);
 
-  https.get(photo.urls.raw, (response) => {
+  https.get(photo.urls.raw, response => {
     if (fl.progress) {
       const len = parseInt(response.headers['content-length'], 10);
       const bar = new ProgressBar(`${'↓ '.yellow + ':percent'.red} [:bar] :elapsed s`, {
@@ -85,26 +84,25 @@ function download(filename, photo, fl) {
         incomplete: ' ',
         width: 20,
         total: len,
-        clear: true,
+        clear: true
       });
 
-      response.on('data', (chunk) => {
+      response.on('data', chunk => {
         bar.tick(chunk.length, {
-          passphrase: 'Making something awsome',
+          passphrase: 'Making something awsome'
         });
       });
     }
-
 
     response.pipe(file).on('finish', () => {
       const img = `${config.get('pic_dir')}/${photo.id}.jpg`;
 
       // Set the wallpaper and change the osx theme
       if (process.platform === 'darwin' && fl.theme) {
-        darkMode.isDark().then((status) => {
+        darkMode.isDark().then(status => {
           const color = `rgb( ${thief.getColor(img).join(', ')} )`;
           const brightness = tiny(color).getBrightness();
-          const isBright = !!((brightness && brightness >= 127.5));
+          const isBright = Boolean(brightness && brightness >= 127.5);
 
           if (isBright && status === true) {
             darkMode.disable();

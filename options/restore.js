@@ -1,9 +1,9 @@
 // Modules
-const colors = require('colors');
-const Conf = require('conf');
-const firstRun = require('first-run');
 const os = require('os');
 const path = require('path');
+const chalk = require('chalk');
+const Conf = require('conf');
+const firstRun = require('first-run');
 
 // Variables
 const join = path.join();
@@ -16,6 +16,6 @@ module.exports = () => {
   firstRun.clear();
 
   log();
-  log(`${colors.yellow('Splash:')} Settings restored to default.`.gray);
+  log(`${chalk.yellow('Splash:')} ${chalk.gray('Settings restored to default.')}`);
   log();
 };

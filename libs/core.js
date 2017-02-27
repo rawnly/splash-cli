@@ -3,16 +3,15 @@ const normalize = require('normalize-url');
 const clear = require('clear');
 const got = require('got');
 const Ora = require('ora');
-
+const chalk = require('chalk');
 
 // Variables
 const log = console.log;
 const jparse = JSON.parse;
-const spinner = new Ora({ text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth' });
-
+const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 
 module.exports = (url, callback) => {
-  got(normalize(url)).then((response) => {
+  got(normalize(url)).then(response => {
     spinner.text = 'Connected!';
     spinner.succeed();
 
@@ -20,11 +19,11 @@ module.exports = (url, callback) => {
     const photo = jparse(body);
 
     callback(photo);
-  }).catch((err) => {
+  }).catch(err => {
     clear();
     spinner.stop();
     log();
-    log('Splash Error: '.yellow + err.message);
+    log(chalk.yellow('Splash Error: ') + err.message);
     log();
   });
 };

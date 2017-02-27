@@ -1,30 +1,28 @@
 
 // Modules
-const ProgressBar = require('progress');
-const colors = require('colors');
-const wallpaper = require('wallpaper');
 const https = require('https');
-const splash = require('../libs/core');
 const path = require('path');
 const fs = require('fs');
+const ProgressBar = require('progress');
+const chalk = require('chalk');
+const wallpaper = require('wallpaper');
 const Ora = require('ora');
 const Conf = require('conf');
-
+const splash = require('../libs/core');
 
 // Variables
 const config = new Conf();
-const spinner = new Ora({ text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth' });
+const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 const join = path.join;
 const token = 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34';
 const apiUrl = `https://api.unsplash.com/photos/random?client_id=${token}`;
 const log = console.log;
 
-
 // Functions
 function infos(matrice, fl) {
   const creator = {
     fullname: matrice.user.name,
-    username: `@${matrice.user.username}`,
+    username: `@${matrice.user.username}`
   };
 
   if (fl.info) {
@@ -34,34 +32,34 @@ function infos(matrice, fl) {
 
     if (matrice.exif !== undefined) {
       if (matrice.exif.make) {
-        log('Make: '.yellow.bold + matrice.exif.make);
+        log(chalk.yellow.bold('Make: ') + matrice.exif.make);
       } else {
-        log(`${'Make: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('Make: ')}--`);
       }
       if (matrice.exif.model) {
-        log('Model: '.yellow.bold + matrice.exif.model);
+        log(chalk.yellow.bold('Model: ') + matrice.exif.model);
       } else {
-        log(`${'Model: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('Model: ')}--`);
       }
       if (matrice.exif.exposure_time) {
-        log('Shutter Speed: '.yellow.bold + matrice.exif.exposure_time);
+        log(chalk.yellow.bold('Shutter Speed: ') + matrice.exif.exposure_time);
       } else {
-        log(`${'Shutter Speed: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('Shutter Speed: ')}--`);
       }
       if (matrice.exif.aperture) {
-        log(`${'Aperture:'.yellow.bold} f/${matrice.exif.aperture}`);
+        log(`${chalk.yellow.bold('Aperture:')} f/${matrice.exif.aperture}`);
       } else {
-        log(`${'Aperture: '.yellow.bold} f/--`);
+        log(`${chalk.yellow.bold('Aperture:')} f/--`);
       }
       if (matrice.exif.focal_length) {
-        log(`${'Focal Length: '.yellow.bold + matrice.exif.focal_length}mm`);
+        log(`${chalk.yellow.bold('Focal Length: ') + matrice.exif.focal_length}mm`);
       } else {
-        log(`${'Focal Length: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('Focal Length: ')}--`);
       }
       if (matrice.exif.iso) {
-        log('ISO: '.yellow.bold + matrice.exif.iso);
+        log(chalk.yellow.bold('ISO: ') + matrice.exif.iso);
       } else {
-        log(`${'ISO: '.yellow.bold}--`);
+        log(`${chalk.yellow.bold('ISO: ')}--`);
       }
     }
     log('');
@@ -76,8 +74,8 @@ function infos(matrice, fl) {
 function down(filename, url, m, fl) {
   spinner.spinner = {
     frames: [
-      '🚀',
-    ],
+      '🚀'
+    ]
   };
   spinner.text = ' Making something awsome';
 
@@ -87,7 +85,7 @@ function down(filename, url, m, fl) {
 
   const file = fs.createWriteStream(filename);
 
-  https.get(url, (response) => {
+  https.get(url, response => {
     if (fl.progress) {
       const len = parseInt(response.headers['content-length'], 10);
       const bar = new ProgressBar(`${'↓ '.yellow + ':percent'.red} [:bar] :elapsed s`, {
@@ -95,12 +93,12 @@ function down(filename, url, m, fl) {
         incomplete: ' ',
         total: len,
         width: 15,
-        clear: true,
+        clear: true
       });
 
-      response.on('data', (chunk) => {
+      response.on('data', chunk => {
         bar.tick(chunk.length, {
-          passphrase: 'Making something awsome',
+          passphrase: 'Making something awsome'
         });
       });
     }
@@ -118,9 +116,8 @@ function down(filename, url, m, fl) {
   });
 }
 
-
 // Init
-module.exports = (fl) => {
+module.exports = fl => {
   let url = '';
 
   if (fl.heigth && fl.width) {
@@ -141,6 +138,6 @@ module.exports = (fl) => {
   });
 
   log();
-  log(`${colors.yellow('Splash:')} Photo saved at ${fl.save}`);
+  log(`${chalk.yellow('Splash:')} Photo saved at ${fl.save}`);
   log();
 };
