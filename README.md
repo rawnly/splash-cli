@@ -1,7 +1,7 @@
 
 # Splash
-[![Downloads][downloads]][npm-url] [![Build Status](build_badge)](build_url)
-[![XO code style](xo_badge)](xo_url)
+[![Downloads][downloads]][npm-url] [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](build_url)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](xo_url)
 ### Get beautiful wallpapers from [unsplash](unsplash)
 
 ---
