@@ -10,7 +10,7 @@ const log = console.log;
 module.exports = () => {
   const old = pkg.version;
   const spin = new Ora({
-    text: 'Updating with...',
+    text: 'Updating...',
     spinner: 'dots',
     color: 'yellow'
   });
