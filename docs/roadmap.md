@@ -8,6 +8,7 @@ Below you can see some **super cool** steps who this repo needs! :rabbit:
 - [ ] Review of all docs from someone who know how to write english better than me. 
 - [ ] Make _this module_ faster and easier
 - [ ] Create a **multiplatform** desktop GUI application (See [autosplash](proj-autosplash), maybe could better without electron)
+
 ---
 
 
