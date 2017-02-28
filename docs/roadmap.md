@@ -1,5 +1,5 @@
 # Roadmap
-This file is a roadmap for who wants imrove this repo.
+This file is a roadmap for who wants improve this repo.
 
 Below you can see some **super cool** steps who this repo needs! :rabbit: 
 
