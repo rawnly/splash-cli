@@ -78,7 +78,7 @@ const cli = meow(`
       -u --update                      ${chalk.gray('# Update to latest version.')}
       -c --clean                       ${chalk.gray('# Delete all downloaded photos.')}
 
-      --proxed <true|false>            ${chalk.gray('# Set as true if you are under proxy')}
+      --offline <true|false>            ${chalk.gray('# Set as true if you are under proxy')}
       --progress                       ${chalk.gray('# Show progressbar during downloads')}
       --restore                        ${chalk.gray('# Restore settings to default.')}
       --set                            ${chalk.gray('# Set the saved photo [--save] as wallpaper.')}
@@ -159,8 +159,8 @@ function sp(action, flags) {
   } else if (flags.dir) {
     // Dir
     dirCmd(flags);
-  } else if (flags.proxed) {
-    config.set('proxy', flags.proxed);
+  } else if (flags.offline) {
+    config.set('proxy', flags.offline);
     console.log(`Proxy: ${config.get('proxy')}`);
   } else {
     // Splash Classic
@@ -189,7 +189,7 @@ function sp(action, flags) {
         console.log();
         console.log(`Proxy Status: ${config.get('proxy')}`);
         console.log();
-        console.log(`If you are under a ${chalk.bold('proxy')} server, check who '--proxed' option is on true.`);
+        console.log(`If you are under a ${chalk.bold('proxy')} server, check who '--offline' option is on true.`);
         process.exit();
       }
     });
