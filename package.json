@@ -50,7 +50,6 @@
     "xo": "^0.17.1"
   },
   "scripts": {
-    "build": "np",
     "test": "ava && xo"
   },
   "repository": {
