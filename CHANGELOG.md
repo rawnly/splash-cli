@@ -1,5 +1,9 @@
 # Changelog
-- 2.1.0 ([**Latest**][latest])
+- 2.3.5 ([**Latest**][latest])
+	* Fixed #11 
+- 2.3.4 
+	* Added `--theme` for macOs users, this flag will change the macOs theme by the background brightness
+- 2.1.0 
 	* Added `--collection <id>` download parameter
 	* Added `--width <width>`& `--heigth <heigth>` download parameter ( **Experimental function** maybe is not working )
 	* Added `--featured` download parameter (download a photo from featured photos)
