@@ -24,7 +24,7 @@ function infos(matrice, fl) {
 
   if (fl.info) {
     log('');
-    log(`ID: ${matrice.id.yellow}`);
+    log(`ID: ${chalk.yellow(matrice.id)}`);
     log('');
 
     if (matrice.exif !== undefined) {
@@ -60,11 +60,11 @@ function infos(matrice, fl) {
       }
     }
     log('');
-    log(`Shooted by: ${creator.fullname.cyan.bold} (${creator.username.yellow})`);
+    log(`Shooted by: ${chalk.cyan.bold(creator.fullname)} (${chalk.yellow(creator.username)})`);
     log(`Profile URL: ${matrice.user.links.html}`);
   } else {
     log('');
-    log(`Shooted by: ${creator.fullname.cyan.bold} (${creator.username.yellow})`);
+    log(`Shooted by: ${chalk.cyan.bold(creator.fullname)} (${chalk.yellow(creator.username)})`);
   }
 }
 
