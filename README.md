@@ -37,7 +37,7 @@ All photos are copyright free and fall under the [do whatever you want](https://
 -
 I hope you enjoyed this project, if you, drop a :star: ! It's free!  
 
----
+
 
 
 [latest]: https://github.com/rawnly/splash-cli/releases/latest
