@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 // Modules
-
 const path = require('path');
 const os = require('os');
 const chalk = require('chalk');
