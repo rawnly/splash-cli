@@ -32,7 +32,7 @@ module.exports = fl => {
         log();
         log(chalk.yellow('Splash:') + chalk.gray(' No photos found'));
         log();
-        process.exit();
+        return false;
       }
 
       log('');
