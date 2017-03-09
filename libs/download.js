@@ -16,6 +16,7 @@ const thief = new Thief();
 const log = console.log;
 
 // Functions
+
 function infos(matrice, fl) {
   const creator = {
     fullname: matrice.user.name,

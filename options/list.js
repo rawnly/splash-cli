@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 // Modules
 const fs = require('fs');
 const Conf = require('conf');

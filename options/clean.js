@@ -10,6 +10,7 @@ const log = console.log;
 const join = path.join;
 
 // Delete elements
+
 function del(directory) {
   log();
   fs.readdir(directory, (err, files) => {
