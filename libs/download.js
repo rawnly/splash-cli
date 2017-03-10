@@ -80,7 +80,7 @@ function download(filename, photo, fl) {
   https.get(photo.urls.raw, response => {
     if (fl.progress) {
       const len = parseInt(response.headers['content-length'], 10);
-      const bar = new ProgressBar(`${'↓ '.yellow + ':percent'.red} [:bar] :elapsed s`, {
+      const bar = new ProgressBar(`${'↓ '.yellow + chalk.red(':percent')} [:bar] :elapsed s`, {
         complete: '=',
         incomplete: ' ',
         width: 20,

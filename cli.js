@@ -166,7 +166,6 @@ function sp(action, flags) {
     // Splash Classic
     isOnline().then(value => {
       if (value || config.get('proxy')) {
-        console.log(config.get('proxy'));
         let url = '';
 
         if (flags.heigth && flags.width) {
