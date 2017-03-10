@@ -1,7 +1,5 @@
-language: node_js python
+language: node_js 
 node_js:
   - v7
   - v6
   - v4
-python:
-  - v2.7
