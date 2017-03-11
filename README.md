@@ -21,7 +21,7 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](y
 
 To learn how to use **Splash** type `splash --help` into your terminal after installation, also you can read [the docs here](docs/api.md) or the basic version below.
 
-### Flags 
+### Flags
 ### `--id`
 Pick a photo from the `id` or the `url`
 ```bash
@@ -36,10 +36,10 @@ Default: `none`
 ### `--save`
 Save a photo without set it as wallpaper.
 ```bash
-  $ splash --save [path] 
+  $ splash --save [path]
   # default ~/Pictures/splash_photos
 ```
-**`REMEMBER`**: The path is relative from your position. So if you are in `~/Desktop` and you have setted `.` as path, it will save the photo in `~/Desktop`.
+**`REMEMBER`**: The path is relative to your position. So if you are in `~/Desktop` and you have setted `.` as path, it will save the photo in `~/Desktop`.
 
 Input: `Yes`<br>
 
@@ -54,9 +54,9 @@ Set default download directory for pictures.
   $ splash --dir [path]
 ```
 
-If no `path` it will returns the active `path`. 
+If no `path` it will returns the active `path`.
 
-Input: `Yes`<br> 
+Input: `Yes`<br>
 
 Type: `String`<br>
 
@@ -82,7 +82,7 @@ Default: `false`
 
 
 ## Related
-- [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos. 
+- [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
 
 
 
