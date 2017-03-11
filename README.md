@@ -1,10 +1,10 @@
-
 # Splash
 [![Downloads][downloads]][npm-url] [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](build_url)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](xo_url)
-### Get beautiful wallpapers from [unsplash](unsplash)
 
----
+Get beautiful wallpapers from [unsplash](unsplash)
+
+
 
 ![screen](https://cloud.githubusercontent.com/assets/16429579/21467810/3f37f348-c9fa-11e6-9c6a-82fa8364f5e6.png)
 > The terminal shown above is [Hyper](hyper), with [hyper-sierra-vibrancy](hyper-sierra-vibrancy) as the terminal theme, and the [**oh-my-zsh**](oh-my-zsh) shell with `hyperzsh` **ZSH-THEME** as the theme.
@@ -13,25 +13,78 @@
 To install `splash-cli` you must use a **node package manager** such as [yarn](yarn) or [npm](npm).
 
 ```bash
-	$ npm i -g splash-cli
+	$ [sudo] npm i -g splash-cli #or yarn
 ```
 
 ## Usage
 ![usage](https://cloud.githubusercontent.com/assets/11269635/21428079/7b24cc80-c858-11e6-8dc3-2e164d23804a.gif)
-> To learn how to use **Splash** type `splash --help` into your terminal after installation, or view [the docs here](docs/api.md).
 
-## Photos Copyright
-All photos are copyright free and fall under the [do whatever you want](https://unsplash.com/license) license.
+To learn how to use **Splash** type `splash --help` into your terminal after installation, also you can read [the docs here](docs/api.md) or the basic version below.
 
-## Similar (GUI) applications
-- ### MultiPlatform
-  * [autosplash](https://github.com/rawnly/autosplash) (**testing version**) - Periodically download and set unsplash photos as wallpaper.
+### Flags 
+### `--id`
+Pick a photo from the `id` or the `url`
+```bash
+  $ splash --id <id|url>
+```
+Input: `Yes`<br>
 
-- ### macOS
-  * [unsplash-wallpaper](https://github.com/leonspok/Unsplash-Wallpaper) - Periodically changes desktop wallpaper with a stunning [unsplash](unsplash) photo.
+Type: `String`<br>
+
+Default: `none`
+
+### `--save`
+Save a photo without set it as wallpaper.
+```bash
+  $ splash --save [path] 
+  # default ~/Pictures/splash_photos
+```
+**`REMEMBER`**: The path is relative from your position. So if you are in `~/Desktop` and you have setted `.` as path, it will save the photo in `~/Desktop`.
+
+Input: `Yes`<br>
+
+Type: `String`<br>
+
+Default: `~/Pictures/splash_photos`
+
+### `--dir`
+Set default download directory for pictures.
+
+```bash
+  $ splash --dir [path]
+```
+
+If no `path` it will returns the active `path`. 
+
+Input: `Yes`<br> 
+
+Type: `String`<br>
+
+Default: `~/Pictures/splash_photos`
+
+### `--theme`
+With this flag `splash` will detect the photo's brightness and toggle the **macOS** `dark-mode`.
+```bash
+  $ splash --theme # no-args
+```
+
+![theme](https://cloud.githubusercontent.com/assets/16429579/23823903/7dcdba94-066c-11e7-9dc4-23cf338c80f5.png)
+
+
+Platform: `darwin`<br>
+
+Input: `none`<br>
+
+Type: `Boolean`<br>
+
+Default: `false`
+
+
 
 ## Related
-- [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
+- [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos. 
+
+
 
 <br>
 -
