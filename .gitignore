@@ -41,4 +41,6 @@ node_modules
 yarn.lock
 yarn*.*
 
+# Images
 *.jpg
+*.png
