@@ -69,15 +69,16 @@ function infos(matrice, fl) {
   }
 }
 
-function download(filename, photo, fl) {
+// filename | url, photo, fl
+function download(args = {}, fl) {
   spinner.text = 'Making something awsome';
   if (!fl.progress) {
     spinner.start();
   }
 
-  const file = fs.createWriteStream(filename);
+  const file = fs.createWriteStream(args.filename);
 
-  https.get(photo.urls.raw, response => {
+  https.get(args.photo.urls.raw, response => {
     if (fl.progress) {
       const len = parseInt(response.headers['content-length'], 10);
       const bar = new ProgressBar(`${chalk.yellow('↓ ') + chalk.red(':percent')} [:bar] :elapsed s`, {
@@ -96,7 +97,7 @@ function download(filename, photo, fl) {
     }
 
     response.pipe(file).on('finish', () => {
-      const img = `${config.get('pic_dir')}/${photo.id}.jpg`;
+      const img = `${config.get('pic_dir')}/${args.photo.id}.jpg`;
 
       // Set the wallpaper and change the osx theme
       if (process.platform === 'darwin' && fl.theme) {
@@ -118,7 +119,7 @@ function download(filename, photo, fl) {
 
       // Stop the spinner and log the output
       spinner.succeed();
-      infos(photo, fl);
+      infos(args.photo, fl);
 
       // Spacer
       log('');
