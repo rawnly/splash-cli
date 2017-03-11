@@ -34,8 +34,11 @@ module.exports = fl => {
 
   fs.exists(join(config.get('pic_dir'), `${id}.jpg`), exists => {
     if (exists === false) {
-      splash(apiUrlID, (data, photo) => {
-        download(join(config.get('pic_dir'), `${data.name}.jpg`), data.url, data.name, photo, fl);
+      splash(apiUrlID, photo => {
+        download({
+          filename: join(config.get('pic_dir'), `${photo.id}.jpg`),
+          photo: photo
+        }, fl);
       });
     } else {
       log(`You have this photo (${id}.jpg) locally!`);
