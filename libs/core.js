@@ -26,5 +26,6 @@ module.exports = (url, callback) => {
     log();
     log(chalk.yellow('Splash Error: ') + err.message);
     log();
+    throw new Error(err);
   });
 };
