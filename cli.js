@@ -181,7 +181,10 @@ function sp(action, flags) {
         }
 
         splash(url, photo => {
-          download(join(config.get('pic_dir'), `${photo.id}.jpg`), photo, flags);
+          download({
+            filename: join(config.get('pic_dir'), `${photo.id}.jpg`),
+            photo: photo
+          }, flags);
         });
       } else {
         log(`${chalk.yellow('Splash:')} I need an internet connection!`);
