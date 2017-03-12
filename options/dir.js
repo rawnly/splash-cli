@@ -6,25 +6,31 @@ const Conf = require('conf');
 const chalk = require('chalk');
 
 const config = new Conf();
-const log = console.log;
 const join = path.join;
 const home = os.homedir();
 
 module.exports = fl => {
-  let dir = fl.dir;
+  if (!fl.set || fl.set.length === false) {
+    console.log(`
 
-  if (dir.length === false) {
-    dir = config.get('pic_dir');
-    log(`${chalk.gray('Actual directory =>')} ${chalk.underline(config.get('pic_dir'))}`);
+${chalk.gray('Actual directory =>')} ${chalk.underline(config.get('pic_dir'))}
+
+      `);
   } else {
-    if (fl.dir.includes('~')) {
-      dir = join(home, fl.dir.split('~')[1]);
+    let dir = fl.set;
+
+    if (fl.set.includes('~')) {
+      dir = join(home, fl.set.split('~')[1]);
     }
 
     const oldDir = config.get('pic_dir');
 
-    config.set('pic_dir', fl.dir);
+    config.set('pic_dir', dir);
 
-    log(`${chalk.yellow(oldDir)} ==> ${chalk.green(config.get('pic_dir'))}`);
+    console.log(`
+
+${chalk.yellow(oldDir)} ==> ${chalk.green(config.get('pic_dir'))}
+
+      `);
   }
 };
