@@ -17,15 +17,15 @@
     ```
 <br>
 
-- ##  SAVE
+- ## SAVE
 	Command: `save [--flags]` <br>
 	<br>
 
 	Save the downloaded photo to a local folder if specified, or to the usually `~/Pictures/splash_photos`
 	
 	```bash
-       $ splash save --dest [path]
-       # -d --dest
+    $ splash save --dest [path]
+    # -d --dest
 	```
 	
 	You can also add `--set` parameter to set the photo as wallpaper.
@@ -34,9 +34,10 @@
     	$ splash --dest ~/Desktop --set
     	# -s --set 
 	```
-    ```bash 
-        $ splash --set
-    ```
+  ```bash 
+   	$ splash --set
+	```
+	
 <br>
 
 - ## INFO
@@ -104,11 +105,15 @@
 	<br>
 	Download  and install the latest version.
 
+
 <br>
+
 
 - ## LIST
 	Command: `list` <br>
+	
 	<br>
+	
 	Print an array with the list of the downloaded photos.
 	```bash
 		$ splash list		
@@ -118,6 +123,7 @@
 		$ splash list --export
 	```
 	> NOTE: File names are photos id
+
 
 <br>
 
