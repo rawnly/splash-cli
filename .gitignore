@@ -44,3 +44,6 @@ yarn*.*
 # Images
 *.jpg
 *.png
+
+docs/processors/*
+docs/*.map
