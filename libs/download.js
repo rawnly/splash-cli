@@ -70,7 +70,7 @@ function infos(matrice, fl) {
 }
 
 // filename | url, photo, fl
-function download(args = {}, fl) {
+function download(args = {}, fl, set = true) {
   spinner.text = 'Making something awsome';
   if (!fl.progress) {
     spinner.start();
@@ -115,7 +115,9 @@ function download(args = {}, fl) {
       }
 
       // Set wallpaper
-      wallpaper.set(img);
+      if (set) {
+        wallpaper.set(img);
+      }
 
       // Stop the spinner and log the output
       spinner.succeed();
