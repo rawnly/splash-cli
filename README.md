@@ -23,6 +23,8 @@ To learn how to use **Splash** type `splash --help` into your terminal after ins
 
 ### Flags
 ### `--id`
+> Parameter
+
 Pick a photo from the `id` or the `url`
 ```bash
   $ splash --id <id|url>
@@ -33,11 +35,14 @@ Type: `String`<br>
 
 Default: `none`
 
-### `--save`
+### `save`
+> Subcommand
+
 Save a photo without set it as wallpaper.
 ```bash
-  $ splash --save [path]
-  # default ~/Pictures/splash_photos
+  $ splash save 
+  $ splash save --dest [path] #or -d
+  $ splash save --set #or -s
 ```
 **`REMEMBER`**: The path is relative to your position. So if you are in `~/Desktop` and you have setted `.` as path, it will save the photo in `~/Desktop`.
 
@@ -47,11 +52,13 @@ Type: `String`<br>
 
 Default: `~/Pictures/splash_photos`
 
-### `--dir`
+### `dir`
 Set default download directory for pictures.
 
 ```bash
-  $ splash --dir [path]
+  $ splash dir [--flags] 
+
+  $ splash dir --set [path] #or -s
 ```
 
 If no `path` it will returns the active `path`.
@@ -65,7 +72,8 @@ Default: `~/Pictures/splash_photos`
 ### `--theme`
 With this flag `splash` will detect the photo's brightness and toggle the **macOS** `dark-mode`.
 ```bash
-  $ splash --theme # no-args
+  $ splash --theme
+  $ splash -t 
 ```
 
 ![theme](https://cloud.githubusercontent.com/assets/16429579/23823903/7dcdba94-066c-11e7-9dc4-23cf338c80f5.png)
