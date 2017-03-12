@@ -40,7 +40,7 @@ if (firstRun()) {
   clear();
   config.set('proxy', false);
   config.set('pic_dir', join(home, 'Pictures', 'splash_photos'));
-  log(`Hello ${chalk.bold(user.toString().capitalize())}, all photos are stored in ${chalk.yellow.underline(config.get('pic_dir'))}`);
+  log(`Hello ${chalk.bold(user.toString())}, all photos are stored in ${chalk.yellow.underline(config.get('pic_dir'))}`);
   log('');
   log('');
   log(figlet.textSync('Splash'));
@@ -51,51 +51,52 @@ if (firstRun()) {
 // Initializing
 const cli = meow(`
   ${chalk.yellow.bold('# Usage')}
-    $ splash [--flags]
+    $ splash [subcommands]  [--flags]
 
   ${chalk.yellow.bold('# Help')}
-    ${chalk.blue.bold('## Standard')}
-    -h --help                          ${chalk.gray('# Display this message')}
-    -v --version                       ${chalk.gray('# Display splash version')}
+    -h --help                      ${chalk.gray('# Display this message')}
+    -v --version                   ${chalk.gray('# Display splash version')}
 
     ${chalk.blue.bold('## Search options')}
 
-      -u --user <username>             ${chalk.gray('# Pick random image from selected user')}
-      -f --featured                    ${chalk.gray('# Pick random image from featured photos')}
-      -w --width <px>                  ${chalk.gray('# Image width')}
-      -h --heigth <px>                 ${chalk.gray('# Image height')}
-      -i --info                        ${chalk.gray('# Get EXIF infos and Photographer infos.')}
+      -u --user <username>         ${chalk.gray('# Pick random image from selected user')}
+      -f --featured                ${chalk.gray('# Pick random image from featured photos')}
+      -i --info                    ${chalk.gray('# Get EXIF infos and Photographer infos.')}
 
-      --collection <collection_ID>     ${chalk.gray('# Filter by collection')}
-      --id <id | photo_url>            ${chalk.gray('# Get image by photo ID or URL.')}
+      --collection <collection_ID> ${chalk.gray('# Filter by collection')}
+      --id <id | photo_url>        ${chalk.gray('# Get image by photo ID or URL.')}
 
 
-    ${chalk.blue.bold('## Other commands')}
+    ${chalk.blue.bold('## Sub commands')}
 
-      -l --list [extra flags]          ${chalk.gray('# List of downloaded photos.')}
-      -s --save [path] [extra flags]   ${chalk.gray('# Save photo without setting it as wallpaper.')}
-      -d --dir [path]                  ${chalk.gray('# Set the main download directory.')}
-      -u --update                      ${chalk.gray('# Update to latest version.')}
-      -c --clean                       ${chalk.gray('# Delete all downloaded photos.')}
+      list [extra flags]          ${chalk.gray('# List of downloaded photos.')}
+        --export                  ${chalk.gray('# Export the photo list [--list].')}
 
-      --offline <true|false>            ${chalk.gray('# Set as true if you are under proxy')}
-      --progress                       ${chalk.gray('# Show progressbar during downloads')}
-      --restore                        ${chalk.gray('# Restore settings to default.')}
-      --set                            ${chalk.gray('# Set the saved photo [--save] as wallpaper.')}
-      --theme                          ${chalk.gray('# macOS Only! Set the dark theme if photo has low brightness')}
-      --export                         ${chalk.gray('# Export the photo list [--list].')}`, {
+      save [path] [extra flags]  ${chalk.gray('# Save photo without setting it as wallpaper.')}
+        -s --set                 ${chalk.gray('# Set the saved photo [--save] as wallpaper.')}
+        -d --dest [path]
+
+      dir                         ${chalk.gray('# Get the main download directory.')}
+        -s --set [path]           ${chalk.gray('# Set the main download directory.')}
+        
+      update                      ${chalk.gray('# Update to latest version.')}
+      clean                       ${chalk.gray('# Delete all downloaded photos.')}
+      restore                     ${chalk.gray('# Restore settings to default.')}
+
+      --offline <true|false>      ${chalk.gray('# Set as true if you are under proxy')}
+      -p --progress                  ${chalk.gray('# Show progressbar during downloads')}
+      -t --theme                     ${chalk.gray('# macOS Only! Set the dark theme if photo has low brightness')}`, {
 
         alias: {
-          l: 'list',
-          c: 'clean',
+          d: 'dest',
+          p: 'progress',
+          t: 'theme',
           i: 'info',
-          s: 'save',
-          d: 'dir',
-          u: 'update',
           w: 'width',
           h: 'heigth',
           f: 'featured',
-          v: 'version'
+          v: 'version',
+          s: 'set'
         }
       });
 
@@ -117,10 +118,10 @@ function sp(action, flags) {
         }
       });
     }
-  } else if (flags.restore) {
+  } else if (action === 'restore') {
       // RESTORE
     restoreCmd();
-  } else if (flags.update) {
+  } else if (action === 'update') {
       // UPDATE
     isOnline().then(value => {
       if (value || config.get('proxy')) {
@@ -130,14 +131,11 @@ function sp(action, flags) {
         process.exit();
       }
     });
-  } else if (flags.clean) {
-    // CLEAN
+  } else if (action === 'clean') {
     cleanCmd();
-  } else if (flags.list) {
-    // LIST ( --EXPORT )
+  } else if (action === 'list') {
     listCmd(flags);
-  } else if (flags.save) {
-    // SAVE ( --set )
+  } else if (action === 'save') {
     isOnline().then(value => {
       if (value || config.get('proxy')) {
         saveCmd(flags);
@@ -156,7 +154,7 @@ function sp(action, flags) {
         process.exit();
       }
     });
-  } else if (flags.dir) {
+  } else if (action === 'dir') {
     // Dir
     dirCmd(flags);
   } else if (flags.offline) {
@@ -168,9 +166,7 @@ function sp(action, flags) {
       if (value || config.get('proxy')) {
         let url = '';
 
-        if (flags.heigth && flags.width) {
-          url = `${apiUrl}&&w=${flags.width}&&h=${flags.heigth}`;
-        } else if (flags.user) {
+        if (flags.user) {
           url = `${apiUrl}&&username=${flags.user}`;
         } else if (flags.featured) {
           url = `${apiUrl}&&featured=${flags.featured}`;
