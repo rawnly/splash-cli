@@ -68,17 +68,18 @@
 	> You can get the image id on the [unsplash website](https://unsplash.com) by opening an image and grabbing the **ID** from the url.
  https://unsplash.com/?photo=`EXAMPLE_PHOTO_ID`
 
-  If you have ever downloaded the photo with **splash-cli** and it is in your actual download folder it will not be downloaded again.
+  	If you have ever downloaded the photo with **splash-cli** and it is in your actual download folder it will not be downloaded again.
+	
 	```bash
 		$ splash --id YJ9ygJAVzmO
 		# or
 		$ splash --id https://unsplash.com/?photo=YJ9ygJAVzmO
 	```
 
-  As `--info` you can combine it with others subcommands or flags.
+	As `--info` you can combine it with others subcommands or flags.
 	
 	```bash
-      $ splash --id YJ9ygJAVzmO --theme
+      		$ splash --id YJ9ygJAVzmO --theme
 	```
 
 <br>
@@ -97,7 +98,6 @@
 	<br>
 	Restore default settings.
 
-<br>
 
 - ## UPDATE
 	Command: `update` <br>
