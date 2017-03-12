@@ -89,9 +89,7 @@
 	Command: `clean` <br>
 	<br>
 	Delete all downloaded photos.
-	```bash
-		$ splash clean 		
-	```
+
 <br>
 
 - ## RESTORE
