@@ -19,7 +19,7 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](y
 ## Usage
 ![usage](https://cloud.githubusercontent.com/assets/11269635/21428079/7b24cc80-c858-11e6-8dc3-2e164d23804a.gif)
 
-To learn how to use **Splash** type `splash --help` into your terminal after installation, also you can read [the docs here](docs/api.md) or the basic version below.
+To learn how to use **Splash** type `splash --help` into your terminal after installation, also you can read [the docs here](documentation/api.md) or the basic version below.
 
 ### Flags
 ### `--id`
