@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat?100,200,300,400,500,600,700,800");
+html, body { margin: 0; padding: 0; font-size: 17px; font-family: 'Raleway', sans-serif; }
+
+a:not(.btn) { color: #fd466d; text-decoration: none !important; font-weight: bold; opacity: 1; transition: opacity .3s; }
+
+a:not(.btn).hash::before { content: '#'; }
+
+a:not(.btn):hover { opacity: .7; }
+
+h1 { color: inherit; font-size: 3em; }
+
+h1.title { margin-bottom: .15em; }
+
+h2 { color: inherit; font-size: 1.2em; }
+
+h2.subtitle { font-weight: lighter; }
+
+.buttons { padding-top: 12px; font-weight: 600; }
+
+a.btn { padding: 7px 15px; margin: 7px; border: 1px solid #fff; border-radius: 4px; text-transform: uppercase; text-decoration: none !important; background: transparent; transition: background .3s, color .3s, border .3s; }
+
+a.btn:hover { cursor: pointer; color: #37474F; background: #fff; border: 1px solid transparent; }
+
+header { color: #fff; background: url("assets/bg.webp") bottom no-repeat; background-size: cover; position: relative; display: block; max-width: 100vw; text-align: center; padding: 50px; }
+
+@media screen and (max-height: 400px) { header { height: 100vh; } }
+
+section { color: #37474F !important; background: whitesmoke; max-width: 100vw; padding: 25px 70px; font-family: 'Montserrat', sans-serif !important; }
+
+section p { text-align: justify; }
+
+section h1, section h2, section h3, section h4, section h5, section h6 { font-weight: bold; text-transform: uppercase; }
+
+section h1 { font-size: 24px; }
+
+section h2 { font-size: 22px; }
+
+section p { font-size: 18px; }
+
+/*# sourceMappingURL=index.css.map */
