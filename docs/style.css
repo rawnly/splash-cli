@@ -1,0 +1,63 @@
+html, body { font-family: sans-serif; }
+
+header { width: 100vw; height: 35vh; min-height: 300px; top: 0; left: 0; position: relative; }
+
+@media screen and (max-width: 480px) { header { min-height: 100vh; } }
+
+@media screen and (max-height: 450px) { header { min-height: 100vh; } }
+
+header.wp { min-height: 100vh; }
+
+header #headTitle { position: absolute; margin: 0; padding: 0; left: 50%; top: 10%; transform: translateX(-50%); color: whitesmoke; font-family: 'Fira Code', sans-serif; }
+
+@media screen and (max-width: 480px) { header #headTitle { display: none; } }
+
+@media screen and (max-height: 450px) { header #headTitle { display: none; } }
+
+header #headTitle.wp { display: none; }
+
+header .button { transition: all .3s; background: rgba(255, 255, 255, 0.3); border: solid 2px transparent; padding: 7px; width: 100px; text-align: center; border-radius: 3px; color: rgba(255, 255, 255, 0.7); }
+
+header .button:hover { color: rgba(255, 255, 255, 0.3); background: transparent; cursor: pointer !important; border: 2px solid rgba(255, 255, 255, 0.3); }
+
+header .button * { margin: 0; padding: 0; }
+
+header .button a { margin: 0; padding: 0; color: inherit; }
+
+header .button a:hover, header .button a:focus, header .button a:link { color: inherit; text-decoration: none; }
+
+header .gbutton { position: absolute; transform: translate(-50%, -50%); left: 50%; top: 50%; }
+
+@media screen and (max-width: 480px) { header .gbutton { text-align: center; position: relative; top: 50%; left: auto; transform: translateY(-50%); } }
+
+header .gbutton.wp { text-align: center !important; position: relative !important; top: 50% !important; left: auto !important; transform: translateY(-50%) !important; }
+
+header .gbutton * { margin: 5px; display: inline-block; font-family: 'Fira Code', sans-serif; }
+
+.sector { width: 100vw; height: 100vh; position: relative; }
+
+.gradient { background: linear-gradient(to bottom right, #32FFCE, #EE2D56); /* Standard syntax */ }
+
+#sec1, #sec2 { background: #EDEDED; }
+
+#sec1 .title, #sec2 .title { color: #121318; }
+
+#sec1.wp, #sec2.wp { display: none; }
+
+@media screen and (max-width: 480px) { #sec1, #sec2 { display: none; } }
+
+@media screen and (max-height: 450px) { #sec1, #sec2 { display: none; } }
+
+#sec1 { padding: 75px 75px 0px 75px; }
+
+#sec2 { padding: 0px 75px 75px 75px; }
+
+footer { width: 100vw; height: 15vh; }
+
+footer.wp { display: none; }
+
+@media screen and (max-width: 480px) { footer { display: none; } }
+
+@media screen and (max-height: 450px) { footer { display: none; } }
+
+/*# sourceMappingURL=style.css.map */
