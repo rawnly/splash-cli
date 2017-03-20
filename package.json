@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "description": "Unsplash photos as your wallpaper",
   "main": "cli.js",
   "author": {
