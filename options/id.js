@@ -18,7 +18,19 @@ const config = new Conf();
 // Init
 module.exports = fl => {
   function parse(string) {
-    return normalize(string).match(urlRegex) ? normalize(string).split('?photo=')[1] : string;
+    // return normalize(string).match(urlRegex) ? normalize(string).split('?photo=')[1] : string;
+    if (normalize(string).match(urlRegex)) {
+      let url = '';
+
+      if (normalize(string).split('?photo=')[1] === undefined) {
+        url = normalize(string).split('/photos/')[1];
+      } else {
+        url = normalize(string).split('?photo=')[1];
+      }
+
+      return url;
+    }
+    return string;
   }
 
   const id = parse(fl.id) ? parse(fl.id) : fl.id;
@@ -29,8 +41,6 @@ module.exports = fl => {
       throw new Error(err);
     }
   });
-
-  log(id);
 
   fs.exists(join(config.get('pic_dir'), `${id}.jpg`), exists => {
     if (exists === false) {

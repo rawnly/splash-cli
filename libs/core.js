@@ -6,7 +6,6 @@ const Ora = require('ora');
 const chalk = require('chalk');
 
 // Variables
-
 const log = console.log;
 const jparse = JSON.parse;
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
