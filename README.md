@@ -4,12 +4,13 @@
 
 Get beautiful wallpapers from [unsplash](unsplash)
 
----
-  i'm working on a new release, this should fix some flags and #16 and implement some cool features3
----
-
 ![screen](https://cloud.githubusercontent.com/assets/16429579/21467810/3f37f348-c9fa-11e6-9c6a-82fa8364f5e6.png)
 > The terminal shown above is [Hyper](hyper), with [hyper-sierra-vibrancy](hyper-sierra-vibrancy) as the terminal theme, and the [**oh-my-zsh**](oh-my-zsh) shell with `hyperzsh` **ZSH-THEME** as the theme.
+
+
+---
+  :star: i'm working on a new release, this should fix some flags and #16 and implement some cool features3
+---
 
 ## Installation
 To install `splash-cli` you must use a **node package manager** such as [yarn](yarn) or [npm](npm).
