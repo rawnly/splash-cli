@@ -18,7 +18,7 @@ const config = new Conf();
 // Init
 module.exports = fl => {
   function parse(string) {
-    // return normalize(string).match(urlRegex) ? normalize(string).split('?photo=')[1] : string;
+    // Return normalize(string).match(urlRegex) ? normalize(string).split('?photo=')[1] : string;
     if (normalize(string).match(urlRegex)) {
       let url = '';
 
@@ -47,7 +47,7 @@ module.exports = fl => {
       splash(apiUrlID, photo => {
         download({
           filename: join(config.get('pic_dir'), `${photo.id}.jpg`),
-          photo: photo
+          photo
         }, fl);
       });
     } else {

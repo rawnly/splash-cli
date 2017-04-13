@@ -24,6 +24,7 @@ const listCmd = require('./options/list');
 const saveCmd = require('./options/save');
 const idCmd = require('./options/id');
 const cleanCmd = require('./options/clean');
+const sizeCmd = require('./options/size');
 
 // Variables
 const log = console.log;
@@ -61,6 +62,8 @@ const cli = meow(`
 
       -u --user <username>         ${chalk.gray('# Pick random image from selected user')}
       -f --featured                ${chalk.gray('# Pick random image from featured photos')}
+      --size [WxH]
+
       -i --info                    ${chalk.gray('# Get EXIF infos and Photographer infos.')}
 
       --collection <collection_ID> ${chalk.gray('# Filter by collection')}
@@ -78,7 +81,7 @@ const cli = meow(`
 
       dir                         ${chalk.gray('# Get the main download directory.')}
         -s --set [path]           ${chalk.gray('# Set the main download directory.')}
-        
+
       update                      ${chalk.gray('# Update to latest version.')}
       clean                       ${chalk.gray('# Delete all downloaded photos.')}
       restore                     ${chalk.gray('# Restore settings to default.')}
@@ -92,8 +95,6 @@ const cli = meow(`
           p: 'progress',
           t: 'theme',
           i: 'info',
-          w: 'width',
-          h: 'heigth',
           f: 'featured',
           v: 'version',
           s: 'set'
@@ -154,6 +155,15 @@ function sp(action, flags) {
         process.exit();
       }
     });
+  } else if (flags.size) {
+    isOnline().then(value => {
+      if (value || config.get('proxy')) {
+        sizeCmd(flags);
+      } else {
+        console.log('I need an internet connection!');
+        process.exit();
+      }
+    });
   } else if (action === 'dir') {
     // Dir
     dirCmd(flags);
@@ -167,11 +177,11 @@ function sp(action, flags) {
         let url = '';
 
         if (flags.user) {
-          url = `${apiUrl}&&username=${flags.user}`;
+          url = `${apiUrl}&username=${flags.user}`;
         } else if (flags.featured) {
-          url = `${apiUrl}&&featured=${flags.featured}`;
+          url = `${apiUrl}&featured=${flags.featured}`;
         } else if (flags.collection) {
-          url = `${apiUrl}&&collection=${flags.collection}`;
+          url = `${apiUrl}&collection=${flags.collection}`;
         } else {
           url = `${apiUrl}`;
         }
@@ -179,7 +189,7 @@ function sp(action, flags) {
         splash(url, photo => {
           download({
             filename: join(config.get('pic_dir'), `${photo.id}.jpg`),
-            photo: photo
+            photo
           }, flags);
         });
       } else {

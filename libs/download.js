@@ -69,16 +69,23 @@ function infos(matrice, fl) {
   }
 }
 
-// filename | url, photo, fl
-function download(args = {}, fl, set = true) {
+// Filename | url, photo, fl
+function download(args = {custom: false}, fl, set = true) {
   spinner.text = 'Making something awsome';
   if (!fl.progress) {
     spinner.start();
   }
 
   const file = fs.createWriteStream(args.filename);
+  let url = '';
 
-  https.get(args.photo.urls.raw, response => {
+  if (args.custom === true) {
+    url = args.photo.urls.custom;
+  } else {
+    url = args.photo.urls.full;
+  }
+
+  https.get(url, response => {
     if (fl.progress) {
       const len = parseInt(response.headers['content-length'], 10);
       const bar = new ProgressBar(`${chalk.yellow('↓ ') + chalk.red(':percent')} [:bar] :elapsed s`, {
@@ -97,7 +104,7 @@ function download(args = {}, fl, set = true) {
     }
 
     response.pipe(file).on('finish', () => {
-      const img = `${config.get('pic_dir')}/${args.photo.id}.jpg`;
+      const img = args.filename;
 
       // Set the wallpaper and change the osx theme
       if (process.platform === 'darwin' && fl.theme) {
