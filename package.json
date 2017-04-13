@@ -50,7 +50,7 @@
     "xo": "^0.17.1"
   },
   "scripts": {
-    "test": "ava && xo"
+    "test": "xo"
   },
   "repository": {
     "type": "git",

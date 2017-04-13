@@ -4,13 +4,13 @@ const fs = require('fs');
 const ProgressBar = require('progress');
 const wallpaper = require('wallpaper');
 const Ora = require('ora');
-const Conf = require('conf');
+// Const Conf = require('conf');
 const Thief = require('color-thief');
 const tiny = require('tinycolor2');
 const darkMode = require('dark-mode');
 const chalk = require('chalk');
 
-const config = new Conf();
+// Const config = new Conf();
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 const thief = new Thief();
 const log = console.log;
