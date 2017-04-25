@@ -3,6 +3,7 @@
 const Ora = require('ora');
 const execa = require('execa');
 const chalk = require('chalk');
+const got = require('got');
 const pkg = require('../package.json');
 
 // ShortHands
@@ -21,8 +22,11 @@ module.exports = () => {
   spin.start();
 
   execa('npm', ['install', '--global', 'splash-cli']).then(() => {
-    spin.text = `Splash updated: ${chalk.yellow(old)} ==> ${chalk.green(pkg.version)}!`;
-    spin.succeed(spin.text);
+    got('https://raw.githubusercontent.com/Rawnly/splash-cli/master/package.json').then(({body}) => {
+      body = JSON.parse(body);
+      spin.text = `Splash updated: ${chalk.yellow(old)} ==> ${chalk.green(body.version)}!`;
+      spin.succeed(spin.text);
+    });
     log();
   });
 };
