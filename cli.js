@@ -51,44 +51,45 @@ if (firstRun()) {
 
 // Initializing
 const cli = meow(`
-  ${chalk.yellow.bold('# Usage')}
-    $ splash [subcommands]  [--flags]
 
-  ${chalk.yellow.bold('# Help')}
-    -h --help                      ${chalk.gray('# Display this message')}
-    -v --version                   ${chalk.gray('# Display splash version')}
-
-    ${chalk.blue.bold('## Search options')}
-
-      -u --user <username>         ${chalk.gray('# Pick random image from selected user')}
-      -f --featured                ${chalk.gray('# Pick random image from featured photos')}
-      --size [WxH]
-
-      -i --info                    ${chalk.gray('# Get EXIF infos and Photographer infos.')}
-
-      --collection <collection_ID> ${chalk.gray('# Filter by collection')}
-      --id <id | photo_url>        ${chalk.gray('# Get image by photo ID or URL.')}
+    USAGE: ${chalk.yellow('splash')} ${chalk.gray('[subcommand]  [--flags]')}
 
 
-    ${chalk.blue.bold('## Sub commands')}
+    ${chalk.yellow('-h --help')}                          ${chalk.gray('# Display this message')}
+    ${chalk.yellow('-v --version')}                       ${chalk.gray('# Display splash version')}
 
-      list [extra flags]          ${chalk.gray('# List of downloaded photos.')}
-        --export                  ${chalk.gray('# Export the photo list [--list].')}
+    ${chalk.blue('Picker parameters')}
 
-      save [path] [extra flags]  ${chalk.gray('# Save photo without setting it as wallpaper.')}
-        -s --set                 ${chalk.gray('# Set the saved photo [--save] as wallpaper.')}
-        -d --dest [path]
+      ${chalk.yellow('-u --user')} ${chalk.gray('<username>')}             ${chalk.gray('# Pick random image from selected user')}
+      ${chalk.yellow('-f --featured')}                    ${chalk.gray('# Pick random image from featured photos')}
+      ${chalk.yellow('--size')} ${chalk.gray('[es: 1920x1080]')}           ${chalk.gray('# Resize the image')}
 
-      dir                         ${chalk.gray('# Get the main download directory.')}
-        -s --set [path]           ${chalk.gray('# Set the main download directory.')}
+      ${chalk.yellow('-i --info')}                        ${chalk.gray('# Get EXIF infos and Photographer infos')}
 
-      update                      ${chalk.gray('# Update to latest version.')}
-      clean                       ${chalk.gray('# Delete all downloaded photos.')}
-      restore                     ${chalk.gray('# Restore settings to default.')}
+      ${chalk.yellow('--collection')} ${chalk.gray('<collection_ID>')}     ${chalk.gray('# Filter by collection')}
+      ${chalk.yellow('--id')} ${chalk.gray('<id | photo_url>')}            ${chalk.gray('# Get image by photo ID or URL')}
 
-      --offline <true|false>      ${chalk.gray('# Set as true if you are under proxy')}
-      -p --progress                  ${chalk.gray('# Show progressbar during downloads')}
-      -t --theme                     ${chalk.gray('# macOS Only! Set the dark theme if photo has low brightness')}`, {
+
+    ${chalk.blue('Commands')}
+
+      ${chalk.yellow.bold('list')} ${chalk.gray('[extra flags]')}          ${chalk.gray('# List of downloaded photos.')}
+        ${chalk.yellow('--export')}                       ${chalk.gray('# Export the photo list.')}
+
+      ${chalk.yellow.bold('save')} ${chalk.gray('[extra flags]')}          ${chalk.gray('# Save photo without setting it as wallpaper.')}
+        ${chalk.yellow('-s --set')}                       ${chalk.gray('# Set the saved photo as wallpaper.')}
+        ${chalk.yellow('-d --dest')} ${chalk.gray('[path]')}               ${chalk.gray('# Set the path for saved photos (Default: ~/Pictures/splash_photos)')}
+
+      ${chalk.yellow.bold('dir')}                         ${chalk.gray('# Get the main download directory.')}
+        ${chalk.yellow('-s --set')} ${chalk.gray('[path]')}                ${chalk.gray('# Set the main download directory.')}
+
+      ${chalk.yellow.bold('update')}                      ${chalk.gray('# Update to the latest version.')}
+      ${chalk.yellow.bold('clean')}                       ${chalk.gray('# Delete all downloaded photos.')}
+      ${chalk.yellow.bold('restore')}                     ${chalk.gray('# Restore settings to default.')}
+
+
+      ${chalk.yellow('--offline')} ${chalk.gray('<true|false>')}           ${chalk.gray('# Set as true if you are under proxy (Default: false)')}
+      ${chalk.yellow('-p --progress')}                    ${chalk.gray('# Show progressbar during downloads (Default: false)')}
+      ${chalk.yellow('-t --theme')}                       ${chalk.gray('# macOS Only! Set the the theme base on color brightness')}`, {
 
         alias: {
           d: 'dest',
@@ -97,7 +98,9 @@ const cli = meow(`
           i: 'info',
           f: 'featured',
           v: 'version',
-          s: 'set'
+          s: 'set',
+          h: 'help',
+          u: 'user'
         }
       });
 
@@ -114,8 +117,8 @@ function sp(action, flags) {
           padding: 1,
           margin: 2,
           align: 'center',
-          borderColor: 'yellow',
-          borderStyle: 'double'
+          borderColor: 'green',
+          borderStyle: 'single'
         }
       });
     }

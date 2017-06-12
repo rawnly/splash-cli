@@ -3,3 +3,5 @@
   import got from 'got';
   import execa from 'execa';
 */
+
+import test from 'ava';
