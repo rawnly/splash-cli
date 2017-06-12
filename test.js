@@ -5,3 +5,8 @@
 */
 
 import test from 'ava';
+
+test(t => {
+  console.log(t);
+  return true;
+});

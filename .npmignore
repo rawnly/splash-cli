@@ -5,3 +5,4 @@ docs/assets
 CHANGELOG.md
 .github
 .travis.yml
+yarn.lock

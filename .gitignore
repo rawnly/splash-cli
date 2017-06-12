@@ -2,3 +2,4 @@ node_modules
 *.map
 docs/bs-config.js
 docs/processors
+yarn.lock
