@@ -12,23 +12,25 @@ const join = path.join;
 // Delete elements
 
 function del(directory) {
-  log();
   fs.readdir(directory, (err, files) => {
     if (err) {
       throw new Error(err);
     }
 
     const imgs = [];
+
     files.forEach(item => {
       if (item.includes('.jpg')) {
         imgs.push(item);
       }
     });
+
     if (imgs[0]) {
-      const bar = new ProgressBar(`Deleted: ${chalk.green(':current')} of ${chalk.green(':total')}files from ${chalk.yellow(config.get('pic_dir'))}`, {
+      const bar = new ProgressBar(`
+Deleted: ${chalk.green(':current')} of ${chalk.green(':total')} files from ${chalk.yellow(config.get('pic_dir'))}
+      `, {
         total: imgs.length
       });
-      log('');
 
       files.forEach(file => {
         if (file.includes('.jpg')) {
@@ -38,9 +40,9 @@ function del(directory) {
         }
       });
     } else {
-      log('');
-      console.log(`${chalk.yellow.bold('✦')} The directory is empty!`);
-      log('');
+      console.log(`
+${chalk.yellow.bold('✦')} The directory is empty!
+      `);
     }
   });
 }
