@@ -1,0 +1,41 @@
+$c1: #37474F
+$c2: #FC1445
+
+html, body
+  margin: 0
+  padding: 0
+  font-size: 17px
+  font-family: 'Raleway', sans-serif
+
+  width: 100vw
+  height: 100vh
+
+a:not(.btn)
+  color: lighten($c2, 10%)
+
+  text-decoration: none !important
+  font-weight: bold
+
+  opacity: 1
+
+  transition: opacity .3s
+
+  &.hash::before
+    content: '#'
+
+  &:hover
+    opacity: .7
+
+h1
+  color: inherit
+  font-size: 3em
+
+  &.title
+    margin-bottom: .15em
+
+h2
+  color: inherit
+  font-size: 1.2em
+
+  &.subtitle
+    font-weight: lighter

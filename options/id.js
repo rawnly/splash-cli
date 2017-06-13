@@ -51,8 +51,8 @@ module.exports = fl => {
         }, fl);
       });
     } else {
-      log(`You have this photo (${id}.jpg) locally!`);
       wallpaper.set(join(config.get('pic_dir'), `${id}.jpg`));
+      log(`[${id}.jpg] You have this photo locally!`);
     }
   });
 };

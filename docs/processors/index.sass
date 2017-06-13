@@ -1,0 +1,59 @@
+// compileCompact: ../$1.css
+$c1: #37474F
+$c2: #FC1445
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat?100,200,300,400,500,600,700,800")
+@import "ext/generals"
+@import "ext/classes"
+
+body, html
+  background-color: whitesmoke
+
+header
+  color: #fff
+  background: url("assets/bg.webp") bottom no-repeat
+  background-size: cover
+
+  position: relative
+  display: block
+
+  max-width: 100vw
+
+  text-align: center
+
+  padding: 50px
+
+  @media screen and (max-height: 400px)
+    height: 100vh
+
+
+section
+  color: $c1 !important
+  background: whitesmoke
+  max-width: 100vw
+  padding: 25px 70px
+  font-family: 'Montserrat', sans-serif !important
+
+  p
+    text-align: justify
+
+  h1, h2,
+  h3, h4,
+  h5, h6
+    font-weight: bold
+    text-transform: uppercase
+
+  h1
+    font-size: 24px
+  h2
+    font-size: 22px
+
+  p
+    font-size: 18px
+
+code
+  color: #7951AC
+  background: white
+  padding: 4px
+  margin: 2px
+  border-radius: 4px

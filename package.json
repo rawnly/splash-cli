@@ -2,7 +2,7 @@
   "name": "splash-cli",
   "version": "2.4.2",
   "description": "Unsplash photos as your wallpaper",
-  "main": "index.js",
+  "main": "cli.js",
   "author": {
     "name": "Federico Vitale",
     "username": "Rawnly",
@@ -22,28 +22,23 @@
   ],
   "dependencies": {
     "chalk": "^1.1.3",
-    "chili-js": "^1.0.1",
     "clear": "^0.0.1",
-    "color-thief": "^2.2.2",
-    "conf": "^0.12.0",
-    "dark-mode": "^3.0.0",
-    "execa": "^0.6.3",
+    "conf": "^1.1.2",
+    "execa": "^0.7.0",
     "figlet": "^1.2.0",
     "first-run": "^1.2.0",
-    "got": "^6.7.1",
-    "is-online": "^7.0.0",
     "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
     "normalize-url": "^1.9.1",
     "ora": "^1.2.0",
     "progress": "^2.0.0",
-    "tinycolor2": "^1.4.1",
-    "update-notifier": "^2.1.0",
-    "url-regex": "^4.0.0",
-    "wallpaper": "^2.3.0"
+    "simple-download": "^0.3.1",
+    "update-notifier": "^2.2.0",
+    "wallpaper": "^2.4.0"
   },
   "bin": {
-    "splash": "./cli.js"
+    "splash": "./cli.js",
+    "sp": "./cli.js"
   },
   "devDependencies": {
     "ava": "^0.19.1",

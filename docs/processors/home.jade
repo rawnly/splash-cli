@@ -1,0 +1,57 @@
+// output: ../index.html
+doctype html
+html(lang="en")
+  head
+    // Meta Tags
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(name="theme-color" content="#10121A") 
+
+    title Splash Cli
+    
+    // Personal Stylesheet
+    link(rel="stylesheet" htef="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css")
+    link(rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
+    link(rel="stylesheet" href="index.css")
+  body
+    header 
+      .content
+        h1.title Splash Cli
+        h2.subtitle Beautiful photos as your wallpaper
+        
+        .buttons
+          a.btn(href="https://github.com/Rawnly/splash-cli/blob/master/docs/FEATURES.md") docs
+          a.btn(href="https://github.com/rawnly/splash-cli") github
+          a.btn(href="https://npmjs.com/packages/splash-cli") npm
+        
+    main 
+      section 
+        h1 Description
+        p
+          b Splash-cli
+          |  is a tool who provides to easly download
+          |           photos from 
+          a.hash(name='Free (do whatever you want) high-resolution photos.', href='https://unsplash.com') unsplash
+          |  and set them as your wallpaper.
+          |           The photos have full resolution and are under the 
+          a(href='https:unsplash.com/license') do whatever you want
+          |  license
+      
+      .divider
+      
+      section 
+        h1 Installation 
+        p 
+          b Let's go! 
+          | Download the 
+          a(href="https://github.com/rawnly/splash-cli/releases/latest") latest release
+          |  enter in the folder [
+          code splash-cli-X.X.X.zip
+          | ]
+        
+        
+    script#__bs_script__.
+      //<![CDATA[
+      document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.18.8'><\\/script>".replace("HOST", location.hostname));
+      //]]>

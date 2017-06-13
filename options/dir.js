@@ -1,5 +1,4 @@
 // Ext Modules
-
 const path = require('path');
 const os = require('os');
 const Conf = require('conf');

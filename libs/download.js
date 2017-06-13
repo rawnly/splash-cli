@@ -4,18 +4,15 @@ const fs = require('fs');
 const ProgressBar = require('progress');
 const wallpaper = require('wallpaper');
 const Ora = require('ora');
-// Const Conf = require('conf');
-const Thief = require('color-thief');
-const tiny = require('tinycolor2');
-const darkMode = require('dark-mode');
+const Conf = require('conf');
+const config = new Conf();
 const chalk = require('chalk');
+const clear = require('clear');
 
-// Const config = new Conf();
+const checkArchivment = require('../libs/archivments');
+
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
-const thief = new Thief();
 const log = console.log;
-
-// Functions
 
 function infos(matrice, fl) {
   const creator = {
@@ -72,6 +69,15 @@ function infos(matrice, fl) {
 // Filename | url, photo, fl
 function download(args = {custom: false}, fl, set = true) {
   spinner.text = 'Making something awsome';
+
+  // Archivments
+  config.set('counter', config.get('counter') + 1)
+  const archivment = checkArchivment(config.get('archivments'), config.get('counter'));
+  if (archivment) {
+    console.log(`[!!!] New archivment unlocked: "${chalk.yellow(archivment.name)}"`);
+    console.log('');
+  }
+
   if (!fl.progress) {
     spinner.start();
   }
@@ -106,21 +112,6 @@ function download(args = {custom: false}, fl, set = true) {
     response.pipe(file).on('finish', () => {
       const img = args.filename;
 
-      // Set the wallpaper and change the osx theme
-      if (process.platform === 'darwin' && fl.theme) {
-        darkMode.isDark().then(status => {
-          const color = `rgb( ${thief.getColor(img).join(', ')} )`;
-          const brightness = tiny(color).getBrightness();
-          const isBright = Boolean(brightness && brightness >= 127.5);
-
-          if (isBright && status === true) {
-            darkMode.disable();
-          } else if (!isBright && status === false) {
-            darkMode.enable();
-          }
-        });
-      }
-
       // Set wallpaper
       if (set) {
         wallpaper.set(img);
@@ -128,10 +119,12 @@ function download(args = {custom: false}, fl, set = true) {
 
       // Stop the spinner and log the output
       spinner.succeed();
+
+
       infos(args.photo, fl);
 
       // Spacer
-      log('');
+      console.log('');
     });
   });
 }

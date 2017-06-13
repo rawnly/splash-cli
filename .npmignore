@@ -1,8 +1,4 @@
-node_modules
-*.map
-docs
-docs/assets
-CHANGELOG.md
-.github
-.travis.yml
+.DS_Store
 yarn.lock
+test.js
+node_modules
