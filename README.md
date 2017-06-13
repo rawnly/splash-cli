@@ -20,7 +20,7 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](y
 
 To learn how to use **Splash** type `splash --help` into your terminal after installation, also you can read [the docs here](docs/FEATURES.md) or the basic version below.
 
-### Flags
+### Options
 ### `--id`
 > Parameter
 
@@ -68,7 +68,7 @@ Type: `String`<br>
 
 Default: `~/Pictures/splash_photos`
 
-### `--theme`
+### `--theme` - DEPRECATED
 With this flag `splash` will detect the photo's brightness and toggle the **macOS** `dark-mode`.
 ```bash
   $ splash --theme
