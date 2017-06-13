@@ -17,42 +17,42 @@ const config = new Conf();
 
 // Init
 module.exports = fl => {
-  function parse(string) {
+	function parse(string) {
     // Return normalize(string).match(urlRegex) ? normalize(string).split('?photo=')[1] : string;
-    if (normalize(string).match(urlRegex)) {
-      let url = '';
+		if (normalize(string).match(urlRegex)) {
+			let url = '';
 
-      if (normalize(string).split('?photo=')[1] === undefined) {
-        url = normalize(string).split('/photos/')[1];
-      } else {
-        url = normalize(string).split('?photo=')[1];
-      }
+			if (normalize(string).split('?photo=')[1] === undefined) {
+				url = normalize(string).split('/photos/')[1];
+			} else {
+				url = normalize(string).split('?photo=')[1];
+			}
 
-      return url;
-    }
-    return string;
-  }
+			return url;
+		}
+		return string;
+	}
 
-  const id = parse(fl.id) ? parse(fl.id) : fl.id;
-  const apiUrlID = `https://api.unsplash.com/photos/${id}?client_id=${token}`;
+	const id = parse(fl.id) ? parse(fl.id) : fl.id;
+	const apiUrlID = `https://api.unsplash.com/photos/${id}?client_id=${token}`;
 
-  mkdirp(config.get('pic_dir'), err => {
-    if (err) {
-      throw new Error(err);
-    }
-  });
+	mkdirp(config.get('pic_dir'), err => {
+		if (err) {
+			throw new Error(err);
+		}
+	});
 
-  fs.exists(join(config.get('pic_dir'), `${id}.jpg`), exists => {
-    if (exists === false) {
-      splash(apiUrlID, photo => {
-        download({
-          filename: join(config.get('pic_dir'), `${photo.id}.jpg`),
-          photo
-        }, fl);
-      });
-    } else {
-      wallpaper.set(join(config.get('pic_dir'), `${id}.jpg`));
-      log(`[${id}.jpg] You have this photo locally!`);
-    }
-  });
+	fs.exists(join(config.get('pic_dir'), `${id}.jpg`), exists => {
+		if (exists === false) {
+			splash(apiUrlID, photo => {
+				download({
+					filename: join(config.get('pic_dir'), `${photo.id}.jpg`),
+					photo
+				}, fl);
+			});
+		} else {
+			wallpaper.set(join(config.get('pic_dir'), `${id}.jpg`));
+			log(`[${id}.jpg] You have this photo locally!`);
+		}
+	});
 };

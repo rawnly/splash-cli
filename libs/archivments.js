@@ -1,11 +1,11 @@
 module.exports = (list, counter) => {
-  let unlocked = false;
+	let unlocked = false;
 
-  list.forEach(archivment => {
-    if ( counter == archivment.downloads ) {
-      unlocked = archivment;
-    }
-  })
+	list.forEach(archivment => {
+		if (counter === archivment.downloads) {
+			unlocked = archivment;
+		}
+	});
 
-  return unlocked;
-}
+	return unlocked;
+};

@@ -1,23 +1,19 @@
 // Modules
 
-const os = require('os');
-const path = require('path');
 const chalk = require('chalk');
 const Conf = require('conf');
 const frun = require('first-run');
-const pathParser = require("../libs/pathparser");
+const pathParser = require('../libs/pathparser');
 
 // Variables
 const log = console.log;
 const config = new Conf();
-const join = path.join;
-
 
 module.exports = () => {
-  config.set('pic_dir', pathParser('~/Pictures/splash_photos'));
-  frun.clear();
+	config.set('pic_dir', pathParser('~/Pictures/splash_photos'));
+	frun.clear();
 
-  log();
-  log(`${chalk.yellow('Splash:')} ${chalk.gray('Settings restored to default.')}`);
-  log();
+	log();
+	log(`${chalk.yellow('Splash:')} ${chalk.gray('Settings restored to default.')}`);
+	log();
 };

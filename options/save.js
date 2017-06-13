@@ -14,31 +14,29 @@ const apiUrl = `https://api.unsplash.com/photos/random?client_id=${token}`;
 
 const log = console.log;
 
-
-
 module.exports = fl => {
-  let url = '';
+	let url = '';
 
-  if (fl.user) {
-    url = `${apiUrl}&&username=${fl.user}`;
-  } else if (fl.featured) {
-    url = `${apiUrl}&&featured=${fl.featured}`;
-  } else if (fl.collection) {
-    url = `${apiUrl}&&collection=${fl.collection}`;
-  } else {
-    url = `${apiUrl}`;
-  }
+	if (fl.user) {
+		url = `${apiUrl}&&username=${fl.user}`;
+	} else if (fl.featured) {
+		url = `${apiUrl}&&featured=${fl.featured}`;
+	} else if (fl.collection) {
+		url = `${apiUrl}&&collection=${fl.collection}`;
+	} else {
+		url = `${apiUrl}`;
+	}
 
-  let dest = (fl.dest !== undefined && fl.dest.length) ? fl.dest : config.get('pic_dir');
+	const dest = (fl.dest !== undefined && fl.dest.length) ? fl.dest : config.get('pic_dir');
 
-  splash(url, photo => {
-    download({
-      filename: path.join(dest, `${photo.id}.jpg`),
-      photo: photo
-    }, fl, false, () => {
-        log();
-        log(`${chalk.yellow('Splash:')} Photo saved at ${dest}`);
-        log();
-    });
-  });
+	splash(url, photo => {
+		download({
+			filename: path.join(dest, `${photo.id}.jpg`),
+			photo
+		}, fl, false, () => {
+			log();
+			log(`${chalk.yellow('Splash:')} Photo saved at ${dest}`);
+			log();
+		});
+	});
 };
