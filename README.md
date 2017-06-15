@@ -1,5 +1,7 @@
 # Splash
-> Looking for something easier? Check out the [desktop app](https://github.com/rawnly/splashdesktop)
+> Looking for something easier? Check out the [desktop app](https://github.com/rawnly/splashdesktop) <br>
+<br>
+
 [![Downloads][downloads]][npm-url] [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](build_url)
 
 Get beautiful wallpapers from [unsplash](unsplash)
