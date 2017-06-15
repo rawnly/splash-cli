@@ -1,6 +1,5 @@
 # Splash
-[![XO code style](http://rawnly.com/badges/linterbadge.svg)](xo_url)
-
+> Looking for something easier? Check out the [desktop app](https://github.com/rawnly/splashdesktop)
 [![Downloads][downloads]][npm-url] [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](build_url)
 
 Get beautiful wallpapers from [unsplash](unsplash)
