@@ -9,10 +9,25 @@ const Conf = require('conf');
 const config = new Conf();
 const chalk = require('chalk');
 
-const checkArchivment = require('../libs/archivments');
+const checkArchivment = require('./archivments');
 
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 const log = console.log;
+
+function checkArchivment_(list, counter) {
+	let unlocked = false;
+
+	if (list) {
+		list.forEach(archivment => {
+			if (counter === archivment.downloads) {
+				unlocked = archivment;
+			}
+		});
+	}
+
+	return unlocked;
+};
+
 
 function infos(matrice, fl) {
 	const creator = {
@@ -72,11 +87,8 @@ function download(args = {custom: false}, fl, set = true) {
 
   // Archivments
 	config.set('counter', config.get('counter') + 1);
-	const archivment = checkArchivment(config.get('archivments'), config.get('counter'));
-	if (archivment) {
-		console.log(`[!!!] New archivment unlocked: "${chalk.yellow(archivment.name)}"`);
-		console.log('');
-	}
+
+	const archivment = checkArchivment_(config.get('archivments'), config.get('counter'));
 
 	if (!fl.progress) {
 		spinner.start();
@@ -124,6 +136,11 @@ function download(args = {custom: false}, fl, set = true) {
 
       // Spacer
 			console.log('');
+
+			if (archivment) {
+				console.log(`[!!!] New archivment unlocked: "${chalk.yellow(archivment.name)}"`);
+				console.log('');
+			}
 		});
 	});
 }

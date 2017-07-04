@@ -139,6 +139,21 @@ function sp(command, flags) {
 			});
 		}
 
+    if (!config.get('archivments')) {
+      config.set('archivments', [
+				{
+					name: 'First Download',
+					downloads: 1
+				}, {
+					name: 'I love photos',
+					downloads: 10
+				}, {
+					name: 'Hyper Downloader',
+					downloads: 100
+				}
+			]);
+    }
+
 		switch (command) {
 			case 'update':
 				updateCMD();
@@ -165,6 +180,7 @@ function sp(command, flags) {
 				archivments.forEach(archivment => {
 					console.log(`${chalk.green(archivment.name)} unlock at ${chalk.yellow(archivment.downloads + '↓')}`);
 				});
+
 				console.log();
 				console.log(`Total Downloads: ${chalk.red(config.get('counter'))}`);
 
