@@ -1,5 +1,3 @@
-const chalk = require('chalk');
-
 module.exports = (list, counter) => {
 	let unlocked = false;
 

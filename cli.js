@@ -139,8 +139,8 @@ function sp(command, flags) {
 			});
 		}
 
-    if (!config.get('archivments')) {
-      config.set('archivments', [
+		if (!config.get('archivments')) {
+			config.set('archivments', [
 				{
 					name: 'First Download',
 					downloads: 1
@@ -152,7 +152,7 @@ function sp(command, flags) {
 					downloads: 100
 				}
 			]);
-    }
+		}
 
 		switch (command) {
 			case 'update':

@@ -9,8 +9,6 @@ const Conf = require('conf');
 const config = new Conf();
 const chalk = require('chalk');
 
-const checkArchivment = require('./archivments');
-
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 const log = console.log;
 
@@ -26,8 +24,7 @@ function checkArchivment_(list, counter) {
 	}
 
 	return unlocked;
-};
-
+}
 
 function infos(matrice, fl) {
 	const creator = {
