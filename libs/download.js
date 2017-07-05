@@ -70,11 +70,11 @@ function infos(matrice, fl) {
 			}
 		}
 		log('');
-		log(`Shooted by: ${chalk.cyan.bold(creator.fullname)} (${chalk.yellow(creator.username)})`);
+		log(`Shot by: ${chalk.cyan.bold(creator.fullname)} (${chalk.yellow(creator.username)})`);
 		log(`Profile URL: ${matrice.user.links.html}`);
 	} else {
 		log('');
-		log(`Shooted by: ${chalk.cyan.bold(creator.fullname)} (${chalk.yellow(creator.username)})`);
+		log(`Shot by: ${chalk.cyan.bold(creator.fullname)} (${chalk.yellow(creator.username)})`);
 	}
 }
 
