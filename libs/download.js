@@ -80,7 +80,7 @@ function infos(matrice, fl) {
 
 // Filename | url, photo, fl
 function download(args = {custom: false}, fl, set = true) {
-	spinner.text = 'Making something awsome';
+	spinner.text = 'Making something awesome';
 
   // Archivments
 	config.set('counter', config.get('counter') + 1);
@@ -113,7 +113,7 @@ function download(args = {custom: false}, fl, set = true) {
 
 			response.on('data', chunk => {
 				bar.tick(chunk.length, {
-					passphrase: 'Making something awsome'
+					passphrase: 'Making something awesome'
 				});
 			});
 		}
