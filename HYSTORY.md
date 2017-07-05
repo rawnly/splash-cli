@@ -1,3 +1,10 @@
+2.5.2 / 2017-07-05
+==================
+
+  * v2.5.2
+  * Implemented archivments
+  * Improved better syntax for download function
+
 2.5.1 / 2017-06-14
 ==================
 
