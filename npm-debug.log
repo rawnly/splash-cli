@@ -1,0 +1,114 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@3.10.9
+3 info using node@v6.9.2
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/developer/Desktop/splash-cli',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/developer/.npm/splash-cli/2.5.2/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/developer/.npm correctMkdir not in flight; initializing
+10 info lifecycle splash-cli@2.5.2~prepublish: splash-cli@2.5.2
+11 silly lifecycle splash-cli@2.5.2~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/developer/.npm/splash-cli/2.5.2/package.tgz',
+12 verbose tar pack   '/Users/developer/Desktop/splash-cli' ]
+13 verbose tarball /Users/developer/.npm/splash-cli/2.5.2/package.tgz
+14 verbose folder /Users/developer/Desktop/splash-cli
+15 verbose addLocalTarball adding from inside cache /Users/developer/.npm/splash-cli/2.5.2/package.tgz
+16 verbose correctMkdir /Users/developer/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd splash-cli@2.5.2
+18 verbose afterAdd /Users/developer/.npm/splash-cli/2.5.2/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/developer/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/developer/.npm/splash-cli/2.5.2/package/package.json written
+21 silly publish { name: 'splash-cli',
+21 silly publish   version: '2.5.2',
+21 silly publish   description: 'Unsplash photos as your wallpaper',
+21 silly publish   main: 'cli.js',
+21 silly publish   author: { name: 'Federico Vitale', email: 'fedevitale99@gmail.com' },
+21 silly publish   license: 'MIT',
+21 silly publish   keywords:
+21 silly publish    [ 'splash',
+21 silly publish      'wallpaper',
+21 silly publish      'wallpapers',
+21 silly publish      'unsplash',
+21 silly publish      'commandline',
+21 silly publish      'got',
+21 silly publish      'meow',
+21 silly publish      'photo' ],
+21 silly publish   dependencies:
+21 silly publish    { chalk: '^1.1.3',
+21 silly publish      clear: '^0.0.1',
+21 silly publish      conf: '^1.1.2',
+21 silly publish      execa: '^0.7.0',
+21 silly publish      figlet: '^1.2.0',
+21 silly publish      'first-run': '^1.2.0',
+21 silly publish      got: '^7.0.0',
+21 silly publish      meow: '^3.7.0',
+21 silly publish      mkdirp: '^0.5.1',
+21 silly publish      'normalize-url': '^1.9.1',
+21 silly publish      ora: '^1.2.0',
+21 silly publish      progress: '^2.0.0',
+21 silly publish      'simple-download': '^0.3.1',
+21 silly publish      'update-notifier': '^2.2.0',
+21 silly publish      'url-regex': '^4.1.1',
+21 silly publish      wallpaper: '^2.4.0' },
+21 silly publish   bin: { splash: './cli.js', sp: './cli.js' },
+21 silly publish   devDependencies:
+21 silly publish    { ava: '^0.19.1',
+21 silly publish      eslint: '^4.0.0',
+21 silly publish      'eslint-plugin-unicorn': '^2.1.1',
+21 silly publish      xo: '^0.17.1' },
+21 silly publish   scripts: { test: 'xo' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/Rawnly/splash-cli.git' },
+21 silly publish   bugs: { url: 'https://github.com/Rawnly/splash-cli/issues' },
+21 silly publish   homepage: 'https://github.com/Rawnly/splash-cli#readme',
+21 silly publish   readme: '# Splash\n> Looking for something easier? Check out the [desktop app](https://github.com/rawnly/splashdesktop) <br>\n<br>\n\n[![Downloads][downloads]][npm-url] [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](build_url)\n\nGet beautiful wallpapers from [unsplash](unsplash)\n\n![screen](https://cloud.githubusercontent.com/assets/16429579/21467810/3f37f348-c9fa-11e6-9c6a-82fa8364f5e6.png)\n> The terminal shown above is [Hyper](hyper), with [hyper-sierra-vibrancy](hyper-sierra-vibrancy) as the terminal theme, and the [**oh-my-zsh**](oh-my-zsh) shell with `hyperzsh` **ZSH-THEME** as the theme.\n\n## Installation\nTo install `splash-cli` you must use a **node package manager** such as [yarn](yarn) or [npm](npm).\n\n```bash\n\t$ [sudo] npm i -g splash-cli #or yarn\n```\n\n## Usage\n![usage](https://cloud.githubusercontent.com/assets/11269635/21428079/7b24cc80-c858-11e6-8dc3-2e164d23804a.gif)\n\nTo learn how to use **Splash** type `splash --help` into your terminal after installation, also you can read [the docs here](docs/FEATURES.md) or the basic version below.\n\n### Options\n### `--id`\n> Parameter\n\nPick a photo from the `id` or the `url`\n```bash\n  $ splash --id <id|url>\n```\nInput: `Yes`<br>\n\nType: `String`<br>\n\nDefault: `none`\n\n### `save`\n> Subcommand\n\nSave a photo without set it as wallpaper.\n```bash\n  $ splash save \n  $ splash save --dest [path] #or -d\n  $ splash save --set #or -s\n```\n**`REMEMBER`**: The path is relative to your position. So if you are in `~/Desktop` and you have setted `.` as path, it will save the photo in `~/Desktop`.\n\nInput: `Yes`<br>\n\nType: `String`<br>\n\nDefault: `~/Pictures/splash_photos`\n\n### `dir`\nSet default download directory for pictures.\n\n```bash\n  $ splash dir [--flags] \n\n  $ splash dir --set [path] #or -s\n```\n\nIf no `path` it will returns the active `path`.\n\nInput: `Yes`<br>\n\nType: `String`<br>\n\nDefault: `~/Pictures/splash_photos`\n\n### `--theme` - DEPRECATED\nWith this flag `splash` will detect the photo\'s brightness and toggle the **macOS** `dark-mode`.\n```bash\n  $ splash --theme\n  $ splash -t \n```\n\n![theme](https://cloud.githubusercontent.com/assets/16429579/23823903/7dcdba94-066c-11e7-9dc4-23cf338c80f5.png)\n\n\nPlatform: `darwin`<br>\n\nInput: `none`<br>\n\nType: `Boolean`<br>\n\nDefault: `false`\n\n\n\n## Related\n- [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.\n\n\n\n<br>\n-\nI hope you enjoyed this project, if you, drop a :star: ! It\'s free!  \n\n\n\n\n[latest]: https://github.com/rawnly/splash-cli/releases/latest\n[npm-url]: https://npmjs.org/package/splash-cli\n[downloads]:http://img.shields.io/npm/dm/splash-cli.svg\n[npm-image]: http://img.shields.io/npm/v/splash-cli.svg\n[unsplash]: http://unsplash.com\n[hyper]: https://hyper.is\n[hyper-sierra-vibrancy]: https://npmjs.org/package/hyper-sierra-vibrancy\n[oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh\n[yarn]: https://github.com/yarnpkg/yarn\n[npm]: https://npmjs.org\n[build_badge]: https://travis-ci.org/Rawnly/splash-cli.svg?branch=master\n[build_url]: https://travis-ci.org/Rawnly/splash-cli\n[xo_badge]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg\n[xo_url]: https://github.com/sindresorhus/xo\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: '7fbcb9762f2807067d42550411da2cb98f70c9d7',
+21 silly publish   _id: 'splash-cli@2.5.2',
+21 silly publish   _shasum: '0d357e1e33fdacf8003b3dc5dc67c8a14dec1a14',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name splash-cli
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'splash-cli',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'splash-cli',
+26 silly mapToRegistry   name: 'splash-cli',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/splash-cli
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /Users/developer/.npm/splash-cli/2.5.2/package.tgz
+30 verbose stack Error: auth required for publishing
+30 verbose stack     at CachingRegistryClient.publish (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/publish.js:30:14)
+30 verbose stack     at /usr/local/lib/node_modules/npm/lib/publish.js:138:14
+30 verbose stack     at mapToRegistry (/usr/local/lib/node_modules/npm/lib/utils/map-to-registry.js:62:3)
+30 verbose stack     at publish_ (/usr/local/lib/node_modules/npm/lib/publish.js:107:3)
+30 verbose stack     at Array.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/slide/lib/bind-actor.js:15:8)
+30 verbose stack     at LOOP (/usr/local/lib/node_modules/npm/node_modules/slide/lib/chain.js:15:14)
+30 verbose stack     at LOOP (/usr/local/lib/node_modules/npm/node_modules/slide/lib/chain.js:14:28)
+30 verbose stack     at chain (/usr/local/lib/node_modules/npm/node_modules/slide/lib/chain.js:20:5)
+30 verbose stack     at /usr/local/lib/node_modules/npm/lib/publish.js:73:5
+30 verbose stack     at RES (/usr/local/lib/node_modules/npm/node_modules/inflight/inflight.js:23:14)
+31 verbose cwd /Users/developer/Desktop/splash-cli
+32 error Darwin 16.6.0
+33 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+34 error node v6.9.2
+35 error npm  v3.10.9
+36 error code ENEEDAUTH
+37 error need auth auth required for publishing
+38 error need auth You need to authorize this machine using `npm adduser`
+39 verbose exit [ 1, true ]
