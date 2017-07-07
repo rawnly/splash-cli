@@ -1,5 +1,19 @@
-2.5.2 / 2017-07-05
+2.6.0 / 2017-07-07
 ==================
+* v2.6.0
+* Better contributing file.
+* New Readme.
+* Closed #18
+* Fixed some typo: 
+  * [#19](https://github.com/Rawnly/splash-cli/pull/19) - Correct "Shooted by" to "Shot by"
+  * [#20](https://github.com/Rawnly/splash-cli/pull/20) - Correct "awsome" to "awesome" 
+
+### Contributors
+- [@AAlecRust](https://github.com/AAlecRust)
+
+
+2.5.2 / 2017-07-05
+===================
 
   * v2.5.2
   * Implemented archivments
