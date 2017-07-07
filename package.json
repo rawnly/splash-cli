@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "description": "Get beautiful wallpapers from Unsplash",
   "main": "cli.js",
   "author": {
@@ -19,15 +19,15 @@
     "got",
     "meow",
     "photo",
-		"photos",
-		"clear",
-		"client",
-		"commandline",
-		"nodejs",
-		"macos",
-		"win",
-		"linux",
-		"ubuntu"
+    "photos",
+    "clear",
+    "client",
+    "commandline",
+    "nodejs",
+    "macos",
+    "win",
+    "linux",
+    "ubuntu"
   ],
   "dependencies": {
     "chalk": "^1.1.3",
