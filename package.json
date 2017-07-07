@@ -1,13 +1,13 @@
 {
   "name": "splash-cli",
   "version": "2.5.2",
-  "description": "Unsplash photos as your wallpaper",
+  "description": "Get beautiful wallpapers from Unsplash",
   "main": "cli.js",
   "author": {
     "name": "Federico Vitale",
     "username": "Rawnly",
     "email": "fedevitale99@gmail.com",
-    "home": "https://github.com/Rawnly"
+    "home": "https://rawnly.com"
   },
   "license": "MIT",
   "keywords": [
@@ -18,7 +18,16 @@
     "commandline",
     "got",
     "meow",
-    "photo"
+    "photo",
+		"photos",
+		"clear",
+		"client",
+		"commandline",
+		"nodejs",
+		"macos",
+		"win",
+		"linux",
+		"ubuntu"
   ],
   "dependencies": {
     "chalk": "^1.1.3",
@@ -39,8 +48,7 @@
     "wallpaper": "^2.4.0"
   },
   "bin": {
-    "splash": "./cli.js",
-    "sp": "./cli.js"
+    "splash": "./cli.js"
   },
   "devDependencies": {
     "ava": "^0.19.1",
