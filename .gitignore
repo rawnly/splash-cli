@@ -1,5 +1,6 @@
 .DS_Store
-yarn.lock
 test.js
 node_modules
 CHANGELOG.md
+old-readme.md
+tmp-assets
