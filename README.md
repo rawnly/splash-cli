@@ -7,7 +7,7 @@
 [![Downloads](https://camo.githubusercontent.com/fbc124b0e8d924d7f302d6500451778e381f8b78/687474703a2f2f696d672e736869656c64732e696f2f6e706d2f646d2f73706c6173682d636c692e737667)](https://npmjs.org/package/splash-cli) [![Build Status](https://camo.githubusercontent.com/46ec4f1f708c9a91132c190fa0f8918dadeaa04a/68747470733a2f2f7472617669732d63692e6f72672f5261776e6c792f73706c6173682d636c692e7376673f6272616e63683d6d6173746572)](/Rawnly/splash-cli/blob/master/build_url)
 <!-- /badges -->
 
-![full-view](tmp-assets/full-view.png)
+![full-view](http://i.imgur.com/R34r5S1.jpg)
 > #### Get beautiful wallpapers from [unsplash](uwebsite) 
 > The terminal shown above is [Hyper][hyper], with a custom theme, and the [**oh-my-zsh**][oh-my-zsh] shell with `hyperzsh` **ZSH-THEME** as the theme.
 
@@ -23,7 +23,7 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](/
   $ sudo yarn global add splash-cli
 ```
 # Usage
-![help-menu](tmp-assets/help-menu.png)
+![help-menu](http://i.imgur.com/G93veRS.png)
  
  Splash is easy and quick to use, just run `splash` to start.
  
