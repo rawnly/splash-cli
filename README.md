@@ -1,117 +1,62 @@
 # Splash
-> Looking for something easier? Check out the [desktop app](https://github.com/rawnly/splashdesktop) <br>
+> Looking for something easier? Check out the [desktop version][desk]
+
 <br>
 
-[![Downloads][downloads]][npm-url] [![Build Status](https://travis-ci.org/Rawnly/splash-cli.svg?branch=master)](build_url)
+<!-- badges -->
+[![Downloads](https://camo.githubusercontent.com/fbc124b0e8d924d7f302d6500451778e381f8b78/687474703a2f2f696d672e736869656c64732e696f2f6e706d2f646d2f73706c6173682d636c692e737667)](https://npmjs.org/package/splash-cli) [![Build Status](https://camo.githubusercontent.com/46ec4f1f708c9a91132c190fa0f8918dadeaa04a/68747470733a2f2f7472617669732d63692e6f72672f5261776e6c792f73706c6173682d636c692e7376673f6272616e63683d6d6173746572)](/Rawnly/splash-cli/blob/master/build_url)
+<!-- /badges -->
 
-Get beautiful wallpapers from [unsplash](unsplash)
+![full-view](tmp-assets/full-view.png)
+> #### Get beautiful wallpapers from [unsplash](uwebsite) 
+> The terminal shown above is [Hyper][hyper], with a custom theme, and the [**oh-my-zsh**][oh-my-zsh] shell with `hyperzsh` **ZSH-THEME** as the theme.
 
-![screen](https://cloud.githubusercontent.com/assets/16429579/21467810/3f37f348-c9fa-11e6-9c6a-82fa8364f5e6.png)
-> The terminal shown above is [Hyper](hyper), with [hyper-sierra-vibrancy](hyper-sierra-vibrancy) as the terminal theme, and the [**oh-my-zsh**](oh-my-zsh) shell with `hyperzsh` **ZSH-THEME** as the theme.
-
-## Installation
-To install `splash-cli` you must use a **node package manager** such as [yarn](yarn) or [npm](npm).
-
+<!-- # Backround
+So the first questio that you can have could be: "_Why?_" then i can answer: "_Because it's cool download random wallpaper from [unsplash][uwebsite] and set it via cmd_" -->
+# Install
+To install `splash-cli` you must use a **node package manager** such as [yarn](/Rawnly/splash-cli/blob/master/yarn) or [npm](/Rawnly/splash-cli/blob/master/npm).
 ```bash
-	$ [sudo] npm i -g splash-cli #or yarn
+  $ sudo npm install --global splash-cli
+  
+  # or via yarn
+  
+  $ sudo yarn global add splash-cli
 ```
-
-## Usage
-![usage](https://cloud.githubusercontent.com/assets/11269635/21428079/7b24cc80-c858-11e6-8dc3-2e164d23804a.gif)
-
-To learn how to use **Splash** type `splash --help` into your terminal after installation, also you can read [the docs here](docs/FEATURES.md) or the basic version below.
-
-### Options
-### `--id`
-> Parameter
-
-Pick a photo from the `id` or the `url`
-```bash
-  $ splash --id <id|url>
-```
-Input: `Yes`<br>
-
-Type: `String`<br>
-
-Default: `none`
-
-### `save`
-> Subcommand
-
-Save a photo without set it as wallpaper.
-```bash
-  $ splash save 
-  $ splash save --dest [path] #or -d
-  $ splash save --set #or -s
-```
-**`REMEMBER`**: The path is relative to your position. So if you are in `~/Desktop` and you have setted `.` as path, it will save the photo in `~/Desktop`.
-
-Input: `Yes`<br>
-
-Type: `String`<br>
-
-Default: `~/Pictures/splash_photos`
-
-### `dir`
-Set default download directory for pictures.
-
-```bash
-  $ splash dir [--flags] 
-
-  $ splash dir --set [path] #or -s
-```
-
-If no `path` it will returns the active `path`.
-
-Input: `Yes`<br>
-
-Type: `String`<br>
-
-Default: `~/Pictures/splash_photos`
-
-### `--theme` - DEPRECATED
-With this flag `splash` will detect the photo's brightness and toggle the **macOS** `dark-mode`.
-```bash
-  $ splash --theme
-  $ splash -t 
-```
-
-![theme](https://cloud.githubusercontent.com/assets/16429579/23823903/7dcdba94-066c-11e7-9dc4-23cf338c80f5.png)
-
-
-Platform: `darwin`<br>
-
-Input: `none`<br>
-
-Type: `Boolean`<br>
-
-Default: `false`
-
-
-
+# Usage
+![help-menu](tmp-assets/help-menu.png)
+ 
+ Splash is easy and quick to use, just run `splash` to start.
+ 
+ I have divided commands and flags in 2 categories:
+ 
+ #### Picker parameters 
+ - `-u --user <username>`: Pick random image from given user.
+ - `-f --featured`: Pick random image from the _home_ of [unsplash][uwebsite].
+ - `-i --info`: Return all the exif and shooter infos.
+ - `--collection <collection id>`: Pick image from the selected collection.
+ - `--id <id | pic_url>`: Download the given image.
+ 
+ #### Subcommands and options
+ - `list [extra sub-flags]`: return the list of downloaded photos.
+   - `--export`: save the list to a json file.
+- `save`:  Save the photo without set it as wallpaper.
+    - `-s --set`: Set the saved photo as wallpaper.
+    - `-d --dest`: Set the save directory _(Default: ~/Pictures/splash_photos)_
+- `dir`: Return the default download path. _(Default: ~/Pictures/splash_photos)_
+  - `-s --set`: Set the default download path.
+- `update`: Download and install the latest **splash-cli** version.
+- `clean`: Delete all downloaded photos.
+- `restore`: Restore all settings to default.
+- `-p --progress`: Show progressbar instead _"Making something awesome"_ while downloading photos.
+ 
+ 
 ## Related
-- [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
 
+*   [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
 
-
-<br>
--
-I hope you enjoyed this project, if you, drop a :star: ! It's free!  
-
-
-
-
-[latest]: https://github.com/rawnly/splash-cli/releases/latest
-[npm-url]: https://npmjs.org/package/splash-cli
-[downloads]:http://img.shields.io/npm/dm/splash-cli.svg
-[npm-image]: http://img.shields.io/npm/v/splash-cli.svg
-[unsplash]: http://unsplash.com
-[hyper]: https://hyper.is
-[hyper-sierra-vibrancy]: https://npmjs.org/package/hyper-sierra-vibrancy
+##### I hope you enjoyed this project, if you, drop a <g-emoji alias="star" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2b50.png" ios-version="6.0" title=":star:">⭐️</g-emoji> ! It's free!
+ 
+[uwebsite]: https://unsplash.com
+[desk]: https://github.com/rawnly/splashdesktop
 [oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
-[yarn]: https://github.com/yarnpkg/yarn
-[npm]: https://npmjs.org
-[build_badge]: https://travis-ci.org/Rawnly/splash-cli.svg?branch=master
-[build_url]: https://travis-ci.org/Rawnly/splash-cli
-[xo_badge]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg
-[xo_url]: https://github.com/sindresorhus/xo
+[hyper]: https://github.com/zeit/hyper
