@@ -12,11 +12,13 @@ const Meow = require('meow');
 const mkdirp = require('mkdirp');
 const normalize = require('normalize-url');
 const updateNotifier = require('update-notifier');
+const inquirer = require('inquirer');
 
 // Utilities
 const splash = require('./libs/core');
 const download = require('./libs/download');
 const pathParse = require('./libs/pathparser');
+const misc = require('./libs/misc');
 
 // OPTIONS
 const cleanCMD = require('./options/clean');
@@ -30,10 +32,14 @@ const updateCMD = require('./options/update');
 
 // PACKAGE JSON
 const pkg = require('./package.json');
+const prompt = inquirer.prompt;
+const openURL = misc.openURL;
+const catcher = misc.error;
 
 // VARIOUS VARIABLES
 const token = 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34';
 const apiURL = normalize(`https://api.unsplash.com/photos/random?client_id=${token}`);
+const authURL = normalize(`https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public`);
 
 // OBJECTS
 const config = new Conf();
@@ -46,6 +52,9 @@ const cli = new Meow(`
 
     ${chalk.yellow('-h --help')}                          ${chalk.gray('Display this message')}
     ${chalk.yellow('-v --version')}                       ${chalk.gray('Display splash version')}
+
+    ${chalk.yellow('-a --auth')}
+    ${chalk.yellow('--force')}
 
     ${chalk.blue('Picker parameters')}
 
@@ -89,7 +98,7 @@ const cli = new Meow(`
 });
 
 function sp(command, flags) {
-	if (notifier.update) {
+	if (notifier.update && !flags.force) {
 		if (flags.update) {
 			updateCMD();
 		} else {
@@ -195,7 +204,28 @@ function sp(command, flags) {
 			}
 
 		}
-	} else if (flags.id) {
+	} else if (flags.auth) {
+    openURL(authURL).then(a => {
+      prompt([{
+        name: "key",
+        message: "Auth Key",
+        default: config.get('auth-key') || undefined
+      }]).then(a => {
+        const key = a.key;
+
+        config.set('auth-key', key);
+
+        console.log('');
+        console.log(`New key: ${chalk.yellow(key)}`);
+        console.log('');
+
+        process.exit()
+      }).catch(e => {
+        catcher(e);
+        process.exit();
+      })
+    })
+  } else if (flags.id) {
 		idCMD(flags);
 	} else if (flags.size) {
 		sizeCMD(flags);

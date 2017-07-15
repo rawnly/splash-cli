@@ -37,9 +37,11 @@
     "figlet": "^1.2.0",
     "first-run": "^1.2.0",
     "got": "^7.0.0",
+    "inquirer": "^3.2.0",
     "meow": "^3.7.0",
     "mkdirp": "^0.5.1",
     "normalize-url": "^1.9.1",
+    "opn": "^5.1.0",
     "ora": "^1.2.0",
     "progress": "^2.0.0",
     "simple-download": "^0.3.1",
@@ -57,7 +59,8 @@
     "xo": "^0.17.1"
   },
   "scripts": {
-    "test": "xo"
+    "test": "xo *",
+    "next": "git add *; git commit -a -n 'new version'; git push -u origin master; clear; np"
   },
   "repository": {
     "type": "git",
