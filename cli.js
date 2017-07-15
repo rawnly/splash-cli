@@ -32,6 +32,8 @@ const updateCMD = require('./options/update');
 
 // PACKAGE JSON
 const pkg = require('./package.json');
+
+// SHORTCUTS
 const prompt = inquirer.prompt;
 const openURL = misc.openURL;
 const catcher = misc.error;
@@ -205,27 +207,27 @@ function sp(command, flags) {
 
 		}
 	} else if (flags.auth) {
-    openURL(authURL).then(a => {
-      prompt([{
-        name: "key",
-        message: "Auth Key",
-        default: config.get('auth-key') || undefined
-      }]).then(a => {
-        const key = a.key;
+		openURL(authURL).then(() => {
+			prompt([{
+				name: 'key',
+				message: 'Auth Key',
+				default: config.get('auth-key') || undefined
+			}]).then(a => {
+				const key = a.key;
 
-        config.set('auth-key', key);
+				config.set('auth-key', key);
 
-        console.log('');
-        console.log(`New key: ${chalk.yellow(key)}`);
-        console.log('');
+				console.log('');
+				console.log(`New key: ${chalk.yellow(key)}`);
+				console.log('');
 
-        process.exit()
-      }).catch(e => {
-        catcher(e);
-        process.exit();
-      })
-    })
-  } else if (flags.id) {
+				process.exit();
+			}).catch(err => {
+				catcher(err);
+				process.exit();
+			});
+		});
+	} else if (flags.id) {
 		idCMD(flags);
 	} else if (flags.size) {
 		sizeCMD(flags);
