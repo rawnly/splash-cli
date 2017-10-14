@@ -1,9 +1,9 @@
-<!-- Hey thanks for repor, please fill this form before post any issue -->
+<!-- Hey thanks for reporting, please fill this form before post any issue -->
 
 ### Basic informations
-- **splash-cli** version: `your_version_here`
-- NodeJs version: `your_node_version`
-- Your OS: **your_OS_here**
+- **splash-cli** version: `CLI_VERSION`
+- NodeJs version: `NODE_VERSION`
+- Your OS: **YOUR_OS_HERE**
 
 # ISSUE
 <!-- Your issue below -->
