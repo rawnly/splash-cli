@@ -11,13 +11,34 @@ const jparse = JSON.parse;
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 
 module.exports = (url, callback) => {
-	got(normalize(url)).then(response => {
+
+	url = normalize(url);
+
+	// callback(url);
+	got(url).then(({body}) => {
+		let data = body;
+		spinner.text = 'Connected!';
+		spinner.succeed();
+
+		callback(jparse(data));
+	}).catch(err => {
+		clear();
+		spinner.stop();
+
+		log();
+		log(chalk.yellow('Splash Error: ') + err.message);
+		log();
+		log();
+
+		throw new Error(err);
+	})
+
+	/*got(normalize(url)).then(response => {
 		spinner.text = 'Connected!';
 		spinner.succeed();
 
 		const body = response.body;
 		const photo = jparse(body);
-
 		callback(photo);
 	}).catch(err => {
 		clear();
@@ -26,5 +47,5 @@ module.exports = (url, callback) => {
 		log(chalk.yellow('Splash Error: ') + err.message);
 		log();
 		throw new Error(err);
-	});
+	});*/
 };

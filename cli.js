@@ -49,14 +49,15 @@ const config = new Conf();
 // SHORTCUTS
 const notifier = updateNotifier({pkg, updateCheckInterval: 1000});
 
+// Start client
 const cli = new Meow(`
     Usage: ${chalk.yellow('splash')} ${chalk.gray('[sub-command] [flags]')}
 
-    ${chalk.yellow('-h --help')}                          ${chalk.gray('Display this message')}
-    ${chalk.yellow('-v --version')}                       ${chalk.gray('Display splash version')}
+    ${chalk.yellow('-h --help')}                          ${chalk.gray('# Display this message')}
+    ${chalk.yellow('-v --version')}                       ${chalk.gray('# Display splash version')}
 
-    ${chalk.yellow('-a --auth')}
-    ${chalk.yellow('--force')}
+    ${chalk.yellow('-a --auth')} 						${chalk.gray('~ Beta ~')}
+    ${chalk.yellow('--force')} 							${chalk.gray('~ Beta ~')}
 
     ${chalk.blue('Picker parameters')}
 
@@ -127,6 +128,9 @@ function sp(command, flags) {
 					name: 'I love photos',
 					downloads: 10
 				}, {
+					name: 'We are near to the HYPER!',
+					downloads: 75
+				}, {
 					name: 'HyperDownloader',
 					downloads: 100
 				}
@@ -138,6 +142,7 @@ function sp(command, flags) {
 					console.dir(err);
 					return;
 				}
+
 				console.log(data);
 				console.log();
 
@@ -245,11 +250,17 @@ function sp(command, flags) {
 		}
 
 		splash(url, photo => {
-			download({
-				filename: join(config.get('pic_dir'), `${photo.id}.jpg`),
-				photo
-			}, flags, () => {
-				console.log('x');
+			if (!config.get('pic_dir')) {
+				config.set('pic_dir', pathParse('~/Pictures/splash_photos'));
+			}
+
+			let options =  {
+				filename: join( config.get('pic_dir'), `${photo.id}-jpg` ),
+				photo: photo
+			};
+
+			download(options, flags, () => {
+				// Some callback
 			});
 		});
 	}
