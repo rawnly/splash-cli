@@ -254,8 +254,8 @@ function sp(command, flags) {
 				config.set('pic_dir', pathParse('~/Pictures/splash_photos'));
 			}
 
-			let options =  {
-				filename: join( config.get('pic_dir'), `${photo.id}-jpg` ),
+			let options = {
+				filename: join(config.get('pic_dir'), `${photo.id}-jpg`),
 				photo: photo
 			};
 

@@ -11,7 +11,6 @@ const jparse = JSON.parse;
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 
 module.exports = (url, callback) => {
-
 	url = normalize(url);
 
 	// callback(url);
@@ -31,9 +30,9 @@ module.exports = (url, callback) => {
 		log();
 
 		throw new Error(err);
-	})
+	});
 
-	/*got(normalize(url)).then(response => {
+	/* got(normalize(url)).then(response => {
 		spinner.text = 'Connected!';
 		spinner.succeed();
 
@@ -47,5 +46,5 @@ module.exports = (url, callback) => {
 		log(chalk.yellow('Splash Error: ') + err.message);
 		log();
 		throw new Error(err);
-	});*/
+	}); */
 };
