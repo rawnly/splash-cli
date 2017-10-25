@@ -56,8 +56,8 @@ const cli = new Meow(`
     ${chalk.yellow('-h --help')}                          ${chalk.gray('# Display this message')}
     ${chalk.yellow('-v --version')}                       ${chalk.gray('# Display splash version')}
 
-    ${chalk.yellow('-a --auth')} 						${chalk.gray('~ Beta ~')}
-    ${chalk.yellow('--force')} 							${chalk.gray('~ Beta ~')}
+    ${chalk.yellow('-a --auth')}			${chalk.gray('~ Beta ~')}
+    ${chalk.yellow('--force')}				${chalk.gray('~ Beta ~')}
 
     ${chalk.blue('Picker parameters')}
 
