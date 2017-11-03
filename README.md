@@ -1,4 +1,4 @@
-# Splash v2.7.0
+# Splash v2.7.0
 > This version is currently work in progress
 
 ## Test 
@@ -10,7 +10,7 @@
 - Node <= 8 (async/await)
 - Internet connection for downloads
 
-# Contributing 
+# Contributing 
 - Take a look at the **TODO** list
 - Fork this repo
 - Submit new **PR**
