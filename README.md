@@ -1,7 +1,7 @@
 # Splash v2.7.0
 > This version is currently work in progress
 
-## Test 
+## Test 
 - clone this repo
 - run `yarn` or `npm install`
 - run it via `npm start [splash flags (no help/version)]` or install it via `(sudo) npm link`
