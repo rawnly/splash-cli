@@ -5,13 +5,14 @@
 ![node version](	https://img.shields.io/node/v/splash-cli.svg)
 <!-- /badges -->
 
-## Test 
-- clone this repo
-- run `yarn` or `npm install`
-- run it via `npm start [splash flags (no help/version)]` or install it via `(sudo) npm link`
+## Installation 
+```sh
+	$ npm i -g splash-cli@2.7.0-alpha.xxx 
+```
+> Where **xxx** is the latest alpha release.
 
 # Requirements
-- Node <= 8 (async/await)
+- Node >= 8 (async/await)
 - Internet connection for downloads
 
 # Contributing 
@@ -20,8 +21,8 @@
 - Submit new **PR**
 
 # TODO 
-- `save` subcommand
-- `dir` subcommand
-- `list` subcommand
-- Add user authentication
-- Move to babel for async support in `node > v8`
+- [ ] `save` subcommand
+- [x] ~`dir` subcommand~
+- [x] ~`list` subcommand~
+- [ ] Add user authentication
+- [ ] Move to babel for async support in `node > v8`
