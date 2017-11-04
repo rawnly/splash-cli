@@ -1,6 +1,7 @@
 const opn = require('opn');
 const Ora = require('ora');
 const Conf = require('conf');
+const clear = require('clear');
 
 const os = require('os');
 
@@ -295,10 +296,9 @@ const downloadFlags = async (url, flags) => {
 			console.log();
 
 			// Update the URL
-			url += setUriParam('collections', collection);
+			url += setUriParam('collections', collection.id);
 		}
 	}
-
 	return url;
 }
 

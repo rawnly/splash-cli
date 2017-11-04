@@ -27,7 +27,10 @@ const cli = new Meow(`
 	}
 });
 
-cli.flags.quiet = true;
+// cli.flags.quiet = true;
+cli.flags.collection = "252265";
+
+console.log(cli.flags);
 client(cli.input, cli.flags);
 
 let count = 0;
@@ -38,4 +41,4 @@ let interval = setInterval(function() {
 	} else {
 		clearInterval(interval);
 	}
-}, process.env.SPLASH_DELAY || 5000);
+}, process.env.SPLASH_DELAY || 60000);

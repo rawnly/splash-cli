@@ -118,6 +118,8 @@ async function client(command, flags) {
 		// If id is specified download photo by "id"
 		url = await downloadFlags(url, flags);
 
+		console.log(url);
+/*
 		// Response from URL
 		const response = await splash(url, flags);
 
@@ -139,7 +141,7 @@ async function client(command, flags) {
 		// IF OK then download
 		if (statusCode === 200) {
 			download(flags, photo, setAsWallpaper);
-		}
+		} */
 	}
 }
 
