@@ -1,6 +1,10 @@
 # Splash v2.7.0
 > This version is currently work in progress
 
+<!-- badges -->
+![node version](	https://img.shields.io/node/v/splash-cli.svg)
+<!-- /badges -->
+
 ## Test 
 - clone this repo
 - run `yarn` or `npm install`
