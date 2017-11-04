@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.7.0-alpha.2",
+  "version": "2.7.0-alpha.3",
   "description": "Get beautiful wallpapers from Unsplash",
   "main": "client.js",
   "engineStrict": true,
