@@ -12,18 +12,23 @@ const spinner = new Ora({
 	spinner: 'earth'
 });
 
-const splash = async url => {
+const splash = async (url, flags) => {
 	url = normalize(url);
 
 	clear();
-	spinner.start();
+	
+	if ( !flags.quiet ) {
+		spinner.start();
+	}
 
 	try {
 		const {body, statusCode, statusMessage} = await got(url);
 		const photo = jparse(body);
 
-		spinner.text = 'Connected';
-		spinner.succeed();
+		if (!flags.quiet) {
+			spinner.text = 'Connected';
+			spinner.succeed();
+		}
 
 		return {data: photo, status: {statusCode, statusMessage}};
 	} catch (err) {

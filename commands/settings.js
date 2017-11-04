@@ -5,13 +5,13 @@ const clear = require('clear');
 const frun = require('first-run');
 
 const config = new Conf();
-const { pathParser } = require('../libs/utils');
+const {pathParser} = require('../libs/utils');
 
 module.exports = async (command, restore = false) => {
 	clear();
-	
+
 	if (!restore) {
-		let questions = [];
+		const questions = [];
 		const choices = ['raw', 'full', 'regular', 'thumb'];
 
 		const authQuestion = {
@@ -20,7 +20,7 @@ module.exports = async (command, restore = false) => {
 			default: config.get('auth-key'),
 			validate: token => {
 				const regex = /[a-z0-9]/g;
-				return regex.test(token) ? true : 'Invalid token';				
+				return regex.test(token) ? true : 'Invalid token';
 			}
 		};
 
@@ -63,7 +63,7 @@ module.exports = async (command, restore = false) => {
 			questions.push(sizeQuestion, authQuestion, directoryQuestion);
 		}
 
-		// get answers
+		// Get answers
 		const {size, auth, directory} = await inquirer.prompt(questions);
 
 		// Strong confirmation. keep user focus and prevent an accidental confirmation.
@@ -85,14 +85,14 @@ module.exports = async (command, restore = false) => {
 
 		if (confirm === 'yes') {
 			if (size) {
-				config.set('pic-size', size);				
-			} 
+				config.set('pic-size', size);
+			}
 
 			if (auth) {
-				config.set('auth-key', auth);				
+				config.set('auth-key', auth);
 			}
-			
-			if ( directory ) {
+
+			if (directory) {
 				config.set('directory', directory);
 			}
 
@@ -107,7 +107,7 @@ module.exports = async (command, restore = false) => {
 			console.log();
 		}
 	} else {
-		// if restore
+		// If restore
 		frun.clear();
 		clear();
 

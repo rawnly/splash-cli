@@ -17,26 +17,25 @@ const {
 
 const config = new Conf();
 const spinner = new Ora({
-	text: 'Connecting to Unsplash',
+	text: 'Making something awesome',
 	color: 'yellow',
 	spinner: 'earth'
-});
+});;
 
 const join = path.join;
 
-// flags, options, set as wallpaper
+// Flags, options, set as wallpaper
 function download(
 	flags,
-	options = { custom: false },
+	options = {custom: false},
 	setAsWallpaper = true
 ) {
-	spinner.text = 'Making something awesome';
 
 	// Increase downloads counter.
 	config.set('counter', config.get('counter') + 1);
 
-	// if no progress run the spinner
-	if (!flags.progress) {
+	// If no progress run the spinner
+	if (!flags.progress && !flags.quiet) {
 		spinner.start();
 	}
 
@@ -52,7 +51,7 @@ function download(
 
 	try {
 		https.get(url, response => {
-			// if --progress run the progressbar
+			// If --progress run the progressbar
 			if (flags.progress) {
 				const len = parseInt(response.headers['content-length'], 10);
 				const bar = new ProgressBar(chalk`{yellow ↓} {red :percent} [:bar] :elapsed s`, {
@@ -63,7 +62,7 @@ function download(
 					clear: true
 				});
 
-				// on data received fill the progressbar
+				// On data received fill the progressbar
 				response.on('data', chunk => {
 					bar.tick(chunk.length, {
 						passphrase: 'Making something awesome'
@@ -76,8 +75,10 @@ function download(
 					wallpaper.set(img);
 				}
 
-				spinner.succeed();
-
+				if (!flags.quiet) {
+					spinner.succeed();
+				}
+				
 				// Get photos infos
 				if (flags.infos) {
 					const exif = parseExif(photo);
@@ -85,7 +86,7 @@ function download(
 					console.log();
 
 					exif.forEach(item => {
-						console.log(chalk `{bold {yellow ${item.name.toUpperCase()}}}: ${item.value}`);
+						console.log(chalk`{bold {yellow ${item.name.toUpperCase()}}}: ${item.value}`);
 					});
 
 					console.log();

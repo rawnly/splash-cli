@@ -7,13 +7,13 @@ const {pathParser} = utils;
 
 module.exports = (write = false, file = './splash_photos') => {
 	clear();
-	
+
 	const folder = pathParser(defaults.directory);
 
 	const exists = fs.existsSync(folder);
 
 	if (exists) {
-		let extRegex = /\.[a-z]{3}$/;
+		const extRegex = /\.[a-z]{3}$/;
 		let list = fs.readdirSync(folder);
 		list = list.filter(pic => {
 			return extRegex.test(pic);
