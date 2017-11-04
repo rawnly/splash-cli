@@ -33,22 +33,34 @@ module.exports.checkArchivments = () => {
 	return unlocked;
 };
 
-module.exports.showCopy = (data) => {
+module.exports.showCopy = data => {
 	const user = data.user;
-
 	console.log();
+	
+	if ( data.description ) {
+		console.log();
+		console.log(chalk.dim(`> ${data.description}`))
+		console.log();
+	};
+	console.log(`Downloaded: ${ uFormatter(data.downloads) } times.`);
+	console.log(`Viewed: ${ uFormatter(data.views) } times.`);
+	console.log(`Liked by ${ uFormatter(data.likes) } users.`);
+
+	console.log();	
+	console.log();
+
 	console.log(`Shot by: ${chalk.cyan.bold(user.name)} (@${chalk.yellow(user.username)})`);
 	console.log();
 };
 
-module.exports.parseExif = (source) => {
+module.exports.parseExif = source => {
 	if (source.exif) {
 		const exif = [];
 
 		Object.keys(source.exif).forEach(item => {
 			let current = {};
 			current.name = item;
-			if ( source.exif[item] == undefined || source.exif[item] == '' ) {
+			if (source.exif[item] == undefined || source.exif[item] == '') {
 				current.value = '--';
 			} else {
 				current.value = source.exif[item];
@@ -63,7 +75,7 @@ module.exports.parseExif = (source) => {
 	return false;
 };
 
-module.exports.openURL = (url) => {
+module.exports.openURL = url => {
 	spinner.text = '';
 	spinner.start();
 	return new Promise(function (resolve, reject) {
@@ -79,17 +91,17 @@ module.exports.openURL = (url) => {
 	});
 };
 
-module.exports.splashError = (e, opt = {message: 'Splash Error', colors: { message: 'yellow', error: 'red' }}) => {
+module.exports.splashError = (e, opt = {message: 'Splash Error', colors: {message: 'yellow', error: 'red'}}) => {
 	console.log();
 	console.log(chalk`{${opt.colors.message} ${opt.message}:} {${opt.colors.error} ${e}}`);
-	
+
 	throw new Error(e);
 };
 
 module.exports.capitalize = (string, separator = ' ') => {
-	let words = string.split(separator);	
+	let words = string.split(separator);
 	words = words.map(word => {
-		return word.charAt(0).toUpperCase() +  word.substr(1, word.length);
+		return word.charAt(0).toUpperCase() + word.substr(1, word.length);
 	});
 
 	return words.join(separator);
@@ -99,7 +111,7 @@ module.exports.pathParser = path => {
 	if (path.includes('~')) {
 		path = path.replace('~', os.homedir());
 	}
-	
+
 	return path;
 };
 
@@ -109,7 +121,7 @@ module.exports.parseID = id => {
 
 	id = id.toString();
 
-	if ( regex.test(id) ) {
+	if (regex.test(id)) {
 		return id.match(regex)[0];
 	}
 
@@ -130,7 +142,7 @@ module.exports.parseCollection = alias => {
 	return false;
 };
 
-Array.prototype.first = function() {
+Array.prototype.first = function () {
 	return this[0];
 };
 
@@ -138,7 +150,7 @@ module.exports.collectionInfo = async id => {
 	try {
 		let {body} = await got(`${api.base}/collections/${id}?client_id=${api.token}`);
 		body = JSON.parse(body);
-		
+
 		return {
 			id: body.id,
 			title: body.title,
@@ -146,8 +158,66 @@ module.exports.collectionInfo = async id => {
 			user: body.user.username,
 			featured: body.featured,
 			curated: body.curated
-		}
+		};
 	} catch (error) {
-		throw new Error(error);		
+		throw new Error(error);
+	}
+};
+
+module.exports.setUriParam = (key, value) => {
+	return `&${key}=${value.toString()}`;
+}
+
+function kFormatter(num) {
+	if ( num > 999) {
+		if ( num % 1000 === 0) {
+			return num / 1000 + 'K';
+		} else {
+			return (num / 1000).toFixed(1) + 'K';
+		}
+	} else {
+		return num;
 	}
 }
+
+function mFormatter(num) {
+	if ( num > 999999) {
+		if ( num % 1000000 === 0) {
+			return num / 1000000 + 'M';
+		} else {
+			return (num / 1000000).toFixed(1) + 'M';
+		}
+	} else {
+		return num;
+	}
+}
+
+function bFormatter(num) {
+	if ( num > 999999999) {
+		if ( num % 1000000000 === 0) {
+			return num / 1000000000 + 'B';
+		} else {
+			return (num / 1000000000).toFixed(1) + 'B';
+		}
+	} else {
+		return num;
+	}
+}
+
+function uFormatter(num) {
+	if ( num > 999999999) {
+		return bFormatter(num)		
+	}
+
+	if (num > 999999) {
+		return mFormatter(num)
+	} 
+
+	if (num > 999) {
+		return kFormatter(num);
+	}
+
+	return num;
+}
+
+module.exports.formatter = uFormatter;

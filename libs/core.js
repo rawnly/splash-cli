@@ -7,27 +7,28 @@ const chalk = require('chalk');
 const jparse = JSON.parse;
 const jstring = JSON.stringify;
 const spinner = new Ora({
-	text: `Connecting to UNSPLASH`, 
-	color: 'yellow', 
+	text: `Connecting to UNSPLASH`,
+	color: 'yellow',
 	spinner: 'earth'
 });
 
-const splash = async (url) => {
+const splash = async url => {
 	url = normalize(url);
-	
+
+	clear();
 	spinner.start();
 
 	try {
-		const {body, statusCode, statusMessage} = await got(url);			
+		const {body, statusCode, statusMessage} = await got(url);
 		const photo = jparse(body);
 
 		spinner.text = 'Connected';
 		spinner.succeed();
 
-		return {data: photo, status: { statusCode, statusMessage }};			
-	} catch(err) {
+		return {data: photo, status: {statusCode, statusMessage}};
+	} catch (err) {
 		clear();
-		
+
 		spinner.fail();
 		console.log();
 		console.log(chalk`{yellow Splash Error:}`, err.statusMessage || err.name, err.statusCode || err.code);
@@ -35,6 +36,6 @@ const splash = async (url) => {
 		console.log();
 		return err;
 	}
-}
+};
 
 module.exports = splash;

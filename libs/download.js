@@ -2,7 +2,6 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-
 const ProgressBar = require('progress');
 const wallpaper = require('wallpaper');
 const chalk = require('chalk');
@@ -14,7 +13,7 @@ const {
 	parseExif,
 	showCopy,
 	checkArchivments
-} = require('./misc');
+} = require('./utils');
 
 const config = new Conf();
 const spinner = new Ora({
@@ -23,15 +22,12 @@ const spinner = new Ora({
 	spinner: 'earth'
 });
 
-
 const join = path.join;
 
 // flags, options, set as wallpaper
 function download(
 	flags,
-	options = {
-		custom: false
-	},
+	options = { custom: false },
 	setAsWallpaper = true
 ) {
 	spinner.text = 'Making something awesome';
@@ -49,14 +45,13 @@ function download(
 
 	const photo = options.photo ? options.photo : options;
 	const unlockedArchivment = checkArchivments();
-	const img = options.filename ? options.filename : join(config.get('pic_dir'), `${photo.id}.${extension}`);
+	const img = options.filename ? options.filename : join(config.get('directory'), `${photo.id}.${extension}`);
 
-	const url = options.custom ? photo.urls.custom : (photo.urls[size] ? photo.urls[size] : photo.urls.full);	
+	const url = options.custom ? photo.urls.custom : (photo.urls[size] ? photo.urls[size] : photo.urls.full);
 	const file = fs.createWriteStream(img);
 
 	try {
 		https.get(url, response => {
-			
 			// if --progress run the progressbar
 			if (flags.progress) {
 				const len = parseInt(response.headers['content-length'], 10);
@@ -67,7 +62,7 @@ function download(
 					total: len,
 					clear: true
 				});
-			
+
 				// on data received fill the progressbar
 				response.on('data', chunk => {
 					bar.tick(chunk.length, {
@@ -75,33 +70,33 @@ function download(
 					});
 				});
 			}
-			
+
 			response.pipe(file).on('finish', () => {
 				if (setAsWallpaper) {
 					wallpaper.set(img);
 				}
-			
+
 				spinner.succeed();
-			
+
 				// Get photos infos
 				if (flags.infos) {
 					const exif = parseExif(photo);
-			
+
 					console.log();
-			
+
 					exif.forEach(item => {
 						console.log(chalk `{bold {yellow ${item.name.toUpperCase()}}}: ${item.value}`);
 					});
-			
+
 					console.log();
 				}
-			
+
 				// Display 'shot by ...'
 				showCopy(photo);
-			
+
 				// Trailing space
 				console.log();
-			
+
 				if (unlockedArchivment) {
 					console.log(`Archivment Unlocked: "{yellow ${unlockedArchivment.name}}"`);
 					console.log();

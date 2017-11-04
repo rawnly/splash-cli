@@ -1,6 +1,6 @@
 {
 	"pic-size": "full",
-	"pic_dir": "~/Pictures/splash_photos",
+	"directory": "~/Pictures/splash_photos",
 	"auth-key": "undefined",
 	"last-alias": "undefined",
 	"user-auth": false,
