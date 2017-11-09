@@ -15,7 +15,6 @@ const clear = require('clear');
 
 // Const Ora = require('ora');
 const Conf = require('conf');
-const Meow = require('meow');
 
 const splash = require('./libs/core');
 const download = require('./libs/download');
@@ -48,7 +47,6 @@ defaults.directory = pathParser(defaults.directory);
 
 const config = new Conf();
 
-
 // Main function
 async function client(command, flags) {
 	// On first run set default settings.
@@ -66,8 +64,8 @@ async function client(command, flags) {
 		config.set('directory', defaults.directory);
 	}
 
-	if ( flags.quiet ) {
-		console.log = function() {};
+	if (flags.quiet) {
+		console.log = function () {};
 	}
 
 	// Check if the directory exists, if not create it.
@@ -94,6 +92,9 @@ async function client(command, flags) {
 			case 'alias':
 				commands.alias(command[1], command[2]);
 				break;
+			case 'list':
+				console.log(commands.list(flags.export, flags.out));
+				break;
 			case 'restore':
 				// Restore default settings
 				commands.settings(command, true);
@@ -118,8 +119,6 @@ async function client(command, flags) {
 		// If id is specified download photo by "id"
 		url = await downloadFlags(url, flags);
 
-		console.log(url);
-
 		// Response from URL
 		const response = await splash(url, flags);
 
@@ -141,7 +140,7 @@ async function client(command, flags) {
 		// IF OK then download
 		if (statusCode === 200) {
 			download(flags, photo, setAsWallpaper);
-		} 
+		}
 	}
 }
 

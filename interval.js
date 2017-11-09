@@ -5,40 +5,39 @@ const client = require('./client');
 const Meow = require('meow');
 
 const cli = new Meow(`
-	Set dely via SPLASH_DELAY ENV
-
 	-h --help 
 	-v --version
 `, {
-	flags: {
-		delay: {
-			type: 'string',
-			default: 5000
+		description: 'Set dely via SPLASH_DELAY ENV',
+		flags: {
+			delay: {
+				type: 'string',
+				default: 5000
+			},
+			quiet: {
+				type: 'boolean',
+				default: true,
+				alias: 'q'
+			}
 		},
-		quiet: {
-			type: 'boolean',
-			default: true,
-			alias: 'q'
+		aliases: {
+			h: 'help',
+			v: 'version'
 		}
-	},
-	aliases: {
-		h: 'help',
-		v: 'version'
-	}
-});
+	});
 
-// cli.flags.quiet = true;
-cli.flags.collection = "252265";
+const delay = process.env.SPLASH_DELAY || cli.flags.delay;
 
-console.log(cli.flags);
+cli.flags.quiet |= true;
+
 client(cli.input, cli.flags);
 
 let count = 0;
-let interval = setInterval(function() {	
-	count++;	
+let interval = setInterval(function () {
+	count++;
 	if (count <= 5) {
 		client(cli.input, cli.flags);
 	} else {
 		clearInterval(interval);
 	}
-}, process.env.SPLASH_DELAY || 60000);
+}, delay || 60000);

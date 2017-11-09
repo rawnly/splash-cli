@@ -25,11 +25,11 @@ module.exports = (write = false, file = './splash_photos') => {
 
 		list = {photos: list, count: list.length};
 
-		file = file.replace();
+		file = file.replace(/\.\w{1,4}/g, '');
 
 		if (write) {
 			fs.writeFileSync(`${file}.json`, JSON.stringify(list));
-			console.log(); n;
+			console.log();
 			console.log('List exported');
 			console.log();
 		}

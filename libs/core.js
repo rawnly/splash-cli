@@ -5,7 +5,6 @@ const Ora = require('ora');
 const chalk = require('chalk');
 
 const jparse = JSON.parse;
-const jstring = JSON.stringify;
 const spinner = new Ora({
 	text: `Connecting to UNSPLASH`,
 	color: 'yellow',
@@ -15,9 +14,7 @@ const spinner = new Ora({
 const splash = async (url, flags) => {
 	url = normalize(url);
 
-	clear();
-	
-	if ( !flags.quiet ) {
+	if (!flags.quiet) {
 		spinner.start();
 	}
 

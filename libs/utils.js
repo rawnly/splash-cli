@@ -18,11 +18,6 @@ const api = {
 	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
 };
 
-
-Array.prototype.first = function () {
-	return this[0];
-};
-
 const checkArchivments = () => {
 	let unlocked = false;
 	const list = config.get('archivments');
@@ -39,6 +34,31 @@ const checkArchivments = () => {
 	return unlocked;
 };
 
+const uFormatter = num => {
+	if (num > 999999999) {
+		if (num % 1000000000 === 0) {
+			return (num / 1000000000) + 'B';
+		}
+		return (num / 1000000000).toFixed(1) + 'B';
+	}
+
+	if (num > 999999) {
+		if (num % 1000000 === 0) {
+			return (num / 1000000) + 'M';
+		}
+		return (num / 1000000).toFixed(1) + 'M';
+	}
+
+	if (num > 999) {
+		if (num % 1000 === 0) {
+			return (num / 1000) + 'K';
+		}
+		return (num / 1000).toFixed(1) + 'K';
+	}
+
+	return num;
+};
+
 const showCopy = data => {
 	const user = data.user;
 	console.log();
@@ -48,11 +68,11 @@ const showCopy = data => {
 		console.log(chalk.dim(`> ${data.description}`));
 		console.log();
 	}
+
 	console.log(`Downloaded: ${uFormatter(data.downloads)} times.`);
 	console.log(`Viewed: ${uFormatter(data.views)} times.`);
 	console.log(`Liked by ${uFormatter(data.likes)} users.`);
 
-	console.log();
 	console.log();
 
 	console.log(`Shot by: ${chalk.cyan.bold(user.name)} (@${chalk.yellow(user.username)})`);
@@ -66,7 +86,7 @@ const parseExif = source => {
 		Object.keys(source.exif).forEach(item => {
 			const current = {};
 			current.name = item;
-			if (source.exif[item] == undefined || source.exif[item] == '') {
+			if (source.exif[item] === undefined || source.exif[item] === '') {
 				current.value = '--';
 			} else {
 				current.value = source.exif[item];
@@ -127,7 +147,7 @@ const pathParser = path => {
 
 // Parse url / id;
 const parseID = id => {
-	const regex = /[a-zA-Z0-9\_\-]{11}/g;
+	const regex = /[a-zA-Z0-9_-]{11}/g;
 
 	id = id.toString();
 
@@ -152,7 +172,7 @@ const parseCollection = alias => {
 	return false;
 };
 
- const collectionInfo = async id => {
+const collectionInfo = async id => {
 	try {
 		let {body} = await got(`${api.base}/collections/${id}?client_id=${api.token}`);
 		body = JSON.parse(body);
@@ -174,32 +194,6 @@ const setUriParam = (key, value) => {
 	return `&${key}=${value.toString()}`;
 };
 
-
-const uFormatter = num => {
-	if (num > 999999999) {
-		if (num % 1000000000 === 0) {
-			return num / 1000000000 + 'B';
-		}
-		return (num / 1000000000).toFixed(1) + 'B';
-	}
-
-	if (num > 999999) {
-		if (num % 1000000 === 0) {
-			return num / 1000000 + 'M';
-		}
-		return (num / 1000000).toFixed(1) + 'M';
-	}
-
-	if (num > 999) {
-		if (num % 1000 === 0) {
-			return num / 1000 + 'K';
-		}
-		return (num / 1000).toFixed(1) + 'K';
-	}
-
-	return num;
-}
-
 const downloadFlags = async (url, flags) => {
 	if (flags.id) {
 		// Parse photo "id" form "photo url" and validate it.
@@ -217,27 +211,7 @@ const downloadFlags = async (url, flags) => {
 
 		// Photo ORIENTATION
 		if (flags.orientation) {
-			let orientation;
-			switch (flags.orientation) {
-				case 'landscape':
-				case 'horizontal':
-					orientation = 'landscape';
-					break;
-
-				case 'portrait':
-				case 'vertical':
-					orientation = 'portrait';
-					break;
-
-				case 'squarish':
-				case 'square':
-					orientation = 'squarish';
-					break;
-				default:
-					orientation = config.get('orientation') || undefined;
-					break;
-			}
-
+			const orientation = normalizeOrientation(flags.orientation);
 			url += setUriParam('orientation', orientation);
 		}
 
@@ -282,24 +256,50 @@ const downloadFlags = async (url, flags) => {
 			console.log();
 
 			// Output the collection infos.
-			let message = chalk`Collection: {cyan ${collection.title}} by {yellow @${collection.user}}`;
+			let prefix;
+			const message = chalk`Collection: {cyan ${collection.title}} by {yellow @${collection.user}}`;
 
 			if (collection.featured && collection.curated) {
-				message = '[Featured - Curated] ' + message;
+				prefix = '[Featured - Curated] ';
 			} else if (collection.featured) {
-				message = '[Featured] ' + message;
+				prefix = '[Featured] ';
 			} else if (collection.curated) {
-				message = '[Curated]';
+				prefix = '[Curated] ';
 			}
 
-			console.log(message);
+			console.log(prefix + message);
 			console.log();
 
 			// Update the URL
 			url += setUriParam('collections', collection.id);
 		}
 	}
+
 	return url;
+};
+
+function normalizeOrientation(orientation) {
+	switch (orientation) {
+		case 'landscape':
+		case 'horizontal':
+			orientation = 'landscape';
+			break;
+
+		case 'portrait':
+		case 'vertical':
+			orientation = 'portrait';
+			break;
+
+		case 'squarish':
+		case 'square':
+			orientation = 'squarish';
+			break;
+		default:
+			orientation = config.get('orientation') || undefined;
+			break;
+	}
+
+	return orientation;
 }
 
 module.exports.checkArchivments = checkArchivments;

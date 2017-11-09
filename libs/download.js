@@ -20,7 +20,7 @@ const spinner = new Ora({
 	text: 'Making something awesome',
 	color: 'yellow',
 	spinner: 'earth'
-});;
+});
 
 const join = path.join;
 
@@ -78,7 +78,7 @@ function download(
 				if (!flags.quiet) {
 					spinner.succeed();
 				}
-				
+
 				// Get photos infos
 				if (flags.infos) {
 					const exif = parseExif(photo);

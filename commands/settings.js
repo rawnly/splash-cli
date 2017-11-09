@@ -10,7 +10,7 @@ const {pathParser} = require('../libs/utils');
 module.exports = async (command, restore = false) => {
 	clear();
 
-	if (!restore) {
+	if (restore === false) {
 		const questions = [];
 		const choices = ['raw', 'full', 'regular', 'thumb'];
 
@@ -56,11 +56,11 @@ module.exports = async (command, restore = false) => {
 					questions.push(directoryQuestion);
 					break;
 				default:
-					questions.push(sizeQuestion, authQuestion, directoryQuestion);
+					questions.push(sizeQuestion, directoryQuestion);
 					break;
 			}
 		} else {
-			questions.push(sizeQuestion, authQuestion, directoryQuestion);
+			questions.push(sizeQuestion, directoryQuestion);
 		}
 
 		// Get answers
@@ -73,9 +73,13 @@ module.exports = async (command, restore = false) => {
 			validate: input => {
 				if (input === 'yes' || input === 'no') {
 					return true;
-				} else if (input === 'ye' || input === 'y') {
+				}
+
+				if (input === 'ye' || input === 'y') {
 					return chalk`Please type "{yellow {bold yes}}"`;
-				} else if (input === 'n' || input === 'o') {
+				}
+
+				if (input === 'n' || input === 'o') {
 					return chalk`Please type "{yellow {bold no}}"`;
 				}
 

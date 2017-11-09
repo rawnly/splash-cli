@@ -2,6 +2,7 @@ const clear = require('clear');
 
 const Conf = require('conf');
 const config = new Conf();
+const chalk = require('chalk');
 
 module.exports = (cmd1, cmd2) => {
 	// Get current aliases
@@ -39,4 +40,4 @@ module.exports = (cmd1, cmd2) => {
 	console.log();
 	console.log('Alias saved.', chalk`[{yellow ${newAlias.name}} = {yellow ${newAlias.value}}]`);
 	console.log();
-}
+};

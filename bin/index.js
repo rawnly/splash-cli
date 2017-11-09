@@ -3,16 +3,15 @@
 // Bin file, for client/s;
 const client = require('../client');
 const Meow = require('meow');
+const chalk = require('chalk');
+const helpmenu = require('../libs/helpmenu');
 
-const cli = new Meow({
+const cli = new Meow(helpmenu, {
 	flags: {
-		collection: {
-			type: 'string',
-			alias: 'col'
-		},
+		collection: {type: 'string'},
 		size: {
 			type: 'string',
-			alias: 'q',
+			alias: 's',
 			default: 'full'
 		},
 		user: {type: 'string'},
