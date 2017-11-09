@@ -32,22 +32,21 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](/
 ## Usage
 
 ![help menu][help]
-Splash is easy and quick to use, just run `splash` to start.
-I have divided commands and flags in 2 categories:
+> Splash is easy and quick to use, just run `splash` to start.
 
-## Source filter
+### Source filter
 
 - `-u --user <user>` - Grab random photo from user's photos.
 - `-f --featured` - Grab random photo from featured photos.
 - `--collection <id>` - Grab random photo from given collection.
 - `--id <id|url>` - Grab photo by ID.
 
-## Search Filters
+### Search Filters
 
 - `--query <keywords>` - Grab random photo that match with the given query.
 - `-o --orientation <squarish|landscape|portrait>` - Grab random photo that match with given orientation.
 
-## Subcommands and options
+### Subcommands and options
 
 - `list [extra sub-flags]`- Return the list of downloaded photos.
 	- `--export` - Save the list to a JSON file.
@@ -55,7 +54,7 @@ I have divided commands and flags in 2 categories:
 - `restore` - Restore all settings to default.
 - `settings [setting]` - Setup `splash-cli` settings
 
-### Other flags
+#### Other flags
 
 - `-q --quiet` - No output / loaders.
 - `-s --save` - Save photo wihtout set it as wallpaper.
