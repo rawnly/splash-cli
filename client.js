@@ -76,8 +76,8 @@ async function client(command, flags) {
 
 	if (notifier.update && !flags.force) {
 		notifier.notify({
-			message: `${chalk.dim(notifier.update.current)} -> ${chalk.green(notifier.update.latest)}` +
-	`\n Run ${chalk.cyan('splash update')} to update`,
+			message: chalk`{dim ${notifier.update.current}} -> {green ${notifier.update.latest}}` +
+	`\n Run {cyan ${'npm i -g splash-cli'}} to update`,
 			boxenOpts: {
 				padding: 1,
 				margin: 2,

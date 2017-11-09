@@ -11,19 +11,27 @@ const cli = new Meow(helpmenu, {
 		collection: {type: 'string'},
 		size: {
 			type: 'string',
-			alias: 's',
 			default: 'full'
 		},
+		featured: {type: 'boolean'},
+		quiet: {type: 'boolean'},
 		user: {type: 'string'},
 		settings: {type: 'boolean'},
 		id: {type: 'string'},
 		query: {type: 'string'},
 		orientation: {type: 'string'},
-		save: {type: 'boolean'}
+		save: {type: 'boolean'},
+		info: {type: 'boolean'}
 	},
 	aliases: {
 		h: 'help',
-		v: 'version'
+		v: 'version',
+		u: 'user',
+		q: 'quiet',
+		o: 'orientation',
+		f: 'featured',
+		s: 'save',
+		i: 'info'
 	}
 });
 

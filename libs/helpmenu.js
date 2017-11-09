@@ -19,18 +19,18 @@ const help = chalk`{bold Usage}
 	{yellow --size} {dim <raw|full|regular|thumb>}			{gray # Photo size}
 
 	{yellow -i --info}					{gray # Show exif data}
-	{yellow --quiet} 					{gray # No output}
+	{yellow -q --quiet} 					{gray # No output}
 
 
 {bold {magenta Source Filters}}
+	{yellow -u --user} {dim <username>} 				{gray # Grab random photo from user}
 	{yellow --collection} {dim <id|alias>}				{gray # Grab random photo from collection}
 	{yellow --id} {dim <id|url>}					{gray # Grab photo by ID}
-	{yellow --user} {dim <username>} 				{gray # Grab random photo from user}
 	
 {bold {magenta Search Filters}}
+	{yellow -o --orientation} {dim <squarish|portrait|landscape>}	{gray # Photo orientation}
+	{yellow -o --featured} 					{gray # Filter by featured}
 	{yellow --query} {dim <query>}					{gray # Grab photo by keyword}
-	{yellow --orientation} {dim <squarish|portrait|landscape>}	{gray # Photo orientation}
-	{yellow --featured} 					{gray # Filter by featured}
 `;
 
 module.exports = help;
