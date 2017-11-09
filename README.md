@@ -1,9 +1,5 @@
 # Splash Cli
-> Completly rewritten! v2.7.0
-
-
-# Note 
-If your node version is less than `8` and you don't want update, check out the [older branch][old-branch].
+> Looking for the old splash? [Click here][old-branch]
 
 <br>
 
@@ -65,6 +61,10 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](/
 - `-i --info` - Display more infos about the photo.
 - `--size <raw|full|regular|thumb>` - Select image size [default: full]
 
+## Note 
+
+If your node version is less than `8` and you don't want update, check out the [old branch][old-branch].
+
 ## Contributors
 
 List of awesome people that have helped to keep this project alive.
@@ -83,5 +83,6 @@ List of awesome people that have helped to keep this project alive.
 [oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
 [hyper]: https://github.com/zeit/hyper
 
+[old-branch]: https://github.com/rawnly/splash-cli/tree/node%3C%3D7
 [sample]: https://user-images.githubusercontent.com/16429579/32611643-76c21ec0-c566-11e7-9579-8ba9ec3c9438.png
 [help]: https://user-images.githubusercontent.com/16429579/32611721-a524eac2-c566-11e7-8ae8-8fcf6c380003.png
