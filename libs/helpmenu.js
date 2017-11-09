@@ -17,14 +17,18 @@ const help = chalk`{bold Usage}
 
 	{yellow -s --save}					{gray # Save a photo withoud set it as wallpaper}
 	{yellow --size} {dim <raw|full|regular|thumb>}			{gray # Photo size}
+
+	{yellow -i --info}					{gray # Show exif data}
 	{yellow --quiet} 					{gray # No output}
 
 
-
+{bold {magenta Source Filters}}
+	{yellow --collection} {dim <id|alias>}				{gray # Grab random photo from collection}
+	{yellow --id} {dim <id|url>}					{gray # Grab photo by ID}
+	{yellow --user} {dim <username>} 				{gray # Grab random photo from user}
+	
 {bold {magenta Search Filters}}
-	{yellow --query} {dim <query>}					{gray # Get photo by keyword}
-	{yellow --id} {dim <id|url>}					{gray # Get photo by ID}
-	{yellow --collection} {dim <id|alias>}				{gray # Get random photo from collection}
+	{yellow --query} {dim <query>}					{gray # Grab photo by keyword}
 	{yellow --orientation} {dim <squarish|portrait|landscape>}	{gray # Photo orientation}
 	{yellow --featured} 					{gray # Filter by featured}
 `;
