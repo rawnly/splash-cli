@@ -1,5 +1,9 @@
 # Splash Cli
-> Completly rewrite! v2.7.0
+> Completly rewritten! v2.7.0
+
+
+# Note 
+If your node version is less than `8` and you don't want update, check out the [older branch][old-branch].
 
 <br>
 
