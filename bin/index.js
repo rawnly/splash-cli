@@ -1,27 +1,49 @@
 #! /usr/bin/env node
 
 // Bin file, for client/s;
-const client = require('../client');
+const client = require('../client-destructured');
 const Meow = require('meow');
-const chalk = require('chalk');
 const helpmenu = require('../libs/helpmenu');
 
-const cli = new Meow(helpmenu, {
+const {
+	input,
+	flags
+} = new Meow(helpmenu, {
 	flags: {
-		collection: {type: 'string'},
+		collection: {
+			type: 'string'
+		},
 		size: {
 			type: 'string',
 			default: 'full'
 		},
-		featured: {type: 'boolean'},
-		quiet: {type: 'boolean'},
-		user: {type: 'string'},
-		settings: {type: 'boolean'},
-		id: {type: 'string'},
-		query: {type: 'string'},
-		orientation: {type: 'string'},
-		save: {type: 'boolean'},
-		info: {type: 'boolean'}
+		featured: {
+			type: 'boolean'
+		},
+		quiet: {
+			type: 'boolean'
+		},
+		user: {
+			type: 'string'
+		},
+		settings: {
+			type: 'boolean'
+		},
+		id: {
+			type: 'string'
+		},
+		query: {
+			type: 'string'
+		},
+		orientation: {
+			type: 'string'
+		},
+		save: {
+			type: 'boolean'
+		},
+		info: {
+			type: 'boolean'
+		}
 	},
 	aliases: {
 		h: 'help',
@@ -36,4 +58,4 @@ const cli = new Meow(helpmenu, {
 });
 
 // Call the function
-client(cli.input, cli.flags);
+client(input, flags);

@@ -1,17 +1,29 @@
 const clear = require('clear');
 
 const Conf = require('conf');
-const config = new Conf();
 const chalk = require('chalk');
 
-module.exports = (cmd1, cmd2) => {
+const config = new Conf();
+const quit = process.exit;
+
+const {
+	printBlock
+} = require('../libs/utils');
+
+module.exports = input => {
+	const [name, value] = [Object.keys(input)[1], Object.keys(input)[0]];
+	if (!name || !value) {
+		printBlock('Invalid alias.');
+		quit();
+	}
+
 	// Get current aliases
 	const aliases = config.get('aliases');
 
 	// Setup new alias
 	const newAlias = {
-		name: cmd1,
-		value: cmd2
+		name,
+		value
 	};
 
 	// Check if the alias exists with the same name / value (id)
@@ -22,10 +34,7 @@ module.exports = (cmd1, cmd2) => {
 	// If exists warn the user
 	if (exists.length > 0) {
 		exists = exists[0];
-		clear();
-		console.log();
-		console.log('That alias exists!', chalk`[{yellow ${exists.name}} = {yellow ${exists.value}}]`);
-		console.log();
+		printBlock(chalk`That alias exists! [{yellow ${exists.name}} = {yellow ${exists.value}}]`);
 		process.exit();
 	}
 
@@ -36,8 +45,5 @@ module.exports = (cmd1, cmd2) => {
 	config.set('aliases', aliases);
 
 	// Send a response
-	clear();
-	console.log();
-	console.log('Alias saved.', chalk`[{yellow ${newAlias.name}} = {yellow ${newAlias.value}}]`);
-	console.log();
+	printBlock(chalk`Alias saved. [{yellow ${newAlias.name}} = {yellow ${newAlias.value}}]`);
 };

@@ -4,7 +4,10 @@
 const client = require('./client');
 const Meow = require('meow');
 
-const cli = new Meow(`
+const {
+	input,
+	flags
+} = new Meow(`
 	-h --help 
 	-v --version
 `, {
@@ -26,17 +29,24 @@ const cli = new Meow(`
 		}
 	});
 
-const delay = process.env.SPLASH_DELAY || cli.flags.delay;
+let {
+	delay,
+	quiet
+} = flags;
 
-cli.flags.quiet |= true;
+delay |= process.env.SPLASH_DELAY;
+quiet |= true;
 
-client(cli.input, cli.flags);
+client(input, {
+	quiet,
+	delay
+});
 
 let count = 0;
 let interval = setInterval(function () {
 	count++;
 	if (count <= 5) {
-		client(cli.input, cli.flags);
+		client(input, flags);
 	} else {
 		clearInterval(interval);
 	}

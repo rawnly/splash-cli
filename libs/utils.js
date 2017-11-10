@@ -19,8 +19,10 @@ const api = {
 	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
 };
 
-const printBlock = message => {
+const printBlock = (message, cb = () => {}) => {
 	clear();
+
+	cb();
 	console.log();
 	console.log(message);
 	console.log();
@@ -198,10 +200,7 @@ const collectionInfo = async id => {
 	}
 };
 
-const setUriParam = (key, value) => {
-	return `&${key}=${value.toString()}`;
-};
-
+// Thanks to @wOxxOm on codereview.stackexchange.com - https://codereview.stackexchange.com/questions/180006/how-can-i-make-my-function-easier-to-read-understand?noredirect=1#comment341954_180006
 const downloadFlags = async (url, {id, orientation, query, collection, featured} = {}) => {
 	const ORIENTATIONS = {
 		landscape: 'landscape',
@@ -280,7 +279,6 @@ module.exports.pathParser = pathParser;
 module.exports.parseID = parseID;
 module.exports.parseCollection = parseCollection;
 module.exports.collectionInfo = collectionInfo;
-module.exports.setUriParam = setUriParam;
 module.exports.formatter = uFormatter;
 module.exports.downloadFlags = downloadFlags;
 module.exports.printBlock = printBlock;

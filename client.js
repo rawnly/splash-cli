@@ -11,24 +11,24 @@ const mkdirp = require('mkdirp');
 const chalk = require('chalk');
 const normalize = require('normalize-url');
 const updateNotifier = require('update-notifier');
-const clear = require('clear');
 
-// Const Ora = require('ora');
 const Conf = require('conf');
 
 const splash = require('./libs/core');
 const download = require('./libs/download');
 
-const pkg = require('./package.json');
-
-let commands = {};
-
-commands.alias = require('./commands/alias');
-commands.list = require('./commands/list');
-commands.settings = require('./commands/settings');
+const ACTIONS = {
+	alias: require('./commands/alias'),
+	list: require('./commands/list'),
+	settings: require('./commands/settings')
+};
 
 // UTILS
-const {pathParser, downloadFlags} = require('./libs/utils');
+const {
+	pathParser,
+	downloadFlags,
+	printBlock
+} = require('./libs/utils');
 
 const api = {
 	base: 'https://api.unsplash.com',
@@ -36,48 +36,70 @@ const api = {
 	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
 };
 
-// Const spinner = new Ora();
-const notifier = updateNotifier({pkg, updateCheckInterval: 1000});
-
-// LOAD DEFAULT CONFIGS
+// LOAD JSON
+const pkg = require('./package.json');
 const defaults = require('./defaults.json');
+
+const notifier = updateNotifier({
+	pkg,
+	updateCheckInterval: 1000
+});
+
+const config = new Conf();
 
 // Parse default path
 defaults.directory = pathParser(defaults.directory);
 
-const config = new Conf();
+const {
+	exit
+} = process;
 
-// Main function
-async function client(command, flags) {
-	// On first run set default settings.
-	if (frun() && !flags.restore) {
+async function client(commands, flags) {
+	const {
+		quiet,
+		save
+	} = flags;
+	const [command, ...others] = commands;
+	const COMMANDS_LIST = {
+		alias: 'alias',
+		settings: 'settings',
+		restore: 'restore',
+		list: 'list'
+	};
+
+	let options = {};
+
+	others.forEach(option => {
+		options[option] = option;
+	});
+
+	if (frun()) {
 		mkdirp.sync(defaults.directory);
 
-		Object.keys(defaults).forEach(setting => {
+		for (let i = 0; i < Object.keys(defaults).length; i++) {
+			let setting = Object.keys(defaults)[i];
 			config.delete(setting);
 			config.set(setting, defaults[setting]);
-		});
+		}
+
+		if (!config.get('directory')) {
+			config.set('directory', defaults.directory);
+		}
 	}
 
-	// If directory is not setted use the default one
-	if (!config.get('directory')) {
-		config.set('directory', defaults.directory);
+	if (quiet) {
+		console.log = () => {};
 	}
 
-	if (flags.quiet) {
-		console.log = function () {};
-	}
-
-	// Check if the directory exists, if not create it.
 	const splashFolder = fs.existsSync(config.get('directory'));
 	if (!splashFolder) {
 		mkdirp.sync(config.get('directory'));
 	}
 
-	if (notifier.update && !flags.force) {
+	if (notifier.update) {
 		notifier.notify({
 			message: chalk`{dim ${notifier.update.current}} -> {green ${notifier.update.latest}}` +
-	`\n Run {cyan ${'npm i -g splash-cli'}} to update`,
+				`\n Run {cyan ${'npm i -g splash-cli'}} to update`,
 			boxenOpts: {
 				padding: 1,
 				margin: 2,
@@ -86,61 +108,37 @@ async function client(command, flags) {
 				borderStyle: 'single'
 			}
 		});
-	} else if (command.length >= 1) {
-		switch (command[0]) {
-			// Create a new alias
-			case 'alias':
-				commands.alias(command[1], command[2]);
-				break;
-			case 'list':
-				console.log(commands.list(flags.export, flags.out));
-				break;
-			case 'restore':
-				// Restore default settings
-				commands.settings(command, true);
-				break;
-			case 'settings':
-				// Setup auth and quality settings
-				commands.settings(command);
-				break;
-			default:
-				clear();
-				console.log();
-				console.log(chalk`{red Invalid command}`);
-				console.log();
-				break;
-		}
-	} else {
-		// Core of splash, download a random photo
 
-		// default API URL
-		let url = `${api.base}/photos/random?client_id=${api.token}`;
+		exit();
+	}
 
-		// If id is specified download photo by "id"
-		url = await downloadFlags(url, flags);
+	if (command) {
+		let cmd = COMMANDS_LIST[command] || undefined;
 
-		// Response from URL
-		const response = await splash(url, flags);
-
-		// Get the photo
-		const photo = response.data;
-
-		// Request status information
-		const {statusCode} = response.status;
-
-		let setAsWallpaper;
-
-		// If --save do not set it as wallpaper
-		if (flags.save) {
-			setAsWallpaper = false;
-		} else {
-			setAsWallpaper = true;
+		if (cmd !== undefined) {
+			ACTIONS[cmd](options, flags);
+			exit();
 		}
 
-		// IF OK then download
-		if (statusCode === 200) {
-			download(flags, photo, setAsWallpaper);
-		}
+		printBlock(chalk`{red Invalid command}`);
+		exit();
+	}
+
+	const url = await downloadFlags(`${api.base}/photos/random?client_id=${api.token}`, flags);
+	const response = await splash(url, flags);
+	const photo = response.data;
+	const {
+		statusCode
+	} = response.status;
+
+	let setAsWallpaper = true;
+
+	if (save) {
+		setAsWallpaper = false;
+	}
+
+	if (statusCode === 200) {
+		download(flags, photo, setAsWallpaper);
 	}
 }
 
