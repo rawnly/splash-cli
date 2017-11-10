@@ -2,6 +2,7 @@ const opn = require('opn');
 const Ora = require('ora');
 const Conf = require('conf');
 const clear = require('clear');
+const {URL} = require('url');
 
 const os = require('os');
 
@@ -16,6 +17,13 @@ const api = {
 	base: 'https://api.unsplash.com',
 	token: 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34',
 	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
+};
+
+const printBlock = message => {
+	clear();
+	console.log();
+	console.log(message);
+	console.log();
 };
 
 const checkArchivments = () => {
@@ -194,113 +202,73 @@ const setUriParam = (key, value) => {
 	return `&${key}=${value.toString()}`;
 };
 
-const downloadFlags = async (url, flags) => {
-	if (flags.id) {
-		// Parse photo "id" form "photo url" and validate it.
-		const id = parseID(flags.id);
+const downloadFlags = async (url, {id, orientation, query, collection, featured} = {}) => {
+	const ORIENTATIONS = {
+		landscape: 'landscape',
+		horizontal: 'landscape',
+		portrait: 'portrait',
+		vertical: 'portrait',
+		squarish: 'squarish',
+		square: 'squarish'
+	};
 
+	if (id) {
+		id = parseID(id);
 		if (!id) {
-			clear();
-			console.log(chalk`{red {bold Invalid}} {yellow url/id}`);
+			printBlock(chalk`{red {bold Invalid}} {yellow url/id}`);
 		}
 
-		// Change API URL
-		url = `${api.base}/photos/${id}?client_id=${api.token}`;
-	} else {
-		// Search filters
-
-		// Photo ORIENTATION
-		if (flags.orientation) {
-			const orientation = normalizeOrientation(flags.orientation);
-			url += setUriParam('orientation', orientation);
-		}
-
-		if (flags.query) {
-			// SEARCH PHOTO BY KEYWORD
-			const query = encodeURIComponent(flags.query.toLowerCase());
-			url += setUriParam('query', query);
-		} else if (flags.featured) {
-			// GET RANDOM FEATURED PHOTO
-			url += setUriParam('featured', true);
-		} else if (flags.user) {
-			// GET RANDOM PHOTO FROM GIVEN USERNAME
-			const username = flags.user.toLowerCase();
-			url += setUriParam('username', username);
-		} else if (flags.collection) {
-			// GET RANDOM PHOTO FROM GIVEN COLLECTION
-			let collection;
-			const regex = /[0-9]{3,7}/g;
-
-			// Check if the input given is a valid ALIAS
-			const isAlias = parseCollection(flags.collection);
-
-			// Check if the input given is a valid collection id
-			const isCollection = regex.test(flags.collection) || (!isNaN(Number(flags.collection)) && Number(flags.collection) >= 251);
-
-			if (isAlias) {
-				// Grab infos
-				collection = await collectionInfo(isAlias.value);
-			} else if (isCollection) {
-				// Grab infos
-				collection = await collectionInfo(flags.collection.toString().match(regex)[0]);
-			} else {
-				// Some response if data is no valid.
-				clear();
-				console.log();
-				console.log(chalk`{red Invalid collection ID}`);
-				console.log();
-				process.exit();
-			}
-
-			clear();
-			console.log();
-
-			// Output the collection infos.
-			let prefix;
-			const message = chalk`Collection: {cyan ${collection.title}} by {yellow @${collection.user}}`;
-
-			if (collection.featured && collection.curated) {
-				prefix = '[Featured - Curated] ';
-			} else if (collection.featured) {
-				prefix = '[Featured] ';
-			} else if (collection.curated) {
-				prefix = '[Curated] ';
-			}
-
-			console.log(prefix + message);
-			console.log();
-
-			// Update the URL
-			url += setUriParam('collections', collection.id);
-		}
+		return `${api.base}/photos/${id}?client_id=${api.token}`;
 	}
 
-	return url;
+	const parsedURL = new URL(url);
+
+	if (orientation) {
+		orientation = ORIENTATIONS[orientation] || config.get('orientation') || undefined;
+		parsedURL.searchParams.set('orientation', orientation);
+	}
+
+	const finalizeUrlWith = (name, value) => {
+		parsedURL.searchParams.set(name, value);
+		return parsedURL.href;
+	};
+
+	if (query) {
+		finalizeUrlWith('query', query.toLowerCase());
+	}
+
+	if (featured) {
+		finalizeUrlWith('featured', true);
+	}
+
+	if (collection) {
+		const {
+			value = /[0-9]{3,7}|$/.exec(collection)[0]
+		} = parseCollection(collection) || {};
+
+		if (!value) {
+			printBlock(chalk`{red Invalid collection ID}`);
+			process.exit();
+		}
+
+		const info = await collectionInfo(value);
+
+		let message = chalk`Collection: {cyan ${info.title}} by {yellow @${info.user}}`;
+
+		if (info.featured || info.curated) {
+			message = `[${[
+				info.curated ? 'Curated - ' : '',
+				info.featured ? 'Featured' : ''
+			].join('')}] ${message}`;
+		}
+
+		printBlock(message);
+
+		return finalizeUrlWith('collections', info.id);
+	}
+
+	return parsedURL.href;
 };
-
-function normalizeOrientation(orientation) {
-	switch (orientation) {
-		case 'landscape':
-		case 'horizontal':
-			orientation = 'landscape';
-			break;
-
-		case 'portrait':
-		case 'vertical':
-			orientation = 'portrait';
-			break;
-
-		case 'squarish':
-		case 'square':
-			orientation = 'squarish';
-			break;
-		default:
-			orientation = config.get('orientation') || undefined;
-			break;
-	}
-
-	return orientation;
-}
 
 module.exports.checkArchivments = checkArchivments;
 module.exports.showCopy = showCopy;
@@ -315,3 +283,4 @@ module.exports.collectionInfo = collectionInfo;
 module.exports.setUriParam = setUriParam;
 module.exports.formatter = uFormatter;
 module.exports.downloadFlags = downloadFlags;
+module.exports.printBlock = printBlock;
