@@ -1,6 +1,1 @@
-libs/test-misc.js
-node_modules
-.DS_Store
-yarn-error.log
-yarn.lock
-test/*
+.gitignore
