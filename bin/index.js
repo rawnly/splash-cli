@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 // Bin file, for client/s;
-const client = require('../client-destructured');
+const client = require('../client');
 const Meow = require('meow');
 const helpmenu = require('../libs/helpmenu');
 

@@ -20,7 +20,8 @@ const download = require('./libs/download');
 const ACTIONS = {
 	alias: require('./commands/alias'),
 	list: require('./commands/list'),
-	settings: require('./commands/settings')
+	settings: require('./commands/settings'),
+	deamon: require('./commands/deamon')
 };
 
 // UTILS
@@ -62,6 +63,7 @@ async function client(commands, flags) {
 	const [command, ...others] = commands;
 	const COMMANDS_LIST = {
 		alias: 'alias',
+		deamon: 'deamon',
 		settings: 'settings',
 		restore: 'restore',
 		list: 'list'
@@ -115,7 +117,7 @@ async function client(commands, flags) {
 	if (command) {
 		let cmd = COMMANDS_LIST[command] || undefined;
 
-		if (cmd !== undefined) {
+		if (ACTIONS[cmd]) {
 			ACTIONS[cmd](options, flags);
 			exit();
 		}
