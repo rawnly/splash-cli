@@ -139,8 +139,13 @@ async function client(commands, flags) {
 
 		if (statusCode === 200) {
 			download(flags, {photo}, setAsWallpaper);
+			return true;
 		}
+
+		return false;
 	}
+
+	return true;
 }
 
 module.exports = client;

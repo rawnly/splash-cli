@@ -1,10 +1,16 @@
 const pm2 = require('pm2');
 
 class Deamon {
-	constructor(scriptPath, name = 'splash-cli') {
+	constructor(file, name = 'splash-cli', {instances, killTimeout, maxMemoryRestart, execMode} = {}) {
 		this.name = name;
-		this.file = scriptPath;
+		this.file = file;
 		this.isRunning = false;
+		this.options = {
+			instances: instances || 1,
+			maxMemoryRestart: maxMemoryRestart || '100M',
+			killTimeout: killTimeout || undefined,
+			execMode: execMode || 'cluster'
+		};
 	}
 
 	list() {
@@ -29,7 +35,7 @@ class Deamon {
 		});
 	}
 
-	start() {
+	start(force = false) {
 		pm2.connect(err => {
 			if (err) {
 				throw new Error(err);
@@ -37,8 +43,12 @@ class Deamon {
 
 			pm2.start({
 				name: this.name,
-				maxMemoryRestart: '100M',
-				script: this.file
+				maxMemoryRestart: this.options.maxMemoryRestart,
+				script: this.file,
+				force: force,
+				execMode: this.options.execMode,
+				instances: this.options.instances,
+				killTimeout: this.options.killTimeout
 			}, error => {
 				if (error) {
 					throw new Error(error);
@@ -76,13 +86,29 @@ class Deamon {
 				throw new Error(err);
 			}
 
-			pm2.delete(this.name, error => {
-				if (error) {
-					throw new Error(error);
+			pm2.list((err, list) => {
+				if (err) {
+					throw err;
 				}
 
-				console.log('Deamon has been deleted...');
-				this.isRunning = false;
+				list = list.map(item => {
+					return item.name;
+				}).filter(item => {
+					return item === this.name;
+				});
+
+				if (list.length) {
+					pm2.delete(this.name, error => {
+						if (error) {
+							throw new Error(error);
+						}
+
+						console.log('Deamon has been deleted...');
+						this.isRunning = false;
+
+						pm2.disconnect();
+					});
+				}
 
 				pm2.disconnect();
 			});
