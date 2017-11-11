@@ -2,7 +2,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const ProgressBar = require('progress');
+const {exit} = process;
 const wallpaper = require('wallpaper');
 const chalk = require('chalk');
 

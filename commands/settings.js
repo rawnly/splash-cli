@@ -14,9 +14,7 @@ module.exports = async ({size, directory, auth} = {}, {restore} = {}) => {
 
 	if (restore) {
 		frun.clear();
-
 		printBlock(chalk`{green Settings restored.}`);
-
 		quit();
 	}
 

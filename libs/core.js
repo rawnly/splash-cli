@@ -14,19 +14,13 @@ const spinner = new Ora({
 	spinner: 'earth'
 });
 
-const {
-	start,
-	fail,
-	succeed
-} = spinner;
-
 const splash = async (url, {
 	quiet
 }) => {
 	url = normalize(url);
 
 	if (!quiet) {
-		start();
+		spinner.start();
 	}
 
 	try {
@@ -39,7 +33,7 @@ const splash = async (url, {
 
 		if (!quiet) {
 			spinner.text = 'Connected';
-			succeed();
+			spinner.succeed();
 		}
 
 		return {
@@ -50,7 +44,8 @@ const splash = async (url, {
 			}
 		};
 	} catch (err) {
-		printBlock(chalk`{yellow Splash Error:}`, err.statusMessage || err.name, err.statusCode || err.code, fail);
+		spinner.fail();
+		printBlock(chalk`{yellow Splash Error:}`, err.statusMessage || err.name, err.statusCode || err.code);
 		return err;
 	}
 };

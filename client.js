@@ -119,28 +119,27 @@ async function client(commands, flags) {
 
 		if (ACTIONS[cmd]) {
 			ACTIONS[cmd](options, flags);
+		} else {
+			printBlock(chalk`{red Invalid command}`);
 			exit();
 		}
+	} else {
+		const url = await downloadFlags(`${api.base}/photos/random?client_id=${api.token}`, flags);
+		const response = await splash(url, flags);
+		const photo = response.data;
+		const {
+			statusCode
+		} = response.status;
 
-		printBlock(chalk`{red Invalid command}`);
-		exit();
-	}
+		let setAsWallpaper = true;
 
-	const url = await downloadFlags(`${api.base}/photos/random?client_id=${api.token}`, flags);
-	const response = await splash(url, flags);
-	const photo = response.data;
-	const {
-		statusCode
-	} = response.status;
+		if (save) {
+			setAsWallpaper = false;
+		}
 
-	let setAsWallpaper = true;
-
-	if (save) {
-		setAsWallpaper = false;
-	}
-
-	if (statusCode === 200) {
-		download(flags, photo, setAsWallpaper);
+		if (statusCode === 200) {
+			download(flags, {photo}, setAsWallpaper);
+		}
 	}
 }
 
