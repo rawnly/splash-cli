@@ -43,8 +43,7 @@
     "wallpaper": "^2.4.0"
   },
   "bin": {
-    "splash": "./bin/index.js",
-    "splash-interval": "pm2 interval.js"
+    "splash": "./bin/index.js"
   },
   "devDependencies": {
     "ava": "^0.19.1",
@@ -53,12 +52,9 @@
   },
   "scripts": {
     "test": "npm run test-client && npm run test-interval",
-    "test-client": "eslint --fix client.js && eslint client.js",
-    "test-interval": "eslint --fix interval.js && eslint interval.js",
+    "test": "eslint --fix client.js && eslint client.js",
     "start": "./bin/index.js",
-    "next": "git add *; git commit -a -n 'new version'; git push -u origin master; clear; np",
-    "int-start": "pm2 start interval.js -- --quiet",
-    "int-stop": "pm2 stop interval.js"
+    "next": "git add *; git commit -a -n 'new version'; git push -u origin master; clear; np"
   },
   "repository": {
     "type": "git",
