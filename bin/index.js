@@ -48,6 +48,7 @@ const {
 	aliases: {
 		h: 'help',
 		v: 'version',
+		V: 'version',
 		u: 'user',
 		q: 'quiet',
 		o: 'orientation',

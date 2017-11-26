@@ -5,6 +5,7 @@ const help = chalk`{bold Usage}
 
 {bold Commands}
 	{cyan settings} {dim [size|dir]}				{gray # Setup splash-cli}
+	{cyan get-settings}					{gray # Get settings}
 	{cyan restore}						{gray # Restore default settings}
 	{cyan alias} {dim <name> <value>}				{gray # Alias a collection ID}
 	{cyan list} {dim [flags]}					{gray # List all downloaded photos}

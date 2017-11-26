@@ -64,7 +64,8 @@ async function client(commands, flags) {
 		alias: 'alias',
 		settings: 'settings',
 		restore: 'restore',
-		list: 'list'
+		list: 'list',
+		'get-settings': 'get-settings'
 	};
 
 	let options = {};
@@ -117,6 +118,18 @@ async function client(commands, flags) {
 
 		if (ACTIONS[cmd]) {
 			ACTIONS[cmd](options, flags);
+		} else if (cmd === 'restore') {
+			frun.clear();
+			printBlock('Settings restored.');
+		} else if (cmd === 'get-settings') {
+			console.log();
+			Object.keys(config.get()).forEach(setting => {
+				const value = config.get(setting);
+				if (value !== 'undefined' && setting !== 'pic_dir' && setting !== 'counter' && setting !== 'user-auth') {
+					console.log(chalk`{yellow ${setting}}: ${JSON.stringify(value, null, 2)}`);
+				}
+			});
+			console.log();
 		} else {
 			printBlock(chalk`{red Invalid command}`);
 			exit();
