@@ -53,7 +53,8 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](/
 	- `--export` - Save the list to a JSON file.
 	- `--out` - Output file name.
 - `restore` - Restore all settings to default.
-- `settings [setting]` - Setup `splash-cli` settings
+- `settings [setting]` - Setup `splash-cli` settings.
+- `get-settings` - Get current settings.
 
 #### Other flags
 
