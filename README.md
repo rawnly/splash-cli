@@ -86,4 +86,4 @@ List of awesome people that have helped to keep this project alive.
 
 [old-branch]: https://github.com/rawnly/splash-cli/tree/node%3C%3D7
 [sample]: https://user-images.githubusercontent.com/16429579/33238935-ea273b0a-d297-11e7-9837-1de378645bd9.png
-[help]: https://user-images.githubusercontent.com/16429579/32611721-a524eac2-c566-11e7-8ae8-8fcf6c380003.png
+[help]: https://user-images.githubusercontent.com/16429579/33238956-68de7c6a-d298-11e7-841d-2da1c624fce8.png
