@@ -92,7 +92,12 @@ async function client(commands, flags) {
 		console.log = () => {};
 	}
 
+	if (!config.get('directory')) {
+		config.set('directory', defaults.directory);
+	}
+
 	const splashFolder = fs.existsSync(config.get('directory'));
+
 	if (!splashFolder) {
 		mkdirp.sync(config.get('directory'));
 	}
