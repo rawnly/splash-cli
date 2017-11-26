@@ -1,6 +1,3 @@
-# TODO List 
-- [ ] • Implement [Babel][bb] to support all node versions.
-- [ ] • Write a new **README**
-- [ ] • mit
+# TODO List 
 
-
+- [ ] • Implement [Babel](https://babeljs.io/) to support all node versions.
