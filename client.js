@@ -20,8 +20,7 @@ const download = require('./libs/download');
 const ACTIONS = {
 	alias: require('./commands/alias'),
 	list: require('./commands/list'),
-	settings: require('./commands/settings'),
-	deamon: require('./commands/deamon')
+	settings: require('./commands/settings')
 };
 
 // UTILS
@@ -43,7 +42,7 @@ const defaults = require('./defaults.json');
 
 const notifier = updateNotifier({
 	pkg,
-	updateCheckInterval: 1000
+	updateCheckInterval: 1000 * 60 * 60
 });
 
 const config = new Conf();
@@ -63,7 +62,6 @@ async function client(commands, flags) {
 	const [command, ...others] = commands;
 	const COMMANDS_LIST = {
 		alias: 'alias',
-		deamon: 'deamon',
 		settings: 'settings',
 		restore: 'restore',
 		list: 'list'
