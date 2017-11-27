@@ -19,19 +19,21 @@ const api = {
 	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
 };
 
-const printBlock = (message, cb = () => {}) => {
+const printBlock = (...lines) => {
 	clear();
-
-	cb();
 	console.log();
-	console.log(message);
+	if (lines.length > 1) {
+		lines.forEach(line => console.log(line));
+	} else {
+		console.log(lines[0]);
+	}
 	console.log();
 };
 
 const checkArchivments = () => {
 	let unlocked = false;
 	const list = config.get('archivments');
-	const counter = config.get('download-counter');
+	const counter = config.get('counter');
 
 	if (list) {
 		list.forEach(archivment => {
@@ -200,6 +202,35 @@ const collectionInfo = async id => {
 	}
 };
 
+const parseCollectionURL = url => {
+	let collectionArguments = [];
+	let collection = {};
+	let COLLECTION_REGEX;
+
+	const isCurated = /\/curated\//g.test(url);
+
+	if (isCurated) {
+		COLLECTION_REGEX = /[a-zA-z\-]+\/[0-9]+/;
+	} else {
+		COLLECTION_REGEX = /[0-9]+\/[a-zA-z\-]+/;
+	}
+
+	if (COLLECTION_REGEX.test(url)) {
+		collectionArguments = url.match(COLLECTION_REGEX)[0].split('/');
+
+		if (isCurated) {
+			collection.name = collectionArguments[0];
+			collection.id = collectionArguments[1];
+		} else {
+			collection.name = collectionArguments[1];
+			collection.id = collectionArguments[0];
+		}
+
+		return collection;
+	}
+	return false;
+};
+
 // Thanks to @wOxxOm on codereview.stackexchange.com - https://codereview.stackexchange.com/questions/180006/how-can-i-make-my-function-easier-to-read-understand?noredirect=1#comment341954_180006
 const downloadFlags = async (url, {id, orientation, query, collection, featured} = {}) => {
 	const ORIENTATIONS = {
@@ -282,3 +313,4 @@ module.exports.collectionInfo = collectionInfo;
 module.exports.formatter = uFormatter;
 module.exports.downloadFlags = downloadFlags;
 module.exports.printBlock = printBlock;
+module.exports.parseCollectionURL = parseCollectionURL;
