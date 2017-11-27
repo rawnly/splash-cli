@@ -30,7 +30,7 @@ const help = chalk`{bold Usage}
 	
 {bold {magenta Search Filters}}
 	{yellow -o --orientation} {dim <squarish|portrait|landscape>}	{gray # Photo orientation}
-	{yellow -o --featured} 					{gray # Filter by featured}
+	{yellow -f --featured} 					{gray # Filter by featured}
 	{yellow --query} {dim <query>}					{gray # Grab photo by keyword}
 `;
 
