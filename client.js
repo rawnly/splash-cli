@@ -130,7 +130,7 @@ async function client(commands, flags) {
 			console.log();
 			Object.keys(config.get()).forEach(setting => {
 				const value = config.get(setting);
-				if (value !== 'undefined' && setting !== 'pic_dir' && setting !== 'counter' && setting !== 'user-auth') {
+				if (value !== 'undefined' && setting !== 'pic_dir' && setting !== 'user-auth') {
 					console.log(chalk`{yellow ${setting}}: ${JSON.stringify(value, null, 2)}`);
 				}
 			});
