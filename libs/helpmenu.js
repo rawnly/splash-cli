@@ -29,8 +29,9 @@ const help = chalk`{bold Usage}
 	{yellow --id} {dim <id|url>}					{gray # Grab photo by ID}
 	
 {bold {magenta Search Filters}}
-	{yellow -o --orientation} {dim <squarish|portrait|landscape>}	{gray # Photo orientation}
-	{yellow -f --featured} 					{gray # Filter by featured}
+	{yellow -o --orientation} {dim <squarish|portrait|landscape>}	{gray # Photo's orientation}
+	{yellow -f --featured} 					{gray # Only  Featured Photos}
+	{yellow -c --curated} 					{gray # Only Curated Photos}
 	{yellow --query} {dim <query>}					{gray # Grab photo by keyword}
 `;
 
