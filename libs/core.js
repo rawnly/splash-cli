@@ -1,17 +1,17 @@
 const normalize = require('normalize-url');
-const clear = require('clear');
 const got = require('got');
 const Ora = require('ora');
 const chalk = require('chalk');
 const {
-	printBlock
+	printBlock,
+	isDecember
 } = require('./utils');
 
 const jparse = JSON.parse;
 const spinner = new Ora({
 	text: `Connecting to UNSPLASH`,
 	color: 'yellow',
-	spinner: 'earth'
+	spinner: isDecember() ? 'christmas' : 'earth'
 });
 
 const splash = async (url, {

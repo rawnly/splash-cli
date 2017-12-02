@@ -2,7 +2,6 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const {exit} = process;
 const wallpaper = require('wallpaper');
 const chalk = require('chalk');
 
@@ -11,14 +10,15 @@ const Conf = require('conf');
 
 const {
 	parseExif,
-	showCopy
+	showCopy,
+	isDecember
 } = require('./utils');
 
 const config = new Conf();
 const spinner = new Ora({
 	text: 'Making something awesome',
 	color: 'yellow',
-	spinner: 'earth'
+	spinner: isDecember() ? 'christmas' : 'earth'
 });
 
 const join = path.join;
