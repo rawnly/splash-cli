@@ -210,15 +210,15 @@ const parseCollectionURL = url => {
 	const isCurated = /\/curated\//g.test(url);
 
 	if (isCurated) {
-		COLLECTION_REGEX = /[a-zA-z\-]+\/[0-9]+/;
+		COLLECTION_REGEX = /[a-zA-z-]+\/[0-9]+/;
 	} else {
-		COLLECTION_REGEX = /[0-9]+\/[a-zA-z\-]+/;
+		COLLECTION_REGEX = /[0-9]+\/[a-zA-z-]+/;
 	}
 
 	if (COLLECTION_REGEX.test(url)) {
 		collectionArguments = url.match(COLLECTION_REGEX)[0].split('/');
 
-		if (isCurated) {
+		if (isCurated) {
 			collection.name = collectionArguments[0];
 			collection.id = collectionArguments[1];
 		} else {
@@ -300,6 +300,30 @@ const downloadFlags = async (url, {id, orientation, query, collection, featured}
 	return parsedURL.href;
 };
 
+const isDecember = () => {
+	const today = new Date();
+	const months = [
+		'january',
+		'february',
+		'march',
+		'april',
+		'may',
+		'june',
+		'july',
+		'august',
+		'september',
+		'october',
+		'november',
+		'december'
+	];
+
+	if (months[today.getMonth()] === 'december') {
+		return true;
+	}
+
+	return false;
+};
+
 module.exports.checkArchivments = checkArchivments;
 module.exports.showCopy = showCopy;
 module.exports.parseExif = parseExif;
@@ -314,3 +338,4 @@ module.exports.formatter = uFormatter;
 module.exports.downloadFlags = downloadFlags;
 module.exports.printBlock = printBlock;
 module.exports.parseCollectionURL = parseCollectionURL;
+module.exports.isDecember = isDecember;
