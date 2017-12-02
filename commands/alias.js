@@ -1,5 +1,3 @@
-const clear = require('clear');
-
 const Conf = require('conf');
 const chalk = require('chalk');
 
