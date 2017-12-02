@@ -14,12 +14,9 @@
   },
   "license": "MIT",
   "keywords": [
-    "unsplash",
-    "cli",
-    "splash",
-    "wallpaper",
-    "photography",
-    "photo"
+    "unsplash", "cli",
+    "splash", "wallpaper",
+    "photography", "photo"
   ],
   "dependencies": {
     "chalk": "^2.3.0",
