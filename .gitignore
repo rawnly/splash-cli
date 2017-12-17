@@ -5,4 +5,5 @@ yarn-error.log
 test/*
 client-2.7.0.js
 =8
-=7
+=7libs/File.js
+libs/listr-test.js
