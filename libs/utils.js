@@ -11,6 +11,10 @@ const chalk = require('chalk');
 const got = require('got');
 const normalize = require('normalize-url');
 
+const download = require('simple-download');
+
+download();
+
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 
 const api = {
@@ -232,7 +236,7 @@ const parseCollectionURL = url => {
 };
 
 // Thanks to @wOxxOm on codereview.stackexchange.com - https://codereview.stackexchange.com/questions/180006/how-can-i-make-my-function-easier-to-read-understand?noredirect=1#comment341954_180006
-const downloadFlags = async (url, {id, orientation, query, collection, featured} = {}) => {
+const downloadFlags = async (url, {id, orientation, query, collection, featured, curated} = {}) => {
 	const ORIENTATIONS = {
 		landscape: 'landscape',
 		horizontal: 'landscape',
