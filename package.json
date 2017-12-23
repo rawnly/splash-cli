@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "description": "Get beautiful wallpapers from Unsplash",
   "main": "build/bin/index.js",
   "engineStrict": true,
@@ -22,6 +22,7 @@
     "photo"
   ],
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "chalk": "^2.3.0",
     "clear": "^0.0.1",
     "conf": "^1.1.2",
@@ -39,7 +40,6 @@
     "simple-download": "^0.3.1",
     "update-notifier": "^2.2.0",
     "url-regex": "^4.1.1",
-    "babel-polyfill": "^6.26.0",
     "wallpaper": "^2.4.0"
   },
   "bin": {
