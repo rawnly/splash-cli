@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.7.2-babel",
+  "version": "2.7.2",
   "description": "Get beautiful wallpapers from Unsplash",
   "main": "build/bin/index.js",
   "engineStrict": true,
@@ -57,7 +57,7 @@
     "gulp-babel": "^7.0.0"
   },
   "scripts": {
-    "test": "eslint --fix client.js && eslint client.js",
+    "test": "eslint --fix src/client.js && eslint src/client.js",
     "start": "./build/bin/index.js",
     "build": "gulp build",
     "next": "git add *; git commit -a -n 'new version'; git push -u origin master; clear; np"
