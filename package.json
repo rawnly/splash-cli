@@ -5,7 +5,7 @@
   "main": "build/bin/index.js",
   "engineStrict": true,
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 6.0.0"
   },
   "author": {
     "name": "Federico Vitale",
@@ -61,7 +61,10 @@
     "start": "./build/bin/index.js",
     "build": "gulp build",
     "next": "git add *; git commit -a -n 'new version'; git push -u origin master; clear; np",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "postpublish": "rm -rf build",
+    "postuninstall": "echo 'Thanks for using splash-cli by @Rawnly'",
+    "postinstall": "echo 'Thank you! You can drop a star for support my devlopment on github at splash-cli/splash-cli!'"
   },
   "repository": {
     "type": "git",
