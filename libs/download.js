@@ -24,7 +24,7 @@ const spinner = new Ora({
 const join = path.join;
 
 // Flags, options, set as wallpaper
-function download({quiet, infos} = {}, {custom = false, photo, filename} = {}, setAsWallpaper = true) {
+function download({quiet, info} = {}, {custom = false, photo, filename} = {}, setAsWallpaper = true) {
 	// Increase downloads counter.
 	config.set('counter', config.get('counter') + 1);
 
@@ -51,17 +51,19 @@ function download({quiet, infos} = {}, {custom = false, photo, filename} = {}, s
 				}
 
 				// Get photos infos
-				if (infos) {
+				if (info) {
 					const exif = parseExif(photo);
 
 					console.log();
 					exif.forEach(item => {
-						console.log(chalk`{bold {yellow ${item.name.toUpperCase()}}}: ${item.value}`);
+						if (item.value !== '--') {
+							console.log(chalk`{bold {yellow ${item.name.toUpperCase()}}}: ${item.value}`);
+						}
 					});
-					console.log();
 				}
 
 				// Display 'shot by ...'
+				console.log();
 				showCopy(photo);
 
 				// Trailing space

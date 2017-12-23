@@ -11,10 +11,6 @@ const chalk = require('chalk');
 const got = require('got');
 const normalize = require('normalize-url');
 
-const download = require('simple-download');
-
-download();
-
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
 
 const api = {
@@ -77,7 +73,6 @@ const uFormatter = num => {
 
 const showCopy = data => {
 	const user = data.user;
-	console.log();
 
 	if (data.description) {
 		console.log();
@@ -102,7 +97,7 @@ const parseExif = source => {
 		Object.keys(source.exif).forEach(item => {
 			const current = {};
 			current.name = item;
-			if (source.exif[item] === undefined || source.exif[item] === '') {
+			if (source.exif[item] === undefined || source.exif[item] === null || source.exif[item] === '') {
 				current.value = '--';
 			} else {
 				current.value = source.exif[item];
@@ -232,11 +227,12 @@ const parseCollectionURL = url => {
 
 		return collection;
 	}
-	return false;
+
+	return url;
 };
 
 // Thanks to @wOxxOm on codereview.stackexchange.com - https://codereview.stackexchange.com/questions/180006/how-can-i-make-my-function-easier-to-read-understand?noredirect=1#comment341954_180006
-const downloadFlags = async (url, {id, orientation, query, collection, featured, curated} = {}) => {
+const downloadFlags = async (url, {id, user, orientation, query, collection, featured} = {}) => {
 	const ORIENTATIONS = {
 		landscape: 'landscape',
 		horizontal: 'landscape',
@@ -271,11 +267,20 @@ const downloadFlags = async (url, {id, orientation, query, collection, featured,
 		finalizeUrlWith('query', query.toLowerCase());
 	}
 
+	if (user) {
+		finalizeUrlWith('username', user.toLowerCase());
+	}
+
 	if (featured) {
 		finalizeUrlWith('featured', true);
 	}
 
 	if (collection) {
+		collection = parseCollectionURL(collection);
+		if (collection.id && collection.name) {
+			collection = collection.id;
+		}
+
 		const {
 			value = /[0-9]{3,7}|$/.exec(collection)[0]
 		} = parseCollection(collection) || {};

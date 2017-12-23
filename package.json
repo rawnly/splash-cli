@@ -2,7 +2,7 @@
   "name": "splash-cli",
   "version": "2.7.2",
   "description": "Get beautiful wallpapers from Unsplash",
-  "main": "client.js",
+  "main": "bin/index.js",
   "engineStrict": true,
   "engines": {
     "node": ">= 8.0.0"

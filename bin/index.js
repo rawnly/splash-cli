@@ -9,6 +9,7 @@ const {
 	input,
 	flags
 } = new Meow(helpmenu, {
+
 	flags: {
 		collection: {
 			type: 'string'
@@ -42,10 +43,11 @@ const {
 			type: 'boolean'
 		},
 		info: {
-			type: 'boolean'
+			type: 'boolean',
+			alias: 'i'
 		}
 	},
-	aliases: {
+	alias: {
 		h: 'help',
 		v: 'version',
 		V: 'version',
