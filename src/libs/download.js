@@ -1,18 +1,21 @@
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
+require('babel-polyfill');
 
-const wallpaper = require('wallpaper');
-const chalk = require('chalk');
+import https from 'https';
+import fs from 'fs';
+import path from 'path';
 
-const Ora = require('ora');
-const Conf = require('conf');
+import wallpaper from 'wallpaper';
+import chalk from 'chalk';
 
-const {
+import Ora from 'ora';
+import Conf from 'conf';
+
+import {
 	parseExif,
 	showCopy,
-	isDecember
-} = require('./utils');
+	isDecember,
+	checkArchivments
+} from './utils';
 
 const config = new Conf();
 const spinner = new Ora({
@@ -38,6 +41,8 @@ function download({quiet, info} = {}, {custom = false, photo, filename} = {}, se
 	const img = filename ? filename : join(config.get('directory'), `${photo.id}.${extension}`);
 	const url = custom ? photo.urls.custom : (photo.urls[size] ? photo.urls[size] : photo.urls.full);
 	const file = fs.createWriteStream(img);
+
+	checkArchivments();
 
 	try {
 		https.get(url, response => {

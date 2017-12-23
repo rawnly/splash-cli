@@ -1,3 +1,5 @@
+require('babel-polyfill');
+
 const Conf = require('conf');
 const chalk = require('chalk');
 

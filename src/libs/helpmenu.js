@@ -1,7 +1,13 @@
-const chalk = require('chalk');
+require('babel-polyfill');
+
+import chalk from 'chalk';
+import {isDecember} from './utils';
 
 const help = chalk`{bold Usage}
+	${isDecember() ? chalk`{yellow Merry Christmas!}` : ''}
+	
 	$ {green splash} {dim [command] [flags]}
+
 
 {bold Commands}
 	{cyan settings} {dim [size|dir]}				{gray # Setup splash-cli}
@@ -31,7 +37,6 @@ const help = chalk`{bold Usage}
 {bold {magenta Search Filters}}
 	{yellow -o --orientation} {dim <squarish|portrait|landscape>}	{gray # Photo's orientation}
 	{yellow -f --featured} 					{gray # Only  Featured Photos}
-	{yellow -c --curated} 					{gray # Only Curated Photos}
 	{yellow --query} {dim <query>}					{gray # Grab photo by keyword}
 `;
 

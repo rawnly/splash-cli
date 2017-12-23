@@ -1,6 +1,8 @@
 #! /usr/bin/env node
 
 // Bin file, for client/s;
+require('babel-polyfill');
+
 const client = require('../client');
 const Meow = require('meow');
 const helpmenu = require('../libs/helpmenu');
@@ -9,7 +11,6 @@ const {
 	input,
 	flags
 } = new Meow(helpmenu, {
-
 	flags: {
 		collection: {
 			type: 'string'

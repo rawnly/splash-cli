@@ -1,17 +1,19 @@
-const opn = require('opn');
-const Ora = require('ora');
-const Conf = require('conf');
-const clear = require('clear');
-const {URL} = require('url');
+require('babel-polyfill');
 
-const os = require('os');
+import opn from 'opn';
+import Ora from 'ora';
+import Conf from 'conf';
+import clear from 'clear';
+import {URL} from 'url';
 
-const config = new Conf();
-const chalk = require('chalk');
-const got = require('got');
-const normalize = require('normalize-url');
+import os from 'os';
+
+import chalk from 'chalk';
+import got from 'got';
+import normalize from 'normalize-url';
 
 const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
+const config = new Conf();
 
 const api = {
 	base: 'https://api.unsplash.com',

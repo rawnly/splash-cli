@@ -1,3 +1,5 @@
+require('babel-polyfill');
+
 const fs = require('fs');
 const defaults = require('../defaults.json');
 const utils = require('../libs/utils');

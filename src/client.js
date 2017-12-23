@@ -3,19 +3,20 @@
  * Link: https://github.com/Rawnly
  * Copyright 2017 Federico Vitale
  */
+require('babel-polyfill');
 
-const fs = require('fs');
+import fs from 'fs';
 
-const frun = require('first-run');
-const mkdirp = require('mkdirp');
-const chalk = require('chalk');
-const normalize = require('normalize-url');
-const updateNotifier = require('update-notifier');
+import frun from 'first-run';
+import mkdirp from 'mkdirp';
+import chalk from 'chalk';
+import normalize from 'normalize-url';
+import updateNotifier from 'update-notifier';
 
-const Conf = require('conf');
+import Conf from 'conf';
 
-const splash = require('./libs/core');
-const download = require('./libs/download');
+import splash from './libs/core';
+import download from './libs/download';
 
 const ACTIONS = {
 	alias: require('./commands/alias'),
@@ -24,11 +25,11 @@ const ACTIONS = {
 };
 
 // UTILS
-const {
+import {
 	pathParser,
 	downloadFlags,
 	printBlock
-} = require('./libs/utils');
+} from './libs/utils';
 
 const api = {
 	base: 'https://api.unsplash.com',
@@ -37,8 +38,8 @@ const api = {
 };
 
 // LOAD JSON
-const pkg = require('./package.json');
-const defaults = require('./defaults.json');
+import pkg from '../package.json';
+import defaults from './defaults.json';
 
 const notifier = updateNotifier({
 	pkg,

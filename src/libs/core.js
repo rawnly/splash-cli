@@ -1,11 +1,13 @@
-const normalize = require('normalize-url');
-const got = require('got');
-const Ora = require('ora');
-const chalk = require('chalk');
-const {
+require('babel-polyfill');
+
+import normalize from 'normalize-url';
+import got from 'got';
+import Ora from 'ora';
+import chalk from 'chalk';
+import {
 	printBlock,
 	isDecember
-} = require('./utils');
+} from './utils';
 
 const jparse = JSON.parse;
 const spinner = new Ora({
