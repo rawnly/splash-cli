@@ -36,11 +36,11 @@
 To install `splash-cli` you must use a **node package manager** such as [yarn](/Rawnly/splash-cli/blob/master/yarn) or [npm](/Rawnly/splash-cli/blob/master/npm).
 
 ```bash
-	$ sudo npm install --global splash-cli
+	$ npm install --global splash-cli
 
 	# or via yarn
 
-	$ sudo yarn global add splash-cli
+	$ yarn global add splash-cli
 ```
 
 ## Usage
