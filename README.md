@@ -1,4 +1,6 @@
 # Splash Cli
+
+![splash-cli](https://user-images.githubusercontent.com/16429579/35586570-79300ae8-05fb-11e8-8d37-17ff8cb6fa85.gif)
 > **Get beautiful wallpapers from [unsplash](uwebsite)**
 
 <br>
