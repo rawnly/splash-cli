@@ -1,0 +1,74 @@
+{
+  "name": "splash-cli",
+  "version": "2.7.5",
+  "description": "Get beautiful wallpapers from Unsplash",
+  "main": "build/bin/index.js",
+  "engineStrict": true,
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "author": {
+    "name": "Federico Vitale",
+    "email": "fedevitale99@gmail.com",
+    "home": "https://rawnly.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "unsplash",
+    "cli",
+    "splash",
+    "wallpaper",
+    "photography",
+    "photo"
+  ],
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "chalk": "^2.3.0",
+    "clear": "^0.0.1",
+    "conf": "^1.1.2",
+    "execa": "^0.7.0",
+    "figlet": "^1.2.0",
+    "first-run": "^1.2.0",
+    "got": "^7.0.0",
+    "inquirer": "^3.3.0",
+    "meow": "^3.7.0",
+    "mkdirp": "^0.5.1",
+    "normalize-url": "^1.9.1",
+    "opn": "^5.1.0",
+    "ora": "^1.2.0",
+    "progress": "^2.0.0",
+    "simple-download": "^0.3.1",
+    "update-notifier": "^2.2.0",
+    "url-regex": "^4.1.1",
+    "wallpaper": "^2.4.0"
+  },
+  "bin": {
+    "splash": "./build/bin/index.js"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "babel-core": "^6.26.0",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.10.0",
+    "eslint-config-xo": "^0.19.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0"
+  },
+  "scripts": {
+    "test": "eslint --fix src/client.js && eslint src/client.js",
+    "start": "./build/bin/index.js",
+    "build": "gulp build",
+    "next": "git add *; git commit -a -n 'new version'; git push -u origin master; clear; np",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rawnly/splash-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Rawnly/splash-cli/issues"
+  },
+  "homepage": "https://github.com/Rawnly/splash-cli#readme"
+}
