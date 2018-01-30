@@ -2,15 +2,18 @@
   "name": "splash-cli",
   "version": "2.7.5",
   "description": "Get beautiful wallpapers from Unsplash",
-  "main": "build/bin/index.js",
+  "main": "build/client.js",
   "engineStrict": true,
+  "bin": {
+    "splash": "./build/bin/index.js"
+  },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 7.0.0"
   },
   "author": {
     "name": "Federico Vitale",
     "email": "fedevitale99@gmail.com",
-    "home": "https://rawnly.com"
+    "home": "https://federicovitale.me"
   },
   "license": "MIT",
   "keywords": [
@@ -41,9 +44,6 @@
     "update-notifier": "^2.2.0",
     "url-regex": "^4.1.1",
     "wallpaper": "^2.4.0"
-  },
-  "bin": {
-    "splash": "./build/bin/index.js"
   },
   "devDependencies": {
     "ava": "^0.19.1",
