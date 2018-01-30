@@ -75,7 +75,7 @@ List of awesome people that have helped to keep this project alive.
 
 ## Related
 - [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
-- [TheMovieDB Client](https://github.com/rawnly/tmdb-cli)
+- [TheMovieDB Client](https://github.com/rawnly/tmdb-cli) - [The Movie Database](https://themoviedb.org) client.
 
 --------
 <p align="center">
@@ -86,11 +86,6 @@ List of awesome people that have helped to keep this project alive.
 [desk]: https://github.com/rawnly/splashdesktop
 [oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
 [hyper]: https://github.com/zeit/hyper
-
 [old-branch]: https://github.com/rawnly/splash-cli/tree/node%3C%3D7
-
-<!-- [sample]: https://user-images.githubusercontent.com/16429579/33238935-ea273b0a-d297-11e7-9837-1de378645bd9.png -->
-
 [sample]: https://i.imgur.com/o0eXz6F.gif
-
 [help]: https://user-images.githubusercontent.com/16429579/33238956-68de7c6a-d298-11e7-841d-2da1c624fce8.png
