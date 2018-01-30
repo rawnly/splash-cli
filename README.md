@@ -1,5 +1,5 @@
 # Splash Cli
-> Get beautiful wallpapers from unsplash.
+> **Get beautiful wallpapers from [unsplash](uwebsite)**
 
 <br>
 
@@ -10,9 +10,6 @@
 [![GitHub release](https://img.shields.io/github/release/rawnly/splash-cli.svg)](https://github.com/rawnly/splash-cli)
 <!-- /badges -->
 
-
-![full-view][sample]
-> **Get beautiful wallpapers from [unsplash](uwebsite)**
 
 # Index
 - [installation](#installation)
