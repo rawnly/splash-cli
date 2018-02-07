@@ -1,7 +1,7 @@
 # Splash Cli
 
 ![splash-cli](https://user-images.githubusercontent.com/16429579/35586570-79300ae8-05fb-11e8-8d37-17ff8cb6fa85.gif)
-> **Get beautiful wallpapers from [unsplash](uwebsite)**
+> Get beautiful wallpapers from [unsplash](uwebsite)
 
 <br>
 
@@ -13,67 +13,57 @@
 <!-- /badges -->
 
 
-# Index
-- [installation](#installation)
-- [usage](#usage)
-  - [source filters](#source-filter)
-  - [search filters](#search-filters)
-  - [subcommands](#subcommands-and-options)
-  - [others](#other-flags)
-- [note](#note)
-- [contributors](#contributors)
-- [related](#related)
-
-
-## Installation
+## :floppy_disk: Installation
 To install `splash-cli` you must use a **node package manager** such as [yarn](/Rawnly/splash-cli/blob/master/yarn) or [npm](/Rawnly/splash-cli/blob/master/npm).
 
 ```bash
 	$ sudo npm install --global splash-cli
 
-	# or via yarn
+	# OR
 
 	$ sudo yarn global add splash-cli
 ```
 
-## Usage
+## :paw_prints: Usage
 ![help menu][help]
 > Splash is easy and quick to use, just run `splash` to start.
 
-### Source filter
-- `-u --user <user>` - Grab random photo from user's photos.
-- `-f --featured` - Grab random photo from featured photos.
-- `--collection <id>` - Grab random photo from given collection.
-- `--id <id|url>` - Grab photo by ID.
+### :computer: Use it as **cli**
+```sh
+  $ splash [flags/commands]
+```
 
-### Search Filters
-- `--query <keywords>` - Grab random photo that match with the given query.
-- `-o --orientation <squarish|landscape|portrait>` - Grab random photo that match with given orientation.
+### :arrow_down:  Local Project
+Add this module to your project:
+```sh
+  $ npm install --save splash-cli
+  
+  # OR
+  
+  $ yarn add splash-cli
+```
 
-### Subcommands and options
-- `list [extra sub-flags]`- Return the list of downloaded photos.
-	- `--export` - Save the list to a JSON file.
-	- `--out` - Output file name.
-- `restore` - Restore all settings to default.
-- `settings [setting]` - Setup `splash-cli` settings.
-- `get-settings` - Get current settings.
-
-#### Other flags
-- `-q --quiet` - No output / loaders.
-- `-s --save` - Save photo wihtout set it as wallpaper.
-- `-i --info` - Display more infos about the photo.
-- `--size <raw|full|regular|thumb>` - Select image size [default: full]
-
-## Note 
-If your node version is less than `8` and you don't want update, check out the [old branch][old-branch].
+Then  in your editor: 
+```javascript
+  import splash from 'splash-cli'; 
+  
+  // ...
+  
+  splash({
+    quiet: true,
+    save: true,
+    id: 'some_id'
+  })
+  
+  // ...
+```
 
 ## Contributors
-List of awesome people that have helped to keep this project alive.
-
+ List of awesome people that have helped to keep this project alive:
 - [mohnjatthews](http://github.com/mohnjatthews)
 - [alecrust](http://github.com/alecrust)
 
-## Related
+## :space_invader: Related
 - [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
 - [TheMovieDB Client](https://github.com/rawnly/tmdb-cli) - [The Movie Database](https://themoviedb.org) client.
 
