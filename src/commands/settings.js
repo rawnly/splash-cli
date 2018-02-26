@@ -9,9 +9,19 @@ const frun = require('first-run');
 const config = new Conf();
 const quit = process.exit;
 
-const {pathParser, printBlock} = require('../libs/utils');
+const {
+	pathParser,
+	printBlock
+} = require('../libs/utils');
 
-module.exports = async ({size, directory, auth} = {}, {restore} = {}) => {
+module.exports = async ({
+	size,
+	directory,
+	auth,
+	folders
+} = {}, {
+		restore
+	} = {}) => {
 	clear();
 
 	if (restore) {
@@ -52,9 +62,20 @@ module.exports = async ({size, directory, auth} = {}, {restore} = {}) => {
 		}
 	};
 
-	if (size || auth || directory) {
+	const usernameFolderQuestion = {
+		name: '_folders',
+		message: 'Do you want use username\'s folders? (ex: @rawnly/..photos)',
+		default: config.get('username-folder'),
+		type: 'confirm'
+	};
+
+	if (size || auth || directory || folders) {
 		if (size) {
 			questions.push(sizeQuestion);
+		}
+
+		if (folders) {
+			questions.push(usernameFolderQuestion);
 		}
 
 		if (auth) {
@@ -65,14 +86,21 @@ module.exports = async ({size, directory, auth} = {}, {restore} = {}) => {
 			questions.push(directoryQuestion);
 		}
 	} else {
-		questions.push(sizeQuestion, directoryQuestion);
+		questions.push(sizeQuestion, directoryQuestion, usernameFolderQuestion, authQuestion);
 	}
 
 	// Get answers
-	const {_size, _auth, _directory} = await inquirer.prompt(questions);
+	const {
+		_size,
+		_auth,
+		_directory,
+		_folders
+	} = await inquirer.prompt(questions);
 
 	// Strong confirmation. keep user focus and prevent an accidental confirmation.
-	const {confirm} = await inquirer.prompt([{
+	const {
+		confirm
+	} = await inquirer.prompt([{
 		name: 'confirm',
 		message: chalk`Confirm ({yellow {bold yes}}/{yellow {bold no}}):`,
 		validate: input => {
@@ -99,6 +127,10 @@ module.exports = async ({size, directory, auth} = {}, {restore} = {}) => {
 
 		if (_auth) {
 			config.set('auth-key', _auth);
+		}
+
+		if (_folders) {
+			config.set('username-folder', _folders);
 		}
 
 		if (_directory) {

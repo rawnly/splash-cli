@@ -4,7 +4,9 @@ import opn from 'opn';
 import Ora from 'ora';
 import Conf from 'conf';
 import clear from 'clear';
-import {URL} from 'url';
+import {
+	URL
+} from 'url';
 
 import os from 'os';
 
@@ -12,7 +14,11 @@ import chalk from 'chalk';
 import got from 'got';
 import normalize from 'normalize-url';
 
-const spinner = new Ora({text: 'Connecting to Unsplash', color: 'yellow', spinner: 'earth'});
+const spinner = new Ora({
+	text: 'Connecting to Unsplash',
+	color: 'yellow',
+	spinner: 'earth'
+});
 const config = new Conf();
 
 const api = {
@@ -73,25 +79,7 @@ const uFormatter = num => {
 	return num;
 };
 
-const showCopy = data => {
-	const user = data.user;
-
-	if (data.description) {
-		console.log();
-		console.log(chalk.dim(`> ${data.description}`));
-		console.log();
-	}
-
-	console.log(`Downloaded: ${uFormatter(data.downloads)} times.`);
-	console.log(`Viewed: ${uFormatter(data.views)} times.`);
-	console.log(`Liked by ${uFormatter(data.likes)} users.`);
-
-	console.log();
-
-	console.log(`Shot by: ${chalk.cyan.bold(user.name)} (@${chalk.yellow(user.username)})`);
-	console.log();
-};
-
+// Parsing photo's exif
 const parseExif = source => {
 	if (source.exif) {
 		const exif = [];
@@ -114,8 +102,61 @@ const parseExif = source => {
 	return false;
 };
 
+// Show copyright of photo
+const showCopy = (data, info) => {
+	const user = data.user;
+
+	// Get photos infos
+	if (info) {
+		const exif = parseExif(data);
+		if (exif) {
+			printBlock(chalk`{bold EXIF DATA:}`);
+		}
+
+		exif.forEach(item => {
+			console.log(chalk`{bold {yellow ${item.name.toUpperCase()}}}: ${item.value}`);
+		});
+	}
+
+	if (!info && data.description) {
+		printBlock(chalk.dim(`> ${data.description}`));
+	} else if (!info && !data.description) {
+		printBlock(chalk.dim(`> No description available.`));
+	} else if (info && data.description) {
+		console.log();
+		console.log(chalk.dim(`> ${data.description}`));
+		console.log();
+	} else {
+		console.log();
+		console.log(chalk.dim(`> No description available.`));
+		console.log();
+	}
+
+	console.log(`Downloaded: ${uFormatter(data.downloads)} times.`);
+	console.log(`Viewed: ${uFormatter(data.views)} times.`);
+	console.log(`Liked by ${uFormatter(data.likes)} users.`);
+
+	console.log();
+
+	console.log(`Shot by: ${chalk.cyan.bold(user.name)} (@${chalk.yellow(user.username)})`);
+	console.log();
+};
+
+// Silence please
+const silence = () => {
+	spinner.start = () => {};
+	spinner.stop = () => {};
+	spinner.fail = () => {};
+	spinner.succeed = () => {};
+
+	console.log = () => {};
+	console.error = () => {};
+	console.warn = () => {};
+};
+
+// Open a url in the browser
 const openURL = (flags, url) => {
-	spinner.text = '';
+	spinner.text = 'Waiting for authorization token...';
 
 	if (!flags.quiet) {
 		spinner.start();
@@ -134,13 +175,21 @@ const openURL = (flags, url) => {
 	});
 };
 
-const splashError = (e, opt = {message: 'Splash Error', colors: {message: 'yellow', error: 'red'}}) => {
+// Custom error
+const splashError = (e, opt = {
+	message: 'Splash Error',
+	colors: {
+		message: 'yellow',
+		error: 'red'
+	}
+}) => {
 	console.log();
 	console.log(chalk`{${opt.colors.message} ${opt.message}:} {${opt.colors.error} ${e}}`);
 
 	throw new Error(e);
 };
 
+// Capitalize a string
 const capitalize = (string, separator = ' ') => {
 	let words = string.split(separator);
 	words = words.map(word => {
@@ -150,6 +199,7 @@ const capitalize = (string, separator = ' ') => {
 	return words.join(separator);
 };
 
+// Prse ~ in a path
 const pathParser = path => {
 	if (path.includes('~')) {
 		path = path.replace('~', os.homedir());
@@ -187,7 +237,9 @@ const parseCollection = alias => {
 
 const collectionInfo = async id => {
 	try {
-		let {body} = await got(`${api.base}/collections/${id}?client_id=${api.token}`);
+		let {
+			body
+		} = await got(`${api.base}/collections/${id}?client_id=${api.token}`);
 		body = JSON.parse(body);
 
 		return {
@@ -234,7 +286,14 @@ const parseCollectionURL = url => {
 };
 
 // Thanks to @wOxxOm on codereview.stackexchange.com - https://codereview.stackexchange.com/questions/180006/how-can-i-make-my-function-easier-to-read-understand?noredirect=1#comment341954_180006
-const downloadFlags = async (url, {id, user, orientation, query, collection, featured} = {}) => {
+const downloadFlags = async (url, {
+	id,
+	user,
+	orientation,
+	query,
+	collection,
+	featured
+} = {}) => {
 	const ORIENTATIONS = {
 		landscape: 'landscape',
 		horizontal: 'landscape',
@@ -335,18 +394,28 @@ const isDecember = () => {
 	return false;
 };
 
-module.exports.checkArchivments = checkArchivments;
-module.exports.showCopy = showCopy;
-module.exports.parseExif = parseExif;
-module.exports.openURL = openURL;
-module.exports.splashError = splashError;
-module.exports.capitalize = capitalize;
-module.exports.pathParser = pathParser;
-module.exports.parseID = parseID;
-module.exports.parseCollection = parseCollection;
-module.exports.collectionInfo = collectionInfo;
-module.exports.formatter = uFormatter;
-module.exports.downloadFlags = downloadFlags;
-module.exports.printBlock = printBlock;
-module.exports.parseCollectionURL = parseCollectionURL;
-module.exports.isDecember = isDecember;
+module.exports = {
+	checkArchivments, showCopy,
+	parseExif, parseID, parseCollection,
+	parseCollectionURL, openURL, splashError,
+	capitalize, pathParser, collectionInfo,
+	uFormatter, downloadFlags, printBlock,
+	isDecember, silence
+};
+
+// Module.exports.checkArchivments = checkArchivments;
+// module.exports.showCopy = showCopy;
+// module.exports.parseExif = parseExif;
+// module.exports.openURL = openURL;
+// module.exports.splashError = splashError;
+// module.exports.capitalize = capitalize;
+// module.exports.pathParser = pathParser;
+// module.exports.parseID = parseID;
+// module.exports.parseCollection = parseCollection;
+// module.exports.collectionInfo = collectionInfo;
+// module.exports.formatter = uFormatter;
+// module.exports.downloadFlags = downloadFlags;
+// module.exports.printBlock = printBlock;
+// module.exports.parseCollectionURL = parseCollectionURL;
+// module.exports.isDecember = isDecember;
+// module.exports.silence = silence;

@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#! /usr/local/bin node
 
 // Bin file, for client/s;
 require('babel-polyfill');
@@ -14,6 +14,9 @@ const {
 	flags: {
 		collection: {
 			type: 'string'
+		},
+		me: {
+			type: 'boolean'
 		},
 		size: {
 			type: 'string',
@@ -57,7 +60,8 @@ const {
 		o: 'orientation',
 		f: 'featured',
 		s: 'save',
-		i: 'info'
+		i: 'info',
+		a: 'auth'
 	}
 });
 

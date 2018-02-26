@@ -55,21 +55,9 @@ function download({quiet, info} = {}, {custom = false, photo, filename} = {}, se
 					spinner.succeed();
 				}
 
-				// Get photos infos
-				if (info) {
-					const exif = parseExif(photo);
-
-					console.log();
-					exif.forEach(item => {
-						if (item.value !== '--') {
-							console.log(chalk`{bold {yellow ${item.name.toUpperCase()}}}: ${item.value}`);
-						}
-					});
-				}
-
 				// Display 'shot by ...'
 				console.log();
-				showCopy(photo);
+				showCopy(photo, info);
 
 				// Trailing space
 				console.log();

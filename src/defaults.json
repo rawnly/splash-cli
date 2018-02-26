@@ -4,6 +4,7 @@
 	"auth-key": "undefined",
 	"last-alias": "undefined",
 	"user-auth": false,
+	"username-folder": false,
 	"aliases": [],
 	"counter": 0
 }

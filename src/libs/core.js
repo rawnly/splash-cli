@@ -21,9 +21,14 @@ const splash = async (url, {
 }) => {
 	url = normalize(url);
 
-	if (!quiet) {
-		spinner.start();
+	if (quiet) {
+		spinner.start = () => {};
+		spinner.stop = () => {};
+		spinner.fail = () => {};
+		spinner.succeed = () => {};
 	}
+
+	spinner.start();
 
 	try {
 		const {
@@ -33,10 +38,8 @@ const splash = async (url, {
 		} = await got(url);
 		const photo = jparse(body);
 
-		if (!quiet) {
-			spinner.text = 'Connected';
-			spinner.succeed();
-		}
+		spinner.text = 'Connected';
+		spinner.succeed();
 
 		return {
 			data: photo,

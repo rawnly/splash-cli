@@ -12,7 +12,8 @@ import mkdirp from 'mkdirp';
 import chalk from 'chalk';
 import normalize from 'normalize-url';
 import updateNotifier from 'update-notifier';
-
+import inquirer from 'inquirer';
+import Ora from 'ora';
 import Conf from 'conf';
 
 import splash from './libs/core';
@@ -28,13 +29,15 @@ const ACTIONS = {
 import {
 	pathParser,
 	downloadFlags,
-	printBlock
+	printBlock,
+	openURL
 } from './libs/utils';
 
 const api = {
 	base: 'https://api.unsplash.com',
 	token: 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34',
-	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
+	// Oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
+	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=https%3A%2F%2Frawnly.com%2Fsplash-cli%2Findex.php&response_type=code&scope=public+write_likes+write_followers+read_collections')
 };
 
 // LOAD JSON
@@ -47,6 +50,7 @@ const notifier = updateNotifier({
 });
 
 const config = new Conf();
+const spinner = new Ora();
 
 // Parse default path
 defaults.directory = pathParser(defaults.directory);
@@ -58,7 +62,9 @@ const {
 async function client(commands, flags) {
 	const {
 		quiet,
-		save
+		save,
+		me,
+		auth
 	} = flags;
 	const [command, ...others] = commands;
 	const COMMANDS_LIST = {
@@ -70,6 +76,17 @@ async function client(commands, flags) {
 	};
 
 	let options = {};
+
+	if (quiet) {
+		spinner.start = () => {};
+		spinner.stop = () => {};
+		spinner.fail = () => {};
+		spinner.succeed = () => {};
+
+		console.log = () => {};
+		console.error = () => {};
+		console.warn = () => {};
+	}
 
 	others.forEach(option => {
 		options[option] = option;
@@ -87,10 +104,6 @@ async function client(commands, flags) {
 		if (!config.get('directory')) {
 			config.set('directory', defaults.directory);
 		}
-	}
-
-	if (quiet) {
-		console.log = () => {};
 	}
 
 	if (!config.get('directory')) {
@@ -140,22 +153,52 @@ async function client(commands, flags) {
 			printBlock(chalk`{red Invalid command}`);
 			exit();
 		}
+	} else if (me === true) {
+		console.log('Hello World');
+		let count = 0;
+		spinner.text = `Spinning around: ${count} times`;
+		spinner.start();
+
+		let int = setInterval(() => {
+			count += 1;
+			spinner.text = `Spinning around: ${count} times`;
+		}, 499);
+
+		setTimeout(() => {
+			spinner.succeed();
+			clearInterval(int);
+		}, 2500);
+	} else if (auth) {
+		await openURL({
+			quiet: true
+		}, api.oauth);
+
+		const {
+			oauthToken
+		} = await inquirer.prompt([{
+			name: 'oauthToken',
+			message: 'Paste here the token:',
+			validate: input => /[a-z0-9]{64}/g.test(input)
+		}]);
+
+		config.set('oauth-token', oauthToken);
 	} else {
 		const url = await downloadFlags(`${api.base}/photos/random?client_id=${api.token}`, flags);
 		const response = await splash(url, flags);
 		const photo = response.data;
+		const setAsWallpaper = !save;
 		const {
 			statusCode
 		} = response.status;
 
-		let setAsWallpaper = true;
-
-		if (save) {
-			setAsWallpaper = false;
-		}
+		// If (save) {
+		// 	setAsWallpaper = false;
+		// }
 
 		if (statusCode === 200) {
-			download(flags, {photo}, setAsWallpaper);
+			download(flags, {
+				photo
+			}, setAsWallpaper);
 			return true;
 		}
 
