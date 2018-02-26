@@ -1,11 +1,8 @@
-src/libs/test-misc.js
 node_modules
 .DS_Store
 yarn-error.log
-test/*
-client-2.7.0.js
-=8
-=7
-src/libs/listr-test.js
-src/libs/File.js
 build
+test.js
+
+!.gitignore
+!.npmignore
