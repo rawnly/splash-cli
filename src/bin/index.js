@@ -1,4 +1,4 @@
-#! /usr/local/bin node
+#!/usr/bin/env node
 
 // Bin file, for client/s;
 require('babel-polyfill');
