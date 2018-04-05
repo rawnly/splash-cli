@@ -7,6 +7,7 @@ require('babel-polyfill');
 
 import fs from 'fs';
 
+import dotenv from 'dotenv-safe';
 import frun from 'first-run';
 import mkdirp from 'mkdirp';
 import chalk from 'chalk';
@@ -33,11 +34,13 @@ import {
 	openURL
 } from './libs/utils';
 
+// LOAD .env
+dotenv.config();
+
 const api = {
 	base: 'https://api.unsplash.com',
-	token: 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34',
-	// Oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
-	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=https%3A%2F%2Frawnly.com%2Fsplash-cli%2Findex.php&response_type=code&scope=public+write_likes+write_followers+read_collections')
+	token: process.env.SPLASH_TOKEN,
+	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=https%3A%2F%2Frawnly.com%2Fsplash-cli%2Findex.php&response_type=code&scope=public+read_collections')
 };
 
 // LOAD JSON

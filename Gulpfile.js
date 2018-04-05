@@ -11,5 +11,8 @@ gulp.task('build', () => {
 
 	gulp.src('src/*.json')
 		.pipe(gulp.dest('build'));
+
+	gulp.src('src/*.env')
+		.pipe(gulp.dest('build'));
 });
 

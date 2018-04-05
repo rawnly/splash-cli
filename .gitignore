@@ -3,6 +3,7 @@ node_modules
 yarn-error.log
 build
 test.js
+.env
 
 !.gitignore
 !.npmignore
