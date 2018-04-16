@@ -68,8 +68,7 @@
     "test": "eslint --fix src/client.js && eslint src/client.js",
     "start": "./build/bin/index.js",
     "build": "gulp build",
-    "next": "git add *; git commit -a -n 'new version'; git push -u origin master; clear; np",
-    "prepublish": "npm run build"
+    "next": "git add *; git commit -a -n 'new version'; git push -u origin master; clear; np"
   },
   "repository": {
     "type": "git",
