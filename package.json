@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.7.5",
+  "version": "2.8.0",
   "description": "Get beautiful wallpapers from Unsplash",
   "main": "build/client.js",
   "engineStrict": true,
@@ -25,6 +25,13 @@
     "photo"
   ],
   "dependencies": {
+    "@splash-cli/core": "latest",
+    "@splash-cli/is-month": "latest",
+    "@splash-cli/parse-exif": "latest",
+    "@splash-cli/path-fixer": "latest",
+    "@splash-cli/print-block": "latest",
+    "@splash-cli/show-copy": "^1.1.0",
+    "@splash-cli/unit-formatter": "^1.0.1",
     "babel-polyfill": "^6.26.0",
     "chalk": "^2.3.0",
     "clear": "^0.0.1",

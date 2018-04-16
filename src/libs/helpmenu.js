@@ -1,12 +1,10 @@
 require('babel-polyfill');
 
 import chalk from 'chalk';
-import {
-	isDecember
-} from './utils';
+import isMonth from '@splash-cli/is-month';
 
 const help = chalk`{bold Usage}
-	${isDecember() ? chalk`{yellow Merry Christmas!}` : ''}
+	${isMonth('december') ? chalk`{yellow Merry Christmas!}` : ''}
 	
 	$ {green splash} {dim [command] [flags]}
 

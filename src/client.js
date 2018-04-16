@@ -16,7 +16,7 @@ import inquirer from 'inquirer';
 import Ora from 'ora';
 import Conf from 'conf';
 
-import splash from './libs/core';
+import splash from '@splash-cli/core';
 import download from './libs/download';
 
 const ACTIONS = {
@@ -25,11 +25,14 @@ const ACTIONS = {
 	settings: require('./commands/settings')
 };
 
+import pathParser from '@splash-cli/path-fixer';
+import printBlock from '@splash-cli/print-block';
+
+import defaults from './defaults';
+
 // UTILS
 import {
-	pathParser,
 	downloadFlags,
-	printBlock,
 	openURL
 } from './libs/utils';
 
@@ -39,7 +42,7 @@ dotenv.config();
 const api = {
 	base: 'https://api.unsplash.com',
 	token: process.env.SPLASH_TOKEN,
-	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=https%3A%2F%2Frawnly.com%2Fsplash-cli%2Findex.php&response_type=code&scope=public+read_collections')
+	oauth: normalize(`https://unsplash.com/oauth/authorize?client_id=${process.env.SPLASH_TOKEN}&redirect_uri=https%3A%2F%2Frawnly.com%2Fsplash-cli%2Findex.php&response_type=code&scope=public+read_collections`)
 };
 
 if (!api.token) {
@@ -48,7 +51,6 @@ if (!api.token) {
 
 // LOAD JSON
 import pkg from '../package.json';
-import defaults from './defaults.json';
 
 const notifier = updateNotifier({
 	pkg,

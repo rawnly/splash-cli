@@ -1,20 +1,16 @@
 require('babel-polyfill');
 
+import {prompt} from 'inquirer';
 import Conf from 'conf';
-import {
-	prompt
-} from 'inquirer';
 import chalk from 'chalk';
 import clear from 'clear';
 import frun from 'first-run';
 
+import printBlock from '@splash-cli/print-block';
+import pathParser from '@splash-cli/path-fixer';
+
 const config = new Conf();
 const quit = process.exit;
-
-const {
-	pathParser,
-	printBlock
-} = require('../libs/utils');
 
 module.exports = async ({
 	size,

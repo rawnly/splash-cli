@@ -2,17 +2,13 @@ require('babel-polyfill');
 
 import fs from 'fs';
 import chalk from 'chalk';
-import defaults from '../defaults.json';
-import utils from '../libs/utils';
+import defaults from '../defaults';
+import printBlock from '@splash-cli/print-block';
+import pathParser from '@splash-cli/path-fixer';
 
 const {
 	exit
 } = process;
-
-const {
-	pathParser,
-	printBlock
-} = utils;
 
 module.exports = values => {
 	const [write, out] = Object.keys(values);

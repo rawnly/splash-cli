@@ -9,9 +9,10 @@ import wallpaper from 'wallpaper';
 import Ora from 'ora';
 import Conf from 'conf';
 
+import showCopy from '@splash-cli/show-copy';
+import isMonth from '@splash-cli/is-month';
+
 import {
-	showCopy,
-	isDecember,
 	checkArchivments
 } from './utils';
 
@@ -19,7 +20,7 @@ const config = new Conf();
 const spinner = new Ora({
 	text: 'Making something awesome',
 	color: 'yellow',
-	spinner: isDecember() ? 'christmas' : 'earth'
+	spinner: isMonth('december') ? 'christmas' : 'earth'
 });
 
 const join = path.join;

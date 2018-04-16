@@ -2,9 +2,7 @@ require('babel-polyfill');
 
 import Conf from 'conf';
 import chalk from 'chalk';
-import {
-	printBlock
-} from '../libs/utils';
+import printBlock from '@splash-cli/print-block';
 
 const config = new Conf();
 const quit = process.exit;

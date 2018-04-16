@@ -3,12 +3,12 @@ require('babel-polyfill');
 import opn from 'opn';
 import Ora from 'ora';
 import Conf from 'conf';
-import clear from 'clear';
+
+import printBlock from '@splash-cli/print-block';
+
 import {
 	URL
 } from 'url';
-
-import os from 'os';
 
 import chalk from 'chalk';
 import got from 'got';
@@ -19,23 +19,13 @@ const spinner = new Ora({
 	color: 'yellow',
 	spinner: 'earth'
 });
+
 const config = new Conf();
 
 const api = {
 	base: 'https://api.unsplash.com',
-	token: 'daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34',
-	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public')
-};
-
-const printBlock = (...lines) => {
-	clear();
-	console.log();
-	if (lines.length > 1) {
-		lines.forEach(line => console.log(line));
-	} else {
-		console.log(lines[0]);
-	}
-	console.log();
+	token: process.env.SPLASH_TOKEN,
+	oauth: normalize(`https://unsplash.com/oauth/authorize?client_id=${process.env.SPLASH_TOKEN}&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public`)
 };
 
 const checkArchivments = () => {
@@ -52,94 +42,6 @@ const checkArchivments = () => {
 	}
 
 	return unlocked;
-};
-
-const uFormatter = num => {
-	if (num > 999999999) {
-		if (num % 1000000000 === 0) {
-			return (num / 1000000000) + 'B';
-		}
-		return (num / 1000000000).toFixed(1) + 'B';
-	}
-
-	if (num > 999999) {
-		if (num % 1000000 === 0) {
-			return (num / 1000000) + 'M';
-		}
-		return (num / 1000000).toFixed(1) + 'M';
-	}
-
-	if (num > 999) {
-		if (num % 1000 === 0) {
-			return (num / 1000) + 'K';
-		}
-		return (num / 1000).toFixed(1) + 'K';
-	}
-
-	return num;
-};
-
-// Parsing photo's exif
-const parseExif = source => {
-	if (source.exif) {
-		const exif = [];
-
-		Object.keys(source.exif).forEach(item => {
-			const current = {};
-			current.name = item;
-			if (source.exif[item] === undefined || source.exif[item] === null || source.exif[item] === '') {
-				current.value = '--';
-			} else {
-				current.value = source.exif[item];
-			}
-
-			exif.push(current);
-		});
-
-		return exif;
-	}
-
-	return false;
-};
-
-// Show copyright of photo
-const showCopy = (data, info) => {
-	const user = data.user;
-
-	// Get photos infos
-	if (info) {
-		const exif = parseExif(data);
-		if (exif) {
-			printBlock(chalk`{bold EXIF DATA:}`);
-		}
-
-		exif.forEach(item => {
-			console.log(chalk`{bold {yellow ${item.name.toUpperCase()}}}: ${item.value}`);
-		});
-	}
-
-	if (!info && data.description) {
-		printBlock(chalk.dim(`> ${data.description}`));
-	} else if (!info && !data.description) {
-		printBlock(chalk.dim(`> No description available.`));
-	} else if (info && data.description) {
-		console.log();
-		console.log(chalk.dim(`> ${data.description}`));
-		console.log();
-	} else {
-		console.log();
-		console.log(chalk.dim(`> No description available.`));
-		console.log();
-	}
-
-	console.log(`Downloaded: ${uFormatter(data.downloads)} times.`);
-	console.log(`Viewed: ${uFormatter(data.views)} times.`);
-	console.log(`Liked by ${uFormatter(data.likes)} users.`);
-
-	console.log();
-
-	console.log(`Shot by: ${chalk.cyan.bold(user.name)} (@${chalk.yellow(user.username)})`);
-	console.log();
 };
 
 // Silence please
@@ -175,20 +77,6 @@ const openURL = (flags, url) => {
 	});
 };
 
-// Custom error
-const splashError = (e, opt = {
-	message: 'Splash Error',
-	colors: {
-		message: 'yellow',
-		error: 'red'
-	}
-}) => {
-	console.log();
-	console.log(chalk`{${opt.colors.message} ${opt.message}:} {${opt.colors.error} ${e}}`);
-
-	throw new Error(e);
-};
-
 // Capitalize a string
 const capitalize = (string, separator = ' ') => {
 	let words = string.split(separator);
@@ -197,15 +85,6 @@ const capitalize = (string, separator = ' ') => {
 	});
 
 	return words.join(separator);
-};
-
-// Prse ~ in a path
-const pathParser = path => {
-	if (path.includes('~')) {
-		path = path.replace('~', os.homedir());
-	}
-
-	return path;
 };
 
 // Parse url / id;
@@ -379,45 +258,14 @@ const downloadFlags = async (url, {
 	return parsedURL.href;
 };
 
-const isDecember = () => {
-	const today = new Date();
-	const months = [
-		'january',
-		'february',
-		'march',
-		'april',
-		'may',
-		'june',
-		'july',
-		'august',
-		'september',
-		'october',
-		'november',
-		'december'
-	];
-
-	if (months[today.getMonth()] === 'december') {
-		return true;
-	}
-
-	return false;
-};
-
 module.exports = {
 	checkArchivments,
-	showCopy,
-	parseExif,
 	parseID,
 	parseCollection,
 	parseCollectionURL,
 	openURL,
-	splashError,
 	capitalize,
-	pathParser,
 	collectionInfo,
-	uFormatter,
 	downloadFlags,
-	printBlock,
-	isDecember,
 	silence
 };
