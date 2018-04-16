@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "description": "Get beautiful wallpapers from Unsplash",
   "main": "build/bin/index.js",
   "engineStrict": true,
@@ -36,7 +36,7 @@
     "chalk": "^2.3.0",
     "clear": "^0.0.1",
     "conf": "^1.1.2",
-    "dotenv-safe": "^5.0.1",
+    "dotenv": "^5.0.1",
     "execa": "^0.7.0",
     "figlet": "^1.2.0",
     "first-run": "^1.2.0",
