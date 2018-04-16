@@ -5,13 +5,11 @@ import fs from 'fs';
 import path from 'path';
 
 import wallpaper from 'wallpaper';
-import chalk from 'chalk';
 
 import Ora from 'ora';
 import Conf from 'conf';
 
 import {
-	parseExif,
 	showCopy,
 	isDecember,
 	checkArchivments
@@ -27,7 +25,14 @@ const spinner = new Ora({
 const join = path.join;
 
 // Flags, options, set as wallpaper
-function download({quiet, info} = {}, {custom = false, photo, filename} = {}, setAsWallpaper = true) {
+function download({
+	quiet,
+	info
+} = {}, {
+	custom = false,
+	photo,
+	filename
+} = {}, setAsWallpaper = true) {
 	// Increase downloads counter.
 	config.set('counter', config.get('counter') + 1);
 

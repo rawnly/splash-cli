@@ -6,7 +6,6 @@
 require('babel-polyfill');
 
 import fs from 'fs';
-
 import dotenv from 'dotenv-safe';
 import frun from 'first-run';
 import mkdirp from 'mkdirp';
@@ -42,6 +41,10 @@ const api = {
 	token: process.env.SPLASH_TOKEN,
 	oauth: normalize('https://unsplash.com/oauth/authorize?client_id=daf9025ad4da801e4ef66ab9d7ea7291a0091b16d69f94972d284c71d7188b34&redirect_uri=https%3A%2F%2Frawnly.com%2Fsplash-cli%2Findex.php&response_type=code&scope=public+read_collections')
 };
+
+if (!api.token) {
+	throw new Error('No API token.');
+}
 
 // LOAD JSON
 import pkg from '../package.json';

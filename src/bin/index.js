@@ -3,9 +3,9 @@
 // Bin file, for client/s;
 require('babel-polyfill');
 
-const client = require('../client');
-const Meow = require('meow');
-const helpmenu = require('../libs/helpmenu');
+import Meow from 'meow';
+import helpmenu from '../libs/helpmenu';
+import client from '../client';
 
 const {
 	input,

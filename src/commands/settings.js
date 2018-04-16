@@ -1,10 +1,12 @@
 require('babel-polyfill');
 
-const Conf = require('conf');
-const inquirer = require('inquirer');
-const chalk = require('chalk');
-const clear = require('clear');
-const frun = require('first-run');
+import Conf from 'conf';
+import {
+	prompt
+} from 'inquirer';
+import chalk from 'chalk';
+import clear from 'clear';
+import frun from 'first-run';
 
 const config = new Conf();
 const quit = process.exit;
@@ -95,12 +97,12 @@ module.exports = async ({
 		_auth,
 		_directory,
 		_folders
-	} = await inquirer.prompt(questions);
+	} = await prompt(questions);
 
 	// Strong confirmation. keep user focus and prevent an accidental confirmation.
 	const {
 		confirm
-	} = await inquirer.prompt([{
+	} = await prompt([{
 		name: 'confirm',
 		message: chalk`Confirm ({yellow {bold yes}}/{yellow {bold no}}):`,
 		validate: input => {

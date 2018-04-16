@@ -1,7 +1,9 @@
 require('babel-polyfill');
 
 import chalk from 'chalk';
-import {isDecember} from './utils';
+import {
+	isDecember
+} from './utils';
 
 const help = chalk`{bold Usage}
 	${isDecember() ? chalk`{yellow Merry Christmas!}` : ''}

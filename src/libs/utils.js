@@ -285,7 +285,16 @@ const parseCollectionURL = url => {
 	return url;
 };
 
-// Thanks to @wOxxOm on codereview.stackexchange.com - https://codereview.stackexchange.com/questions/180006/how-can-i-make-my-function-easier-to-read-understand?noredirect=1#comment341954_180006
+/**
+ * @name downloadFlags
+ * @description Set download flags
+ * @author Federico Vitale
+ *
+ * @link https://codereview.stackexchange.com/questions/180006/how-can-i-make-my-function-easier-to-read-understand?noredirect=1#comment341954_180006
+ *
+ * @param {String} url
+ * @param {String} param1
+ */
 const downloadFlags = async (url, {
 	id,
 	user,
@@ -395,27 +404,20 @@ const isDecember = () => {
 };
 
 module.exports = {
-	checkArchivments, showCopy,
-	parseExif, parseID, parseCollection,
-	parseCollectionURL, openURL, splashError,
-	capitalize, pathParser, collectionInfo,
-	uFormatter, downloadFlags, printBlock,
-	isDecember, silence
+	checkArchivments,
+	showCopy,
+	parseExif,
+	parseID,
+	parseCollection,
+	parseCollectionURL,
+	openURL,
+	splashError,
+	capitalize,
+	pathParser,
+	collectionInfo,
+	uFormatter,
+	downloadFlags,
+	printBlock,
+	isDecember,
+	silence
 };
-
-// Module.exports.checkArchivments = checkArchivments;
-// module.exports.showCopy = showCopy;
-// module.exports.parseExif = parseExif;
-// module.exports.openURL = openURL;
-// module.exports.splashError = splashError;
-// module.exports.capitalize = capitalize;
-// module.exports.pathParser = pathParser;
-// module.exports.parseID = parseID;
-// module.exports.parseCollection = parseCollection;
-// module.exports.collectionInfo = collectionInfo;
-// module.exports.formatter = uFormatter;
-// module.exports.downloadFlags = downloadFlags;
-// module.exports.printBlock = printBlock;
-// module.exports.parseCollectionURL = parseCollectionURL;
-// module.exports.isDecember = isDecember;
-// module.exports.silence = silence;

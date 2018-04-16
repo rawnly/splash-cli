@@ -1,14 +1,13 @@
 require('babel-polyfill');
 
-const Conf = require('conf');
-const chalk = require('chalk');
+import Conf from 'conf';
+import chalk from 'chalk';
+import {
+	printBlock
+} from '../libs/utils';
 
 const config = new Conf();
 const quit = process.exit;
-
-const {
-	printBlock
-} = require('../libs/utils');
 
 module.exports = input => {
 	const [name, value] = [Object.keys(input)[1], Object.keys(input)[0]];

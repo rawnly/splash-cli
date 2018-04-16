@@ -1,9 +1,10 @@
 require('babel-polyfill');
 
-const fs = require('fs');
-const defaults = require('../defaults.json');
-const utils = require('../libs/utils');
-const chalk = require('chalk');
+import fs from 'fs';
+import chalk from 'chalk';
+import defaults from '../defaults.json';
+import utils from '../libs/utils';
+
 const {
 	exit
 } = process;
