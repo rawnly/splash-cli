@@ -10,17 +10,28 @@ import frun from 'first-run';
 import updateNotifier from 'update-notifier';
 import printBlock from '@splash-cli/print-block';
 
-import { defaultSettings, commandsList, actions, keys } from './extra/config';
-import { clearSettings, downloadFlags } from './extra/utils';
+import {
+  defaultSettings,
+  commandsList,
+  actions,
+  keys
+} from './extra/config';
+import {
+  clearSettings,
+  downloadFlags
+} from './extra/utils';
 import download from './libs/download';
 import splash from './libs/core';
 import manifest from '../package.json';
 
 const config = new Conf();
 
-export default async (commands, flags) => {
+export default async (commands, flags, cliMode = false) => {
   const [command, ...subCommands] = commands;
-  const { quiet, save } = flags;
+  const {
+    quiet,
+    save
+  } = flags;
   const options = {};
 
   // Parse commands
@@ -48,11 +59,13 @@ export default async (commands, flags) => {
     mkdirp(config.get('directory'));
   }
 
-  // CHECKS FOR UPDATES
-  updateNotifier({
-    pkg: manifest,
-    updateCheckInterval: 1000 * 30,
-  }).notify();
+  if (cliMode === true) {
+    // CHECKS FOR UPDATES
+    updateNotifier({
+      pkg: manifest,
+      updateCheckInterval: 1000 * 30,
+    }).notify();
+  }
 
   keys.api.getToken().then(token => {
     config.set('splash-token', token)
@@ -60,38 +73,47 @@ export default async (commands, flags) => {
 
   // Check for commands
   if (command) {
-    const cmd = commandsList[command];
+    if (cliMode === true) {
+      const cmd = commandsList[command];
 
-    if (cmd !== undefined && actions[cmd]) {
-      actions[cmd](options, flags);
-    } else if (cmd === 'restore') {
-      // Clear settings
-      clearSettings(config);
+      if (cmd !== undefined && actions[cmd]) {
+        actions[cmd](options, flags);
+      } else if (cmd === 'restore') {
+        // Clear settings
+        clearSettings(config);
 
-      // Clear first-run
-      frun.clear();
+        // Clear first-run
+        frun.clear();
 
-      printBlock(chalk`{bold {green Settings Restored!}}`);
-    } else if (cmd === 'get-settings') {
-      printBlock(chalk`{bold Settings}:`);
-      const currentSettings = Object.keys(config.get());
-      for (let i = 0; i < currentSettings.length; i += 1) {
-        const setting = currentSettings[i];
-        console.log(chalk`{yellow -> {bold ${setting}}}:`, config.get(setting));
+        printBlock(chalk `{bold {green Settings Restored!}}`);
+      } else if (cmd === 'get-settings') {
+        printBlock(chalk `{bold Settings}:`);
+        const currentSettings = Object.keys(config.get());
+        for (let i = 0; i < currentSettings.length; i += 1) {
+          const setting = currentSettings[i];
+          console.log(chalk `{yellow -> {bold ${setting}}}:`, config.get(setting));
+        }
+      } else {
+        printBlock(chalk `{red Invalid command}: "{underline ${command}}"`);
+        process.exit();
       }
     } else {
-      printBlock(chalk`{red Invalid command}: "{underline ${command}}"`);
-      process.exit();
+      printBlock(chalk`{bold !!!} - Sorry, this feature is not avaiable as module.`)
+      return false;
     }
   } else {
     // Run splash
     const url = await downloadFlags(`${keys.api.base}/photos/random?client_id=${config.get('splash-token')}`, flags);
     const response = await splash(url, flags);
     const photo = response.data;
-    const { statusCode } = response.status;
+    const { 
+      statusCode
+    } = response.status;
     const setAsWallpaper = save ? false : true;
-    if ( statusCode === 200 ) {
-      download(flags, { photo }, setAsWallpaper);
+    if (statusCode === 200) {
+      download(flags, {
+        photo
+      }, setAsWallpaper);
 
       return true;
     }
@@ -101,4 +123,3 @@ export default async (commands, flags) => {
 
   return true;
 };
-
