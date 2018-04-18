@@ -1,0 +1,8 @@
+{
+  "presets": ["es2017", "env"],
+  "plugins": [
+    "transform-regenerator",
+    "syntax-async-functions",
+    "transform-runtime"
+  ]
+}
