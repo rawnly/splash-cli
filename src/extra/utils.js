@@ -90,6 +90,11 @@ export const parseCollectionURL = (url) => {
   return url;
 };
 
+export function errorHandler(error) {
+  printBlock(chalk`OOps! We got an error!`, chalk`Please report it at: {underline {green https://github.com/splash-cli/splash-cli/issues}}`, chalk`{yellow Splash Error:}`)
+  throw error;
+}
+
 // Thanks to @wOxxOm on codereview.stackexchange.com - https://codereview.stackexchange.com/questions/180006/how-can-i-make-my-function-easier-to-read-understand?noredirect=1#comment341954_180006
 /**
  *

@@ -15,6 +15,8 @@ import parseExif from '@splash-cli/parse-exif';
 import showCopy from '@splash-cli/show-copy';
 import isMonth from '@splash-cli/is-month';
 
+import { errorHandler } from '../extra/utils';
+
 const config = new Conf();
 const spinner = new Ora({
   text: 'Making something awesome',
@@ -62,6 +64,6 @@ export default function download({
       });
     });
   } catch (err) {
-    throw new Error(err);
+    errorHandler(err);
   }
 }

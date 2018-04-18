@@ -7,6 +7,8 @@ import got from 'got';
 import normalize from 'normalize-url';
 import pathFixer from '@splash-cli/path-fixer';
 
+import { errorHandler } from '../extra/utils';
+
 export default async function() {
   if (!process.env.SPLASH_TOKEN) {
     try {
@@ -16,7 +18,7 @@ export default async function() {
         
       }
     } catch (error) {
-      throw error;
+       errorHandler(error);
     }
   }
 }
@@ -59,7 +61,7 @@ export const keys = {
 
         return JSON.parse(body).token;
       } catch (error) {
-        throw error;
+        errorHandler(error);
       }
     },
     base: normalize('https://api.unsplash.com')

@@ -8,6 +8,8 @@ import chalk from 'chalk';
 import printBlock from '@splash-cli/print-block';
 import isMonth from '@splash-cli/is-month';
 
+import { errorHandler } from '../extra/utils';
+
 const spinner = new Ora({
   text: 'Connecting to UNSPLASH',
   color: 'yellow',
@@ -49,7 +51,7 @@ export default async (downloadUrl, { quiet }) => {
       console.log(downloadUrl);
       printBlock(chalk`{bold Invalid {underline access token}!} - Please update it via`);
     } else {
-      throw err;
+      errorHandler(err);
     }
 
     process.exit();
