@@ -3,5 +3,6 @@
 
 .DS_Store
 branchManager.sh
+Gulpfile.babel.js
 
 node_modules

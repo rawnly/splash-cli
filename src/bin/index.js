@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import meow from 'meow';
 
 import help from './helpmenu';
