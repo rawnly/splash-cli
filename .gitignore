@@ -6,4 +6,4 @@
 build
 node_modules
 
-test.js
+branchManager.sh
