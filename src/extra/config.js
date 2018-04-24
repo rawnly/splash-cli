@@ -31,14 +31,11 @@ export const keys = {
   api: {
     getToken: async () => {
       if ( process.env.SPLASH_TOKEN ) {
-        // config.set('splash-token', process.env.SPLASH_TOKEN);
         return process.env.SPLASH_TOKEN;
       }
 
       try {
         const { body } = await got('https://federicovitale.me/splash');
-        // config.set('splash-token', JSON.parse(body).token);
-
         return JSON.parse(body).token;
       } catch (error) {
         errorHandler(error);
