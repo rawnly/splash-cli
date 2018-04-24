@@ -9,20 +9,6 @@ import pathFixer from '@splash-cli/path-fixer';
 
 import { errorHandler } from '../extra/utils';
 
-export default async function() {
-  if (!process.env.SPLASH_TOKEN) {
-    try {
-      const response = await got('https://federicovitale.me/splash-cli?token=true');
-      apiToken = JSON.parse(response.body).token
-      return {
-        
-      }
-    } catch (error) {
-       errorHandler(error);
-    }
-  }
-}
-
 export const defaultSettings = {
   aliases: [],
   size: 'full',
@@ -39,12 +25,6 @@ export const commandsList = {
   restore: 'restore',
   settings: 'settings',
   'get-settings': 'get-settings',
-};
-
-export const actions = {
-  list: () => {},
-  alias: () => {},
-  settings: () => {},
 };
 
 export const keys = {

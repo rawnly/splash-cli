@@ -10,10 +10,10 @@ import frun from 'first-run';
 import updateNotifier from 'update-notifier';
 import printBlock from '@splash-cli/print-block';
 
+
 import {
   defaultSettings,
   commandsList,
-  actions,
   keys
 } from './extra/config';
 import {
@@ -21,6 +21,7 @@ import {
   downloadFlags
 } from './extra/utils';
 import download from './libs/download';
+import actions from './libs/commands/index';
 import splash from './libs/core';
 import manifest from '../package.json';
 
@@ -98,7 +99,7 @@ export default async (commands, flags, cliMode = false) => {
         process.exit();
       }
     } else {
-      printBlock(chalk`{bold !!!} - Sorry, this feature is not avaiable as module.`)
+      printBlock(chalk `{bold !!!} - Sorry, this feature is not avaiable as module.`)
       return false;
     }
   } else {

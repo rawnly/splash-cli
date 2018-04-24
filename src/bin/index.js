@@ -59,4 +59,4 @@ const {
 	}
 });
 
-client(input, flags);
+client(input, flags, true);

@@ -5,6 +5,7 @@ import https from 'https';
 import fs from 'fs';
 import path from 'path';
 
+import mkdirp from 'mkdirp';
 import wallpaper from 'wallpaper';
 import chalk from 'chalk';
 
@@ -33,14 +34,24 @@ export default function download({
   // Increase downloads counter.
   config.set('counter', config.get('counter') + 1);
 
+  // Check if should create username folder 'ex: @rawnly/photo-id.jpg'
+  const createUsernameFolder = config.get('username-folder');
+
   // If no progress run the spinner
   if (!quiet) {
     spinner.start();
   }
 
+  const defaultIMGPath = createUsernameFolder ? join(config.get('directory'), `@${photo.user.username}`) : join(config.get('directory'));
+
+
+  if ( !fs.existsSync(defaultIMGPath) ) {
+    mkdirp.sync(defaultIMGPath);
+  }
+
   const size = config.get('pic-size');
   const extension = size === 'raw' ? 'tiff' : 'jpg';
-  const img = filename || join(config.get('directory'), `${photo.id}.${extension}`);
+  const img = filename || join(defaultIMGPath, `${photo.id}.${extension}`);
   const url = custom ? photo.urls.custom : (photo.urls[size] ? photo.urls[size] : photo.urls.full);
   const file = fs.createWriteStream(img);
 

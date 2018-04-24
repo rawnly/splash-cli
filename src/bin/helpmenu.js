@@ -14,9 +14,13 @@ export default chalk`{bold Usage}
 	{cyan get-settings}					{gray # Get settings}
 	{cyan restore}						{gray # Restore default settings}
 	{cyan alias} {dim <name> <value>}				{gray # Alias a collection ID}
+
+	{yellow {bold WARN!}}: {underline list} flags/options are disabled until fix!
+	
 	{cyan list} {dim [flags]}					{gray # List all downloaded photos}
 	  {yellow --export} {dim [flags]}			  	{gray # Write the list into a json file}
-	  {yellow --out} {dim <output file>}				{gray # The list file name}
+		{yellow --out} {dim <output file>}				{gray # The list file name}
+		
 
 {bold Options}
 	{yellow -h --help}					{gray # Output this menu}
