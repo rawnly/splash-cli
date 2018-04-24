@@ -8,6 +8,8 @@
 <!-- badges -->
 ![npm](https://img.shields.io/npm/dt/splash-cli.svg?style=for-the-badge)
 ![version](https://img.shields.io/github/package-json/v/splash-cli/splash-cli.svg?style=for-the-badge)
+![travis](https://img.shields.io/travis/splash-cli/splash-cli/master.svg?style=for-the-badge)
+
 
 
 <!-- /badges -->
