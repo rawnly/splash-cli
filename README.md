@@ -1,19 +1,15 @@
-# Splash Cli
-
-![splash-cli](https://user-images.githubusercontent.com/16429579/35586570-79300ae8-05fb-11e8-8d37-17ff8cb6fa85.gif)
-> Get beautiful wallpapers from [unsplash](uwebsite)
-
-<br>
-
 <!-- badges -->
 ![npm](https://img.shields.io/npm/dt/splash-cli.svg?style=for-the-badge)
 ![version](https://img.shields.io/github/package-json/v/splash-cli/splash-cli.svg?style=for-the-badge)
 ![travis](https://img.shields.io/travis/splash-cli/splash-cli/master.svg?style=for-the-badge)
-
-
-
 <!-- /badges -->
 
+<br>
+
+# Splash Cli
+
+![splash-cli](https://user-images.githubusercontent.com/16429579/35586570-79300ae8-05fb-11e8-8d37-17ff8cb6fa85.gif)
+> Get beautiful wallpapers from [unsplash](uwebsite)
 
 ## :floppy_disk: Installation
 To install `splash-cli` you must use a **node package manager** such as [yarn](/Rawnly/splash-cli/blob/master/yarn) or [npm](/Rawnly/splash-cli/blob/master/npm).
