@@ -33,6 +33,7 @@ export default async (commands, flags, cliMode = false) => {
     quiet,
     save
   } = flags;
+
   const options = {};
 
   // Parse commands
@@ -68,9 +69,15 @@ export default async (commands, flags, cliMode = false) => {
     }).notify();
   }
 
-  keys.api.getToken().then(token => {
-    config.set('splash-token', token)
-  })
+  if ( flags.token ) {
+    config.set('splash-token', flags.token)
+  } else if (process.env.SPLASH_TOKEN) {
+    config.set('splash-token', SPLASH_TOKEN)
+  } else {
+    keys.api.getToken().then(token => {
+      config.set('splash-token', token)
+    })
+  }
 
   // Check for commands
   if (command) {
