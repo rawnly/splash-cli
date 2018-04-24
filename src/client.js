@@ -71,12 +71,16 @@ export default async (commands, flags, cliMode = false) => {
 
   if ( flags.token ) {
     config.set('splash-token', flags.token)
-  } else if (process.env.SPLASH_TOKEN) {
-    config.set('splash-token', SPLASH_TOKEN)
-  } else {
-    keys.api.getToken().then(token => {
-      config.set('splash-token', token)
-    })
+  } 
+
+  if (!config.get('splash-token') || !config.has('splash-token')) {
+    if (process.env.SPLASH_TOKEN) {
+      config.set('splash-token', SPLASH_TOKEN)
+    } else {
+      keys.api.getToken().then(token => {
+        config.set('splash-token', token)
+      })
+    }
   }
 
   // Check for commands
@@ -92,6 +96,7 @@ export default async (commands, flags, cliMode = false) => {
 
         // Clear first-run
         frun.clear();
+        fs.unlinkSync(config.path);
 
         printBlock(chalk `{bold {green Settings Restored!}}`);
       } else if (cmd === 'get-settings') {
@@ -111,7 +116,17 @@ export default async (commands, flags, cliMode = false) => {
     }
   } else {
     // Run splash
-    const url = await downloadFlags(`${keys.api.base}/photos/random?client_id=${config.get('splash-token')}`, flags);
+    const token = flags.token || process.env.SPLASH_TOKEN || config.get('splash-token');
+
+    if ( !token ) {
+      keys.api.getToken().then(t => {
+        config.set('splash-token', t);
+      })
+    }
+
+    token = flags.token || process.env.SPLASH_TOKEN || config.get('splash-token');
+
+    const url = await downloadFlags(`${keys.api.base}/photos/random?client_id=${token}`, flags);
     const response = await splash(url, flags);
     const photo = response.data;
     const { 

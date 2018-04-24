@@ -48,8 +48,7 @@ export default async (downloadUrl, { quiet }) => {
     spinner.fail();
 
     if (err.statusCode === 401) {
-      printBlock(chalk`{bold Invalid {underline access token}!} - Please update it via`);
-      console.log(downloadUrl);
+      printBlock(chalk`{bold Invalid {underline access token}!} \n Please update it via "{yellow --token} {dim <token>}"`);
     } else {
       errorHandler(err);
     }
