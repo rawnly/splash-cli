@@ -1,5 +1,5 @@
 import test from 'ava';
-import splashClient from '.';
+import splashClient from './build/bin/index';
 
 test('Testing...', async t => {
 	try {
