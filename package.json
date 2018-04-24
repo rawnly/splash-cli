@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "babel src -d build",
-    "release": "build"
+    "release": "npm run build",
+    "test": "npm run build; ./build/bin/index.js --version"
   },
   "dependencies": {
     "@splash-cli/is-month": "^1.0.2",

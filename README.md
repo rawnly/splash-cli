@@ -6,10 +6,10 @@
 <br>
 
 <!-- badges -->
-[![Downloads](https://img.shields.io/npm/dt/splash-cli.svg)](https://npmjs.org/package/splash-cli) 
-[![Build Status](https://camo.githubusercontent.com/46ec4f1f708c9a91132c190fa0f8918dadeaa04a/68747470733a2f2f7472617669732d63692e6f72672f5261776e6c792f73706c6173682d636c692e7376673f6272616e63683d6d6173746572)](/Rawnly/splash-cli/blob/master/build_url)
-![node-version](https://img.shields.io/node/v/splash-cli.svg)
-[![GitHub release](https://img.shields.io/github/release/rawnly/splash-cli.svg)](https://github.com/rawnly/splash-cli)
+![npm](https://img.shields.io/npm/dt/splash-cli.svg?style=for-the-badge)
+![version](https://img.shields.io/github/package-json/v/splash-cli/splash-cli.svg?style=for-the-badge)
+
+
 <!-- /badges -->
 
 
