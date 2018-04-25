@@ -116,7 +116,7 @@ export default async (commands, flags, cliMode = false) => {
     }
   } else {
     // Run splash
-    const token = flags.token || process.env.SPLASH_TOKEN || config.get('splash-token');
+    let token = flags.token || process.env.SPLASH_TOKEN || config.get('splash-token');
 
     if ( !token ) {
       keys.api.getToken().then(t => {
