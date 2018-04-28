@@ -1,38 +1,27 @@
-require('babel-polyfill');
+require("babel-polyfill");
 
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-import Conf from 'conf';
-import chalk from 'chalk';
-import mkdirp from 'mkdirp';
-import frun from 'first-run';
-import updateNotifier from 'update-notifier';
-import printBlock from '@splash-cli/print-block';
+import Conf from "conf";
+import chalk from "chalk";
+import mkdirp from "mkdirp";
+import frun from "first-run";
+import updateNotifier from "update-notifier";
+import printBlock from "@splash-cli/print-block";
 
-
-import {
-  defaultSettings,
-  commandsList,
-  keys
-} from './extra/config';
-import {
-  clearSettings,
-  downloadFlags
-} from './extra/utils';
-import download from './libs/download';
-import actions from './libs/commands/index';
-import splash from './libs/core';
-import manifest from '../package.json';
+import { defaultSettings, commandsList, keys } from "./extra/config";
+import { clearSettings, downloadFlags } from "./extra/utils";
+import download from "./libs/download";
+import actions from "./libs/commands/index";
+import splash from "./libs/core";
+import manifest from "../package.json";
 
 const config = new Conf();
 
 export default async (commands, flags, cliMode = false) => {
   const [command, ...subCommands] = commands;
-  const {
-    quiet,
-    save
-  } = flags;
+  const { quiet, save } = flags;
 
   const options = {};
 
@@ -52,34 +41,34 @@ export default async (commands, flags, cliMode = false) => {
   }
 
   // Create the setting of the dir if not exists
-  if (!config.get('directory') || !config.has('directory')) {
-    config.set('directory', defaultSettings.directory);
+  if (!config.get("directory") || !config.has("directory")) {
+    config.set("directory", defaultSettings.directory);
   }
 
   // Check for ~/Pictures/splash_photos
-  if (!fs.existsSync(config.get('directory'))) {
-    mkdirp(config.get('directory'));
+  if (!fs.existsSync(config.get("directory"))) {
+    mkdirp(config.get("directory"));
   }
 
   if (cliMode === true) {
     // CHECKS FOR UPDATES
     updateNotifier({
       pkg: manifest,
-      updateCheckInterval: 1000 * 30,
+      updateCheckInterval: 1000 * 30
     }).notify();
   }
 
-  if ( flags.token ) {
-    config.set('splash-token', flags.token)
-  } 
+  if (flags.token) {
+    config.set("splash-token", flags.token);
+  }
 
-  if (!config.get('splash-token') || !config.has('splash-token')) {
+  if (!config.get("splash-token") || !config.has("splash-token")) {
     if (process.env.SPLASH_TOKEN) {
-      config.set('splash-token', SPLASH_TOKEN)
+      config.set("splash-token", SPLASH_TOKEN);
     } else {
       keys.api.getToken().then(token => {
-        config.set('splash-token', token)
-      })
+        config.set("splash-token", token);
+      });
     }
   }
 
@@ -90,7 +79,7 @@ export default async (commands, flags, cliMode = false) => {
 
       if (cmd !== undefined && actions[cmd]) {
         actions[cmd](options, flags);
-      } else if (cmd === 'restore') {
+      } else if (cmd === "restore") {
         // Clear settings
         clearSettings(config);
 
@@ -98,45 +87,60 @@ export default async (commands, flags, cliMode = false) => {
         frun.clear();
         fs.unlinkSync(config.path);
 
-        printBlock(chalk `{bold {green Settings Restored!}}`);
-      } else if (cmd === 'get-settings') {
-        printBlock(chalk `{bold Settings}:`);
+        printBlock(chalk`{bold {green Settings Restored!}}`);
+      } else if (cmd === "get-settings") {
+        printBlock(
+          chalk`Settings path: {yellow {underline ${config.path}}}`,
+          chalk`{bold Settings}:`
+        );
         const currentSettings = Object.keys(config.get());
         for (let i = 0; i < currentSettings.length; i += 1) {
           const setting = currentSettings[i];
-          console.log(chalk `{yellow -> {bold ${setting}}}:`, config.get(setting));
+          console.log(
+            chalk`{yellow -> {bold ${setting}}}:`,
+            config.get(setting)
+          );
         }
       } else {
-        printBlock(chalk `{red Invalid command}: "{underline ${command}}"`);
+        printBlock(chalk`{red Invalid command}: "{underline ${command}}"`);
         process.exit();
       }
     } else {
-      printBlock(chalk `{bold !!!} - Sorry, this feature is not avaiable as module.`)
+      printBlock(
+        chalk`{bold !!!} - Sorry, this feature is not avaiable as module.`
+      );
       return false;
     }
   } else {
     // Run splash
-    let token = flags.token || process.env.SPLASH_TOKEN || config.get('splash-token');
+    let token =
+      flags.token || process.env.SPLASH_TOKEN || config.get("splash-token");
 
-    if ( !token ) {
+    if (!token) {
       keys.api.getToken().then(t => {
-        config.set('splash-token', t);
-      })
+        config.set("splash-token", t);
+      });
     }
 
-    token = flags.token || process.env.SPLASH_TOKEN || config.get('splash-token');
+    token =
+      flags.token || process.env.SPLASH_TOKEN || config.get("splash-token");
 
-    const url = await downloadFlags(`${keys.api.base}/photos/random?client_id=${token}`, flags);
+    const url = await downloadFlags(
+      `${keys.api.base}/photos/random?client_id=${token}`,
+      flags
+    );
     const response = await splash(url, flags);
     const photo = response.data;
-    const { 
-      statusCode
-    } = response.status;
+    const { statusCode } = response.status;
     const setAsWallpaper = save ? false : true;
     if (statusCode === 200) {
-      download(flags, {
-        photo
-      }, setAsWallpaper);
+      download(
+        flags,
+        {
+          photo
+        },
+        setAsWallpaper
+      );
 
       return true;
     }

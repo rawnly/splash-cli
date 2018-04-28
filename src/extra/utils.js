@@ -1,18 +1,14 @@
-require('babel-polyfill');
+require("babel-polyfill");
 require("regenerator-runtime");
 
-import got from 'got';
-import Conf from 'conf';
-import chalk from 'chalk';
-import { URL } from 'url';
-import printBlock from '@splash-cli/print-block';
-import parseID from '@splash-cli/parse-unsplash-id';
+import got from "got";
+import Conf from "conf";
+import chalk from "chalk";
+import { URL } from "url";
+import printBlock from "@splash-cli/print-block";
+import parseID from "@splash-cli/parse-unsplash-id";
 
-
-import {
-  keys,
-  defaultSettings,
-} from './config';
+import { keys, defaultSettings } from "./config";
 
 const config = new Conf();
 
@@ -30,8 +26,8 @@ export function clearSettings() {
   return config.get() === defaultSettings;
 }
 
-export const parseCollection = (alias) => {
-  const aliases = config.get('aliases');
+export const parseCollection = alias => {
+  const aliases = config.get("aliases");
 
   const collection = aliases.filter(item => item.name === alias).shift();
 
@@ -42,9 +38,13 @@ export const parseCollection = (alias) => {
   return false;
 };
 
-export const collectionInfo = async (id) => {
+export const collectionInfo = async id => {
   try {
-    let { body } = await got(`${keys.api.base}/collections/${id}?client_id=${config.get('splash-token')}`);
+    let { body } = await got(
+      `${keys.api.base}/collections/${id}?client_id=${config.get(
+        "splash-token"
+      )}`
+    );
     body = JSON.parse(body);
 
     return {
@@ -53,14 +53,14 @@ export const collectionInfo = async (id) => {
       description: body.description,
       user: body.user.username,
       featured: body.featured,
-      curated: body.curated,
+      curated: body.curated
     };
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const parseCollectionURL = (url) => {
+export const parseCollectionURL = url => {
   let collectionArguments = [];
   const collection = {};
   let COLLECTION_REGEX;
@@ -74,7 +74,7 @@ export const parseCollectionURL = (url) => {
   }
 
   if (COLLECTION_REGEX.test(url)) {
-    collectionArguments = url.match(COLLECTION_REGEX)[0].split('/');
+    collectionArguments = url.match(COLLECTION_REGEX)[0].split("/");
 
     if (isCurated) {
       collection.name = collectionArguments[0];
@@ -91,7 +91,11 @@ export const parseCollectionURL = (url) => {
 };
 
 export function errorHandler(error) {
-  printBlock(chalk`OOps! We got an error!`, chalk`Please report it at: {underline {green https://github.com/splash-cli/splash-cli/issues}}`, chalk`{yellow Splash Error:}`)
+  printBlock(
+    chalk`OOps! We got an error!`,
+    chalk`Please report it at: {underline {green https://github.com/splash-cli/splash-cli/issues}}`,
+    chalk`{yellow Splash Error:}`
+  );
   throw error;
 }
 
@@ -101,38 +105,37 @@ export function errorHandler(error) {
  * @param {String} url
  * @param {Object} options
  */
-export async function downloadFlags(url, {
-  id,
-  user,
-  orientation,
-  query,
-  collection,
-  featured,
-} = {}) {
+export async function downloadFlags(
+  url,
+  { id, user, orientation, query, collection, featured } = {}
+) {
   const ORIENTATIONS = {
-    landscape: 'landscape',
-    horizontal: 'landscape',
-    portrait: 'portrait',
-    vertical: 'portrait',
-    squarish: 'squarish',
-    square: 'squarish',
+    landscape: "landscape",
+    horizontal: "landscape",
+    portrait: "portrait",
+    vertical: "portrait",
+    squarish: "squarish",
+    square: "squarish"
   };
 
   if (id) {
     const photoID = parseID(id);
 
     if (!photoID) {
-      printBlock(chalk `{red {bold Invalid}} {yellow url/id}`);
+      printBlock(chalk`{red {bold Invalid}} {yellow url/id}`);
     }
 
-    return `${keys.api.base}/photos/${photoID}?client_id=${config.get('splash-token')}`;
+    return `${keys.api.base}/photos/${photoID}?client_id=${config.get(
+      "splash-token"
+    )}`;
   }
 
   const parsedURL = new URL(url);
 
   if (orientation) {
-    const photoOrientation = ORIENTATIONS[orientation] || config.get('orientation') || undefined;
-    parsedURL.searchParams.set('orientation', photoOrientation);
+    const photoOrientation =
+      ORIENTATIONS[orientation] || config.get("orientation") || undefined;
+    parsedURL.searchParams.set("orientation", photoOrientation);
   }
 
   const finalizeUrlWith = (name, value) => {
@@ -141,15 +144,15 @@ export async function downloadFlags(url, {
   };
 
   if (query) {
-    finalizeUrlWith('query', query.toLowerCase());
+    finalizeUrlWith("query", query.toLowerCase());
   }
 
   if (user) {
-    finalizeUrlWith('username', user.toLowerCase());
+    finalizeUrlWith("username", user.toLowerCase());
   }
 
   if (featured) {
-    finalizeUrlWith('featured', true);
+    finalizeUrlWith("featured", true);
   }
 
   if (collection) {
@@ -159,9 +162,8 @@ export async function downloadFlags(url, {
       selectedCollection = selectedCollection.id;
     }
 
-    const {
-      value = /[0-9]{3,7}|$/.exec(selectedCollection)[0],
-    } = parseCollection(selectedCollection) || {};
+    const { value = /[0-9]{3,7}|$/.exec(selectedCollection)[0] } =
+      parseCollection(selectedCollection) || {};
 
     if (!value) {
       printBlock(chalk`{red Invalid collection ID}`);
@@ -170,18 +172,20 @@ export async function downloadFlags(url, {
 
     const info = await collectionInfo(value);
 
-    let message = chalk `Collection: {cyan ${info.title}} by {yellow @${info.user}}`;
+    let message = chalk`Collection: {cyan ${info.title}} by {yellow @${
+      info.user
+    }}`;
 
     if (info.featured || info.curated) {
       message = `[${[
-        info.curated ? 'Curated - ' : '',
-        info.featured ? 'Featured' : '',
-      ].join('')}] ${message}`;
+        info.curated ? "Curated - " : "",
+        info.featured ? "Featured" : ""
+      ].join("")}] ${message}`;
     }
 
     printBlock(message);
 
-    return finalizeUrlWith('collections', info.id);
+    return finalizeUrlWith("collections", info.id);
   }
 
   return parsedURL.href;

@@ -1,9 +1,9 @@
-import alias from './alias';
-import list from './list';
-import settings from './settings';
+import alias from "./alias";
+import list from "./list";
+import settings from "./settings";
 
 export default {
-	alias, 
-	list, 
-	settings
-}
+  alias,
+  list,
+  settings
+};
