@@ -2,9 +2,11 @@
 !.npmignore
 
 .DS_Store
+branchManager.sh
+Gulpfile.babel.js
+
+package-lock.json
+yarn.lock
 
 build
 node_modules
-
-branchManager.sh
-Gulpfile.babel.js

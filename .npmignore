@@ -5,4 +5,7 @@
 branchManager.sh
 Gulpfile.babel.js
 
+package-lock.json
+yarn.lock
+
 node_modules
