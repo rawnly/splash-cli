@@ -12,16 +12,22 @@ import { keys, defaultSettings } from "./config";
 
 const config = new Conf();
 
-export function clearSettings() {
+export async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    const element = array[index];
+    await callback((element, index, array));
+  }
+}
+
+export async function clearSettings() {
   const settingsList = Object.keys(defaultSettings);
 
-  for (let i = 0; i < settingsList.length; i += 1) {
-    const setting = settingsList[i];
+  await asyncForEach(settingsList, async setting => {
     if (config.has(setting)) {
       config.delete(setting);
       config.set(setting, defaultSettings[setting]);
     }
-  }
+  });
 
   return config.get() === defaultSettings;
 }
@@ -189,4 +195,13 @@ export async function downloadFlags(
   }
 
   return parsedURL.href;
+}
+
+export function repeatChar(char, length) {
+  var string = "";
+  for (let i = 0; i < length; i++) {
+    string += char;
+  }
+
+  return string;
 }

@@ -2,6 +2,7 @@ require("babel-polyfill");
 
 import fs from "fs";
 import path from "path";
+import { userInfo, homedir } from "os";
 
 import Conf from "conf";
 import chalk from "chalk";
@@ -11,7 +12,7 @@ import updateNotifier from "update-notifier";
 import printBlock from "@splash-cli/print-block";
 
 import { defaultSettings, commandsList, keys } from "./extra/config";
-import { clearSettings, downloadFlags } from "./extra/utils";
+import { clearSettings, downloadFlags, repeatChar } from "./extra/utils";
 import download from "./libs/download";
 import actions from "./libs/commands/index";
 import splash from "./libs/core";
@@ -33,11 +34,6 @@ export default async (commands, flags, cliMode = false) => {
   // Shh!
   if (quiet) {
     console.log = () => {};
-  }
-
-  // Check if is the first run after install
-  if (frun()) {
-    clearSettings();
   }
 
   // Create the setting of the dir if not exists
@@ -66,10 +62,24 @@ export default async (commands, flags, cliMode = false) => {
     if (process.env.SPLASH_TOKEN) {
       config.set("splash-token", SPLASH_TOKEN);
     } else {
-      keys.api.getToken().then(token => {
-        config.set("splash-token", token);
-      });
+      const token = await keys.api.getToken();
+      config.set("splash-token", token);
     }
+  }
+
+  // Check if is the first run after install
+  if (frun()) {
+    const settingsCleared = await clearSettings();
+
+    printBlock(
+      chalk`Welcome to ${manifest.name}@${manifest.version} {bold @${
+        userInfo().username
+      }}`,
+      chalk`{bold Go make something awesome!}`,
+      chalk`{dim Initials setup done.}`
+    );
+
+    return;
   }
 
   // Check for commands
@@ -81,7 +91,7 @@ export default async (commands, flags, cliMode = false) => {
         actions[cmd](options, flags);
       } else if (cmd === "restore") {
         // Clear settings
-        clearSettings(config);
+        await clearSettings();
 
         // Clear first-run
         frun.clear();
@@ -90,19 +100,28 @@ export default async (commands, flags, cliMode = false) => {
         printBlock(chalk`{bold {green Settings Restored!}}`);
       } else if (cmd === "get-settings") {
         printBlock(
-          chalk`Settings path: {yellow {underline ${config.path}}}`,
-          chalk`{bold Settings}:`
+          chalk`{bold Settings}:`,
+          chalk`{bold Settings path}: {yellow {underline ${config.path}}}`
         );
         const currentSettings = Object.keys(config.get());
         for (let i = 0; i < currentSettings.length; i += 1) {
           const setting = currentSettings[i];
+          let settingValue = config.get(setting);
+
+          if (setting === "splash-token") {
+            settingValue = repeatChar("*", settingValue.length);
+          }
+
           console.log(
             chalk`{yellow -> {bold ${setting}}}:`,
-            config.get(setting)
+            chalk`{dim ${settingValue}}`
           );
         }
       } else {
-        printBlock(chalk`{red Invalid command}: "{underline ${command}}"`);
+        printBlock(
+          chalk`{red Invalid command}: "{underline ${command}}"`,
+          chalk`{green $} {yellow splash --help}`
+        );
         process.exit();
       }
     } else {
