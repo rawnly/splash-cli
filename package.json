@@ -6,6 +6,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": "6.11.4",
+    "npm": "3.10.10"
+  },
   "bin": {
     "splash": "build/bin/index.js"
   },
