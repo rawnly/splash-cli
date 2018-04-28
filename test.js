@@ -1,17 +1,12 @@
 import test from "ava";
+import execa from "execa";
 import splashClient from ".";
-
-test("Testing... 1", async t => {
+test("Testing again", async t => {
   try {
-    await splashClient([], {
-      token: "d780e2d296ea4a26b9a373cfd3265f8f949de7260d62f7dc838d5396142cd3a6"
-    });
+    await splashClient([], { quiet: true, user: "nasa" });
     t.pass();
   } catch (error) {
-    t.fail(error);
+    t.fail(error.message);
+    throw error;
   }
-});
-
-test("Testing again", async t => {
-  execa.shell();
 });
