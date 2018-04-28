@@ -7,8 +7,8 @@
     "access": "public"
   },
   "engines": {
-    "node": "6.11.4",
-    "npm": "3.10.10"
+    "node": ">=6.11.4",
+    "npm": ">=3.10.10"
   },
   "bin": {
     "splash": "build/bin/index.js"
@@ -18,7 +18,7 @@
     "test": "npm run build; ava test.js"
   },
   "dependencies": {
-    "@splash-cli/is-month": "^1.0.2",
+    "@splash-cli/is-month": "^1.1.1",
     "@splash-cli/parse-exif": "^1.0.0",
     "@splash-cli/parse-unsplash-id": "^0.0.1",
     "@splash-cli/path-fixer": "1.0.2",
@@ -33,7 +33,7 @@
     "first-run": "^1.2.0",
     "got": "^8.3.0",
     "inquirer": "^5.2.0",
-    "meow": "^4.0.0",
+    "meow": "^5.0.0",
     "mkdirp": "^0.5.1",
     "normalize-url": "^2.0.1",
     "ora": "^2.0.0",
@@ -41,15 +41,16 @@
     "wallpaper": "^2.6.0"
   },
   "devDependencies": {
-    "ava": "^0.19.1",
-    "babel-core": "^6.26.0",
+    "ava": "^0.25.0",
+    "babel-core": "^6.26.3",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2017": "^6.24.1",
-    "eslint": "^4.10.0",
-    "eslint-config-xo": "^0.19.0",
+    "eslint": "^4.19.1",
+    "eslint-config-xo": "^0.22.0",
+    "execa": "^0.10.0",
     "np": "^2.20.1"
   }
 }
