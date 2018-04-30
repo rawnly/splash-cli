@@ -296,3 +296,7 @@ export function isJSON(data) {
     return false;
   }
 }
+
+export function isPath(string) {
+  return /([a-z]\:|)(\w+|\~+|\.|)\\\w+|(\w+|\~+|)\/\w+/i.test(string);
+}
