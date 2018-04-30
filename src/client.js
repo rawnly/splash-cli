@@ -110,12 +110,12 @@ export default async (commands, flags, cliMode = false) => {
 
           if (setting === "splash-token") {
             settingValue = repeatChar("*", settingValue.length);
+          } else if (setting !== "pic-of-the-day") {
+            console.log(
+              chalk`{yellow -> {bold ${setting}}}:`,
+              chalk`{dim ${settingValue}}`
+            );
           }
-
-          console.log(
-            chalk`{yellow -> {bold ${setting}}}:`,
-            chalk`{dim ${settingValue}}`
-          );
         }
       } else {
         printBlock(
