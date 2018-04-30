@@ -12,7 +12,12 @@ import updateNotifier from "update-notifier";
 import printBlock from "@splash-cli/print-block";
 
 import { defaultSettings, commandsList, keys } from "./extra/config";
-import { clearSettings, downloadFlags, repeatChar } from "./extra/utils";
+import {
+  clearSettings,
+  downloadFlags,
+  repeatChar,
+  isPath
+} from "./extra/utils";
 import download from "./libs/download";
 import actions from "./libs/commands/index";
 import splash from "./libs/core";
@@ -99,10 +104,13 @@ export default async (commands, flags, cliMode = false) => {
 
         printBlock(chalk`{bold {green Settings Restored!}}`);
       } else if (cmd === "get-settings") {
-        printBlock(
-          chalk`{bold Settings}:`,
-          chalk`{bold Settings path}: {yellow {underline ${config.path}}}`
+        printBlock(chalk`{bold Settings}:`);
+        console.log(
+          chalk`{yellow -> {bold Settings path}}: {dim {underline ${
+            config.path
+          }}}`
         );
+
         const currentSettings = Object.keys(config.get());
         for (let i = 0; i < currentSettings.length; i += 1) {
           const setting = currentSettings[i];
@@ -111,10 +119,16 @@ export default async (commands, flags, cliMode = false) => {
           if (setting === "splash-token") {
             settingValue = repeatChar("*", settingValue.length);
           } else if (setting !== "pic-of-the-day") {
-            console.log(
-              chalk`{yellow -> {bold ${setting}}}:`,
-              chalk`{dim ${settingValue}}`
-            );
+            if (isPath(settingValue)) {
+              settingValue = chalk`{dim {underline ${settingValue}}}`;
+            } else if (typeof settingValue === "object") {
+              settingValue = JSON.stringify(settingValue, null, 2);
+              settingValue = chalk`{dim ${settingValue}}`;
+            } else {
+              settingValue = chalk`{dim ${settingValue}}`;
+            }
+
+            console.log(chalk`{yellow -> {bold ${setting}}}:`, settingValue);
           }
         }
       } else {

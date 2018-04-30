@@ -8,10 +8,12 @@ import path from "path";
 import mkdirp from "mkdirp";
 import wallpaper from "wallpaper";
 import chalk from "chalk";
+import { prompt } from "inquirer";
 
 import Ora from "ora";
 import Conf from "conf";
 
+import printBlock from "@splash-cli/print-block";
 import parseExif from "@splash-cli/parse-exif";
 import showCopy from "@splash-cli/show-copy";
 import isMonth from "@splash-cli/is-month";
@@ -28,7 +30,7 @@ const spinner = new Ora({
 const join = path.join;
 
 // Flags, options, set as wallpaper
-export default function download(
+export default async function download(
   { quiet, info } = {},
   { custom, photo, filename } = { custom: false },
   setAsWallpaper = true
@@ -60,6 +62,37 @@ export default function download(
     : photo.urls[size]
       ? photo.urls[size]
       : photo.urls.full;
+
+  if (fs.existsSync(img) && !quiet) {
+    spinner.stop();
+
+    printBlock(chalk`Hey! That photo is already on your computer!`);
+
+    const a = await prompt([
+      {
+        name: "again",
+        message: "Do you want to download it again?",
+        prefix: chalk.green("%"),
+        type: "confirm"
+      }
+    ]);
+
+    if (!a.again) {
+      wallpaper.set(img);
+
+      // Display 'shot by ...'
+      console.log();
+      showCopy(photo, info);
+
+      // Trailing space
+      console.log();
+
+      return;
+    }
+
+    spinner.start();
+  }
+
   const file = fs.createWriteStream(img);
 
   try {
