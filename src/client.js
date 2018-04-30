@@ -153,14 +153,7 @@ export default async (commands, flags, cliMode = false) => {
     const { statusCode } = response.status;
     const setAsWallpaper = save ? false : true;
     if (statusCode === 200) {
-      download(
-        flags,
-        {
-          photo
-        },
-        setAsWallpaper
-      );
-
+      download(flags, { photo }, setAsWallpaper);
       return true;
     }
 
