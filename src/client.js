@@ -130,7 +130,7 @@ export default async (commands, flags, cliMode = false) => {
       );
       return false;
     }
-  } else {
+  } else if (flags.token) {
     // Run splash
     let token =
       flags.token || process.env.SPLASH_TOKEN || config.get("splash-token");
@@ -140,7 +140,7 @@ export default async (commands, flags, cliMode = false) => {
         config.set("splash-token", t);
       });
     }
-
+  } else {
     token =
       flags.token || process.env.SPLASH_TOKEN || config.get("splash-token");
 
