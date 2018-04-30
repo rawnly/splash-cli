@@ -15,7 +15,7 @@ export default input => {
   }
 
   // Get current aliases
-  const aliases = config.get("aliases");
+  const aliases = config.get("aliases") || [];
 
   // Setup new alias
   const newAlias = {
