@@ -84,9 +84,6 @@ export default async function download(
       console.log();
       showCopy(photo, info);
 
-      // Trailing space
-      console.log();
-
       return;
     }
 
