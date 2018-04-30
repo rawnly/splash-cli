@@ -1,6 +1,6 @@
 {
   "name": "splash-cli",
-  "version": "2.8.7",
+  "version": "2.8.8",
   "description": "Get beautiful wallpapers from unsplash.",
   "main": "build/client.js",
   "publishConfig": {
@@ -33,6 +33,7 @@
     "first-run": "^1.2.0",
     "got": "^8.3.0",
     "inquirer": "^5.2.0",
+    "jsdom": "^11.9.0",
     "meow": "^5.0.0",
     "mkdirp": "^0.5.1",
     "normalize-url": "^2.0.1",

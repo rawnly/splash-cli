@@ -5,6 +5,7 @@ import got from "got";
 import Conf from "conf";
 import chalk from "chalk";
 import { URL } from "url";
+import { JSDOM } from "jsdom";
 import printBlock from "@splash-cli/print-block";
 import parseID from "@splash-cli/parse-unsplash-id";
 
@@ -111,10 +112,9 @@ export function errorHandler(error) {
  * @param {String} url
  * @param {Object} options
  */
-export async function downloadFlags(
-  url,
-  { id, user, orientation, query, collection, featured } = {}
-) {
+export async function downloadFlags(url, flags) {
+  let photoOfTheDay = false;
+  const { id, user, orientation, query, collection, featured } = flags;
   const ORIENTATIONS = {
     landscape: "landscape",
     horizontal: "landscape",
@@ -126,6 +126,17 @@ export async function downloadFlags(
 
   if (id) {
     const photoID = parseID(id);
+
+    if (!photoID) {
+      printBlock(chalk`{red {bold Invalid}} {yellow url/id}`);
+    }
+
+    return `${keys.api.base}/photos/${photoID}?client_id=${config.get(
+      "splash-token"
+    )}`;
+  } else if (flags.day) {
+    const photo = await picOfTheDay();
+    const photoID = parseID(photo);
 
     if (!photoID) {
       printBlock(chalk`{red {bold Invalid}} {yellow url/id}`);
@@ -204,4 +215,88 @@ export function repeatChar(char, length) {
   }
 
   return string;
+}
+
+export async function picOfTheDay() {
+  const date = new Date();
+  const today = `${date.getDay()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+
+  if (
+    config.has("pic-of-the-day") &&
+    config.get("pic-of-the-day").date == today
+  ) {
+    return config.get("pic-of-the-day").photo;
+  }
+
+  try {
+    const { body: html } = await got("https://unsplash.com");
+
+    const {
+      window: { document }
+    } = new JSDOM(html);
+    const links = document.querySelectorAll("a");
+    const photoOfTheDay = Object.keys(links)
+      .map(key => {
+        return links[key];
+      })
+      .filter(el => {
+        const regex = new RegExp("Photo of the Day", "i");
+        return regex.test(el.innerHTML);
+      })
+      .map(link => link.href)
+      .shift()
+      .match(/[a-zA-Z0-9_-]{11}/g)[0];
+
+    config.set("pic-of-the-day", {
+      date: today,
+      photo: photoOfTheDay
+    });
+
+    return photoOfTheDay;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Experimental
+export async function gotJSON(url, options) {
+  try {
+    const response = await got(url, options);
+    const { body, satusCode, statusMessage } = response;
+
+    if (isJSON(body)) {
+      return {
+        response,
+        body: JSON.parse(body),
+        status: {
+          code: statusCode,
+          message: statusMessage
+        }
+      };
+    }
+
+    return {
+      response,
+      body,
+      status: {
+        code: statusCode,
+        message: statusMessage
+      }
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+export function isJSON(data) {
+  try {
+    JSON.parse(data);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export function isPath(string) {
+  return /([a-z]\:|)(\w+|\~+|\.|)\\\w+|(\w+|\~+|)\/\w+/i.test(string);
 }

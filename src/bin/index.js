@@ -18,6 +18,9 @@ const { input, flags } = meow(help, {
     collection: {
       type: "string"
     },
+    day: {
+      type: "boolean"
+    },
     size: {
       type: "string",
       default: "full"

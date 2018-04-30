@@ -37,6 +37,7 @@ export default chalk`{bold Usage}
 	{yellow -u --user} {dim <username>} 				{gray # Grab random photo from user}
 	{yellow --collection} {dim <id|alias>}				{gray # Grab random photo from collection}
 	{yellow --id} {dim <id|url>}					{gray # Grab photo by ID}
+	{yellow --day}						{gray # Sets the ID from photo-of-the-day photo on unsplash.}
 	
 {bold {magenta Search Filters}}
 	{yellow -o --orientation} {dim <squarish|portrait|landscape>}	{gray # Photo's orientation}
