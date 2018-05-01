@@ -39,7 +39,7 @@ export default async function download(
   config.set("counter", config.get("counter") + 1);
 
   // Check if should create username folder 'ex: @rawnly/photo-id.jpg'
-  const createUsernameFolder = config.get("username-folder");
+  const createUsernameFolder = config.get("userFolder");
 
   // If no progress run the spinner
   if (!quiet) {
@@ -56,7 +56,9 @@ export default async function download(
 
   const size = config.get("pic-size");
   const extension = size === "raw" ? "tiff" : "jpg";
-  const img = filename || join(defaultIMGPath, `${photo.id}.${extension}`);
+  const img = filename(extension)
+    ? filename
+    : join(defaultIMGPath, `${photo.id}.${extension}`);
   const url = custom
     ? photo.urls.custom
     : photo.urls[size]
@@ -78,7 +80,7 @@ export default async function download(
     ]);
 
     if (!a.again) {
-      wallpaper.set(img);
+      if (setAsWallpaper) wallpaper.set(img);
 
       // Display 'shot by ...'
       console.log();
