@@ -23,9 +23,7 @@ import actions from "./libs/commands/index";
 import splash from "./libs/core";
 import manifest from "../package.json";
 
-const config = new Conf({
-  defaults: defaultSettings
-});
+const config = new Conf();
 
 export default async (commands, flags, cliMode = false) => {
   const [command, ...subCommands] = commands;
@@ -62,15 +60,15 @@ export default async (commands, flags, cliMode = false) => {
   }
 
   if (flags.token) {
-    config.set("token", flags.token);
+    config.set("splash-token", flags.token);
   }
 
-  if (!config.get("token") || !config.has("token")) {
+  if (!config.get("splash-token") || !config.has("splash-token")) {
     if (process.env.SPLASH_TOKEN) {
-      config.set("token", SPLASH_TOKEN);
+      config.set("splash-token", SPLASH_TOKEN);
     } else {
       const token = await keys.api.getToken();
-      config.set("token", token);
+      config.set("splash-token", token);
     }
   }
 
@@ -118,7 +116,7 @@ export default async (commands, flags, cliMode = false) => {
           const setting = currentSettings[i];
           let settingValue = config.get(setting);
 
-          if (setting === "token") {
+          if (setting === "splash-token") {
             settingValue = repeatChar("*", settingValue.length);
           } else if (setting !== "pic-of-the-day") {
             if (isPath(settingValue)) {
@@ -156,7 +154,7 @@ export default async (commands, flags, cliMode = false) => {
 
     if (!token) {
       keys.api.getToken().then(t => {
-        config.set("token", t);
+        config.set("splash-token", t);
       });
     }
   } else {
