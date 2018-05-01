@@ -74,23 +74,22 @@ export const parseCollectionURL = url => {
   const collection = {};
   let COLLECTION_REGEX;
 
-  const isCurated = /\/curated\//g.test(url);
+  const isCurated = /\/curated\/\d+$/g.test(url);
 
   if (isCurated) {
-    COLLECTION_REGEX = /[a-zA-z-]+\/[0-9]+/;
+    COLLECTION_REGEX = /curated\/(\d{1,4})$/;
   } else {
-    COLLECTION_REGEX = /[0-9]+\/[a-zA-z-]+/;
+    COLLECTION_REGEX = /(\d+)\/([a-z\-]+)$/;
   }
 
   if (COLLECTION_REGEX.test(url)) {
-    collectionArguments = url.match(COLLECTION_REGEX)[0].split("/");
+    collectionArguments = url.match(COLLECTION_REGEX);
 
     if (isCurated) {
-      collection.name = collectionArguments[0];
       collection.id = collectionArguments[1];
     } else {
-      collection.name = collectionArguments[1];
-      collection.id = collectionArguments[0];
+      collection.name = collectionArguments[2];
+      collection.id = collectionArguments[1];
     }
 
     return collection;
