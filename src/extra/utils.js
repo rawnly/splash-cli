@@ -16,7 +16,7 @@ const config = new Conf();
 export async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    await callback((element, index, array));
+    await callback(element, index, array);
   }
 }
 
@@ -33,7 +33,7 @@ export async function clearSettings() {
   return config.get() === defaultSettings;
 }
 
-export const parseCollection = alias => {
+export const parseCollectionAlias = alias => {
   const aliases = config.get("aliases");
 
   const collection = aliases.filter(item => item.name === alias).shift();
@@ -45,22 +45,45 @@ export const parseCollection = alias => {
   return false;
 };
 
-export const collectionInfo = async id => {
+export const collectionInfo = async (id, isCurated) => {
+  let collectionURL = `https://api.unsplash.com/collections/${id}?client_id=${
+    keys.api.client_id
+  }`;
+
   try {
-    let { body } = await got(
-      `${keys.api.base}/collections/${id}?client_id=${config.get(
-        "splash-token"
-      )}`
-    );
-    body = JSON.parse(body);
+    if (isCurated) {
+      collectionURL = `https://api.unsplash.com/collections/curated/${id}?client_id=a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c`;
+    }
+
+    const {
+      body: {
+        id: collectionID,
+        title,
+        description,
+        featured,
+        curated,
+        total_photos: count,
+        user: { username },
+        links: { self, photos }
+      }
+    } = await gotJSON(collectionURL);
 
     return {
-      id: body.id,
-      title: body.title,
-      description: body.description,
-      user: body.user.username,
-      featured: body.featured,
-      curated: body.curated
+      collectionID,
+      title,
+      description,
+      featured,
+      curated,
+      count,
+      user: username,
+      url: {
+        self: addParams(self, {
+          client_id: config.get("token")
+        }),
+        photos: addParams(photos, {
+          client_id: config.get("token")
+        })
+      }
     };
   } catch (error) {
     throw new Error(error);
@@ -180,7 +203,7 @@ export async function downloadFlags(url, flags) {
     }
 
     const { value = /[0-9]{3,7}|$/.exec(selectedCollection)[0] } =
-      parseCollection(selectedCollection) || {};
+      parseCollectionAlias(selectedCollection) || {};
 
     if (!value) {
       printBlock(chalk`{red Invalid collection ID}`);

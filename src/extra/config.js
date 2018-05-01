@@ -12,10 +12,9 @@ import { errorHandler } from "../extra/utils";
 export const defaultSettings = {
   aliases: [],
   size: "full",
-  userAuth: false,
-  authKey: undefined,
-  downloadsCounter: 0,
-  lastAlias: undefined,
+  counter: 0,
+  userFolder: false,
+  token: keys.api.client_id,
   directory: pathFixer(path.join("~", "Pictures", "splash_photos"))
 };
 
@@ -29,6 +28,8 @@ export const commandsList = {
 
 export const keys = {
   api: {
+    client_id:
+      "a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c",
     getToken: async () => {
       if (process.env.SPLASH_TOKEN) {
         return process.env.SPLASH_TOKEN;
