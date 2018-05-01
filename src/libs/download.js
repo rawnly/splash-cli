@@ -56,8 +56,8 @@ export default async function download(
 
   const size = config.get("pic-size");
   const extension = size === "raw" ? "tiff" : "jpg";
-  const img = filename(extension)
-    ? filename
+  const img = filename
+    ? filename(extension)
     : join(defaultIMGPath, `${photo.id}.${extension}`);
   const url = custom
     ? photo.urls.custom
