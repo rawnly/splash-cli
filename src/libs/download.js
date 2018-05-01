@@ -31,18 +31,19 @@ const join = path.join;
 
 // Flags, options, set as wallpaper
 export default async function download(
-  { quiet, info } = {},
+  { quiet, info, noCopy, noLoader } = { noCopy: false, noLoader: false },
   { custom, photo, filename } = { custom: false },
-  setAsWallpaper = true
+  setAsWallpaper = true,
+  onComplete
 ) {
   // Increase downloads counter.
   config.set("counter", config.get("counter") + 1);
 
   // Check if should create username folder 'ex: @rawnly/photo-id.jpg'
-  const createUsernameFolder = config.get("username-folder");
+  const createUsernameFolder = config.get("userFolder");
 
   // If no progress run the spinner
-  if (!quiet) {
+  if (!quiet && !noLoader) {
     spinner.start();
   }
 
@@ -54,16 +55,18 @@ export default async function download(
     mkdirp.sync(defaultIMGPath);
   }
 
-  const size = config.get("pic-size");
+  const size = config.get("size");
   const extension = size === "raw" ? "tiff" : "jpg";
-  const img = filename || join(defaultIMGPath, `${photo.id}.${extension}`);
+  const img = filename
+    ? filename(extension)
+    : join(defaultIMGPath, `${photo.id}.${extension}`);
   const url = custom
     ? photo.urls.custom
     : photo.urls[size]
       ? photo.urls[size]
       : photo.urls.full;
 
-  if (fs.existsSync(img) && !quiet) {
+  if (fs.existsSync(img) && !quiet && !noLoader) {
     spinner.stop();
 
     printBlock(chalk`Hey! That photo is already on your computer!`);
@@ -78,11 +81,11 @@ export default async function download(
     ]);
 
     if (!a.again) {
-      wallpaper.set(img);
+      if (setAsWallpaper) wallpaper.set(img);
 
       // Display 'shot by ...'
       console.log();
-      showCopy(photo, info);
+      if (!noCopy) showCopy(photo, info);
 
       return;
     }
@@ -99,16 +102,20 @@ export default async function download(
           wallpaper.set(img);
         }
 
-        if (!quiet) {
+        if (!quiet && !noLoader) {
           spinner.succeed();
         }
 
-        // Display 'shot by ...'
-        console.log();
-        showCopy(photo, info);
+        if (!noCopy) {
+          // Display 'shot by ...'
+          console.log();
+          showCopy(photo, info);
+        }
 
         // Trailing space
         console.log();
+
+        if (onComplete) onComplete(photo);
       });
     });
   } catch (err) {

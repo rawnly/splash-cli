@@ -6,6 +6,7 @@ import Conf from "conf";
 import chalk from "chalk";
 import { URL } from "url";
 import { JSDOM } from "jsdom";
+import urlRegex from "url-regex";
 import printBlock from "@splash-cli/print-block";
 import parseID from "@splash-cli/parse-unsplash-id";
 
@@ -16,7 +17,7 @@ const config = new Conf();
 export async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    await callback((element, index, array));
+    await callback(element, index, array);
   }
 }
 
@@ -33,7 +34,12 @@ export async function clearSettings() {
   return config.get() === defaultSettings;
 }
 
-export const parseCollection = alias => {
+/**
+ *
+ * @param {String} alias
+ * @returns Collection id or false
+ */
+export const parseCollectionAlias = alias => {
   const aliases = config.get("aliases");
 
   const collection = aliases.filter(item => item.name === alias).shift();
@@ -45,50 +51,108 @@ export const parseCollection = alias => {
   return false;
 };
 
-export const collectionInfo = async id => {
+/**
+ *
+ * @param {String} id Collection ID
+ * @param {Boolean} isCurated isCurated?
+ */
+export async function collectionInfo(id, isCurated = false) {
+  let collectionURL = `https://api.unsplash.com/collections/${id}?client_id=a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c`;
+
   try {
-    let { body } = await got(
-      `${keys.api.base}/collections/${id}?client_id=${config.get(
-        "splash-token"
-      )}`
-    );
-    body = JSON.parse(body);
+    if (isCurated) {
+      collectionURL = `https://api.unsplash.com/collections/curated/${id}?client_id=a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c`;
+    }
+
+    const {
+      body: {
+        id: collectionID,
+        title,
+        description,
+        featured,
+        curated,
+        total_photos: count,
+        user: { username },
+        links: { self, photos }
+      }
+    } = await gotJSON(collectionURL);
 
     return {
-      id: body.id,
-      title: body.title,
-      description: body.description,
-      user: body.user.username,
-      featured: body.featured,
-      curated: body.curated
+      collectionID,
+      title,
+      description,
+      featured,
+      curated,
+      count,
+      user: username,
+      url: {
+        self: addParams(self, {
+          client_id: config.get("token")
+        }),
+        photos: addParams(photos, {
+          client_id: config.get("token")
+        })
+      }
     };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
-};
+}
+
+/**
+ *
+ * @param {String} collection Collection URL or ID
+ */
+export async function downloadCollection(collection) {
+  let id;
+  const isURL =
+    urlRegex().test(collection) &&
+    /unsplash|collection\/\d+$|curated\/\d+$/g.test(collection);
+  const isCollectionID = /\d+/g.test(collection);
+  const isCurated =
+    /\/curated\/\d+$/g.test(collection) || /^\d{1,3}$/g.test(collection);
+
+  if (isURL) {
+    id = parseCollectionURL(collection).id;
+  } else if (isCollectionID) {
+    id = collection;
+  } else {
+    return errorHandler(
+      new Error(chalk`Invalid URL/ID: "{underline {dim ${collection}}}"`)
+    );
+  }
+
+  try {
+    const { url } = await collectionInfo(id, isCurated);
+    const { body: photos } = await gotJSON(url.photos);
+
+    return photos;
+  } catch (error) {
+    return errorHandler(error);
+  }
+}
 
 export const parseCollectionURL = url => {
   let collectionArguments = [];
   const collection = {};
   let COLLECTION_REGEX;
 
-  const isCurated = /\/curated\//g.test(url);
+  const isCurated = /\/curated\/\d+$/g.test(url);
 
   if (isCurated) {
-    COLLECTION_REGEX = /[a-zA-z-]+\/[0-9]+/;
+    COLLECTION_REGEX = /curated\/(\d{1,4})$/;
   } else {
-    COLLECTION_REGEX = /[0-9]+\/[a-zA-z-]+/;
+    COLLECTION_REGEX = /(\d+)\/([a-z\-]+)$/;
   }
 
   if (COLLECTION_REGEX.test(url)) {
-    collectionArguments = url.match(COLLECTION_REGEX)[0].split("/");
+    collectionArguments = url.match(COLLECTION_REGEX);
 
     if (isCurated) {
-      collection.name = collectionArguments[0];
       collection.id = collectionArguments[1];
     } else {
-      collection.name = collectionArguments[1];
-      collection.id = collectionArguments[0];
+      collection.name = collectionArguments[2];
+      collection.id = collectionArguments[1];
     }
 
     return collection;
@@ -132,7 +196,7 @@ export async function downloadFlags(url, flags) {
     }
 
     return `${keys.api.base}/photos/${photoID}?client_id=${config.get(
-      "splash-token"
+      "token"
     )}`;
   } else if (flags.day) {
     const photo = await picOfTheDay();
@@ -143,7 +207,7 @@ export async function downloadFlags(url, flags) {
     }
 
     return `${keys.api.base}/photos/${photoID}?client_id=${config.get(
-      "splash-token"
+      "token"
     )}`;
   }
 
@@ -175,12 +239,12 @@ export async function downloadFlags(url, flags) {
   if (collection) {
     let selectedCollection = parseCollectionURL(collection);
 
-    if (selectedCollection.id && selectedCollection.name) {
+    if (selectedCollection.id) {
       selectedCollection = selectedCollection.id;
     }
 
     const { value = /[0-9]{3,7}|$/.exec(selectedCollection)[0] } =
-      parseCollection(selectedCollection) || {};
+      parseCollectionAlias(selectedCollection) || {};
 
     if (!value) {
       printBlock(chalk`{red Invalid collection ID}`);
@@ -195,7 +259,8 @@ export async function downloadFlags(url, flags) {
 
     if (info.featured || info.curated) {
       message = `[${[
-        info.curated ? "Curated - " : "",
+        info.curated ? "Curated" : "",
+        info.curated && info.featured ? " - " : "",
         info.featured ? "Featured" : ""
       ].join("")}] ${message}`;
     }
@@ -262,29 +327,22 @@ export async function picOfTheDay() {
 export async function gotJSON(url, options) {
   try {
     const response = await got(url, options);
-    const { body, satusCode, statusMessage } = response;
+    const { body } = response;
 
     if (isJSON(body)) {
       return {
         response,
-        body: JSON.parse(body),
-        status: {
-          code: statusCode,
-          message: statusMessage
-        }
+        body: JSON.parse(body)
       };
     }
 
     return {
       response,
-      body,
-      status: {
-        code: statusCode,
-        message: statusMessage
-      }
+      body
     };
   } catch (error) {
-    throw error;
+    // throw error;
+    return error;
   }
 }
 
@@ -299,4 +357,15 @@ export function isJSON(data) {
 
 export function isPath(string) {
   return /([a-z]\:|)(\w+|\~+|\.|)\\\w+|(\w+|\~+|)\/\w+/i.test(string);
+}
+
+export function addParams(rawURL, params) {
+  const url = new URL(rawURL);
+  const keys = Object.keys(params);
+
+  keys.forEach(key => {
+    url.searchParams.set(key, params[key]);
+  });
+
+  return url.href;
 }

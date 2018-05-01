@@ -11,6 +11,7 @@ import frun from "first-run";
 import updateNotifier from "update-notifier";
 import printBlock from "@splash-cli/print-block";
 
+// import downloadCollection from "./libs/commands/collection";
 import { defaultSettings, commandsList, keys } from "./extra/config";
 import {
   clearSettings,
@@ -23,7 +24,9 @@ import actions from "./libs/commands/index";
 import splash from "./libs/core";
 import manifest from "../package.json";
 
-const config = new Conf();
+const config = new Conf({
+  defaults: defaultSettings
+});
 
 export default async (commands, flags, cliMode = false) => {
   const [command, ...subCommands] = commands;
@@ -60,15 +63,15 @@ export default async (commands, flags, cliMode = false) => {
   }
 
   if (flags.token) {
-    config.set("splash-token", flags.token);
+    config.set("token", flags.token);
   }
 
-  if (!config.get("splash-token") || !config.has("splash-token")) {
+  if (!config.get("token") || !config.has("token")) {
     if (process.env.SPLASH_TOKEN) {
-      config.set("splash-token", SPLASH_TOKEN);
+      config.set("token", SPLASH_TOKEN);
     } else {
       const token = await keys.api.getToken();
-      config.set("splash-token", token);
+      config.set("token", token);
     }
   }
 
@@ -92,6 +95,7 @@ export default async (commands, flags, cliMode = false) => {
     if (cliMode === true) {
       const cmd = commandsList[command];
 
+      // TODO: Add collection command
       if (cmd !== undefined && actions[cmd]) {
         actions[cmd](options, flags);
       } else if (cmd === "restore") {
@@ -116,7 +120,7 @@ export default async (commands, flags, cliMode = false) => {
           const setting = currentSettings[i];
           let settingValue = config.get(setting);
 
-          if (setting === "splash-token") {
+          if (setting === "token") {
             settingValue = repeatChar("*", settingValue.length);
           } else if (setting !== "pic-of-the-day") {
             if (isPath(settingValue)) {
@@ -144,19 +148,15 @@ export default async (commands, flags, cliMode = false) => {
       );
       return false;
     }
-  } else if (flags.token) {
+  } else {
     // Run splash
-    let token =
-      flags.token || process.env.SPLASH_TOKEN || config.get("splash-token");
+    let token = flags.token || process.env.SPLASH_TOKEN || config.get("token");
 
     if (!token) {
       keys.api.getToken().then(t => {
-        config.set("splash-token", t);
+        config.set("token", t);
       });
     }
-  } else {
-    token =
-      flags.token || process.env.SPLASH_TOKEN || config.get("splash-token");
 
     const url = await downloadFlags(
       `${keys.api.base}/photos/random?client_id=${token}`,
