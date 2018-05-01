@@ -9,23 +9,6 @@ import pathFixer from "@splash-cli/path-fixer";
 
 import { errorHandler } from "../extra/utils";
 
-export const defaultSettings = {
-  aliases: [],
-  size: "full",
-  counter: 0,
-  userFolder: false,
-  token: keys.api.client_id,
-  directory: pathFixer(path.join("~", "Pictures", "splash_photos"))
-};
-
-export const commandsList = {
-  list: "list",
-  alias: "alias",
-  restore: "restore",
-  settings: "settings",
-  "get-settings": "get-settings"
-};
-
 export const keys = {
   api: {
     client_id:
@@ -44,6 +27,23 @@ export const keys = {
     },
     base: normalize("https://api.unsplash.com")
   }
+};
+
+export const defaultSettings = {
+  aliases: [],
+  size: "full",
+  counter: 0,
+  userFolder: false,
+  token: keys.api.client_id,
+  directory: pathFixer(path.join("~", "Pictures", "splash_photos"))
+};
+
+export const commandsList = {
+  list: "list",
+  alias: "alias",
+  restore: "restore",
+  settings: "settings",
+  "get-settings": "get-settings"
 };
 
 // normalize(`https://unsplash.com/oauth/authorize?client_id=${process.env.TOKEN}&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=public`)

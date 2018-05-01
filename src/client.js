@@ -60,15 +60,15 @@ export default async (commands, flags, cliMode = false) => {
   }
 
   if (flags.token) {
-    config.set("splash-token", flags.token);
+    config.set("token", flags.token);
   }
 
-  if (!config.get("splash-token") || !config.has("splash-token")) {
+  if (!config.get("token") || !config.has("token")) {
     if (process.env.SPLASH_TOKEN) {
-      config.set("splash-token", SPLASH_TOKEN);
+      config.set("token", SPLASH_TOKEN);
     } else {
       const token = await keys.api.getToken();
-      config.set("splash-token", token);
+      config.set("token", token);
     }
   }
 
@@ -116,7 +116,7 @@ export default async (commands, flags, cliMode = false) => {
           const setting = currentSettings[i];
           let settingValue = config.get(setting);
 
-          if (setting === "splash-token") {
+          if (setting === "token") {
             settingValue = repeatChar("*", settingValue.length);
           } else if (setting !== "pic-of-the-day") {
             if (isPath(settingValue)) {
@@ -150,11 +150,11 @@ export default async (commands, flags, cliMode = false) => {
       flags.token ||
       process.env.SPLASH_TOKEN ||
       config.get("token") ||
-      config.get("splash-token");
+      config.get("token");
 
     if (!token) {
       keys.api.getToken().then(t => {
-        config.set("splash-token", t);
+        config.set("token", t);
       });
     }
   } else {
@@ -162,7 +162,7 @@ export default async (commands, flags, cliMode = false) => {
       flags.token ||
       process.env.SPLASH_TOKEN ||
       config.get("token") ||
-      config.get("splash-token");
+      config.get("token");
     const url = await downloadFlags(
       `${keys.api.base}/photos/random?client_id=${token}`,
       flags

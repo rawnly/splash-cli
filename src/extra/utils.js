@@ -34,7 +34,7 @@ export async function clearSettings() {
 }
 
 export const parseCollectionAlias = alias => {
-  const aliases = config.get("aliases");
+  const aliases = config.get("aliases") || [];
 
   const collection = aliases.filter(item => item.name === alias).shift();
 
@@ -52,9 +52,7 @@ export const collectionInfo = async (id, isCurated) => {
 
   try {
     let { body } = await got(
-      `${keys.api.base}/collections/${id}?client_id=${config.get(
-        "splash-token"
-      )}`
+      `${keys.api.base}/collections/${id}?client_id=${config.get("token")}`
     );
     body = JSON.parse(body);
 
@@ -136,7 +134,7 @@ export async function downloadFlags(url, flags) {
     }
 
     return `${keys.api.base}/photos/${photoID}?client_id=${config.get(
-      "splash-token"
+      "token"
     )}`;
   } else if (flags.day) {
     const photo = await picOfTheDay();
@@ -147,7 +145,7 @@ export async function downloadFlags(url, flags) {
     }
 
     return `${keys.api.base}/photos/${photoID}?client_id=${config.get(
-      "splash-token"
+      "token"
     )}`;
   }
 
@@ -184,7 +182,7 @@ export async function downloadFlags(url, flags) {
     }
 
     const { value = /[0-9]{3,7}|$/.exec(selectedCollection)[0] } =
-      parseCollection(selectedCollection) || {};
+      parseCollectionAlias(selectedCollection) || {};
 
     if (!value) {
       printBlock(chalk`{red Invalid collection ID}`);
