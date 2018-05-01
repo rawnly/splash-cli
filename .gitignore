@@ -10,3 +10,6 @@ yarn.lock
 
 build
 node_modules
+
+collection.js
+personal*
