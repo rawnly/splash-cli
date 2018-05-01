@@ -196,7 +196,8 @@ export async function downloadFlags(url, flags) {
 
     if (info.featured || info.curated) {
       message = `[${[
-        info.curated ? "Curated - " : "",
+        info.curated ? "Curated" : "",
+        info.curated && info.feauted ? " - " : "",
         info.featured ? "Featured" : ""
       ].join("")}] ${message}`;
     }
