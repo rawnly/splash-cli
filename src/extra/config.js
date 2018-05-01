@@ -12,9 +12,10 @@ import { errorHandler } from "../extra/utils";
 export const defaultSettings = {
   aliases: [],
   size: "full",
-  counter: 0,
-  userFolder: false,
-  token: "a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c",
+  userAuth: false,
+  authKey: undefined,
+  downloadsCounter: 0,
+  lastAlias: undefined,
   directory: pathFixer(path.join("~", "Pictures", "splash_photos"))
 };
 
@@ -23,7 +24,6 @@ export const commandsList = {
   alias: "alias",
   restore: "restore",
   settings: "settings",
-  collection: "collection",
   "get-settings": "get-settings"
 };
 
