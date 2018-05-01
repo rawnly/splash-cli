@@ -269,21 +269,13 @@ export async function gotJSON(url, options) {
     if (isJSON(body)) {
       return {
         response,
-        body: JSON.parse(body),
-        status: {
-          code: statusCode,
-          message: statusMessage
-        }
+        body: JSON.parse(body)
       };
     }
 
     return {
       response,
-      body,
-      status: {
-        code: statusCode,
-        message: statusMessage
-      }
+      body
     };
   } catch (error) {
     throw error;
@@ -301,4 +293,15 @@ export function isJSON(data) {
 
 export function isPath(string) {
   return /([a-z]\:|)(\w+|\~+|\.|)\\\w+|(\w+|\~+|)\/\w+/i.test(string);
+}
+
+export function addParams(rawURL, params) {
+  const url = new URL(rawURL);
+  const keys = Object.keys(params);
+
+  keys.forEach(key => {
+    url.searchParams.set(key, params[key]);
+  });
+
+  return url.href;
 }
