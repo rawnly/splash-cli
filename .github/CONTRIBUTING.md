@@ -3,7 +3,11 @@
 This file is a roadmap for who wants improve this repo.
 > Below you can see some **super cool** steps who this repo needs! :rabbit:
 
+<br />
+
 - [ ] Include `User Authentication` [#27](https://github.com/splash-cli/splash-cli/issues/27)
+
+<br />
 
 By submitting a PR you agree to the [Developer Certificate of Origin](https://developercertificate.org)
 
