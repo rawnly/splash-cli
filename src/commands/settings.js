@@ -17,6 +17,9 @@ const config = new Conf({
 
 export default async function settings([action, target]) {
   const questions = [];
+  
+  @todo Add user authentication
+  @body Having user authentication would be nice for collection management and likes.
 
   const _directory = generateQuestion("_directory", "Default download path:", {
     default: config.get("directory"),
