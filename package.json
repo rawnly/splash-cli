@@ -1,0 +1,50 @@
+{
+  "name": "unsplash-test-lib",
+  "version": "3.0.0",
+  "main": "build/client.js",
+  "description": "Get beautiful wallpapers from unsplash.",
+  "bin": {
+    "splash": "build/bin/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=6.11.4",
+    "npm": ">=3.10.10"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1"
+  },
+  "dependencies": {
+    "@splash-cli/is-month": "^1.1.1",
+    "@splash-cli/parse-unsplash-id": "^0.0.1",
+    "@splash-cli/path-fixer": "^1.0.2",
+    "@splash-cli/print-block": "^1.0.6",
+    "@splash-cli/show-copy": "^1.1.0",
+    "babel-polyfill": "^6.26.0",
+    "chalk": "^2.4.1",
+    "clear": "^0.1.0",
+    "conf": "^1.4.0",
+    "first-run": "^1.2.0",
+    "got": "^8.3.1",
+    "inquirer": "^5.2.0",
+    "isomorphic-fetch": "^2.2.1",
+    "jsdom": "^11.10.0",
+    "lodash": "^4.17.10",
+    "meow": "^5.0.0",
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^2.1.2",
+    "normalize-url": "^2.0.1",
+    "ora": "^2.1.0",
+    "simple-download": "^0.5.1",
+    "unsplash-js": "^4.8.0",
+    "update-notifier": "^2.5.0",
+    "wallpaper": "^2.6.0"
+  }
+}
