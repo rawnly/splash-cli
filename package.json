@@ -1,6 +1,6 @@
 {
-  "name": "unsplash-test-lib",
-  "version": "3.0.0",
+  "name": "splash-cli",
+  "version": "2.8.8",
   "main": "build/client.js",
   "description": "Get beautiful wallpapers from unsplash.",
   "bin": {
