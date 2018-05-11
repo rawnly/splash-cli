@@ -5,57 +5,80 @@ import fs from "fs";
 import path from "path";
 import https from "https";
 
+import isImage from 'is-image';
+import figures from 'figures';
 import got from "got";
 import Ora from "ora";
 import Conf from "conf";
 import chalk from "chalk";
-import { URL } from "url";
+import {
+  URL
+} from "url";
 import mkdirp from "mkdirp";
 import RemoteFile from "simple-download";
-import { JSDOM } from "jsdom";
+import terminalLink from 'terminal-link';
+import {
+  JSDOM
+} from "jsdom";
 import wallpaper from "wallpaper";
 import isMonth from "@splash-cli/is-month";
 import showCopy from "@splash-cli/show-copy";
-import printBlock from "@splash-cli/print-block";
 import pathFixer from "@splash-cli/path-fixer";
+import printBlock from "@splash-cli/print-block";
 
-import { keys, defaultSettings } from "./config";
+import {
+  keys,
+  defaultSettings
+} from "./config";
 
 const config = new Conf();
 
 export async function clearSettings() {
   const settingsList = Object.keys(defaultSettings);
 
-  await asyncForEach(settingsList, async setting => {
+  for (let i = 0; i < settingsList.length; i++) {
+    const setting = settingsList[i];
+
     if (config.has(setting)) {
       config.delete(setting);
       config.set(setting, defaultSettings[setting]);
     }
-  });
+  }
 
   return config.get() === defaultSettings;
 }
 
 export const parseCollection = alias => {
-  const aliases = config.get("aliases") || [];
-  const collection = aliases.filter(item => item.name === alias).shift();
+  const aliases = config.get("aliases");
 
-  if (collection) {
-    return collection;
+  if (aliases.length) {
+    const collection = aliases.filter(item => item.name === alias)
+
+    if (collection.length) {
+      return collection[0].id;
+    }
+
+    return alias;
   }
 
-  return false;
+  return alias;
 };
 
 export function errorHandler(error) {
   const spinner = new Ora();
   spinner.stop();
   printBlock(
-    chalk`OOps! We got an error!`,
-    chalk`Please report it at: {underline {green https://github.com/splash-cli/splash-cli/issues}}`,
-    chalk`{yellow Splash Error:}`
+    '',
+    chalk `{bold {red OOps! We got an error!}}`,
+    '',
+    chalk `Please report it: {underline {green ${terminalLink('on GitHub', 'https://github.com/splash-cli/splash-cli/issues')}}}`,
+    '',
+    chalk `{yellow {bold Splash Error}:}`,
+    '',
+    '',
   );
-  throw error;
+
+  logger.error(error);
 }
 
 export function repeatChar(char, length) {
@@ -79,10 +102,14 @@ export async function picOfTheDay() {
   }
 
   try {
-    const { body: html } = await got("https://unsplash.com");
+    const {
+      body: html
+    } = await got("https://unsplash.com");
 
     const {
-      window: { document }
+      window: {
+        document
+      }
     } = new JSDOM(html);
     const links = document.querySelectorAll("a");
     const photoOfTheDay = Object.keys(links)
@@ -138,7 +165,13 @@ export async function download(photo, url, flags, setAsWP = true) {
   let filename = path.join(dir, `${photo.id}.jpg`);
 
   if (flags.save && isPath(flags.save)) {
-    filename = path.join(pathFixer(flags.save));
+    const savePath = pathFixer(flags.save);
+
+    filename = path.join(savePath, `${photo.id}.jpg`);
+
+    if (isImage(flags.save)) {
+      filename = savePath;
+    }
   }
 
   const remotePhoto = new RemoteFile(url, filename);
@@ -150,7 +183,7 @@ export async function download(photo, url, flags, setAsWP = true) {
       wallpaper.set(filename);
     } else {
       console.log();
-      printBlock(chalk`Picture stored at:`, fileInfo.dir, fileInfo.base);
+      printBlock(chalk `Picture stored at: {underline ${path.join(fileInfo.dir, fileInfo.base)}}`);
       console.log();
       return;
     }
@@ -163,7 +196,8 @@ export async function download(photo, url, flags, setAsWP = true) {
   });
 }
 
-export function parseUsername(username) {
-  if (Boolean(username)) return username.toLowerCase().match(/[a-z0-9]/g)[0];
-  return username;
+export const logger = {
+  info: console.log.bind(console, chalk.cyan(figures.info)),
+  warn: console.log.bind(console, chalk.yellow(figures.warning)),
+  error: console.log.bind(console, chalk.red(figures.cross)),
 }

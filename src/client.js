@@ -3,7 +3,10 @@ require("babel-polyfill");
 import fs from "fs";
 import path from "path";
 import https from "https";
-import { userInfo, homedir } from "os";
+import {
+  userInfo,
+  homedir
+} from "os";
 
 import randomFrom from "lodash/sample";
 import clear from "clear";
@@ -22,15 +25,19 @@ import parseID from "@splash-cli/parse-unsplash-id";
 import Conf from "conf";
 import Ora from "ora";
 
-import { toJson } from "unsplash-js";
+import {
+  toJson
+} from "unsplash-js";
 
 import commands from "./commands/index";
-import { defaultSettings, unsplash } from "./extra/config";
+import {
+  defaultSettings,
+  unsplash
+} from "./extra/config";
 import {
   download,
   picOfTheDay,
   errorHandler,
-  parseUsername,
   clearSettings,
   parseCollection
 } from "./extra/utils";
@@ -42,7 +49,12 @@ const config = new Conf({
 });
 
 const {
-  photos: { getRandomPhoto, getPhoto, listCuratedPhotos, downloadPhoto },
+  photos: {
+    getRandomPhoto,
+    getPhoto,
+    listCuratedPhotos,
+    downloadPhoto
+  },
   collections: {
     getCollection,
     getCuratedCollection,
@@ -56,9 +68,12 @@ const spinner = new Ora({
   spinner: isMonth("december") ? "christmas" : "earth"
 });
 
-export default async function(input, flags) {
+export default async function (input, flags) {
   const [command, ...subCommands] = input;
-  const { quiet, save } = flags;
+  const {
+    quiet,
+    save
+  } = flags;
   const options = {};
 
   // Parse commands
@@ -90,11 +105,11 @@ export default async function(input, flags) {
     const settingsCleared = await clearSettings();
 
     printBlock(
-      chalk`Welcome to ${manifest.name}@${manifest.version} {bold @${
+      chalk `Welcome to ${manifest.name}@${manifest.version} {bold @${
         userInfo().username
       }}`,
-      chalk`{dim Application setup {green completed}!}`,
-      chalk`{bold Enjoy "{yellow ${manifest.name}}" running {green splash}}`
+      chalk `{dim Application setup {green completed}!}`,
+      chalk `{bold Enjoy "{yellow ${manifest.name}}" running {green splash}}`
     );
 
     console.log();
@@ -104,6 +119,7 @@ export default async function(input, flags) {
 
   if (!command) {
     clear();
+
     spinner.start("Connecting to Unsplash");
 
     try {
@@ -122,14 +138,14 @@ export default async function(input, flags) {
         photo = await response.json();
       } else {
         if (flags.id) {
-          spinner.warn = chalk`Invalid ID: "{yellow ${flags.id}}"`;
+          spinner.warn = chalk `Invalid ID: "{yellow ${flags.id}}"`;
         }
 
         const response = await getRandomPhoto({
           query: flags.query,
-          username: parseUsername(flags.user),
+          username: flags.user,
           featured: Boolean(flags.featured),
-          collections: parseCollection(flags.collection),
+          collections: flags.collections ? (flags.collection.includes(',') ? flags.collection.split(',').map(parseCollection) : [parseCollection(flags.collection)]) : undefined,
           count: 1
         });
 
@@ -144,12 +160,14 @@ export default async function(input, flags) {
         }
 
         if (photo.errors) {
-          printBlock(chalk`{bold {red ERROR:}}`, ...photo.errors);
+          printBlock(chalk `{bold {red ERROR:}}`, ...photo.errors);
           return;
         }
 
         const res = await downloadPhoto(photo);
-        const { url } = await res.json();
+        const {
+          url
+        } = await res.json();
         const downloaded = await download(photo, url, flags, true);
       } else {
         spinner.fail("Unable to connect.");
@@ -171,9 +189,9 @@ export default async function(input, flags) {
         break;
       default:
         printBlock(
-          chalk`{bold {red Error}}: "{yellow ${command}}" is not a {dim splash} command.`,
+          chalk `{bold {red Error}}: "{yellow ${command}}" is not a {dim splash} command.`,
           ``,
-          chalk`See {dim splash --help}`
+          chalk `See {dim splash --help}`
         );
         break;
     }

@@ -4,7 +4,10 @@ import Meow from "meow";
 import client from "../client";
 import help from "./help";
 
-const { input, flags } = Meow(help, {
+const {
+  input,
+  flags
+} = Meow(help, {
   flags: {
     help: {
       type: "boolean",
@@ -46,7 +49,7 @@ const { input, flags } = Meow(help, {
       alias: "o"
     },
     save: {
-      type: "boolean",
+      type: "string",
       alias: "s"
     },
     info: {

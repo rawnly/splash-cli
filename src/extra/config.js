@@ -1,5 +1,7 @@
 import pathFixer from "@splash-cli/path-fixer";
-import Unsplash, { toJson } from "unsplash-js";
+import Unsplash, {
+  toJson
+} from "unsplash-js";
 
 export const defaultSettings = {
   directory: pathFixer("~/Pictures/splash_photos"),
@@ -9,8 +11,7 @@ export const defaultSettings = {
 };
 
 const keys = {
-  applicationId:
-    "a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c",
+  applicationId: "a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c",
   secret: "0a86783ec8a023cdfa38a39e9ffab7f1c974e48389dc045a8e4b3978d6966e94",
   callbackUrl: "https://federicovitale.me/auth/splash-cli"
 };
