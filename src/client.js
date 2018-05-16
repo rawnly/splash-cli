@@ -140,12 +140,11 @@ export default async function (input, flags) {
         if (flags.id) {
           spinner.warn = chalk `Invalid ID: "{yellow ${flags.id}}"`;
         }
-
         const response = await getRandomPhoto({
           query: flags.query,
           username: flags.user,
           featured: Boolean(flags.featured),
-          collections: flags.collections ? (flags.collection.includes(',') ? flags.collection.split(',').map(parseCollection) : [parseCollection(flags.collection)]) : undefined,
+          collections: flags.collection ? (flags.collection.includes(',') ? flags.collection.split(',').map(parseCollection) : [parseCollection(flags.collection)]) : undefined,
           count: 1
         });
 
