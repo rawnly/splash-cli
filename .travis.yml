@@ -2,7 +2,7 @@ language: node_js
 os: osx
 sudo: enabled
 before_install:
-  - "yarn global add babel-cli"
+  - "npm i -g add babel-cli"
 node_js:
   - "10"
   - "9"
