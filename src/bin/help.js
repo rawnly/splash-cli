@@ -10,7 +10,7 @@ export default chalk`{bold Usage}
 
 {bold {cyan Commands}}
 	{cyan settings} {dim <get|set|restore>}	{dim GET/SET/RESTORE SETTINGS}
-	{cyan alias} {dim <get|set>}			{dim GET/SET COLLECTION ALIASES}
+	{cyan alias} {dim <get|set|remove>}			{dim GET/SET COLLECTION ALIASES}
 
 {bold {yellow Options}}
 	{yellow -h --help}			{dim THIS MESSAGE}
