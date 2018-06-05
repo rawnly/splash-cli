@@ -1,9 +1,15 @@
 !.gitignore
 !.npmignore
 
+.git
 .DS_Store
 
 package-lock.json
 yarn.lock
 
 node_modules
+
+*.pid
+*.sh
+
+.gitlogs
