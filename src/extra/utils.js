@@ -1,35 +1,26 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
-import fs from "fs";
 import path from "path";
-import https from "https";
 
+import applescript from 'run-applescript';
 import isImage from 'is-image';
 import figures from 'figures';
 import got from "got";
 import Ora from "ora";
 import Conf from "conf";
 import chalk from "chalk";
-import {
-  URL
-} from "url";
 import mkdirp from "mkdirp";
 import RemoteFile from "simple-download";
 import terminalLink from 'terminal-link';
-import {
-  JSDOM
-} from "jsdom";
+import { JSDOM } from "jsdom";
 import wallpaper from "wallpaper";
 import isMonth from "@splash-cli/is-month";
 import showCopy from "@splash-cli/show-copy";
 import pathFixer from "@splash-cli/path-fixer";
 import printBlock from "@splash-cli/print-block";
 
-import {
-  keys,
-  defaultSettings
-} from "./config";
+import { defaultSettings } from "./config";
 
 const config = new Conf();
 
@@ -175,12 +166,16 @@ export async function download(photo, url, flags, setAsWP = true) {
   }
 
   const remotePhoto = new RemoteFile(url, filename);
-  remotePhoto.download().then(fileInfo => {
+  remotePhoto.download().then(async fileInfo => {
     config.set("counter", config.get("counter") + 1);
 
     if (!flags.quiet) spinner.succeed();
     if (setAsWP && !flags.save) {
-      wallpaper.set(filename);
+      if ( process.platform === 'darwin' && flags.allScreens) {
+        await applescript(`tell application "System Events" to tell every desktop to set picture to "${filename}"`)
+      } else {
+        await wallpaper.set(filename);
+      }
     } else {
       console.log();
       printBlock(chalk `Picture stored at: {underline ${path.join(fileInfo.dir, fileInfo.base)}}`);

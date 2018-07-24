@@ -16,6 +16,8 @@ export default chalk`{bold Usage}
 	{yellow -h --help}			{dim THIS MESSAGE}
 	{yellow -v --version}			{dim ${pkg.version}}
 
+	{yellow --all-screens} 			{dim SET THE WALLPAPER ON {bold ALL} DESKTOPS ({bold {underline CURRENTLY ONLY ON MACOS}})}
+
 	{yellow -s --save [optional_path]} 	{dim DOWNLOAD WITHOUT SETTING AS WALLPAPER}
 
 	{yellow -i --info}			{dim SHOW EXIF}
