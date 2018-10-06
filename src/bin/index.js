@@ -55,7 +55,9 @@ const {
     info: {
       type: "boolean",
       alias: "i"
-    }
+    },
+    scale: 'string',
+    screen: 'string'
   }
 });
 

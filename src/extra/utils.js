@@ -1,26 +1,26 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
-import path from "path";
-
-import applescript from 'run-applescript';
-import isImage from 'is-image';
-import figures from 'figures';
-import got from "got";
-import Ora from "ora";
-import Conf from "conf";
-import chalk from "chalk";
-import mkdirp from "mkdirp";
-import RemoteFile from "simple-download";
-import terminalLink from 'terminal-link';
-import { JSDOM } from "jsdom";
-import wallpaper from "wallpaper";
+import fetch from 'isomorphic-fetch';
 import isMonth from "@splash-cli/is-month";
-import showCopy from "@splash-cli/show-copy";
 import pathFixer from "@splash-cli/path-fixer";
 import printBlock from "@splash-cli/print-block";
-
+import showCopy from "@splash-cli/show-copy";
+import chalk from "chalk";
+import Conf from "conf";
+import figures from 'figures';
+import got from "got";
+import isImage from 'is-image';
+import { JSDOM } from "jsdom";
+import mkdirp from "mkdirp";
+import Ora from "ora";
+import path from "path";
+import RemoteFile from "simple-download";
+import terminalLink from 'terminal-link';
+import wallpaper from "wallpaper";
 import { defaultSettings } from "./config";
+
+
 
 const config = new Conf();
 
@@ -166,16 +166,58 @@ export async function download(photo, url, flags, setAsWP = true) {
   }
 
   const remotePhoto = new RemoteFile(url, filename);
+  
   remotePhoto.download().then(async fileInfo => {
     config.set("counter", config.get("counter") + 1);
 
     if (!flags.quiet) spinner.succeed();
     if (setAsWP && !flags.save) {
-      if ( process.platform === 'darwin' && flags.allScreens) {
-        await applescript(`tell application "System Events" to tell every desktop to set picture to "${filename}"`)
-      } else {
-        await wallpaper.set(filename);
+
+      if ( flags.screen || flags.scale ) {
+        if (process.platform !== 'darwin') {
+          console.log()
+          console.log(chalk`{dim > Sorry, this function ({underline ${flags.screen ? '"screen"' : '"scale"'}}) is available {bold only on MacOS}}`)
+          console.log()
+        }
       }
+
+      let screen;
+      if ( flags.screen ) {
+        if (!/[0-9|main|all]+/g.test(flags.screen)) {
+          screen = false;
+        } else {
+          screen = flags.screen;
+        }
+      }
+
+      let scale;
+      if ( flags.scale ) {
+        if (!/[auto|fill|fit|stretch|center]/g.test(flags.scale)) {
+          scale = false;
+        } else {
+          scale = flags.scale;
+        }
+      }
+
+
+      if ( scale ) {
+
+        await wallpaper.set(filename, { scale });
+
+      } else if ( screen ) {
+
+        await wallpaper.set(filename, { screen });
+
+      } else if ( scale && screen ) {
+
+       await wallpaper.set(filename, { screen, scale });
+
+      } else {
+
+        await wallpaper.set(filename);
+
+      }
+
     } else {
       console.log();
       printBlock(chalk `Picture stored at: {underline ${path.join(fileInfo.dir, fileInfo.base)}}`);
