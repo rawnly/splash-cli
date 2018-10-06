@@ -1,15 +1,15 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
-import Conf from "conf";
-import chalk from "chalk";
-import { prompt as ask } from "inquirer";
-
-import printBlock from "@splash-cli/print-block";
 import pathFixer from "@splash-cli/path-fixer";
-
-import { clearSettings, errorHandler } from "../extra/utils";
+import printBlock from "@splash-cli/print-block";
+import chalk from "chalk";
+import Conf from "conf";
+import { prompt as ask } from "inquirer";
 import { defaultSettings } from "../extra/config";
+import { clearSettings, errorHandler } from "../extra/utils";
+
+
 
 const config = new Conf({
   defaults: defaultSettings

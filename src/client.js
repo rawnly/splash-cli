@@ -1,48 +1,26 @@
 require("babel-polyfill");
 
-import fs from "fs";
-import path from "path";
-import https from "https";
-import {
-  userInfo,
-  homedir
-} from "os";
-
-import randomFrom from "lodash/sample";
-import clear from "clear";
-import chalk from "chalk";
-import mkdirp from "mkdirp";
-import frun from "first-run";
-import inquirer from "inquirer";
-import wallpaper from "wallpaper";
-import fetch from "isomorphic-fetch";
 import isMonth from "@splash-cli/is-month";
-import updateNotifier from "update-notifier";
+import parseID from "@splash-cli/parse-unsplash-id";
 import pathFixer from "@splash-cli/path-fixer";
 import printBlock from "@splash-cli/print-block";
-import parseID from "@splash-cli/parse-unsplash-id";
-
+import chalk from "chalk";
+import clear from "clear";
 import Conf from "conf";
+import frun from "first-run";
+import fs from "fs";
+import randomFrom from "lodash/sample";
+import mkdirp from "mkdirp";
 import Ora from "ora";
-
-import {
-  toJson
-} from "unsplash-js";
-
-import commands from "./commands/index";
-import {
-  defaultSettings,
-  unsplash
-} from "./extra/config";
-import {
-  download,
-  picOfTheDay,
-  errorHandler,
-  clearSettings,
-  parseCollection
-} from "./extra/utils";
+import { userInfo } from "os";
+import updateNotifier from "update-notifier";
+import fetch from 'isomorphic-fetch';
 
 import manifest from "../package.json";
+import commands from "./commands/index";
+
+import { defaultSettings, unsplash } from "./extra/config";
+import { clearSettings, download, errorHandler, parseCollection, picOfTheDay } from "./extra/utils";
 
 const config = new Conf({
   defaults: defaultSettings

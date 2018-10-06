@@ -1,7 +1,6 @@
 import pathFixer from "@splash-cli/path-fixer";
-import Unsplash, {
-  toJson
-} from "unsplash-js";
+import Unsplash from "unsplash-js";
+import fetch from 'isomorphic-fetch';
 
 export const defaultSettings = {
   directory: pathFixer("~/Pictures/splash_photos"),

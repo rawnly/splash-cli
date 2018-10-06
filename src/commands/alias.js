@@ -1,18 +1,14 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
-import Conf from "conf";
-import chalk from "chalk";
-
+import fetch from 'isomorphic-fetch';
 import printBlock from "@splash-cli/print-block";
+import chalk from "chalk";
+import Conf from "conf";
 import figures from 'figures';
+import { defaultSettings } from "../extra/config";
 
-import {
-  errorHandler
-} from "../extra/utils";
-import {
-  defaultSettings
-} from "../extra/config";
+
 
 const config = new Conf({
   defaults: defaultSettings
