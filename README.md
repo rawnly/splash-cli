@@ -14,7 +14,7 @@
 
 ## :floppy_disk: Installation
 
-To install `splash-cli` you must use a **node package manager** such as [yarn](/Rawnly/splash-cli/blob/master/yarn) or [npm](/Rawnly/splash-cli/blob/master/npm).
+To install `splash-cli` you must use a **node package manager** such as [yarn](https://yarnpkg.com) or [npm](https://npmjs.com).
 
 ```bash
 	$ sudo npm install --global splash-cli
@@ -25,76 +25,52 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](/
 ```
 
 ## :paw_prints: Usage
+> Splash is easy and quick to use, just run `splash` to get started.
 
-```
-  $ splash --help
-
-  Usage
-    Get beautiful wallpapers from unsplash.
-
-    $ splash [command] [flags]
+```	
+  $ splash [command] [flags]
 
   Commands
-        settings <get|set|restore>      GET/SET/RESTORE SETTINGS
-        alias <get|set>                 GET/SET COLLECTION ALIASES
+  	settings <get|set|restore>	GET/SET/RESTORE SETTINGS
+  	alias <get|set|remove>			GET/SET COLLECTION ALIASES
 
   Options
-        -h --help                       THIS MESSAGE
-        -v --version                    3.0.0
+  	-h --help			    THIS MESSAGE
+  	-v --version			3.0.1
 
-        -s --save [optional_path]       DOWNLOAD WITHOUT SETTING AS WALLPAPER
+    ** MACOS ONLY **
+  	--scale <auto|fill|fit|stretch|center>    SET WALLPAPER SCALE
+  	--screen <all|main|monitor number>    	  SET AS WALLPAPER ON SELECTED MONITOR
 
-        -i --info                       SHOW EXIF
-        -q --quiet                      NO OUTPUT
+  	-s --save [optional_path] 	              DOWNLOAD WITHOUT SETTING AS WALLPAPER
+
+  	-i --info			  SHOW EXIF
+  	-q --quiet			NO OUTPUT
 
 
   Source Filters
-        -u --user <username>            RANDOM PHOTO FROM PROVIDED USER
-        --collection <id|alias>         RANDOM PHOTO FROM PROVIDED COLLECTION
-        -c --curated                    RANDOM CURATED PHOTO
-        --id <id|url>                   PHOTO BY ID
-        --day                           GET THE PHOTO OF THE DAY
-
+  	-u --user <username>		  RANDOM PHOTO FROM PROVIDED USER
+  	--collection <id|alias>		RANDOM PHOTO FROM PROVIDED COLLECTION
+  	-c --curated			        RANDOM CURATED PHOTO
+  	--id <id|url>			        PHOTO BY ID
+  	--day				              GET THE PHOTO OF THE DAY
+	
   Search Filters
-        -f --featured                   LIMIT TO ONLY FEATURED PHOTOS
-        --query <query>                 RANDOM FROM QUERY
+  	-f --featured			  LIMIT TO ONLY FEATURED PHOTOS
+  	--query <query>			RANDOM FROM QUERY
 ```
 
-> Splash is easy and quick to use, just run `splash` to start.
+### Usage as module
+#### splash([flags])
+##### flags
+All the **cli** flags/options (no commands, such as `settings` or `aliases`).
 
-### As cli
+```js
+  import splash from 'splash-cli';
 
-```sh
-  $ splash [commands] [flags]
+  splash({ quiet: true, screen: 'main', collection: 317099 })
 ```
 
-### As module
-
-Add this module to your project:
-
-```sh
-  $ npm install --save splash-cli
-
-  # OR
-
-  $ yarn add splash-cli
-```
-
-Then in your editor:
-
-```javascript
-import splash from "splash-cli";
-
-// ...
-
-splash({
-  quiet: true,
-  save: "~/Desktop",
-  id: "some_id"
-});
-
-// ...
-```
 
 ## Contributors
 
