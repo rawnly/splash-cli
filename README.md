@@ -19,11 +19,11 @@
 To install `splash-cli` you must use a **node package manager** such as [yarn](https://yarnpkg.com) or [npm](https://npmjs.com).
 
 ```bash
-	$ sudo npm install --global splash-cli
+	# With NPM
+	$ npm install --global splash-cli
 
-	# OR
-
-	$ sudo yarn global add splash-cli
+	# With Yarn
+	$ yarn global add splash-cli
 ```
 
 ## :paw_prints: Usage
