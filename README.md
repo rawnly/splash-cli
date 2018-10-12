@@ -7,8 +7,10 @@
 <br>
 
 # Splash Cli
+<p align="center">
+	<img src="https://user-images.githubusercontent.com/16429579/46895514-07154800-ce79-11e8-9e1c-0df66a38a915.gif" />
+</p>
 
-![splash-cli](https://user-images.githubusercontent.com/16429579/35586570-79300ae8-05fb-11e8-8d37-17ff8cb6fa85.gif)
 
 > Get beautiful wallpapers from [unsplash](uwebsite)
 
