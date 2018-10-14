@@ -26,6 +26,8 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](h
 	# With Yarn
 	$ yarn global add splash-cli
 ```
+## ❓ FAQs
+A list of **Frequently Asked Questions** can be found [**here**](FAQ.md)
 
 ## :paw_prints: Usage
 > Splash is easy and quick to use, just run `splash` to get started.
