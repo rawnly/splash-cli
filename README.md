@@ -7,6 +7,7 @@
 <br>
 
 # Splash CLI
+<h6 align="center"> <a href="https://github.com/rawnly/dot-files">Terminal Setup</a> </h6>
 <p align="center">
 	<a href="https://splash-cli.now.sh" title="Splash CLI">
 		<img src="https://user-images.githubusercontent.com/16429579/46895514-07154800-ce79-11e8-9e1c-0df66a38a915.gif" />
