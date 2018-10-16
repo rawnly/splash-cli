@@ -92,7 +92,7 @@ List of awesome people that have helped to keep this project alive:
 ---
 
 <p align="center">
-	<a href="https://splash-cli-now.sh"> Official Website </a>
+	<a href="https://splash-cli.now.sh"> Official Website </a>
 	-
 	<a href="https://twitter.com/rawnlydev"> Twitter </a>
 	-
