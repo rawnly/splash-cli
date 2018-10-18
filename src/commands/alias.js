@@ -1,7 +1,6 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
-import fetch from 'isomorphic-fetch';
 import printBlock from "@splash-cli/print-block";
 import chalk from "chalk";
 import Conf from "conf";
@@ -10,9 +9,7 @@ import { defaultSettings } from "../extra/config";
 
 
 
-const config = new Conf({
-  defaults: defaultSettings
-});
+const config = new Conf({ defaults: defaultSettings });
 
 export default function alias([action, alias, aliasID = false]) {
   const aliases = config.get("aliases") || [];
@@ -112,7 +109,7 @@ export default function alias([action, alias, aliasID = false]) {
       break;
     default:
       printBlock(
-        chalk `Invalid action "{red ${action}}"`,
+        chalk`Invalid action "{red ${action}}"`,
         `Allowed actions are:`,
         ` - set`,
         ` - get`

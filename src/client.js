@@ -99,6 +99,7 @@ export default async function (input, flags) {
     try {
       let photo = false;
 
+      // here you can add your own custom flags
       if (flags.day) {
         const response = await getPhoto(await picOfTheDay());
         photo = await response.json();
