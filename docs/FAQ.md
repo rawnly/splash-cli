@@ -1,7 +1,7 @@
 # FAQ
 
 **Q**: How can I contribute to the project? [#32][issue32] <br />
-**A**: Please read the [CONTRIBUTING](CONTRIBUTING.md) file.
+**A**: Please read the [CONTRIBUTING](/.github/CONTRIBUTING.md) file.
 ---
 
 **Q**:  What about your terminal setup? [#28][issue28] <br />
