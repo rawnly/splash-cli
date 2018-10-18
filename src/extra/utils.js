@@ -1,7 +1,6 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
-import fetch from 'isomorphic-fetch';
 import isMonth from "@splash-cli/is-month";
 import pathFixer from "@splash-cli/path-fixer";
 import printBlock from "@splash-cli/print-block";
@@ -133,7 +132,7 @@ export function isPath(string) {
 
 export async function download(photo, url, flags, setAsWP = true) {
   let dir = config.get("directory");
-
+  
   if (flags.quiet) {
     console.log = console.info = () => {};
     spinner.start = spinner.fail = () => {};

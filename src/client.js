@@ -14,7 +14,6 @@ import mkdirp from "mkdirp";
 import Ora from "ora";
 import { userInfo } from "os";
 import updateNotifier from "update-notifier";
-import fetch from 'isomorphic-fetch';
 
 import manifest from "../package.json";
 import commands from "./commands/index";
@@ -48,10 +47,7 @@ const spinner = new Ora({
 
 export default async function (input, flags) {
   const [command, ...subCommands] = input;
-  const {
-    quiet,
-    save
-  } = flags;
+  const { quiet, save } = flags;
   const options = {};
 
   // Parse commands
