@@ -76,25 +76,29 @@ All the **CLI** flags/options (no commands, such as `settings` or `aliases`).
 
   splash({ quiet: true, screen: 'main', collection: 317099 })
 ```
+---
 
-<!--
 ## Contributors
 List of awesome people that have helped to keep this project alive:
 
 * [mohnjatthews](http://github.com/mohnjatthews)
 * [alecrust](http://github.com/alecrust)
--->
 
-## :space_invader: Related
+### How can I contribute?
+Hi thank you for the interest! [Here](CONTRIBUTING.md) you can find all what you need to know about.
+---
+
+## :space_invader: Related Stuff
+* [Splash CLI Website](https://splash-cli.now.sh) - Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).
 * [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
 * [Download Collections](https://github.com/Rawnly/collection-downloader-py) - Download **Unsplash** collections (*written in Python*)
 
 ---
 
 <p align="center">
-	<a href="https://splash-cli.now.sh"> Official Website </a>
-	-
 	<a href="https://twitter.com/rawnlydev"> Twitter </a>
+	-
+	<a href="https://splash-cli.now.sh"> Official Website </a>
 	-
 	<a href="https://instagram.com/fede.vitale"> Instagram </a>
 </p>
