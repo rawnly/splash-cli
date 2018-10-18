@@ -1,13 +1,17 @@
-<!-- Thanks for this pull-request! -->
-<!-- It's important keep splash-cli updated -->
-<!-- Please before submit check a few things -->
+# Roadmap
 
-## Title
-Describe what you've done below
-<!-- Thanks again! -->
+This file is a roadmap for who wants improve this repo.
+> Below you can see some **super cool** steps who this repo needs! :rabbit:
 
+<br />
 
-<!-- 
+- [ ] Include `User Authentication` [#27](https://github.com/splash-cli/splash-cli/issues/27)
+
+<br />
+
+By submitting a PR you agree to the [Developer Certificate of Origin](https://developercertificate.org)
+
+```
 Developer Certificate of Origin
 Version 1.1
 
@@ -45,5 +49,4 @@ By making a contribution to this project, I certify that:
     personal information I submit with it, including my sign-off) is
     maintained indefinitely and may be redistributed consistent with
     this project or the open source license(s) involved.
-    
--->
+```

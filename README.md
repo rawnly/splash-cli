@@ -27,7 +27,7 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](h
 	# With Yarn
 	$ yarn global add splash-cli
 ```
-## ❓ FAQs
+## ❓ [FAQs](/docs/FAQ.md)
 A list of **Frequently Asked Questions** can be found [**here**](https://github.com/splash-cli/splash-cli/issues?utf8=✓&q=is%3Aissue+label%3A%22%3Aquestion%3A++FAQ%22+)
 
 ## :paw_prints: Usage
@@ -85,9 +85,8 @@ List of awesome people that have helped to keep this project alive:
 * [alecrust](http://github.com/alecrust)
 
 ### How can I contribute?
-Hi thank you for the interest! [Here](CONTRIBUTING.md) you can find all what you need to know about.
+Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all what you need to know about and [here](/docs/ROADMAP.md) you can find some things that I'd like to improve.
 
----
 
 ## :space_invader: Related Stuff
 * [Splash CLI Website](https://splash-cli.now.sh) - Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).

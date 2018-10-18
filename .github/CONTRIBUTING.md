@@ -1,52 +1,69 @@
-# Roadmap
+# How can I contribute?
+To contribute and add your features to the project follow the steps below:
 
-This file is a roadmap for who wants improve this repo.
-> Below you can see some **super cool** steps who this repo needs! :rabbit:
+- Fork this repo
+- Clone the repo you forked
+- Jump into the project directory
+- Install local dependencies via `npm` or `yarn`
+- Do your awesome stuff :pop:
 
-<br />
+## Explanation:
 
-- [ ] Include `User Authentication` [#27](https://github.com/splash-cli/splash-cli/issues/27)
+#### Add a new flag
+To add flags and arguments you should do something like this:
+> :warn: You maybe would change the params somewhere else, that's ok. 
+If you need help please create a new issue
 
-<br />
+##### Example
+```js
+    // here you can add your own flag
+    if (flags.customFlag) {
+        // Do your awesome stuff
+        console.log('CUSTOM FLAG')
 
-By submitting a PR you agree to the [Developer Certificate of Origin](https://developercertificate.org)
+        // please remember the return statement at the end if you don't want to 
+        // continue the process with the download
+        return;
 
+        // else you should provide a value for the `photo` variable
+        const response = await fetch('API URL');
+        photo = await response.json() // API URL RESPONSE
+    }  else if (flags.day) {
+        // Stuff
+    }
+
+    // other flags check
 ```
-Developer Certificate of Origin
-Version 1.1
 
-Copyright (C) 2004, 2006 The Linux Foundation and its contributors.
-1 Letterman Drive
-Suite D4700
-San Francisco, CA, 94129
+Then you should add your flag into [`./src/bin/help.js`](/src/bin/help.js) for the helpmenu, and also inside [`./src/bin/index.js`](/src/bin/index.js).
 
-Everyone is permitted to copy and distribute verbatim copies of this
-license document, but changing it is not allowed.
+#### Add a new command
+Create a new file inside commands where you will export your new function as a module.
+```js
+    import prompt from 'inquirer';
+    import printBlock from '@splash-cli/print-block';
 
+    printBlock('Type in your Unsplash:')
 
-Developer's Certificate of Origin 1.1
+    export default async function login() {
+        // Prompting the input
+        const { username, password } = prompt([{
+            name: 'username',
+            message: 'Username'
+        }, {
+            name: 'password',
+            message: 'Password'
+        }])
 
-By making a contribution to this project, I certify that:
+        /*
+        * Backend stuff for login
+        */
 
-(a) The contribution was created in whole or in part by me and I
-    have the right to submit it under the open source license
-    indicated in the file; or
-
-(b) The contribution is based upon previous work that, to the best
-    of my knowledge, is covered under an appropriate open source
-    license and I have the right under that license to submit that
-    work with modifications, whether created in whole or in part
-    by me, under the same open source license (unless I am
-    permitted to submit under a different license), as indicated
-    in the file; or
-
-(c) The contribution was provided directly to me by some other
-    person who certified (a), (b) or (c) and I have not modified
-    it.
-
-(d) I understand and agree that this project and the contribution
-    are public and that a record of the contribution (including all
-    personal information I submit with it, including my sign-off) is
-    maintained indefinitely and may be redistributed consistent with
-    this project or the open source license(s) involved.
+        // Greet the user!
+        printBlock(`Welcome to splash-cli ${username}`)
+        return;
+    }
 ```
+
+Please remember to update the `README` and all the documentation.
+If you want to help me more, you can also update documentation on the website repo [here](https://github.com/splash-cli/splash-cli-website/blob/master/pages/docs.js).
