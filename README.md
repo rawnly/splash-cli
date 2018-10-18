@@ -86,6 +86,7 @@ List of awesome people that have helped to keep this project alive:
 
 ### How can I contribute?
 Hi thank you for the interest! [Here](CONTRIBUTING.md) you can find all what you need to know about.
+
 ---
 
 ## :space_invader: Related Stuff
