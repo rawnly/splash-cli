@@ -1,5 +1,9 @@
 # FAQ
 
+**Q**: How can I contribute to the project? [#32][issue32] <br />
+**A**: Please read the [CONTRIBUTING](CONTRIBUTING.md) file.
+---
+
 **Q**:  What about your terminal setup? [#28][issue28] <br />
 **A**: My terminal setup (and dot files) is available [here][termsetup]
 ---
@@ -18,3 +22,4 @@
 [issue17]: https://github.com/splash-cli/splash-cli/issues/17
 [issue28]: https://github.com/splash-cli/splash-cli/issues/28
 [issue29]: https://github.com/splash-cli/splash-cli/issues/29
+[issue32]: https://github.com/splash-cli/splash-cli/issues/32
