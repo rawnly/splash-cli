@@ -1,6 +1,9 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
+import fetch from 'isomorphic-fetch';
+
+import { prompt } from 'inquirer';
 import isMonth from "@splash-cli/is-month";
 import pathFixer from "@splash-cli/path-fixer";
 import printBlock from "@splash-cli/print-block";
@@ -17,11 +20,139 @@ import path from "path";
 import RemoteFile from "simple-download";
 import terminalLink from 'terminal-link';
 import wallpaper from "wallpaper";
-import { defaultSettings } from "./config";
+import http from 'http';
+import { toJson } from "unsplash-js";
+
+import { defaultSettings, unsplash } from "./config";
 
 
 
 const config = new Conf();
+
+export async function login() {
+  const spinner = new Ora('Waiting...')
+
+  http.createServer(async (req, res) => {
+    res.send = (content, status = 200) => {
+      res.writeHead(status)
+      res.end(content)
+    }
+
+    if ( req.url.includes('code') ) {
+      if (req.url.match(/code=(.*)/)[1]) {
+        if (spinner) spinner.text = "Authenticating..."
+
+        try {
+          const code = req.url.match(/code=(.*)/)[1]
+
+          unsplash.auth.userAuthentication(code)
+            .then(toJson)
+            .then(data => {
+              unsplash.auth.setBearerToken(data.access_token);
+
+              config.set('user', {
+                token: data.access_token,
+                refresh: data.refresh_token
+              });
+
+              spinner.stop()
+              testUserAuth(data.access_token)
+            })
+        } catch (error) {
+          spinner.fail("Failed.")
+          errorHandler(error);
+        }
+      }
+    }
+  }).listen(5835, () => {
+    const authURL = `https://unsplash.com/oauth/authorize?client_id=a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c&redirect_uri=http%3A%2F%2Flocalhost%3A5835%2F&response_type=code&scope=public+write_likes+write_followers+read_collections+write_collections`
+
+    printBlock(
+      chalk`{yellow {bold Splash CLI:} Please click on the link below to login}`, 
+      ``,
+      chalk`{cyan {dim ${authURL}}}`
+    )
+
+    spinner.start();
+  })
+}
+
+export async function authenticatedRequest(endpoint, options = {}) {
+  if (!checkUserAuth()) return login();
+
+  try {
+    const { body } = await got(`https://api.unsplash.com/${endpoint}`, Object.assign({}, options, { headers: { 'Authorization': `Bearer ${token}` } }))
+
+    return JSON.parse(body);
+  } catch (error) {
+    errorHandler(error);
+  }
+}
+
+export async function updateMe() {
+  if ( !checkUserAuth() ) return login();
+  const user = config.get('current-user-profile') || {};
+  // console.log(user)
+  const data = await prompt([{
+    name: 'username',
+    message: 'Username',
+    default: user.username,
+  }, {
+    name: 'firstName',
+    message: 'First Name:',
+    default: user.first_name,
+  }, {
+    name: 'lastName',
+    message: 'Last Name',
+    default: user.last_name
+  }, {
+    name: 'bio',
+    message: 'Bio',
+    default: user.bio
+  }, {
+    name: 'instagramUsername',
+    message: 'Instagram Username',
+    default: user.instagram_username
+  }, {
+    name: 'location',
+    message: 'Location',
+    default: user.location
+  }, {
+    name: 'url',
+    message: 'Url',
+    default: user.url
+  }])
+
+  return unsplash.currentUser().updateProfile(data).then(toJson)
+}
+
+export function checkUserAuth() {
+  const { token } = config.get('user');
+  const user = config.get('current-user-profile');
+
+  if ( !token || !user ) return false;
+
+  unsplash.auth.setBearerToken(config.get('user').token)
+  return true;
+}
+
+async function testUserAuth(token) {
+  try {
+    const { body } = await got("https://api.unsplash.com/me", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+
+    const user = JSON.parse(body);
+
+    printBlock(chalk`{bold Welcome {cyan @${user.username}}!}`)
+    config.set('current-user-profile', user)
+    process.exit()
+  } catch (error) {
+    errorHandler(error)
+  }
+}
 
 export async function clearSettings() {
   const settingsList = Object.keys(defaultSettings);
