@@ -1,10 +1,13 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
+import fetch from 'isomorphic-fetch';
+
 import pathFixer from "@splash-cli/path-fixer";
 import printBlock from "@splash-cli/print-block";
 import chalk from "chalk";
 import Conf from "conf";
+
 import { prompt as ask } from "inquirer";
 import { defaultSettings } from "../extra/config";
 import { clearSettings, errorHandler } from "../extra/utils";
@@ -39,9 +42,16 @@ export default async function settings([action, target]) {
     case "get":
       const settings = target ? config.get(target) : config.get();
 
-      settings["settings-path"] = config.path;
+      
+      settings.picOfTheDay = settings["pic-of-the-day"]
+      settings.settingsPath = config.path;
 
-      printBlock(chalk`Settings:`, settings);
+      delete settings["current-user-profile"];
+      delete settings["keys"];
+      delete settings["user"];
+      delete settings["pic-of-the-day"];
+
+      printBlock(chalk`Settings:`, JSON.stringify(settings, null, 2));
       break;
     case "clear":
     case "reset":

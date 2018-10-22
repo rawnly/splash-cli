@@ -1,6 +1,8 @@
 require("babel-polyfill");
 require("regenerator-runtime");
 
+import fetch from 'isomorphic-fetch';
+
 import printBlock from "@splash-cli/print-block";
 import chalk from "chalk";
 import Conf from "conf";
