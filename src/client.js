@@ -14,12 +14,13 @@ import mkdirp from "mkdirp";
 import Ora from "ora";
 import { userInfo } from "os";
 import updateNotifier from "update-notifier";
+import fetch from 'isomorphic-fetch';
 
 import manifest from "../package.json";
 import commands from "./commands/index";
 
 import { defaultSettings, unsplash } from "./extra/config";
-import { clearSettings, download, errorHandler, parseCollection, picOfTheDay } from "./extra/utils";
+import { clearSettings, download, errorHandler, parseCollection, picOfTheDay, login, updateMe } from "./extra/utils";
 
 const config = new Conf({
   defaults: defaultSettings
@@ -37,7 +38,8 @@ const {
     getCuratedCollection,
     getCollectionPhotos,
     getCuratedCollectionPhotos
-  }
+  },
+  currentUser: user
 } = unsplash;
 
 const spinner = new Ora({
@@ -54,6 +56,7 @@ export default async function (input, flags) {
   for (let i = 0; i < subCommands.length; i += 1) {
     options[subCommands[i]] = subCommands[i];
   }
+
 
   if (flags.quiet) {
     console.log = console.info = () => {};
@@ -94,13 +97,36 @@ export default async function (input, flags) {
   if (!command) {
     clear();
 
-    spinner.start("Connecting to Unsplash");
+    if (!flags.me && !flags.updateMe)
+      spinner.start("Connecting to Unsplash");
 
     try {
       let photo = false;
 
       // here you can add your own custom flags
-      if (flags.day) {
+      if (flags.updateMe) {
+        const data = await updateMe();
+        return printBlock(data);
+      } else if (flags.me) {        
+        const user = config.get('current-user-profile');
+        const userData = chalk`
+          {yellow Name}: ${user.name} {dim (@${user.username})}
+          {yellow Bio}: ${user.bio}
+          {yellow Location}: ${user.location}
+
+          {dim —————————————————————————————————————————}
+
+          {yellow Downloads Count}: ${user.downloads} 
+          {yellow Photos Count}: ${user.photos.length}
+
+          {dim —————————————————————————————————————————}
+
+          {yellow Followers}: ${user.followers_count}
+          {yellow Following}: ${user.following_count}
+        `.split('\n').map(item => '  ' + item.trim()).join('\n')
+
+        return printBlock(userData);
+      } else if (flags.day) {
         const response = await getPhoto(await picOfTheDay());
         photo = await response.json();
       } else if (flags.curated) {
@@ -160,6 +186,9 @@ export default async function (input, flags) {
         break;
       case "alias":
         return commands.alias(subCommands);
+        break;
+      case "login":
+        await login();
         break;
       default:
         printBlock(
