@@ -54,15 +54,10 @@ export function tryParse(string) {
 	}
 }
 
-export async function authenticatedRequest(endpoint, options = {}) {
+export async function authenticatedRequest(endpoint, { options, extraHeaders } = {}) {
 	const token = config.get('user').token;
-
-	try {
-		const { body } = await got(`https://api.unsplash.com/${endpoint}`, Object.assign({}, options, { headers: { 'Authorization': `Bearer ${token}` } }));
-		return JSON.parse(body);
-	} catch (error) {
-		errorHandler(error);
-	}
+	const { body } = await got(`https://api.unsplash.com/${endpoint}`, Object.assign({}, options, { headers: Object.assign({}, extraHeaders, { 'Authorization': `Bearer ${token}` }) }));
+	return tryParse(body);
 }
 
 export async function updateMe() {

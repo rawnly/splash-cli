@@ -2,13 +2,8 @@ import printBlock from '@splash-cli/print-block';
 import chalk from 'chalk';
 import { prompt } from 'inquirer';
 import { config, unsplash } from '../extra/config';
-import login from './utils/user_login';
-import {
-	authenticatedRequest,
-	updateMe,
-	errorHandler
-} from '../extra/utils';
-
+import User from './utils/User';
+import { authenticatedRequest, updateMe, errorHandler } from '../extra/utils';
 
 export default async function userCommand([cmd]) {
 	try {
@@ -16,99 +11,79 @@ export default async function userCommand([cmd]) {
 
 		switch (cmd) {
 		case 'login':
-			await login();
+			await User.auth.login();
 			break;
 		case 'logout':
-			const {
-				isSure
-			} = await prompt([{
-				name: 'isSure',
-				message: 'Are you sure?',
-				default: false,
-				type: 'confirm'
-			}]);
+			const success = User.auth.logout();
 
-			if (isSure !== true) {
-				console.log(chalk `{bold {red Aborted}}`);
-				return;
-			}
+			if (!success) return console.log(chalk `{bold {red Aborted}}`);
 
-			config.delete('user');
-			printBlock(chalk `User data {bold deleted} successfully.`);
+			printBlock(chalk`User data {bold deleted} successfully.`);
 			break;
 		case 'update':
 		case 'edit':
-			const data = await updateMe();
+			const { profile: user } = config.get('user') || {};
+			const data = await prompt([{
+				name: 'username',
+				message: 'Username',
+				default: user.username,
+			}, {
+				name: 'firstName',
+				message: 'First Name:',
+				default: user.first_name,
+			}, {
+				name: 'lastName',
+				message: 'Last Name',
+				default: user.last_name
+			}, {
+				name: 'bio',
+				message: 'Bio',
+				default: user.bio
+			}, {
+				name: 'instagramUsername',
+				message: 'Instagram Username',
+				default: user.instagram_username
+			}, {
+				name: 'location',
+				message: 'Location',
+				default: user.location
+			}, {
+				name: 'url',
+				message: 'Url',
+				default: user.url
+			}]);
 
-			if ( data.error || data.errors ) return errorHandler(data.error || data.errors);
-                
-			await userCommand([ 'get' ]);
+			const newUser = await User.update(data);
 
+			if ( newUser.error || newUser.errors ) return printBlock(newUser.error || newUser.errors);
+
+			userCommand([ 'get' ]);
 			break;
 		case 'likes':
-			const { profile: { username, total_likes: totalLikes } } = config.get('user');
-			const likedPhotos = [];
-
-			const photos = await authenticatedRequest(`users/${username}/likes`);
-			photos.map(photo => {
-				likedPhotos.push({
-					id: photo.id,
-					html: photo.links.html,
-					download: photo.links.download_location,
-					user: {
-						username: photo.user.username,
-						name: photo.user.name,
-						profile: photo.user.links.html
-					}
-				});
-			});
+		case 'get-likes':
+		case 'liked':
+			const likes = await User.getLikes();
 
 			printBlock(chalk`{bold {black {bgYellow Last 10 liked photos:}}}`);
-			likedPhotos.forEach(photo => {
+
+			likes.forEach(photo => {
 				console.log(chalk`{bold {yellow ID:}} ${photo.id}`);
 				console.log(chalk`{bold {yellow Author:}} {cyan @${photo.user.username}}`);
 				console.log(chalk`{bold {yellow Link:}} {underline ${photo.html}}`);
 				console.log(chalk`{dim -}`.repeat(10));
 				console.log();
 			});
+
 			break;
 		case 'get':
-			if ( !config.has('user') ) {
-				printBlock(chalk`Please log in.`);
-				return;
-			}
+			if ( !config.has('user') )
+				return printBlock(chalk`Please log in.`);
 
-			let user;
-
-			try {
-				user = await authenticatedRequest('me');
-			} catch (error) {
-				user = config.get('user').profile;
-			}
-                
-
-			const userData = chalk `
-                    {yellow Name}: ${user.name} {dim (@${user.username})}
-                    {yellow Bio}: ${user.bio}
-                    {yellow Location}: ${user.location}
-
-                    {dim —————————————————————————————————————————}
-
-                    {yellow Downloads Count}: ${user.downloads} 
-                    {yellow Photos Count}: ${user.photos.length}
-
-                    {dim —————————————————————————————————————————}
-
-                    {yellow Followers}: ${user.followers_count}
-                    {yellow Following}: ${user.following_count}
-                `.split('\n').map(item => '  ' + item.trim()).join('\n');
-
-			printBlock(userData);
+			printBlock(await User.get());
 
 			break;
 		default:
 			printBlock(chalk `{yellow Sorry!} Option: {yellow "${cmd}"} currently {underline {red not available}}.`);
-			console.log(unsplash);
 			break;
 		}
 	} catch (error) {
