@@ -1,10 +1,10 @@
-import isMonth from "@splash-cli/is-month";
-import chalk from "chalk";
+import isMonth from '@splash-cli/is-month';
+import chalk from 'chalk';
 
-import pkg from "../../package.json";
+import pkg from '../../package.json';
 
 export default chalk`{bold Usage}
-	${isMonth("december") ? chalk`{yellow Merry Christmas!}` : ""}
+	${isMonth('december') ? chalk`{yellow Merry Christmas!}` : ''}
 	
 	$ {green splash} {dim [command] [flags]}
 
@@ -19,7 +19,7 @@ export default chalk`{bold Usage}
 
 	${process.platform === 'darwin' ? (
 		chalk`{yellow --scale {dim <auto|fill|fit|stretch|center>}}  {dim SET WALLPAPER SCALE}\n\t{yellow --screen {dim <all|main|monitor number>}}	{dim SET AS WALLPAPER ON SELECTED MONITOR}`
-	) : (``)}
+	) : ('')}
 
 	{yellow -s --save {dim [optional_path]}} 	{dim DOWNLOAD WITHOUT SETTING AS WALLPAPER}
 
