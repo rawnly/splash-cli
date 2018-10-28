@@ -9,7 +9,6 @@ import pathFixer from '@splash-cli/path-fixer';
 import printBlock from '@splash-cli/print-block';
 import showCopy from '@splash-cli/show-copy';
 import chalk from 'chalk';
-import Conf from 'conf';
 import figures from 'figures';
 import got from 'got';
 import isImage from 'is-image';
@@ -20,10 +19,9 @@ import path from 'path';
 import RemoteFile from 'simple-download';
 import terminalLink from 'terminal-link';
 import wallpaper from 'wallpaper';
-import { toJson } from 'unsplash-js';
 import normalize from 'normalize-url';
 
-import { config, unsplash } from './config';
+import { config, unsplash, defaultSettings } from './config';
 
 export async function authenticate({ client_id, client_secret, code, redirect_uri } = {}) {
 	const url = new URL('https://unsplash.com');
@@ -58,50 +56,6 @@ export async function authenticatedRequest(endpoint, { options, extraHeaders } =
 	const token = config.get('user').token;
 	const { body } = await got(`https://api.unsplash.com/${endpoint}`, Object.assign({}, options, { headers: Object.assign({}, extraHeaders, { 'Authorization': `Bearer ${token}` }) }));
 	return tryParse(body);
-}
-
-export async function updateMe() {
-	if ( !checkUserAuth() ) return login();
-	const { profile: user } = config.get('user') || {};
-
-	if (!unsplash.currentUser) {
-		const chalkLog = (...strings) => strings.map(string => console.log(chalk `${string}`));
-		chalkLog('{red {bold ERROR}}: NOT DEFINED');
-		process.exit();
-	}
-
-	// console.log(user)
-	const data = await prompt([{
-		name: 'username',
-		message: 'Username',
-		default: user.username,
-	}, {
-		name: 'firstName',
-		message: 'First Name:',
-		default: user.first_name,
-	}, {
-		name: 'lastName',
-		message: 'Last Name',
-		default: user.last_name
-	}, {
-		name: 'bio',
-		message: 'Bio',
-		default: user.bio
-	}, {
-		name: 'instagramUsername',
-		message: 'Instagram Username',
-		default: user.instagram_username
-	}, {
-		name: 'location',
-		message: 'Location',
-		default: user.location
-	}, {
-		name: 'url',
-		message: 'Url',
-		default: user.url
-	}]);
-  
-	return unsplash.currentUser.updateProfile(data).then(toJson);
 }
 
 export function checkUserAuth() {
