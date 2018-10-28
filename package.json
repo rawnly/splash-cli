@@ -3,10 +3,11 @@
   "version": "3.0.2",
   "main": "build/client.js",
   "scripts": {
-    "build": "babel src -d build && npm run copyHTML",
+    "build": "npm run test && babel src -d build && npm run copyHTML",
     "copyHTML": "cp -rf src/pages build/pages",
     "start": "npm run build && node build/bin/index.js",
-    "test": "echo \"No test found\""
+    "fix": "eslint src/client.js --color --fix",
+    "test": "npm run fix && eslint src/client.js --color"
   },
   "description": "Get beautiful wallpapers from unsplash.",
   "bin": {
@@ -49,10 +50,12 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-eslint": "8",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1"
+    "babel-preset-env": "^1.6.1",
+    "eslint": "4.x"
   }
 }
