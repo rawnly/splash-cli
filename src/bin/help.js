@@ -3,19 +3,19 @@ import chalk from 'chalk';
 
 import pkg from '../../package.json';
 
-export default chalk`{bold Usage}
-	${isMonth('december') ? chalk`{yellow Merry Christmas!}` : ''}
-	
+export default chalk`{bold Usage} (v${pkg.version})
+	${isMonth('december') ? chalk`{yellow Merry Christmas!}\n` : ''}
 	$ {green splash} {dim [command] [flags]}
-
 
 {bold {cyan Commands}}
 	{cyan settings {dim <get|set|restore>}}	{dim GET/SET/RESTORE SETTINGS}
 	{cyan alias {dim <get|set|remove>}}			{dim GET/SET COLLECTION ALIASES}
+	{cyan user {dim <login|logout|get>}} {dim MANAGE USER LOGIN/LOGOUT - GET USER INFOS}
+		{dim {bold use "user help" for more arguments infos}}
 
 {bold {yellow Options}}
 	{yellow -h --help}			{dim THIS MESSAGE}
-	{yellow -v --version}			{dim ${pkg.version}}
+	{yellow -v --version}			{dim v${pkg.version}}
 
 	${process.platform === 'darwin' ? (
 		chalk`{yellow --scale {dim <auto|fill|fit|stretch|center>}}  {dim SET WALLPAPER SCALE}\n\t{yellow --screen {dim <all|main|monitor number>}}	{dim SET AS WALLPAPER ON SELECTED MONITOR}`

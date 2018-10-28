@@ -23,6 +23,7 @@ export default async function userCommand([cmd]) {
 		case 'update':
 		case 'edit':
 			const { profile: user } = config.get('user') || {};
+			
 			const data = await prompt([{
 				name: 'username',
 				message: 'Username',
@@ -76,11 +77,23 @@ export default async function userCommand([cmd]) {
 
 			break;
 		case 'get':
-			if ( !config.has('user') )
-				return printBlock(chalk`Please log in.`);
+			if ( !config.has('user') ) return printBlock(chalk`Please log in.`);
 
 			printBlock(await User.get());
 
+			break;
+		case 'help':
+		case 'how':
+			printBlock(chalk`
+				{bold {black {bgWhite COMMANDS}}}   	{bold {black {bgYellow ALIASES}}} 		{bold {black {bgWhite DESCRIPTION}}}
+
+				{cyan {bold login}}		{dim none}			  {dim LOGIN WITH UNSPLASH}
+				{cyan {bold logout}}	{dim none}			  {dim LOGOUT}
+				{cyan {bold liked}} 	{yellow "likes"} or {yellow "get-likes"}	  {dim GET LAST 10 LIKED PHOTOS}
+				{cyan {bold get}}		{dim none}			  {dim GET CURRENT USER INFOS}
+				{cyan {bold edit}} 		{yellow "update"}		  {dim EDIT USER}
+				{cyan {bold help}} 		{yellow "how"}			  {dim SHOWS THIS MESSAGE}
+			`.split('\n').map(item => `  ${item.trim()}`).join('\n'));
 			break;
 		default:
 			printBlock(chalk `{yellow Sorry!} Option: {yellow "${cmd}"} currently {underline {red not available}}.`);
@@ -90,5 +103,3 @@ export default async function userCommand([cmd]) {
 		errorHandler(error);
 	}
 }
-
-
