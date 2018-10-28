@@ -6,8 +6,8 @@
     "build": "npm run test && babel src -d build && npm run copyHTML",
     "copyHTML": "cp -rf src/pages build/pages",
     "start": "npm run build && node build/bin/index.js",
-    "fix": "eslint src/client.js --color --fix",
-    "test": "npm run fix && eslint src/client.js --color"
+    "fix": "eslint src/**/*.js --color --fix",
+    "test": "eslint src/**/*.js --color"
   },
   "description": "Get beautiful wallpapers from unsplash.",
   "bin": {
