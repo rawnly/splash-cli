@@ -26,6 +26,10 @@
         "semi": [
             "error",
             "always"
-        ]
+		],
+		"no-undef": "error",
+		"no-duplicate-imports": "error",
+		"no-else-return": "error",
+		"no-multi-spaces": "error"
     }
 }
