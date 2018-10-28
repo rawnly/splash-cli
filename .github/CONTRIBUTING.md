@@ -40,14 +40,14 @@ Then you should add your flag into [`./src/bin/help.js`](/src/bin/help.js) for t
 #### Add a new command
 Create a new file inside commands where you will export your new function as a module.
 ```js
-    import prompt from 'inquirer';
+    import inquirer from 'inquirer';
     import printBlock from '@splash-cli/print-block';
 
     printBlock('Type in your Unsplash:')
 
     export default async function login() {
         // Prompting the input
-        const { username, password } = prompt([{
+        const { username, password } = inquirer.prompt([{
             name: 'username',
             message: 'Username'
         }, {
@@ -65,5 +65,5 @@ Create a new file inside commands where you will export your new function as a m
     }
 ```
 
-Please remember to update the `README` and all the documentation.
+Please remember to update the `README` and run **tests**  and all the documentation.
 If you want to help me more, you can also update documentation on the website repo [here](https://github.com/splash-cli/splash-cli-website/blob/master/pages/docs.js).
