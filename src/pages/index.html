@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title> Splash CLI </title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        html,
+        body {
+            font-size: 18px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+            margin: 0;
+            padding: 0;
+            
+            background: #1d1d1d;
+            color: #FFFFFF;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            padding: 35px;
+            background: #1d1d1d;
+            flex-direction: column;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container .row {
+            margin: 15px auto;
+        }
+        .container .row button {
+            margin: 0 10px;
+        }
+
+        .cotnainer .row h1,
+        .cotnainer .row h4 {
+            color: white;
+            text-align: center;
+        }
+
+        .btn {
+            background: #307fef;
+            padding: 10px 35px;
+            font-weight: bolder;
+            color: white;
+            font-size: 20px;
+            border-radius: 25px;
+            border: none;
+            text-align: center;
+            transition: all .3s ease-in-out;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            cursor: pointer;
+            border-color: #fff;
+            background-color: #fff;
+            color: #307fef;
+            -webkit-transform: scale(1.05);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <h1> Hey you discovered me! </h1>
+            <h4> I'm the <b>Splash ClI</b> <code>login helper</code></h4>
+        </div>
+        <div class="row">
+            <a href="https://unsplash.com/oauth/authorize?client_id=a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c&redirect_uri=http%3A%2F%2Flocalhost%3A5835%2F&response_type=code&scope=public+write_likes+write_followers+read_collections+write_collections" class="btn">
+                Login to Unsplash
+            </a>
+        </div>
+    </div>
+</body>
+</html>
