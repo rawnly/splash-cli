@@ -3,7 +3,9 @@
   "version": "3.0.2",
   "main": "build/client.js",
   "scripts": {
-    "build": "babel src -d build",
+    "build": "babel src -d build && npm run copyHTML",
+    "copyHTML": "cp -rf src/pages build/pages",
+    "start": "npm run build && node build/bin/index.js",
     "test": "echo \"No test found\""
   },
   "description": "Get beautiful wallpapers from unsplash.",
@@ -26,7 +28,6 @@
     "@splash-cli/show-copy": "^1.1.0",
     "babel-polyfill": "^6.26.0",
     "chalk": "^2.4.1",
-    "clear": "^0.1.0",
     "conf": "^1.4.0",
     "figures": "^2.0.0",
     "first-run": "^1.2.0",
@@ -49,6 +50,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1"

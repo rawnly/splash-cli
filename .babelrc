@@ -3,6 +3,7 @@
   "plugins": [
     "transform-runtime",
     "transform-async-to-generator",
-    "transform-regenerator"
+    "transform-regenerator",
+    "transform-class-properties"
   ]
 }
