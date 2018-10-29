@@ -84,6 +84,7 @@ export default async function userCommand([cmd]) {
 			break;
 		case 'help':
 		case 'how':
+		case 'h':
 			printBlock(chalk`
 				{bold {black {bgWhite COMMANDS}}}   	{bold {black {bgYellow ALIASES}}} 		{bold {black {bgWhite DESCRIPTION}}}
 
@@ -96,7 +97,11 @@ export default async function userCommand([cmd]) {
 			`.split('\n').map(item => `  ${item.trim()}`).join('\n'));
 			break;
 		default:
-			printBlock(chalk `{yellow Sorry!} Option: {yellow "${cmd}"} currently {underline {red not available}}.`);
+			printBlock(
+				chalk`{yellow Sorry!} Option: {yellow "${cmd}"} currently {underline {red not available}}.`, 
+				'', 
+				chalk`Type "{yellow user {bold help}}" for more infos`
+			);
 			break;
 		}
 	} catch (error) {
