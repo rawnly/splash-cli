@@ -36,34 +36,37 @@ A list of **Frequently Asked Questions** can be found [**here**](https://github.
 ```	
   $ splash [command] [flags]
 
-  Commands
-  	settings <get|set|restore>	GET/SET/RESTORE SETTINGS
-  	alias <get|set|remove>			GET/SET COLLECTION ALIASES
+	Commands
+		settings <get|set|restore>      GET/SET/RESTORE SETTINGS
+		alias <get|set|remove>                  GET/SET COLLECTION ALIASES
+		user <login|logout|get> MANAGE USER LOGIN/LOGOUT - GET USER INFOS
+				use "user help" for more arguments infos
 
-  Options
-  	-h --help			    THIS MESSAGE
-  	-v --version			3.0.1
+	Options
+		-h --help                       THIS MESSAGE
+		-v --version                    v3.0.2
 
-    ** MACOS ONLY **
-  	--scale <auto|fill|fit|stretch|center>    SET WALLPAPER SCALE
-  	--screen <all|main|monitor number>    	  SET AS WALLPAPER ON SELECTED MONITOR
+	------- MACOS ONLY -----------------------
+		--scale <auto|fill|fit|stretch|center>  SET WALLPAPER SCALE
+		--screen <all|main|monitor number>      SET AS WALLPAPER ON SELECTED MONITOR
+	------------------------------------------
 
-  	-s --save [optional_path] 	              DOWNLOAD WITHOUT SETTING AS WALLPAPER
+		-s --save [optional_path]       DOWNLOAD WITHOUT SETTING AS WALLPAPER
 
-  	-i --info			  SHOW EXIF
-  	-q --quiet			NO OUTPUT
+		-i --info                       SHOW EXIF
+		-q --quiet                      NO OUTPUT
 
 
-  Source Filters
-  	-u --user <username>		  RANDOM PHOTO FROM PROVIDED USER
-  	--collection <id|alias>		RANDOM PHOTO FROM PROVIDED COLLECTION
-  	-c --curated			        RANDOM CURATED PHOTO
-  	--id <id|url>			        PHOTO BY ID
-  	--day				              GET THE PHOTO OF THE DAY
-	
-  Search Filters
-  	-f --featured			  LIMIT TO ONLY FEATURED PHOTOS
-  	--query <query>			RANDOM FROM QUERY
+	Source Filters
+		-u --user <username>            RANDOM PHOTO FROM PROVIDED USER
+		--collection <id|alias>         RANDOM PHOTO FROM PROVIDED COLLECTION
+		-c --curated                    RANDOM CURATED PHOTO
+		--id <id|url>                   PHOTO BY ID
+		--day                           GET THE PHOTO OF THE DAY
+
+	Search Filters
+		-f --featured                   LIMIT TO ONLY FEATURED PHOTOS
+		--query <query>                 RANDOM FROM QUERY
 ```
 
 ### Usage as module
