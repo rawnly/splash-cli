@@ -1,22 +1,14 @@
 require('babel-polyfill');
 require('regenerator-runtime');
 
-import fetch from 'isomorphic-fetch';
-
 import pathFixer from '@splash-cli/path-fixer';
 import printBlock from '@splash-cli/print-block';
 import chalk from 'chalk';
-import Conf from 'conf';
 
 import { prompt as ask } from 'inquirer';
-import { defaultSettings } from '../extra/config';
+import { config } from '../extra/config';
 import { clearSettings, errorHandler, highlightJSON } from '../extra/utils';
 
-
-
-const config = new Conf({
-	defaults: defaultSettings
-});
 
 export default async function settings([action, target]) {
 	const questions = [];
