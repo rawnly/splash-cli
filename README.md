@@ -69,24 +69,13 @@ A list of **Frequently Asked Questions** can be found [**here**](https://github.
 		--query <query>                 RANDOM FROM QUERY
 ```
 
-### Suggested Collections
+## Suggested Collections
 - **Editorial** ([**317099**](https://unsplash.com/collections/317099/unsplash-editorial)) - A collection of beautiful photos, curated by the Unsplash Team.
 
 - **Wallpapers** ([**1065976**](https://unsplash.com/collections/1065976/wallpapers)) - Free stunning HD wallpapers for your mobile and desktop screens.
 
 - **Textures & Patterns** ([**3330445**](https://unsplash.com/collections/3330445/textures-patterns)) - Find your next perfect texture or pattern in high-quality.
 
-
-### Usage as module
-#### splash([flags])
-##### flags
-All the **CLI** flags/options (no commands, such as `settings` or `aliases`).
-
-```js
-  import splash from 'splash-cli';
-
-  splash({ quiet: true, screen: 'main', collection: 317099 })
-```
 ---
 
 ## Contributors
@@ -105,6 +94,10 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 * [Download Collections](https://github.com/Rawnly/collection-downloader-py) - Download **Unsplash** collections (*written in Python*)
 
 ---
+
+<p align="center">
+	Made with love by <a href="https://federicovitale.me"> Federico Vitale </a> in :it:
+</p>
 
 <p align="center">
 	<a href="https://twitter.com/rawnlydev"> Twitter </a>
