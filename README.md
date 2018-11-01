@@ -69,6 +69,14 @@ A list of **Frequently Asked Questions** can be found [**here**](https://github.
 		--query <query>                 RANDOM FROM QUERY
 ```
 
+### Suggested Collections
+- **Editorial** ([**317099**](https://unsplash.com/collections/317099/unsplash-editorial)) - A collection of beautiful photos, curated by the Unsplash Team.
+
+- **Wallpapers** ([**1065976**](https://unsplash.com/collections/1065976/wallpapers)) - Free stunning HD wallpapers for your mobile and desktop screens.
+
+- **Textures & Patterns** ([**3330445**](https://unsplash.com/collections/3330445/textures-patterns)) - Find your next perfect texture or pattern in high-quality.
+
+
 ### Usage as module
 #### splash([flags])
 ##### flags
