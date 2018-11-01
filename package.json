@@ -20,6 +20,18 @@
     "node": ">=6.11.4",
     "npm": ">=3.10.10"
   },
+  "keywords": [
+    "unsplash",
+    "splash-cli",
+    "splash",
+    "wallpaper",
+    "wallpapers",
+    "unsplash-js",
+    "photos",
+    "photo",
+    "photography",
+    "baeutiful"
+  ],
   "license": "MIT",
   "dependencies": {
     "@splash-cli/is-month": "^1.1.1",
