@@ -32,12 +32,6 @@ const {
 		listCuratedPhotos,
 		downloadPhoto
 	},
-	collections: {
-		getCollection,
-		getCuratedCollection,
-		getCollectionPhotos,
-		getCuratedCollectionPhotos
-	},
 	currentUser: user
 } = unsplash;
 
@@ -118,6 +112,7 @@ export default async function (input, flags) {
 				if (flags.id) {
 					spinner.warn = chalk `Invalid ID: "{yellow ${flags.id}}"`;
 				}
+
 				const response = await getRandomPhoto({
 					query: flags.query,
 					username: flags.user,
@@ -138,7 +133,7 @@ export default async function (input, flags) {
 
 				if (photo.errors) {
 					printBlock(chalk `{bold {red ERROR:}}`, ...photo.errors);
-					return;
+					return false;
 				}
 
 				const res = await downloadPhoto(photo);

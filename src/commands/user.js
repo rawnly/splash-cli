@@ -22,6 +22,8 @@ export default async function userCommand([cmd]) {
 			break;
 		case 'update':
 		case 'edit':
+			if (!config.has('user') || !config.get('user').token) return printBlock(chalk `Please log in.`);
+			
 			const { profile: user } = config.get('user') || {};
 			
 			const data = await prompt([{
@@ -63,6 +65,7 @@ export default async function userCommand([cmd]) {
 		case 'likes':
 		case 'get-likes':
 		case 'liked':
+			if (!config.has('user') || !config.get('user').token) return printBlock(chalk `Please log in.`);
 			const likes = await User.getLikes();
 
 			printBlock(chalk`{bold {black {bgYellow Last 10 liked photos:}}}`);
@@ -77,7 +80,7 @@ export default async function userCommand([cmd]) {
 
 			break;
 		case 'get':
-			if ( !config.has('user') ) return printBlock(chalk`Please log in.`);
+			if ( !config.has('user') || !config.get('user').token ) return printBlock(chalk`Please log in.`);
 
 			printBlock(await User.get());
 

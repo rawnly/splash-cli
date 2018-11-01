@@ -53,8 +53,11 @@ export function tryParse(string) {
 }
 
 export async function authenticatedRequest(endpoint, { options, extraHeaders } = {}) {
+	if (!config.has('user')) return printBlock(chalk`Please log in.`);
+
 	const token = config.get('user').token;
 	const { body } = await got(`https://api.unsplash.com/${endpoint}`, Object.assign({}, options, { headers: Object.assign({}, extraHeaders, { 'Authorization': `Bearer ${token}` }) }));
+	
 	return tryParse(body);
 }
 
@@ -239,7 +242,7 @@ export async function download(photo, url, flags, setAsWP = true) {
 			if ( flags.screen || flags.scale ) {
 				if (process.platform !== 'darwin') {
 					console.log();
-					console.log(chalk`{dim > Sorry, this function ({underline ${flags.screen ? '"screen"' : '"scale"'}}) is available {bold only on MacOS}}`);
+					logger.warn(chalk`{dim > Sorry, this function ({underline ${flags.screen ? '"screen"' : '"scale"'}}) is available {bold only on MacOS}}`);
 					console.log();
 				}
 			}
@@ -286,6 +289,10 @@ export async function download(photo, url, flags, setAsWP = true) {
 
 		console.log();
 
+		if (!config.has('user')) {
+			return logger.info(chalk`{dim Login to like this photo.}`);
+		}
+
 		const promptLike = config.get('askForLike');
 		const promptCollection = config.get('askForCollection');
     
@@ -310,7 +317,6 @@ export async function download(photo, url, flags, setAsWP = true) {
 			} catch (error) {
 				errorHandler(error);
 			}
-
 		}
 	});
 }

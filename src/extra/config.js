@@ -37,12 +37,7 @@ if ( config.has('user') && config.get('user').token ) {
 	});
 }
 
-export const unsplash = new Unsplash({
-	applicationId: config.get('keys').client_id,
-	secret: config.get('keys').client_secret,
-	callbackUrl: config.get('keys').redirect_uri,
-	bearerToken: config.get('keys').bearerToken
-});
+export const unsplash = new Unsplash(config.get('keys'));
 
 
 export const commandsList = {};
