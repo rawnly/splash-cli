@@ -3,15 +3,16 @@ import chalk from 'chalk';
 
 import pkg from '../../package.json';
 
-export default chalk`{bold Usage} (v${pkg.version})
+export default chalk`{bold Usage} [{dim v${pkg.version}}]
 	${isMonth('december') ? chalk`{yellow Merry Christmas!}\n` : ''}
 	$ {green splash} {dim [command] [flags]}
 
 {bold {cyan Commands}}
 	{cyan settings {dim <get|set|restore>}}	{dim GET/SET/RESTORE SETTINGS}
 	{cyan alias {dim <get|set|remove>}}			{dim GET/SET COLLECTION ALIASES}
-	{cyan user {dim <login|logout|get>}} {dim MANAGE USER LOGIN/LOGOUT - GET USER INFOS}
-		{dim {bold use "user help" for more arguments infos}}
+	{cyan dir {dim <clean|get|count>}}		{dim MANAGE THE DOWNLOAD DIRECTORY}
+	{cyan user {dim <login|logout|get|...>}} {dim MANAGE USER LOGIN/LOGOUT - GET USER INFOS}
+		{dim {bold use {cyan \`user help\`} for more options}}
 
 {bold {yellow Options}}
 	{yellow -h --help}			{dim THIS MESSAGE}
@@ -28,13 +29,14 @@ export default chalk`{bold Usage} (v${pkg.version})
 
 
 {bold {red Source Filters}}
-	{red -u --user {dim <username>}}		{dim RANDOM PHOTO FROM PROVIDED USER}
-	{red --collection {dim <id|alias>}}		{dim RANDOM PHOTO FROM PROVIDED COLLECTION}
 	{red -c --curated}			{dim RANDOM CURATED PHOTO}
-	{red --id {dim <id|url>}}			{dim PHOTO BY ID}
+	{red -u --user {dim <username>}}		{dim RANDOM PHOTO FROM PROVIDED USER}
+
 	{red --day}				{dim GET THE PHOTO OF THE DAY}
+	{red --id {dim <id|url>}}			{dim PHOTO BY ID}
+	{red --collection {dim <id|alias>}}		{dim RANDOM PHOTO FROM PROVIDED COLLECTION}
 	
-{bold {red Search Filters}}
-	{red -f --featured}			{dim LIMIT TO ONLY FEATURED PHOTOS}
-	{red --query {dim <query>}}			{dim RANDOM FROM QUERY}
+{bold {magenta Search Filters}}
+	{magenta -f --featured}			{dim LIMIT TO ONLY FEATURED PHOTOS}
+	{magenta --query {dim <query>}}			{dim RANDOM FROM QUERY}
 `;

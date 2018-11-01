@@ -161,6 +161,9 @@ export default async function (input, flags) {
 		case 'user':
 			commands.user(subCommands);
 			break;
+		case 'dir':
+			commands.dir(subCommands);
+			break;
 		default:
 			printBlock(
 				chalk `{bold {red Error}}: "{yellow ${command}}" is not a {dim splash} command.`,
