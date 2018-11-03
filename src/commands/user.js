@@ -1,9 +1,10 @@
-import printBlock from '@splash-cli/print-block';
-import chalk from 'chalk';
 import { prompt } from 'inquirer';
-import { config, unsplash } from '../extra/config';
-import User from './utils/User';
-import { authenticatedRequest, updateMe, errorHandler, warnIfNotLogged } from '../extra/utils';
+import chalk from 'chalk';
+
+import { errorHandler, warnIfNotLogged, printBlock } from '../extra/utils';
+import { config } from '../extra/config';
+import User from './libs/User';
+
 
 export default async function userCommand([cmd]) {
 	try {
@@ -85,7 +86,7 @@ export default async function userCommand([cmd]) {
 		case 'help':
 		case 'how':
 		case 'h':
-			printBlock(chalk `
+			printBlock('ALIASES HELP', '', chalk `
 				{bold {black {bgWhite COMMANDS}}}   	{bold {black {bgYellow ALIASES}}} 		{bold {black {bgWhite DESCRIPTION}}}
 
 				{cyan {bold login}}		{dim none}			  {dim LOGIN WITH UNSPLASH}
