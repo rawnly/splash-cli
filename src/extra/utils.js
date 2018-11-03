@@ -22,6 +22,7 @@ import wallpaper from 'wallpaper';
 import normalize from 'normalize-url';
 
 import { config, unsplash, defaultSettings } from './config';
+import User from '../commands/utils/User';
 
 export async function authenticate({ client_id, client_secret, code, redirect_uri } = {}) {
 	const url = new URL('https://unsplash.com');
@@ -52,32 +53,42 @@ export function tryParse(string) {
 	}
 }
 
-export async function authenticatedRequest(endpoint, { options, extraHeaders } = {}) {
-	if (!config.has('user')) return printBlock(chalk`Please log in.`);
+export async function authenticatedRequest(endpoint, options = {}) {
+	warnIfNotLogged();
 
-	const token = config.get('user').token;
-	const { body } = await got(`https://api.unsplash.com/${endpoint}`, Object.assign({}, options, { headers: Object.assign({}, extraHeaders, { 'Authorization': `Bearer ${token}` }) }));
-	
+	const { token } = config.get('user');
+	const httpOptions = Object.assign({}, options, {
+		headers: Object.assign({}, options.headers, {
+			'Authorization': `Bearer ${token}`
+		})
+	});
+
+	const { body } = await got(`https://api.unsplash.com/${endpoint}`, httpOptions);
+
 	return tryParse(body);
 }
 
 export function checkUserAuth() {
 	const { token, profile: user } = config.get('user');
 
-	if ( !token ) return false;
+	if (!token) return false;
 
 	if (!user) {
-		got('https://api.unsplash.com/me', {
-			headers: {
-				'Authorization': 'Bearer ' + token
-			}
-		})
+		authenticatedRequest('me')
 			.then(({ body }) => JSON.parse(body))
-			.then(u => config.set('user', Object.assign({ profile: u }, config.get('user'))))
+			.then(usr => config.set('user', Object.assign({ profile: usr }, config.get('user'))))
 			.catch(errorHandler);
 	}
 
 	unsplash.auth.setBearerToken(config.get('user').token);
+	return true;
+}
+
+export function warnIfNotLogged() {
+	if (!config.has('user') || !config.get('user').token) {
+		return printBlock(chalk `Please log in.`);
+	}
+
 	return true;
 }
 
@@ -131,7 +142,7 @@ export function errorHandler(error) {
 
 export function repeatChar(char, length) {
 	var string = '';
-  
+
 	for (let i = 0; i < length; i++) {
 		string += char;
 	}
@@ -140,46 +151,28 @@ export function repeatChar(char, length) {
 }
 
 export async function picOfTheDay() {
-	const date = new Date();
-	const today = `${date.getDay()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+	const date = new Date().getTime();
 
-	if (
-		config.has('pic-of-the-day') &&
-    config.get('pic-of-the-day').date == today
-	) {
+	// If the elapsed time is less than 1 hour
+	if (config.has('pic-of-the-day') && (config.get('pic-of-the-day').date.lastUpdate - date) < (config.get('pic-of-the-day').date.delay)) {
 		return config.get('pic-of-the-day').photo;
 	}
 
 	try {
-		const {
-			body: html
-		} = await got('https://unsplash.com');
+		const { body: html } = await got('https://unsplash.com');
+		const { window: { document } } = new JSDOM(html);
 
-		const {
-			window: {
-				document
-			}
-		} = new JSDOM(html);
-		const links = document.querySelectorAll('a');
-		const photoOfTheDay = Object.keys(links)
-			.map(key => {
-				return links[key];
-			})
-			.filter(el => {
-				const regex = new RegExp('Photo of the Day', 'i');
-				return regex.test(el.innerHTML);
-			})
-			.map(link => link.href)
-			.shift()
-			.match(/[a-zA-Z0-9_-]{11}/g)[0];
+		const id = Array.from(document.querySelectorAll('a')).find(el => /Photo of the day/i.test(el.innerHTML)).href.match(/[a-zA-Z0-9_-]{11}/g)[0];
 
 		config.set('pic-of-the-day', {
-			date: today,
-			photo: photoOfTheDay
+			photo: id,
+			date: {
+				lastUpdate: new Date().getTime(),
+				delay: 1000 * 60 * 30
+			}
 		});
 
-		// RETURNS THE ID OF THE PHOTO
-		return photoOfTheDay;
+		return id;
 	} catch (error) {
 		errorHandler(error);
 	}
@@ -191,7 +184,7 @@ export function isPath(string) {
 
 export async function download(photo, url, flags, setAsWP = true) {
 	let dir = config.get('directory');
-  
+
 	if (flags.quiet) {
 		console.log = console.info = () => {};
 		spinner.start = spinner.fail = () => {};
@@ -232,23 +225,23 @@ export async function download(photo, url, flags, setAsWP = true) {
 	}
 
 	const remotePhoto = new RemoteFile(url, filename);
-  
+
 	remotePhoto.download().then(async fileInfo => {
 		config.set('counter', config.get('counter') + 1);
 
 		if (!flags.quiet) spinner.succeed();
 		if (setAsWP && !flags.save) {
 
-			if ( flags.screen || flags.scale ) {
+			if (flags.screen || flags.scale) {
 				if (process.platform !== 'darwin') {
 					console.log();
-					logger.warn(chalk`{dim > Sorry, this function ({underline ${flags.screen ? '"screen"' : '"scale"'}}) is available {bold only on MacOS}}`);
+					logger.warn(chalk `{dim > Sorry, this function ({underline ${flags.screen ? '"screen"' : '"scale"'}}) is available {bold only on MacOS}}`);
 					console.log();
 				}
 			}
 
 			let screen;
-			if ( flags.screen ) {
+			if (flags.screen) {
 				if (!/[0-9|main|all]+/g.test(flags.screen)) {
 					screen = false;
 				} else {
@@ -257,7 +250,7 @@ export async function download(photo, url, flags, setAsWP = true) {
 			}
 
 			let scale;
-			if ( flags.scale ) {
+			if (flags.scale) {
 				if (!/[auto|fill|fit|stretch|center]/g.test(flags.scale)) {
 					scale = false;
 				} else {
@@ -266,11 +259,11 @@ export async function download(photo, url, flags, setAsWP = true) {
 			}
 
 
-			if ( scale ) {
+			if (scale) {
 				await wallpaper.set(filename, { scale });
-			} else if ( screen ) {
+			} else if (screen) {
 				await wallpaper.set(filename, { screen });
-			} else if ( scale && screen ) {
+			} else if (scale && screen) {
 				await wallpaper.set(filename, { screen, scale });
 			} else {
 				await wallpaper.set(filename);
@@ -290,27 +283,32 @@ export async function download(photo, url, flags, setAsWP = true) {
 		console.log();
 
 		if (!config.has('user')) {
-			return logger.info(chalk`{dim Login to like this photo.}`);
+			return logger.info(chalk `{dim Login to like this photo.}`);
+		} else if (photo.liked_by_user) {
+			return logger.info(chalk `{dim Photo liked by user.}`);
 		}
 
 		const promptLike = config.get('askForLike');
 		const promptCollection = config.get('askForCollection');
-    
+
 		const { liked } = await prompt([{
 			name: 'liked',
 			message: 'Do you like this photo?',
 			type: 'confirm',
 			default: true,
 			when: () => promptLike && photo.liked_by_user == false
+		}, {
+			name: 'addToCollection',
+			message: 'Do you want add this photo to a collection?',
+			default: false,
+			when: () => promptCollection
 		}]);
 
 		if (liked === true) {
 			const id = photo._id || photo.id;
 
 			try {
-				await authenticatedRequest(`photos/${id}/like`, {
-					method: 'POST'
-				});
+				await User.likePhoto(id);
 
 				console.log();
 				console.log('Photo liked.');
@@ -330,13 +328,11 @@ export const logger = {
 export function highlightJSON(data) {
 	let jsonString = JSON.stringify(data, null, 2);
 
-	jsonString = jsonString.replace(/[\{|\}|\,|\:|\[|\]]+/g, chalk`{dim $&}`);
-	jsonString = jsonString.replace(/\".*?\"/g, chalk`{yellow $&}`);
-	jsonString = jsonString.replace(/(\s+)(\d+)/g, chalk`$1{cyan $2}`);
-	jsonString = jsonString.replace(/null|undefined/gi, chalk`{dim $&}`);
-	jsonString = jsonString.replace(/true|false/gi, chalk`{magenta $&}`);
+	jsonString = jsonString.replace(/[\{|\}|\,|\:|\[|\]]+/g, chalk `{dim $&}`);
+	jsonString = jsonString.replace(/\".*?\"/g, chalk `{yellow $&}`);
+	jsonString = jsonString.replace(/(\s+)(\d+)/g, chalk `$1{cyan $2}`);
+	jsonString = jsonString.replace(/null|undefined/gi, chalk `{dim $&}`);
+	jsonString = jsonString.replace(/true|false/gi, chalk `{magenta $&}`);
 
 	return jsonString;
 }
-
-

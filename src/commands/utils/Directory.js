@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import { promisify } from 'util';
+import { promisify } from 'util';
 
 import chalk from 'chalk';
 import Ora from 'ora';
 import fixPath from '@splash-cli/path-fixer';
-import { config } from '../../extra/config';
+import { config } from '../../extra/config';
 import { errorHandler } from '../../extra/utils';
 
 const ls = promisify(fs.readdir);
@@ -20,22 +20,22 @@ export default class Directory {
 		try {
 			const files = await ls(dir);
 
-			spinner.info(chalk`Found {cyxan ${files.length}} photos.`);
+			spinner.info(chalk `Found {cyxan ${files.length}} photos.`);
 			console.log();
-			
 
 
-			spinner.start(chalk`Removing {cyan ${files.length}} items..`);
 
-			for (var i=0; i<files.length; i++) {
+			spinner.start(chalk `Removing {cyan ${files.length}} items..`);
+
+			for (var i = 0; i < files.length; i++) {
 				const file = files[i];
-				spinner.text = chalk`Removing {yellow "${file}"}`;
+				spinner.text = chalk `Removing {yellow "${file}"}`;
 				if (fs.existsSync(path.join(dir, file))) rm(path.join(dir, file));
 			}
 
-			spinner.succeed(chalk`{cyan ${files.length}} files {red {bold deleted}}.`);
+			spinner.succeed(chalk `{cyan ${files.length}} files {red {bold deleted}}.`);
 			console.log();
-			
+
 		} catch (error) {
 			spinner.stop();
 			return errorHandler(error);

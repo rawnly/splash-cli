@@ -31,8 +31,7 @@ const {
 		getPhoto,
 		listCuratedPhotos,
 		downloadPhoto
-	},
-	currentUser: user
+	}
 } = unsplash;
 
 const spinner = new Ora({
@@ -65,33 +64,27 @@ export default async function (input, flags) {
 		});
 	}
 
-	updateNotifier({
-		pkg: manifest,
-		updateCheckInterval: 1000 * 30
-	}).notify();
+	updateNotifier({ pkg: manifest, updateCheckInterval: 1000 * 30 }).notify();
 
 	if (frun()) {
 		await clearSettings();
+		await picOfTheDay();
 
 		printBlock(
-			chalk `Welcome to ${manifest.name}@${manifest.version} {bold @${
-				userInfo().username
-			}}`,
+			chalk `Welcome to ${manifest.name}@${manifest.version} {bold @${userInfo().username}}`,
 			chalk `{dim Application setup {green completed}!}`,
 			chalk `{bold Enjoy "{yellow ${manifest.name}}" running {green splash}}`
 		);
 
-		console.log();
-
-		return;
+		process.exit();
+	} else if (!config.has('pic-of-the-day') || !config.get('pic-of-the-day').date.delay) {
+		await picOfTheDay();
 	}
 
 
 	if (!command) {
 		console.clear();
-
-		if (!flags.me && !flags.updateMe)
-			spinner.start('Connecting to Unsplash');
+		if (!flags.me && !flags.updateMe) spinner.start('Connecting to Unsplash');
 
 		try {
 			let photo = false;
@@ -132,15 +125,13 @@ export default async function (input, flags) {
 				}
 
 				if (photo.errors) {
-					printBlock(chalk `{bold {red ERROR:}}`, ...photo.errors);
-					return false;
+					return printBlock(chalk `{bold {red ERROR:}}`, ...photo.errors);
 				}
 
 				const res = await downloadPhoto(photo);
-				const {
-					url
-				} = await res.json();
-				const downloaded = await download(photo, url, flags, true);
+				const { url } = await res.json();
+
+				await download(photo, url, flags, true);
 			} else {
 				spinner.fail('Unable to connect.');
 			}

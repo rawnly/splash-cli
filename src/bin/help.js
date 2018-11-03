@@ -3,7 +3,7 @@ import chalk from 'chalk';
 
 import pkg from '../../package.json';
 
-export default chalk`{bold Usage} [{dim v${pkg.version}}]
+export default chalk `{bold Usage} [{dim v${pkg.version}}]
 	${isMonth('december') ? chalk`{yellow Merry Christmas!}\n` : ''}
 	$ {green splash} {dim [command] [flags]}
 

@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { prompt } from 'inquirer';
 import { config, unsplash } from '../extra/config';
 import User from './utils/User';
-import { authenticatedRequest, updateMe, errorHandler } from '../extra/utils';
+import { authenticatedRequest, updateMe, errorHandler, warnIfNotLogged } from '../extra/utils';
 
 export default async function userCommand([cmd]) {
 	try {
@@ -15,17 +15,16 @@ export default async function userCommand([cmd]) {
 			break;
 		case 'logout':
 			const success = User.auth.logout();
-
 			if (!success) return console.log(chalk `{bold {red Aborted}}`);
 
-			printBlock(chalk`User data {bold deleted} successfully.`);
+			printBlock(chalk `User data {bold deleted} successfully.`);
 			break;
 		case 'update':
 		case 'edit':
-			if (!config.has('user') || !config.get('user').token) return printBlock(chalk `Please log in.`);
-			
+			warnIfNotLogged();
+
 			const { profile: user } = config.get('user') || {};
-			
+
 			const data = await prompt([{
 				name: 'username',
 				message: 'Username',
@@ -58,37 +57,35 @@ export default async function userCommand([cmd]) {
 
 			const newUser = await User.update(data);
 
-			if ( newUser.error || newUser.errors ) return printBlock(newUser.error || newUser.errors);
+			if (newUser.error || newUser.errors) return printBlock(newUser.error || newUser.errors);
 
-			userCommand([ 'get' ]);
+			userCommand(['get']);
 			break;
 		case 'likes':
 		case 'get-likes':
 		case 'liked':
-			if (!config.has('user') || !config.get('user').token) return printBlock(chalk `Please log in.`);
+			warnIfNotLogged();
 			const likes = await User.getLikes();
 
-			printBlock(chalk`{bold {black {bgYellow Last 10 liked photos:}}}`);
+			printBlock(chalk `{bold {black {bgYellow Last 10 liked photos:}}}`);
 
 			likes.forEach(photo => {
-				console.log(chalk`{bold {yellow ID:}} ${photo.id}`);
-				console.log(chalk`{bold {yellow Author:}} {cyan @${photo.user.username}}`);
-				console.log(chalk`{bold {yellow Link:}} {underline ${photo.html}}`);
-				console.log(chalk`{dim -}`.repeat(10));
+				console.log(chalk `{bold {yellow ID:}} ${photo.id}`);
+				console.log(chalk `{bold {yellow Author:}} {cyan @${photo.user.username}}`);
+				console.log(chalk `{bold {yellow Link:}} {underline ${photo.html}}`);
+				console.log(chalk `{dim -}`.repeat(10));
 				console.log();
 			});
 
 			break;
 		case 'get':
-			if ( !config.has('user') || !config.get('user').token ) return printBlock(chalk`Please log in.`);
-
+			warnIfNotLogged();
 			printBlock(await User.get());
-
 			break;
 		case 'help':
 		case 'how':
 		case 'h':
-			printBlock(chalk`
+			printBlock(chalk `
 				{bold {black {bgWhite COMMANDS}}}   	{bold {black {bgYellow ALIASES}}} 		{bold {black {bgWhite DESCRIPTION}}}
 
 				{cyan {bold login}}		{dim none}			  {dim LOGIN WITH UNSPLASH}
@@ -100,10 +97,14 @@ export default async function userCommand([cmd]) {
 			`.split('\n').map(item => `  ${item.trim()}`).join('\n'));
 			break;
 		default:
+			if (!cmd) {
+				return userCommand(['help']);
+			}
+
 			printBlock(
-				chalk`{yellow Sorry!} Option: {yellow "${cmd}"} currently {underline {red not available}}.`, 
-				'', 
-				chalk`Type "{yellow user {bold help}}" for more infos`
+				chalk `{yellow Sorry!} Option: {yellow "${cmd}"} currently {underline {red not available}}.`,
+				'',
+				chalk `Type "{yellow user {bold help}}" for more infos`
 			);
 			break;
 		}

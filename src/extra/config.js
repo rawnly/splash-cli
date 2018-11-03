@@ -7,14 +7,24 @@ import Conf from 'conf';
 
 export const defaultSettings = {
 	directory: pathFixer('~/Pictures/splash_photos'),
-	aliases: [{ name: 'editorial', id: 317099 }],
+	aliases: [
+		{ name: 'editorial', id: 317099 },
+		{ name: 'wallpapers', id: 1065976 },
+		{ name: 'textures', id: 3330445 }
+	],
 	userFolder: false,
 	counter: 0,
 	askForLike: true,
-	askForCollection: false
+	askForCollection: false,
+	picOfTheDay: {
+		date: {
+			lastUpdate: new Date('18 June 1999'),
+			delay: 1000 * 60 * 30
+		}
+	}
 };
 
-export const config = new Conf({ defaults: defaultSettings });
+export const config = new Conf({ defaults: defaultSettings });
 
 export const keys = {
 	client_id: 'a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c',
@@ -22,7 +32,7 @@ export const keys = {
 	redirect_uri: 'http://localhost:5835/'
 };
 
-if ( config.has('user') && config.get('user').token ) {
+if (config.has('user') && config.get('user').token) {
 	config.set('keys', {
 		applicationId: keys.client_id,
 		secret: keys.client_secret,

@@ -11,7 +11,7 @@ import { prompt } from 'inquirer';
 import got from 'got';
 
 import { config, unsplash } from '../../extra/config';
-import { authenticatedRequest, errorHandler, authenticate, tryParse } from '../../extra/utils';
+import { authenticatedRequest, errorHandler, authenticate, tryParse } from '../../extra/utils';
 
 export default class User {
 	static user = config.get('user') || {}
@@ -22,10 +22,10 @@ export default class User {
 			try {
 				const user = config.get('user');
 
-				const { body } = await got('https://api.unsplash.com/me', { 
-					headers: { 
+				const { body } = await got('https://api.unsplash.com/me', {
+					headers: {
 						'Authorization': `Bearer ${user.token}`
-					} 
+					}
 				});
 
 				const profile = JSON.parse(body);
@@ -158,7 +158,7 @@ export default class User {
 		logout: async (force = false) => {
 			if (force) {
 				config.delete('user');
-				return true;	
+				return true;
 			}
 
 			const { isSure } = await prompt([{
@@ -192,8 +192,8 @@ export default class User {
 		return user;
 	}
 
-	static parseUser( user ) {
-		return chalk`
+	static parseUser(user) {
+		return chalk `
 			{yellow Name}: ${user.name} {dim (@${user.username})}
 			{yellow Bio}: ${user.bio.trim().split('\n').map(item => item.replace(/^\s|\s$/g, '')).join('\n')}
 			{yellow Location}: ${user.location}
@@ -243,10 +243,12 @@ export default class User {
 	}
 
 	static getCollections() {
-		
+
 	}
 
 	static async likePhoto(id) {
-		return authenticatedRequest(`photos/${id}/like`, { method: 'POST' });
+		return await authenticatedRequest(`photos/${id}/like`, {
+			method: 'POST'
+		});
 	}
 }

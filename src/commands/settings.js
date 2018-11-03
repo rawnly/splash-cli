@@ -109,19 +109,24 @@ export default async function settings([action, target]) {
 		case 'userFolder':
 		case 'groups':
 			questions.push(_userFolder);
+			break;
 		case 'like':
 		case 'askforlike':
 			questions.push(_askForLike);
+			break;
 		case 'collection':
 		case 'askforcollection':
 			questions.push(_askForCollection);
+			break;
 		case 'prompt':
 		case 'prompts':
 			questions.push(_askForCollection, _askForLike);
+			break;
 		case 'update':
 		case 'interval':
 		case 'pic-of-the-day':
 			questions.push(_updateInterval);
+			break;
 		default:
 			questions.push(_userFolder, _directory, _askForCollection, _askForLike, _updateInterval);
 			break;
@@ -138,7 +143,7 @@ export default async function settings([action, target]) {
 		let validSetting = false;
 
 		if (picUpdateInterval !== undefined) {
-			config.set('pic-of-the-day', Object.assign({}, config.get('pic-of-the-day'), { delay: picUpdateInterval }));
+			config.set('pic-of-the-day', Object.assign({}, config.get('pic-of-the-day'), { date: { delay: picUpdateInterval } }));
 			validSetting = true;
 		}
 
