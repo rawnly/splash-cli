@@ -59,8 +59,21 @@ export default async function (input, flags) {
 
 
 	if (flags.quiet) {
-		console.log = console.info = () => {};
-		spinner.start = spinner.fail = () => {};
+		const emptyFunction = () => null;
+
+		console.log = console.info = emptyFunction;
+
+		if (spinner.fail) {
+			spinner.fail = emptyFunction;
+		}
+
+		if (spinner.start) {
+			spinner.start = emptyFunction;
+		}
+
+		if (spinner.succeed) {
+			spinner.succeed = emptyFunction;
+		}
 	}
 
 	if (!config.get('directory') || !config.has('directory')) {

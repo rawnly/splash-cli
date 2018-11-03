@@ -185,11 +185,6 @@ export function isPath(string) {
 export async function download(photo, url, flags, setAsWP = true) {
 	let dir = config.get('directory');
 
-	if (flags.quiet) {
-		console.log = console.info = () => {};
-		spinner.start = spinner.fail = () => {};
-	}
-
 	if (config.get('userFolder') === true) {
 		dir = path.join(config.get('directory'), `@${photo.user.username}`);
 	}
@@ -209,6 +204,11 @@ export async function download(photo, url, flags, setAsWP = true) {
 		color: 'yellow',
 		spinner: isMonth('december') ? 'christmas' : 'earth'
 	});
+
+	if (flags.quiet) {
+		console.log = console.info = () => {};
+		spinner.start = spinner.fail = () => {};
+	}
 
 	spinner.start();
 
@@ -300,12 +300,12 @@ export async function download(photo, url, flags, setAsWP = true) {
 			message: 'Do you like this photo?',
 			type: 'confirm',
 			default: true,
-			when: () => promptLike && photo.liked_by_user == false
+			when: () => promptLike && photo.liked_by_user == false && !flags.quiet
 		}, {
 			name: 'addToCollection',
 			message: 'Do you want add this photo to a collection?',
 			default: false,
-			when: () => promptCollection
+			when: () => promptCollection && !flags.quiet
 		}]);
 
 		if (liked === true) {
