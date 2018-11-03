@@ -1,13 +1,14 @@
 require('babel-polyfill');
 require('regenerator-runtime');
 
-import printBlock from '@splash-cli/print-block';
 import chalk from 'chalk';
 import figures from 'figures';
-import { config } from '../extra/config';
-import Alias from './utils/Alias';
 
-export default function alias([action, alias, aliasID = false]) {
+import { printBlock } from '../extra/utils';
+import { config } from '../extra/config';
+import Alias from './libs/Alias';
+
+export default function aliasCMD([action, alias, aliasID = false]) {
 	const aliases = config.get('aliases') || [];
 
 	switch (action) {
@@ -46,6 +47,14 @@ export default function alias([action, alias, aliasID = false]) {
 
 		break;
 	case 'get':
+		if (!alias || alias === 'all') {
+			return printBlock(
+				chalk `{cyan Aliases: (${aliases.length})}`,
+				'',
+				...aliases.map(item => chalk `{dim ${figures.pointer}} {yellow ${item.name}}: ${item.id}`)
+			);
+		}
+
 		alias = Alias.get(alias);
 
 		if (!alias) return printBlock(
@@ -59,9 +68,22 @@ export default function alias([action, alias, aliasID = false]) {
 
 		printBlock(chalk `{bold {yellow "${alias.name}"}}: ${alias.id}`);
 		break;
+	case 'help':
+	case 'how':
+	case 'h':
+		printBlock('ALIASES HELP', '', chalk `
+				{bold {black {bgWhite COMMANDS}}}   			{bold {black {bgYellow ALIASES}}} 		{bold {black {bgWhite DESCRIPTION}}}
+
+				{cyan {bold get [alias]}}			{dim none}			  {dim GET AN ALIAS OR ALL ALIASES}
+				{cyan {bold set <alias> <id>}}		{dim none}			  {dim SET AN ALIAS}
+				{cyan {bold help}} 				{yellow "how"}			  {dim SHOWS THIS MESSAGE}
+			`.split('\n').map(item => `  ${item.trim()}`).join('\n'));
+		break;
 	default:
+		if (!action) return aliasCMD(['help']);
+
 		printBlock(
-			chalk `Invalid action "{red ${action}}"`,
+			chalk `Invalid command "{red ${action}}"`,
 			'Allowed actions are:',
 			' - set',
 			' - get'
