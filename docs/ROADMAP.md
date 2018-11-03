@@ -12,7 +12,7 @@ This file is a roadmap for who wants improve this repo.
 - [x] ~Let user like a photo~
 - [ ] Let user create new collections
 - [ ] Let user add a photo to an existing collection
-- [ ] Let user clear the download destination folder (default: `~/Pictures/splash_photos`)
+- [x] Let user clear the download destination folder (default: `~/Pictures/splash_photos`)
 
 <br />
 
