@@ -4,9 +4,8 @@ import { promisify } from 'util';
 
 import chalk from 'chalk';
 import Ora from 'ora';
-import fixPath from '@splash-cli/path-fixer';
 import { config } from '../../extra/config';
-import { errorHandler } from '../../extra/utils';
+import { errorHandler, pathFixer } from '../../extra/utils';
 
 const ls = promisify(fs.readdir);
 const rm = promisify(fs.unlink);
