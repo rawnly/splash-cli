@@ -231,7 +231,6 @@ export async function download(photo, url, flags, setAsWP = true) {
 
 		if (!flags.quiet) spinner.succeed();
 		if (setAsWP && !flags.save) {
-
 			if (flags.screen || flags.scale) {
 				if (process.platform !== 'darwin') {
 					console.log();
@@ -273,7 +272,6 @@ export async function download(photo, url, flags, setAsWP = true) {
 			console.log();
 			printBlock(chalk `Picture stored at: {underline ${path.join(fileInfo.dir, fileInfo.base)}}`);
 			console.log();
-			return;
 		}
 
 		console.log();
@@ -283,10 +281,16 @@ export async function download(photo, url, flags, setAsWP = true) {
 		console.log();
 
 		if (!config.has('user')) {
-			return logger.info(chalk `{dim Login to like this photo.}`);
+			logger.info(chalk `{dim Login to like this photo.}`);
+			console.log();
+			return;
 		} else if (photo.liked_by_user) {
-			return logger.info(chalk `{dim Photo liked by user.}`);
+			logger.info(chalk `{dim Photo liked by user.}`);
+			console.log();
+			return;
 		}
+
+		if (flags.save) return;
 
 		const promptLike = config.get('askForLike');
 		const promptCollection = config.get('askForCollection');
