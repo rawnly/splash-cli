@@ -3,8 +3,8 @@
 	"version": "3.1.1",
 	"main": "build/client.js",
 	"scripts": {
-		"build": "npm run test && babel src -d build && npm run copyHTML",
-		"copyHTML": "cp -rf src/pages build/pages",
+		"build": "rm -rf build && npm run test && babel src -d build && npm run copyHTML",
+		"copyHTML": "rm -rf build/pages && cp -rf src/pages build",
 		"start": "npm run build && node build/bin/index.js",
 		"fix": "eslint src/**/*.js --color --fix",
 		"test": "eslint src/**/*.js --color"
