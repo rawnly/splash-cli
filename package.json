@@ -1,6 +1,6 @@
 {
 	"name": "splash-cli",
-	"version": "3.1.1",
+	"version": "3.2.0",
 	"main": "build/client.js",
 	"scripts": {
 		"build": "rm -rf build && npm run test && babel src -d build && npm run copyHTML",
