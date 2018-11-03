@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 
-import pathFixer from '@splash-cli/path-fixer';
+import { pathFixer } from '../extra/utils';
 import Unsplash from 'unsplash-js';
 import Conf from 'conf';
 

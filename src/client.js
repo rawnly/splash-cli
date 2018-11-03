@@ -2,8 +2,6 @@ require('babel-polyfill');
 
 import isMonth from '@splash-cli/is-month';
 import parseID from '@splash-cli/parse-unsplash-id';
-import pathFixer from '@splash-cli/path-fixer';
-import printBlock from '@splash-cli/print-block';
 import chalk from 'chalk';
 import Conf from 'conf';
 import frun from 'first-run';
@@ -19,7 +17,15 @@ import manifest from '../package.json';
 import commands from './commands/index';
 
 import { defaultSettings, unsplash } from './extra/config';
-import { clearSettings, download, errorHandler, parseCollection, picOfTheDay, updateMe } from './extra/utils';
+import {
+	clearSettings,
+	download,
+	errorHandler,
+	parseCollection,
+	picOfTheDay,
+	printBlock,
+	pathFixer
+} from './extra/utils';
 
 const config = new Conf({
 	defaults: defaultSettings

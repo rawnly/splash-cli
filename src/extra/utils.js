@@ -3,10 +3,11 @@ require('regenerator-runtime');
 
 import fetch from 'isomorphic-fetch';
 
+import path from 'path';
+import os from 'os';
+
 import { prompt } from 'inquirer';
 import isMonth from '@splash-cli/is-month';
-import pathFixer from '@splash-cli/path-fixer';
-import printBlock from '@splash-cli/print-block';
 import showCopy from '@splash-cli/show-copy';
 import chalk from 'chalk';
 import figures from 'figures';
@@ -15,14 +16,13 @@ import isImage from 'is-image';
 import { JSDOM } from 'jsdom';
 import mkdirp from 'mkdirp';
 import Ora from 'ora';
-import path from 'path';
 import RemoteFile from 'simple-download';
 import terminalLink from 'terminal-link';
 import wallpaper from 'wallpaper';
 import normalize from 'normalize-url';
 
 import { config, unsplash, defaultSettings } from './config';
-import User from '../commands/utils/User';
+import User from '../commands/libs/User';
 
 export async function authenticate({ client_id, client_secret, code, redirect_uri } = {}) {
 	const url = new URL('https://unsplash.com');
@@ -335,4 +335,34 @@ export function highlightJSON(data) {
 	jsonString = jsonString.replace(/true|false/gi, chalk `{magenta $&}`);
 
 	return jsonString;
+}
+
+export function printBlock() {
+	for (var _len = arguments.length, lines = Array(_len), _key = 0; _key < _len; _key++) {
+		lines[_key] = arguments[_key];
+	}
+
+	console.clear();
+	console.log();
+
+	if (lines.length > 1) {
+		for (var i = 0; i < lines.length; i++) {
+			var line = lines[i];
+			console.log(line);
+		}
+	} else {
+		console.log(lines[0]);
+	}
+
+	console.log();
+}
+
+export function pathFixer(path) {
+	var tester = /^~.*?/g;
+
+	if (tester.test(path)) {
+		path = path.replace(tester, (0, os.homedir)());
+	}
+
+	return path;
 }

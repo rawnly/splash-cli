@@ -1,14 +1,12 @@
 require('babel-polyfill');
 require('regenerator-runtime');
 
-import pathFixer from '@splash-cli/path-fixer';
-import printBlock from '@splash-cli/print-block';
 import chalk from 'chalk';
 import ms from 'ms';
 
 import { prompt as ask } from 'inquirer';
 import { config } from '../extra/config';
-import { clearSettings, errorHandler, highlightJSON } from '../extra/utils';
+import { clearSettings, errorHandler, highlightJSON, printBlock, pathFixer } from '../extra/utils';
 
 
 export default async function settings([action, target]) {
