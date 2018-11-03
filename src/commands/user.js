@@ -19,6 +19,7 @@ export default async function userCommand([cmd]) {
 			if (!success) return console.log(chalk `{bold {red Aborted}}`);
 
 			printBlock(chalk `User data {bold deleted} successfully.`);
+			process.exit();
 			break;
 		case 'update':
 		case 'edit':

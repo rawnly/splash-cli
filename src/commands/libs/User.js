@@ -51,10 +51,8 @@ export default class User {
 			http.createServer(async (req, res) => {
 				const render = filename => {
 					try {
-						const html = fs.readFileSync(path.join(__dirname, '..', '..', '..', 'pages', filename + '.html'));
-						res.writeHead(200, {
-							'Content-Type': 'text/html'
-						});
+						const html = fs.readFileSync(path.join(__dirname, '..', '..', 'pages', filename + '.html'));
+						res.writeHead(200, { 'Content-Type': 'text/html' });
 						res.write(html);
 						res.end();
 					} catch (error) {
