@@ -11,6 +11,9 @@ import mkdirp from 'mkdirp';
 import Ora from 'ora';
 import { userInfo } from 'os';
 import updateNotifier from 'update-notifier';
+import wallpaper from 'wallpaper';
+import isImage from 'is-image';
+
 import fetch from 'isomorphic-fetch';
 
 import manifest from '../package.json';
@@ -90,7 +93,24 @@ export default async function (input, flags) {
 
 	if (!command) {
 		console.clear();
-		if (!flags.me && !flags.updateMe) spinner.start('Connecting to Unsplash');
+		if (!flags.me && !flags.updateMe && !flags.set) spinner.start('Connecting to Unsplash');
+
+		if (flags.set) {
+			const filePath = pathFixer(flags.set);
+
+			if (fs.existsSync(filePath) && isImage(filePath)) {
+				let options = {};
+
+				if (flags.scale) options.scale = flags.scale;
+				if (flags.screen) options.screen = flags.screen;
+
+				wallpaper.set(filePath, options);
+
+				return printBlock('Wallpaper updated!');
+			}
+
+			return errorHandler('File not found.');
+		}
 
 		try {
 			let photo = false;
@@ -150,14 +170,17 @@ export default async function (input, flags) {
 
 		switch (command) {
 		case 'settings':
+		case 'config':
 			commands.settings(subCommands);
 			break;
 		case 'alias':
+		case 'aliases':
 			commands.alias(subCommands);
 			break;
 		case 'user':
 			commands.user(subCommands);
 			break;
+		case 'directory':
 		case 'dir':
 			commands.dir(subCommands);
 			break;

@@ -17,6 +17,9 @@ const {
 			type: 'boolean',
 			alias: 'v'
 		},
+		set: {
+			type: 'string'
+		},
 		collection: {
 			type: 'string'
 		},

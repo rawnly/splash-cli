@@ -9,9 +9,9 @@ export default chalk `{bold Usage} [{dim v${pkg.version}}]
 
 {bold {cyan Commands}}
 	{cyan settings {dim <get|set|restore>}}	{dim GET/SET/RESTORE SETTINGS}
-	{cyan alias {dim <get|set|remove>}}			{dim GET/SET COLLECTION ALIASES}
+	{cyan alias {dim <get|set|remove>}}		{dim GET/SET COLLECTION ALIASES}
 	{cyan dir {dim <clean|get|count>}}		{dim MANAGE THE DOWNLOAD DIRECTORY}
-	{cyan user {dim <login|logout|get|...>}} {dim MANAGE USER LOGIN/LOGOUT - GET USER INFOS}
+	{cyan user {dim <login|logout|get|...>}} 	{dim MANAGE USER LOGIN/LOGOUT - GET USER INFOS}
 		{dim {bold use {cyan \`user help\`} for more options}}
 
 {bold {yellow Options}}
@@ -23,6 +23,7 @@ export default chalk `{bold Usage} [{dim v${pkg.version}}]
 	) : ('')}
 
 	{yellow -s --save {dim [optional_path]}} 	{dim DOWNLOAD WITHOUT SETTING AS WALLPAPER}
+	{yellow --set {dim <path>}} 			{dim SET GIVEN PHOTO AS WALLPAPER}
 
 	{yellow -i --info}			{dim SHOW EXIF}
 	{yellow -q --quiet}			{dim NO OUTPUT}
@@ -33,8 +34,8 @@ export default chalk `{bold Usage} [{dim v${pkg.version}}]
 	{red -u --user {dim <username>}}		{dim RANDOM PHOTO FROM PROVIDED USER}
 
 	{red --day}				{dim GET THE PHOTO OF THE DAY}
-	{red --id {dim <id|url>}}			{dim PHOTO BY ID}
-	{red --collection {dim <id|alias>}}		{dim RANDOM PHOTO FROM PROVIDED COLLECTION}
+	{red --id {dim <id or url>}}		{dim PHOTO BY ID}
+	{red --collection {dim <id or alias>}}	{dim RANDOM PHOTO FROM PROVIDED COLLECTION}
 	
 {bold {magenta Search Filters}}
 	{magenta -f --featured}			{dim LIMIT TO ONLY FEATURED PHOTOS}
