@@ -34,39 +34,45 @@ A list of **Frequently Asked Questions** can be found [**here**](https://github.
 > Splash is easy and quick to use, just run `splash` to get started.
 
 ```	
-  $ splash [command] [flags]
+  
+  Get beautiful wallpapers from unsplash.
 
-	Commands
-		settings <get|set|restore>      GET/SET/RESTORE SETTINGS
-		alias <get|set|remove>                  GET/SET COLLECTION ALIASES
-		user <login|logout|get> MANAGE USER LOGIN/LOGOUT - GET USER INFOS
-				use "user help" for more arguments infos
+  Usage [v3.1.1]
+	
+  	$ splash [command] [flags]
 
-	Options
-		-h --help                       THIS MESSAGE
-		-v --version                    v3.0.2
+  Commands
+  	settings <get|set|restore>	GET/SET/RESTORE SETTINGS
+  	alias <get|set|remove>		GET/SET COLLECTION ALIASES
+  	dir <clean|get|count>		MANAGE THE DOWNLOAD DIRECTORY
+  	user <login|logout|get|...> 	MANAGE USER LOGIN/LOGOUT - GET USER INFOS
+  		use `user help` for more options
 
-	------- MACOS ONLY -----------------------
-		--scale <auto|fill|fit|stretch|center>  SET WALLPAPER SCALE
-		--screen <all|main|monitor number>      SET AS WALLPAPER ON SELECTED MONITOR
-	------------------------------------------
+  Options
+  	-h --help			THIS MESSAGE
+  	-v --version			v3.1.1
 
-		-s --save [optional_path]       DOWNLOAD WITHOUT SETTING AS WALLPAPER
+  	--scale <auto|fill|fit|stretch|center>  SET WALLPAPER SCALE
+  	--screen <all|main|monitor number>	SET AS WALLPAPER ON SELECTED MONITOR
 
-		-i --info                       SHOW EXIF
-		-q --quiet                      NO OUTPUT
+  	-s --save [optional_path] 	DOWNLOAD WITHOUT SETTING AS WALLPAPER
+  	--set <path> 			SET GIVEN PHOTO AS WALLPAPER
+
+  	-i --info			SHOW EXIF
+  	-q --quiet			NO OUTPUT
 
 
-	Source Filters
-		-u --user <username>            RANDOM PHOTO FROM PROVIDED USER
-		--collection <id|alias>         RANDOM PHOTO FROM PROVIDED COLLECTION
-		-c --curated                    RANDOM CURATED PHOTO
-		--id <id|url>                   PHOTO BY ID
-		--day                           GET THE PHOTO OF THE DAY
+  Source Filters
+  	-c --curated			RANDOM CURATED PHOTO
+  	-u --user <username>		RANDOM PHOTO FROM PROVIDED USER
 
-	Search Filters
-		-f --featured                   LIMIT TO ONLY FEATURED PHOTOS
-		--query <query>                 RANDOM FROM QUERY
+  	--day				GET THE PHOTO OF THE DAY
+  	--id <id or url>		PHOTO BY ID
+  	--collection <id or alias>	RANDOM PHOTO FROM PROVIDED COLLECTION
+	
+  Search Filters
+  	-f --featured			LIMIT TO ONLY FEATURED PHOTOS
+  	--query <query>			RANDOM FROM QUERY
 ```
 
 ## Suggested Collections
