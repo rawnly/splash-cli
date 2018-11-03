@@ -49,7 +49,7 @@ export default class Alias {
 		if (!item) return false;
 
 		config.set('aliases', this.aliases);
-		printBlock(chalk `Alias: {yellow "${item.name} : ${item.id}"} removed}`);
+		printBlock(chalk `Alias: {yellow "${item.name} : ${item.id}"} removed`);
 
 		return true;
 	}
