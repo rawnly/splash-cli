@@ -53,10 +53,6 @@ export default async function settings([action, target]) {
 			settings['pic-of-the-day'].date.delay = ms(settings['pic-of-the-day'].date.delay);
 		}
 
-		if (settings['pic-of-the-day'].date.lastUpdate) {
-			settings['pic-of-the-day'].date.lastUpdate = new Date(settings['pic-of-the-day'].date.lastUpdate).toLocaleString();
-		}
-
 		settings.picOfTheDay = settings['pic-of-the-day'];
 		settings.settingsPath = config.path;
 

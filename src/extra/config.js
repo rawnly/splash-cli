@@ -18,7 +18,7 @@ export const defaultSettings = {
 	askForCollection: false,
 	picOfTheDay: {
 		date: {
-			lastUpdate: new Date('18 June 1999'),
+			lastUpdate: new Date('18 June 1999').getTime(),
 			delay: 1000 * 60 * 30
 		}
 	}
