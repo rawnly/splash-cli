@@ -1,6 +1,6 @@
 {
 	"name": "splash-cli",
-	"version": "3.2.0",
+	"version": "3.2.1",
 	"main": "build/client.js",
 	"readme": "README.md",
 	"homepage": "https://splash-cli.now.sh",
@@ -33,11 +33,16 @@
 		"npm": ">=3.10.10"
 	},
 	"keywords": [
-		"unsplash", "splash-cli",
-		"splash", "wallpaper",
-		"wallpapers", "unsplash-js",
-		"photos", "photo",
-		"photography", "baeutiful"
+		"unsplash",
+		"splash-cli",
+		"splash",
+		"wallpaper",
+		"wallpapers",
+		"unsplash-js",
+		"photos",
+		"photo",
+		"photography",
+		"baeutiful"
 	],
 	"dependencies": {
 		"@splash-cli/is-month": "^1.1.1",
