@@ -47,11 +47,10 @@ export function generateAuthenticationURL(...scopes) {
 	scopes = scopes.filter(item => validScopes.indexOf(item) >= 0).join('+');
 
 	url.searchParams.set('client_id', keys.client_id);
-	url.searchParams.set('redirect_uri', encodeURIComponent(keys.redirect_uri));
+	url.searchParams.set('redirect_uri', keys.redirect_uri);
 	url.searchParams.set('response_type', 'code');
-	url.searchParams.set('scope', scopes);
-
-	return url.href;
+	
+	return url.href + '&scopes=' + scopes;
 }
 
 /**

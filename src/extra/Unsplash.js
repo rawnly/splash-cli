@@ -34,20 +34,20 @@ export default class Unsplash {
 			if (collection.includes(',')) {
 				collection = collection.split(',').map(parseCollection).join(',');
 
-				endpoint.searchParams.set('collections', encodeURIComponent(collection));
+				endpoint.searchParams.set('collections', collection);
 			} else {
-				endpoint.searchParams.set('collections', encodeURIComponent(collection));
+				endpoint.searchParams.set('collections', collection);
 			}
 		}
 
 		// Encode query
 		if ( query ) {
-			endpoint.searchParams.set('query', encodeURIComponent(query));
+			endpoint.searchParams.set('query', query);
 		}
 
 		// Encode username
 		if ( username ) {
-			endpoint.searchParams.set('username', encodeURIComponent(username));
+			endpoint.searchParams.set('username', username);
 		}
 
 		// Limit to featured photos
