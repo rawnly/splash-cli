@@ -9,8 +9,15 @@ import chalk from 'chalk';
 import { prompt } from 'inquirer';
 import got from 'got';
 
-import { config, unsplash } from '../../extra/config';
-import { authenticatedRequest, errorHandler, authenticate, tryParse, printBlock } from '../../extra/utils';
+import { config } from '../../extra/config';
+import { 
+	authenticatedRequest, 
+	errorHandler, 
+	authenticate, 
+	tryParse, 
+	printBlock , 
+	generateAuthenticationURL
+} from '../../extra/utils';
 
 export default class User {
 	static user = config.get('user') || {}
@@ -46,7 +53,7 @@ export default class User {
 		},
 		login: async () => {
 			const spinner = new Ora('Waiting...');
-			const authURL = `https://unsplash.com/oauth/authorize?client_id=${config.get('keys').applicationId}&redirect_uri=http%3A%2F%2Flocalhost%3A5835%2F&response_type=code&scope=public+read_user+write_user+read_photos+write_photos+write_likes+write_followers+read_collections+write_collections`;
+			const authURL = generateAuthenticationURL.apply('public+read_user+write_user+read_photos+write_photos+write_likes+write_followers+read_collections+write_collections'.split('+'));
 
 			http.createServer(async (req, res) => {
 				const render = filename => {
@@ -88,9 +95,8 @@ export default class User {
 						try {
 							spinner.stop();
 							const authorizationCode = req.url.match(/code=(.*)/)[1];
-							let {
-								body: data
-							} = await authenticate({
+							
+							let { body: data } = await authenticate({
 								client_id: 'a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c',
 								client_secret: '0a86783ec8a023cdfa38a39e9ffab7f1c974e48389dc045a8e4b3978d6966e94',
 								code: authorizationCode,
@@ -113,8 +119,6 @@ export default class User {
 
 								return;
 							}
-
-							unsplash.auth.setBearerToken(data.access_token);
 
 							config.set('user', {
 								token: data.access_token,
