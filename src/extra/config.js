@@ -1,7 +1,5 @@
-import fetch from 'isomorphic-fetch';
-
 import { pathFixer } from '../extra/utils';
-import Unsplash from 'unsplash-js';
+
 import Conf from 'conf';
 
 
@@ -46,8 +44,5 @@ if (config.has('user') && config.get('user').token) {
 		callbackUrl: keys.redirect_uri,
 	});
 }
-
-export const unsplash = new Unsplash(config.get('keys'));
-
 
 export const commandsList = {};
