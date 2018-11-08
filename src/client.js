@@ -14,34 +14,21 @@ import updateNotifier from 'update-notifier';
 import wallpaper from 'wallpaper';
 import isImage from 'is-image';
 
-import fetch from 'isomorphic-fetch';
-
 import manifest from '../package.json';
 import commands from './commands/index';
 
-import { defaultSettings, unsplash } from './extra/config';
+import { defaultSettings as defaults } from './extra/config';
+import Unsplash from './extra/Unsplash';
+
 import {
 	clearSettings,
 	download,
 	errorHandler,
-	parseCollection,
-	picOfTheDay,
 	printBlock,
 	pathFixer
 } from './extra/utils';
 
-const config = new Conf({
-	defaults: defaultSettings
-});
-
-const {
-	photos: {
-		getRandomPhoto,
-		getPhoto,
-		listCuratedPhotos,
-		downloadPhoto
-	}
-} = unsplash;
+const config = new Conf({ defaults });
 
 const spinner = new Ora({
 	color: 'yellow',
@@ -90,17 +77,19 @@ export default async function (input, flags) {
 
 	if (frun()) {
 		await clearSettings();
-		await picOfTheDay();
+		await Unsplash.shared.picOfTheDay();
 
 		printBlock(
-			chalk `Welcome to ${manifest.name}@${manifest.version} {bold @${userInfo().username}}`,
-			chalk `{dim Application setup {green completed}!}`,
+			chalk `Welcome to ${manifest.name}@{dim ${manifest.version}} {bold @${userInfo().username}}`,
+			'',
+			chalk `{dim CLI setup {green completed}!}`,
+			'',
 			chalk `{bold Enjoy "{yellow ${manifest.name}}" running {green splash}}`
 		);
 
 		process.exit();
 	} else if (!config.has('pic-of-the-day') || !config.get('pic-of-the-day').date.delay) {
-		await picOfTheDay();
+		await Unsplash.shared.picOfTheDay();
 	}
 
 
@@ -130,30 +119,23 @@ export default async function (input, flags) {
 
 			// here you can add your own custom flags
 			if (flags.day) {
-				const response = await getPhoto(await picOfTheDay());
-				photo = await response.json();
+				photo = await Unsplash.shared.picOfTheDay();
 			} else if (flags.curated) {
-				const response = await listCuratedPhotos();
+				const response = await Unsplash.shared.getRandomPhoto({ collection: 317099 });
 				const photos = await response.json();
 
 				photo = randomFrom(photos);
 			} else if (flags.id && parseID(flags.id)) {
-				const response = await getPhoto(parseID(flags.id));
-				photo = await response.json();
+				photo = await Unsplash.shared.getPhoto(parseID(flags.id));
 			} else {
-				if (flags.id) {
-					spinner.warn = chalk `Invalid ID: "{yellow ${flags.id}}"`;
-				}
+				if (flags.id) spinner.warn = chalk `Invalid ID: "{yellow ${flags.id}}"`;
 
-				const response = await getRandomPhoto({
+				photo = await Unsplash.shared.getRandomPhoto({
 					query: flags.query,
 					username: flags.user,
 					featured: Boolean(flags.featured),
-					collections: flags.collection ? (flags.collection.includes(',') ? flags.collection.split(',').map(parseCollection) : [parseCollection(flags.collection)]) : undefined,
-					count: 1
+					collection: flags.collection
 				});
-
-				photo = await response.json();
 			}
 
 			if (photo) {
@@ -167,8 +149,8 @@ export default async function (input, flags) {
 					return printBlock(chalk `{bold {red ERROR:}}`, ...photo.errors);
 				}
 
-				const res = await downloadPhoto(photo);
-				const { url } = await res.json();
+
+				const { url } = await Unsplash.shared.getDownloadLink(photo.id);
 
 				await download(photo, url, flags, true);
 			} else {

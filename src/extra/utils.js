@@ -1,10 +1,9 @@
 require('babel-polyfill');
 require('regenerator-runtime');
 
-import fetch from 'isomorphic-fetch';
-
 import path from 'path';
 import os from 'os';
+import { URL } from 'url';
 
 import { prompt } from 'inquirer';
 import isMonth from '@splash-cli/is-month';
@@ -21,9 +20,44 @@ import terminalLink from 'terminal-link';
 import wallpaper from 'wallpaper';
 import normalize from 'normalize-url';
 
-import { config, unsplash, defaultSettings } from './config';
-import User from '../commands/libs/User';
+import { config, defaultSettings, keys } from './config';
 
+import User from '../commands/libs/User';
+import Alias from '../commands/libs/Alias';
+
+
+/**
+ * @description Generate auth URL
+ * @param  {...String} scopes 
+ */
+export function generateAuthenticationURL(...scopes) {
+	const url = new URL('https://unsplash.com/oauth/authorize');
+	const validScopes = [
+		'public',
+		'read_user',
+		'write_user',
+		'read_photos',
+		'write_photos',
+		'write_likes',
+		'write_followers',
+		'read_collections',
+		'write_collections'
+	];
+
+	scopes = scopes.filter(item => item in validScopes).join('+');
+
+	url.searchParams.set('client_id', keys.client_id);
+	url.searchParams.set('redirect_uri', encodeURIComponent(keys.redirect_uri));
+	url.searchParams.set('response_type', 'code');
+	url.searchParams.set('scope', scopes);
+
+	return url.href;
+}
+
+/**
+ * @description Authenticate the user.
+ * @param {Object} params 
+ */
 export async function authenticate({ client_id, client_secret, code, redirect_uri } = {}) {
 	const url = new URL('https://unsplash.com');
 	url.pathname = '/oauth/token';
@@ -45,14 +79,11 @@ export async function authenticate({ client_id, client_secret, code, redirect_ur
 	});
 }
 
-export function tryParse(string) {
-	try {
-		return JSON.parse(string);
-	} catch (error) {
-		return string;
-	}
-}
-
+/**
+ * @description Make an authenticated request (with bearer)
+ * @param {String} endpoint 
+ * @param {Object} options 
+ */
 export async function authenticatedRequest(endpoint, options = {}) {
 	warnIfNotLogged();
 
@@ -68,6 +99,11 @@ export async function authenticatedRequest(endpoint, options = {}) {
 	return tryParse(body);
 }
 
+
+
+/**
+ * Check if everything works fine with the user settings.
+ */
 export function checkUserAuth() {
 	const { token, profile: user } = config.get('user');
 
@@ -80,10 +116,12 @@ export function checkUserAuth() {
 			.catch(errorHandler);
 	}
 
-	unsplash.auth.setBearerToken(config.get('user').token);
 	return true;
 }
 
+/**
+ * Warn the user if is not logged.
+ */
 export function warnIfNotLogged() {
 	if (!config.has('user') || !config.get('user').token) {
 		return printBlock(chalk `Please log in.`);
@@ -93,6 +131,22 @@ export function warnIfNotLogged() {
 }
 
 
+
+/**
+ * @description Try to parse json
+ * @param {String} string 
+ */
+export function tryParse(string) {
+	try {
+		return JSON.parse(string);
+	} catch (error) {
+		return string;
+	}
+}
+
+/**
+ * @description Restore default settings
+ */
 export async function clearSettings() {
 	const settingsList = Object.keys(defaultSettings);
 
@@ -108,22 +162,22 @@ export async function clearSettings() {
 	return config.get() === defaultSettings;
 }
 
+/**
+ * @description Parse a collection alias
+ * @param {String} alias 
+ */
 export const parseCollection = alias => {
-	const aliases = config.get('aliases');
-
-	if (aliases.length) {
-		const collection = aliases.filter(item => item.name === alias);
-
-		if (collection.length) {
-			return collection[0].id;
-		}
-
-		return alias;
-	}
+	const exists = Alias.has(alias);
+	
+	if ( exists ) return Alias.get(alias).id;
 
 	return alias;
 };
 
+/**
+ * @description Beautify any type of error
+ * @param {Error} error 
+ */
 export function errorHandler(error) {
 	const spinner = new Ora();
 	spinner.stop();
@@ -140,48 +194,22 @@ export function errorHandler(error) {
 	logger.error(error);
 }
 
-export function repeatChar(char, length) {
-	var string = '';
-
-	for (let i = 0; i < length; i++) {
-		string += char;
-	}
-
-	return string;
+/**
+ * @description Check if the given string is a path
+ * @param {String} p - A Path 
+ */
+export function isPath(p) {
+	return /([a-z]\:|)(\w+|\~+|\.|)\\\w+|(\w+|\~+|)\/\w+/i.test(p);
 }
 
-export async function picOfTheDay() {
-	const date = new Date().getTime();
-
-	// If the elapsed time is less than 1 hour
-	if (config.has('pic-of-the-day') && (config.get('pic-of-the-day').date.lastUpdate - date) < (config.get('pic-of-the-day').date.delay)) {
-		return config.get('pic-of-the-day').photo;
-	}
-
-	try {
-		const { body: html } = await got('https://unsplash.com');
-		const { window: { document } } = new JSDOM(html);
-
-		const id = Array.from(document.querySelectorAll('a')).find(el => /Photo of the day/i.test(el.innerHTML)).href.match(/[a-zA-Z0-9_-]{11}/g)[0];
-
-		config.set('pic-of-the-day', {
-			photo: id,
-			date: {
-				lastUpdate: new Date().getTime(),
-				delay: 1000 * 60 * 30
-			}
-		});
-
-		return id;
-	} catch (error) {
-		errorHandler(error);
-	}
-}
-
-export function isPath(string) {
-	return /([a-z]\:|)(\w+|\~+|\.|)\\\w+|(\w+|\~+|)\/\w+/i.test(string);
-}
-
+/**
+ * @description Download a photo
+ * 
+ * @param {Object} photo 
+ * @param {String} url 
+ * @param {Object} flags 
+ * @param {Bool} setAsWP 
+ */
 export async function download(photo, url, flags, setAsWP = true) {
 	let dir = config.get('directory');
 
@@ -323,12 +351,19 @@ export async function download(photo, url, flags, setAsWP = true) {
 	});
 }
 
+/**
+ * Log utilty
+ */
 export const logger = {
 	info: console.log.bind(console, chalk.cyan(figures.info)),
 	warn: console.log.bind(console, chalk.yellow(figures.warning)),
 	error: console.log.bind(console, chalk.red(figures.cross)),
 };
 
+/**
+ * @description Highlight json
+ * @param {Object} data 
+ */
 export function highlightJSON(data) {
 	let jsonString = JSON.stringify(data, null, 2);
 
@@ -341,6 +376,10 @@ export function highlightJSON(data) {
 	return jsonString;
 }
 
+/**
+ * @name printBlock
+ * @description Clear the output before log
+ */
 export function printBlock() {
 	for (var _len = arguments.length, lines = Array(_len), _key = 0; _key < _len; _key++) {
 		lines[_key] = arguments[_key];
@@ -361,6 +400,11 @@ export function printBlock() {
 	console.log();
 }
 
+
+/**
+ * @description Replaces '~' with home folder
+ * @param {String} path 
+ */
 export function pathFixer(path) {
 	var tester = /^~.*?/g;
 
@@ -370,3 +414,19 @@ export function pathFixer(path) {
 
 	return path;
 }
+
+/**
+ * 
+ * @name addTimeTo
+ * @description Add an amount of milliseconds to a date
+ * 
+ * @param {Date} date
+ * @param {Number} time 
+ */
+export const addTimeTo = (date, time) => new Date(date.getTime() + time);
+
+/**
+ * @name now
+ * @description Get the current date
+ */
+export const now = () => new Date();
