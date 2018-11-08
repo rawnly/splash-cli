@@ -50,7 +50,7 @@ export function generateAuthenticationURL(...scopes) {
 	url.searchParams.set('redirect_uri', keys.redirect_uri);
 	url.searchParams.set('response_type', 'code');
 	
-	return url.href + '&scopes=' + scopes;
+	return url.href + '&scope=' + scopes;
 }
 
 /**
