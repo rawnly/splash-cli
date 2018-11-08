@@ -1,6 +1,6 @@
 {
 	"name": "splash-cli",
-	"version": "3.2.1",
+	"version": "3.2.2",
 	"main": "build/client.js",
 	"readme": "README.md",
 	"homepage": "https://splash-cli.now.sh",
