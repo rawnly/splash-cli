@@ -1,6 +1,8 @@
 require('babel-polyfill');
 require('regenerator-runtime');
 
+import frun from 'first-run';
+
 import chalk from 'chalk';
 import ms from 'ms';
 
@@ -39,7 +41,7 @@ export default async function settings([action, target]) {
 	);
 
 	const _updateInterval = generateQuestion('_updateInterval', 'Set the "pic of the day" update interval', { default: ms(1000 * 60 * 30), });
-	// config.has('pic-of-the-day') ? config.get('pic-of-the-day').date.delay : ms()
+
 
 	switch (action) {
 	case 'get':
@@ -80,7 +82,10 @@ export default async function settings([action, target]) {
 		ask([generateQuestion('confirm', chalk `Are you sure? This action is {underline NOT reversable}!`, { type: 'confirm', default: false })])
 			.then(async ({ confirm }) => {
 				if (confirm) {
+					frun.clear();
+
 					await clearSettings();
+
 					printBlock(chalk `{yellow Settings Restored!}`);
 				} else {
 					printBlock(chalk `{red {bold Operation aborted!}}`);
