@@ -53,7 +53,7 @@ export default class User {
 		},
 		login: async () => {
 			const spinner = new Ora('Waiting...');
-			const authURL = generateAuthenticationURL.apply('public+read_user+write_user+read_photos+write_photos+write_likes+write_followers+read_collections+write_collections'.split('+'));
+			const authURL = generateAuthenticationURL('public', 'read_user', 'write_user', 'read_photos', 'write_photos', 'write_likes', 'write_followers', 'read_collections', 'write_collections');
 
 			http.createServer(async (req, res) => {
 				const render = filename => {

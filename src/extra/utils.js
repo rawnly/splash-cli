@@ -44,7 +44,7 @@ export function generateAuthenticationURL(...scopes) {
 		'write_collections'
 	];
 
-	scopes = scopes.filter(item => item in validScopes).join('+');
+	scopes = scopes.filter(item => validScopes.indexOf(item) >= 0).join('+');
 
 	url.searchParams.set('client_id', keys.client_id);
 	url.searchParams.set('redirect_uri', encodeURIComponent(keys.redirect_uri));
