@@ -23,7 +23,21 @@ export default class Alias {
 	}
 
 	static get(name) {
-		return this.aliases.find(item => item.name === name);
+		return this.aliases.find(item => item.name === name || item.id === name);
+	}
+
+	static has(name) {
+		const a = this.get(name);
+
+		return a.hasOwnProperty('id') && a.hasOwnProperty('name');
+	}
+
+	static parseCollection(collection) {
+		if ( Alias.has(collection) && Alias.get(collection).hasOwnProperty('id') ) {
+			return Alias.get(collection).id;
+		}
+
+		return collection;
 	}
 
 	static remove(name) {
