@@ -2,6 +2,19 @@
 	"name": "splash-cli",
 	"version": "3.2.0",
 	"main": "build/client.js",
+	"readme": "README.md",
+	"homepage": "https://splash-cli.now.sh",
+	"description": "Get beautiful wallpapers from unsplash.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/splash-cli/splash-cli"
+	},
+	"author": {
+		"email": "fedevitale99@gmail.com",
+		"name": "Federico Vitale",
+		"url": "https://github.com/rawnly"
+	},
 	"scripts": {
 		"build": "rm -rf build && npm run test && babel src -d build && npm run copyHTML",
 		"copyHTML": "rm -rf build/pages && cp -rf src/pages build",
@@ -9,7 +22,6 @@
 		"fix": "eslint src/**/*.js --color --fix",
 		"test": "eslint src/**/*.js --color"
 	},
-	"description": "Get beautiful wallpapers from unsplash.",
 	"bin": {
 		"splash": "build/bin/index.js"
 	},
@@ -21,18 +33,12 @@
 		"npm": ">=3.10.10"
 	},
 	"keywords": [
-		"unsplash",
-		"splash-cli",
-		"splash",
-		"wallpaper",
-		"wallpapers",
-		"unsplash-js",
-		"photos",
-		"photo",
-		"photography",
-		"baeutiful"
+		"unsplash", "splash-cli",
+		"splash", "wallpaper",
+		"wallpapers", "unsplash-js",
+		"photos", "photo",
+		"photography", "baeutiful"
 	],
-	"license": "MIT",
 	"dependencies": {
 		"@splash-cli/is-month": "^1.1.1",
 		"@splash-cli/parse-unsplash-id": "^0.0.1",
@@ -45,7 +51,6 @@
 		"got": "^8.3.1",
 		"inquirer": "^5.2.0",
 		"is-image": "^2.0.0",
-		"isomorphic-fetch": "^2.2.1",
 		"jsdom": "^11.10.0",
 		"lodash": "^4.17.10",
 		"meow": "^5.0.0",
@@ -55,7 +60,6 @@
 		"ora": "^2.1.0",
 		"simple-download": "^0.5.1",
 		"terminal-link": "^1.1.0",
-		"unsplash-js": "^4.8.0",
 		"update-notifier": "^2.5.0",
 		"wallpaper": "^4.1.0"
 	},
