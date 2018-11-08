@@ -1,7 +1,7 @@
 {
 	"name": "splash-cli",
 	"version": "3.2.3",
-	"main": "build/client.js",
+	"main": "build/extra/Unsplash.js",
 	"readme": "README.md",
 	"homepage": "https://splash-cli.now.sh",
 	"description": "Get beautiful wallpapers from unsplash.",
