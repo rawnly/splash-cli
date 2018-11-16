@@ -1,7 +1,12 @@
-const splash = require('../build/client').default;
+const Unsplash = require('..').default;
+
+const splash = new Unsplash();
+
+process.exit();
 
 async function newWallpaper(collection = 'editorial') {
 	const options = {};
+	const splash = Unsplash.shared;
 
 	if (collection) {
 		options.collection = collection;

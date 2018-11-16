@@ -4,17 +4,17 @@ import got from 'got';
 import parseID from '@splash-cli/parse-unsplash-id';
 import { JSDOM } from 'jsdom';
 
-import { parseCollection, tryParse, errorHandler, addTimeTo, now, printBlock } from './utils';
+import { parseCollection, tryParse, errorHandler, addTimeTo, now } from './utils';
 import { keys, config } from './config';
 
 
 export default class Unsplash {
 	endpoint = new URL('https://api.unsplash.com')
 
-	static shared = new Unsplash()
+	static shared = new Unsplash(keys.client_id)
 
-	constructor() {
-		this.endpoint.searchParams.set('client_id', keys.client_id);
+	constructor(client_id) {
+		this.endpoint.searchParams.set('client_id', client_id);
 	}
 
 	async getRandomPhoto({ collection = false, query = false, username = false, featured = false, count = 1 } = {}) {
