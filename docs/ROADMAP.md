@@ -10,7 +10,7 @@ This file is a roadmap for who wants improve this repo.
 <!-- - [ ] If Unsplash let me do that, I want to move away from `unsplash-js`, bad/outdated docs, it's great for web apps not CLI. -->
 
 - [x] ~Let user like a photo~
-- [ ] Let user create new collections
+- [ ] Let user create new collections (or maybe not)
 - [ ] Let user add a photo to an existing collection
 - [x] Let user clear the download destination folder (default: `~/Pictures/splash_photos`)
 

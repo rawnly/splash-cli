@@ -1,4 +1,9 @@
 # Changelog
+## 21 November 2018 (v3.3.1)
+- Fixed prompt for like
+- Fixed `photo-of-the-day` delay check
+- Minor fixes
+
 ## 8 November 2018 (v3.2.1)
 - Removed `unsplash-js` library.
 - Removed `fetch` polyfill.
