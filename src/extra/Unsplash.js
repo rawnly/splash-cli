@@ -4,12 +4,13 @@ import got from 'got';
 import parseID from '@splash-cli/parse-unsplash-id';
 import { JSDOM } from 'jsdom';
 
-import { parseCollection, tryParse, errorHandler, addTimeTo, now } from './utils';
+import { parseCollection, authenticatedRequest, tryParse, errorHandler, addTimeTo, now } from './utils';
 import { keys, config } from './config';
 
 
 export default class Unsplash {
 	endpoint = new URL('https://api.unsplash.com')
+	isLogged = config.has('user')
 
 	static shared = new Unsplash(keys.client_id)
 
@@ -57,6 +58,10 @@ export default class Unsplash {
 
 
 		try {
+			if (this.isLogged) {
+				return authenticatedRequest(this.endpoint.pathname);
+			}
+
 			const response = await got(this.endpoint.href);
 
 			if (response.statusCode !== 200) return errorHandler(new Error(response.statusMessage));
@@ -72,7 +77,12 @@ export default class Unsplash {
 
 		endpoint.pathname = `/photos/${parseID(id)}`;
 
+
 		try {
+			if (this.isLogged) {
+				return authenticatedRequest(this.endpoint.pathname);
+			}
+
 			const response = await got(this.endpoint.href);
 
 			if (response.statusCode !== 200) return errorHandler(new Error(response.statusMessage));
@@ -89,6 +99,10 @@ export default class Unsplash {
 		endpoint.pathname = `/photos/${parseID(id)}/download`;
 
 		try {
+			if (this.isLogged) {
+				return authenticatedRequest(this.endpoint.pathname);
+			}
+
 			const response = await got(this.endpoint.href);
 
 			if (response.statusCode !== 200) return errorHandler(new Error(response.statusMessage));
@@ -107,8 +121,8 @@ export default class Unsplash {
 
 			const lastUpdate = new Date(setting.date.lastUpdate);
 			const willUpdate = addTimeTo(lastUpdate, setting.date.delay);
-		
-			if ( willUpdate >= lastUpdate ) return this.getPhoto(setting.photo);
+
+			if ( lastUpdate.getTime() >= willUpdate.getTime() ) return this.getPhoto(setting.photo);
 		}
 
 		try {

@@ -316,7 +316,7 @@ export async function download(photo, url, flags, setAsWP = true) {
 			console.log();
 			return;
 		}
-
+		
 		if (flags.save) return;
 
 		const promptLike = config.get('askForLike');
