@@ -7,6 +7,14 @@
 <br>
 
 # Splash CLI
+**Splash CLI** is an [**Unsplash**][uwebsite] client powered by *NodeJS*. 
+You can use it to: 
+- Change wallpaper on your desktop 
+- Create new collections (soon) 
+- Like or download photos.
+
+---
+
 <h6 align="center"> <a href="https://github.com/rawnly/dot-files">Terminal Setup</a> </h6>
 <p align="center">
 	<a href="https://splash-cli.now.sh" title="Splash CLI">
@@ -14,7 +22,7 @@
 	</a>
 </p>
 
-> Get beautiful wallpapers from [**Unsplash**](uwebsite)
+> Get beautiful wallpapers from [**Unsplash**][uwebsite]
 
 ## :floppy_disk: Installation
 
@@ -29,6 +37,19 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](h
 ```
 ## ❓ [FAQs](/docs/FAQ.md)
 A list of **Frequently Asked Questions** can be found [**here**](https://github.com/splash-cli/splash-cli/issues?utf8=✓&q=is%3Aissue+label%3A%22%3Aquestion%3A++FAQ%22+)
+
+#### - What is **Splash CLI**?
+> Splash CLI is an **Unsplash** client powered by *NodeJS*. 
+>
+> You can use it to:
+> - Change wallpaper on your desktop.
+> - Create new collections (soon)
+> - Like or download photos.
+> - Download photos by ID.
+> - Pick random photo from an user or a collection.
+
+#### - Why did you made it?
+> When I written **Splash CLI** it was just for fun, I never tought that someone could find this tool so useful/funny 😅
 
 ## :paw_prints: Usage
 > Splash is easy and quick to use, just run `splash` to get started.
