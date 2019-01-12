@@ -10,9 +10,11 @@ export default chalk `{bold Usage} [{dim v${pkg.version}}]
 {bold {cyan Commands}}
 	{cyan settings {dim <get|set|restore>}}	{dim GET/SET/RESTORE SETTINGS}
 	{cyan alias {dim <get|set|remove>}}		{dim GET/SET COLLECTION ALIASES}
+	{cyan collection {dim <get|delete>}}		{dim MANAGE COLLECTIONS}
 	{cyan dir {dim <clean|get|count>}}		{dim MANAGE THE DOWNLOAD DIRECTORY}
 	{cyan user {dim <login|logout|get|...>}} 	{dim MANAGE USER LOGIN/LOGOUT - GET USER INFOS}
-		{dim {bold use {cyan \`user help\`} for more options}}
+	{dim -------------------------------------------------------------------------}
+	{dim HINT: {bold use {cyan \`[command] help\`} for the list of all options}}
 
 {bold {yellow Options}}
 	{yellow -h --help}			{dim THIS MESSAGE}

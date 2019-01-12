@@ -26,12 +26,24 @@ export default async function userCommand([cmd, input]) {
 
 			break;
 		case 'delete':
-			const { statusCode } = await CollectionManager.delete(input);
+			const { statusCode, statusMessage } = await CollectionManager.delete(input);
 			if (statusCode === 204) return printBlock(`Collection ${input} deleted successfully!`);
+			return printBlock(`${statusCode} - ${statusMessage}`);
+			break;
+		case 'help':
+		case 'h':
+		case 'how':
+			printBlock('DIR HELP', '', chalk `
+						{bold {black {bgWhite COMMANDS}}}   			{bold {black {bgYellow ALIASES}}} 		{bold {black {bgWhite DESCRIPTION}}}
+		
+						{cyan {bold get}}    {yellow <collection_id>} 	{dim none}	  {dim GET COLLECTION INFOS}
+						{cyan {bold delete}} {yellow <collection_id>}	{dim none}	  {dim COUNTS ALL THE DOWNLOADED PHOTOS}
+						{cyan {bold help}} 				{yellow "how"}	  {dim SHOWS THIS MESSAGE}
+					`.split('\n').map(item => `  ${item.trim()}`).join('\n'));
 			break;
 		default:
-			return printBlock(`${cmd} is not an option.`);
-			break;
+			if (!cmd) return userCommand(['help']);
+			printBlock(chalk `Unknown command "{red {bold ${cmd}}}"`);
 		}
 	} catch (error) {
 		errorHandler(error);

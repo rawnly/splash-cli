@@ -7,10 +7,12 @@
 <br>
 
 # Splash CLI
-**Splash CLI** is an [**Unsplash**][uwebsite] client powered by *NodeJS*. 
-You can use it to: 
-- Change wallpaper on your desktop 
-- Create new collections (soon) 
+
+**Splash CLI** is an [**Unsplash**][uwebsite] client powered by _NodeJS_.
+You can use it to:
+
+- Change wallpaper on your desktop
+- Create new collections (soon)
 - Like or download photos.
 
 ---
@@ -35,13 +37,17 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](h
 	# With Yarn
 	$ yarn global add splash-cli
 ```
+
 ## ❓ [FAQs](/docs/FAQ.md)
+
 A list of **Frequently Asked Questions** can be found [**here**](https://github.com/splash-cli/splash-cli/issues?utf8=✓&q=is%3Aissue+label%3A%22%3Aquestion%3A++FAQ%22+)
 
 #### - What is **Splash CLI**?
-> Splash CLI is an **Unsplash** client powered by *NodeJS*. 
+
+> Splash CLI is an **Unsplash** client powered by _NodeJS_.
 >
 > You can use it to:
+>
 > - Change wallpaper on your desktop.
 > - Create new collections (soon)
 > - Like or download photos.
@@ -49,22 +55,24 @@ A list of **Frequently Asked Questions** can be found [**here**](https://github.
 > - Pick random photo from an user or a collection.
 
 #### - Why did you made it?
+
 > When I written **Splash CLI** it was just for fun, I never tought that someone could find this tool so useful/funny 😅
 
 ## :paw_prints: Usage
+
 > Splash is easy and quick to use, just run `splash` to get started.
 
-```	
-  
+```
   Get beautiful wallpapers from unsplash.
 
   Usage [v3.1.1]
-	
+
   	$ splash [command] [flags]
 
   Commands
   	settings <get|set|restore>	GET/SET/RESTORE SETTINGS
   	alias <get|set|remove>		GET/SET COLLECTION ALIASES
+  	collection <get|delete>		MANAGE COLLECTIONS
   	dir <clean|get|count>		MANAGE THE DOWNLOAD DIRECTORY
   	user <login|logout|get|...> 	MANAGE USER LOGIN/LOGOUT - GET USER INFOS
   		use `user help` for more options
@@ -90,13 +98,14 @@ A list of **Frequently Asked Questions** can be found [**here**](https://github.
   	--day				GET THE PHOTO OF THE DAY
   	--id <id or url>		PHOTO BY ID
   	--collection <id or alias>	RANDOM PHOTO FROM PROVIDED COLLECTION
-	
+
   Search Filters
   	-f --featured			LIMIT TO ONLY FEATURED PHOTOS
   	--query <query>			RANDOM FROM QUERY
 ```
 
 ## Suggested Collections
+
 - **Editorial** ([**317099**](https://unsplash.com/collections/317099/unsplash-editorial)) - A collection of beautiful photos, curated by the Unsplash Team.
 
 - **Wallpapers** ([**1065976**](https://unsplash.com/collections/1065976/wallpapers)) - Free stunning HD wallpapers for your mobile and desktop screens.
@@ -106,19 +115,21 @@ A list of **Frequently Asked Questions** can be found [**here**](https://github.
 ---
 
 ## Contributors
+
 List of awesome people that have helped to keep this project alive:
 
-* [mohnjatthews](http://github.com/mohnjatthews)
-* [alecrust](http://github.com/alecrust)
+- [mohnjatthews](http://github.com/mohnjatthews)
+- [alecrust](http://github.com/alecrust)
 
 ### How can I contribute?
+
 Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all what you need to know about and [here](/docs/ROADMAP.md) you can find some things that I'd like to improve.
 
-
 ## :space_invader: Related Stuff
-* [Splash CLI Website](https://splash-cli.now.sh) - Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).
-* [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
-* [Download Collections](https://github.com/Rawnly/collection-downloader-py) - Download **Unsplash** collections (*written in Python*)
+
+- [Splash CLI Website](https://splash-cli.now.sh) - Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).
+- [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
+- [Download Collections](https://github.com/Rawnly/collection-downloader-py) - Download **Unsplash** collections (_written in Python_)
 
 ---
 
