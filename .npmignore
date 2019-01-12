@@ -1,4 +1,4 @@
-!.gitignore
+.gitignore
 !.npmignore
 
 .git
@@ -13,3 +13,12 @@ node_modules
 *.sh
 
 .gitlogs
+.vscode
+.eslintrc.json
+.env.example
+*.md
+travis.yml
+*.lock
+example
+docs
+.github
