@@ -51,6 +51,7 @@
 		"babel-polyfill": "^6.26.0",
 		"chalk": "^2.4.1",
 		"conf": "^1.4.0",
+		"dotenv": "^6.2.0",
 		"figures": "^2.0.0",
 		"first-run": "^1.2.0",
 		"got": "^8.3.1",

@@ -49,7 +49,7 @@ export function generateAuthenticationURL(...scopes) {
 	url.searchParams.set('client_id', keys.client_id);
 	url.searchParams.set('redirect_uri', keys.redirect_uri);
 	url.searchParams.set('response_type', 'code');
-	
+
 	return url.href + '&scope=' + scopes;
 }
 
@@ -85,6 +85,7 @@ export async function authenticate({ client_id, client_secret, code, redirect_ur
  */
 export async function authenticatedRequest(endpoint, options = {}) {
 	warnIfNotLogged();
+	let returnResponse = options.getResponse || false;
 
 	const { token } = config.get('user');
 	const httpOptions = Object.assign({}, options, {
@@ -93,9 +94,20 @@ export async function authenticatedRequest(endpoint, options = {}) {
 		})
 	});
 
-	const { body } = await got(`https://api.unsplash.com/${endpoint}`, httpOptions);
+	const response = await got(`https://api.unsplash.com/${endpoint}`, httpOptions);
 
-	return tryParse(body);
+	switch (response.statusCode) {
+	case 200:
+	case 201:
+	case 203:
+	case 404:
+	case 500:
+	case 302:
+	case 422:
+		return tryParse(response.body);
+	default:
+		return response;
+	}
 }
 
 
@@ -167,8 +179,8 @@ export async function clearSettings() {
  */
 export const parseCollection = alias => {
 	const exists = Alias.has(alias);
-	
-	if ( exists ) return Alias.get(alias).id;
+
+	if (exists) return Alias.get(alias).id;
 
 	return alias;
 };
@@ -316,13 +328,20 @@ export async function download(photo, url, flags, setAsWP = true) {
 			console.log();
 			return;
 		}
-		
+
 		if (flags.save) return;
 
 		const promptLike = config.get('askForLike');
 		const promptCollection = config.get('askForCollection');
+		const confirmWallpaper = config.get('confirm-wallpaper');
 
-		const { liked } = await prompt([{
+		const { liked, confirmed } = await prompt([{
+			name: 'confirmed',
+			message: 'Keep this wallpaper?',
+			type: 'confirm',
+			default: true,
+			when: () => confirmWallpaper == true
+		}, {
 			name: 'liked',
 			message: 'Do you like this photo?',
 			type: 'confirm',
@@ -334,6 +353,12 @@ export async function download(photo, url, flags, setAsWP = true) {
 			default: false,
 			when: () => promptCollection && !flags.quiet
 		}]);
+
+
+		if (!confirmed) {
+			const lastWP = config.get('lastWP');
+			wallpaper.set(lastWP);
+		}
 
 		if (liked === true) {
 			const id = photo._id || photo.id;
@@ -429,3 +454,22 @@ export const addTimeTo = (date, time) => new Date(date.getTime() + time);
  * @description Get the current date
  */
 export const now = () => new Date();
+
+/**
+ * @name confirmWithExtra
+ * 
+ * @param {String} name 
+ * @param {String} message 
+ * @param {String} extra 
+ * @param {Object} options 
+ */
+export const confirmWithExtra = (name, message, extra, options) => {
+	return ({
+		name,
+		message,
+		default: `${options.default === 0 ? 'Y':'y'}/${options.default === 1 ? 'n':'N'}/${options.default === 2 ? extra.toUpperCase() : extra}`,
+		when: options.when,
+		validate: input => new RegExp(`(^y$|^yes$)|(^n$|^no$|^nope$)|(^${extra}$)`, 'gi').test(input),
+		filter: input => input.toLowerCase()
+	});
+};

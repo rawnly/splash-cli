@@ -73,11 +73,18 @@ export default async function (input, flags) {
 		});
 	}
 
+	if (!config.has('lastWP') || !config.get('lastWP')) {
+		const lastWP = await wallpaper.get();
+		config.set('lastWP', lastWP);
+	}
+
 	updateNotifier({ pkg: manifest, updateCheckInterval: 1000 * 30 }).notify();
 
 	if (frun()) {
 		await clearSettings();
 		await Unsplash.shared.picOfTheDay();
+
+
 
 		printBlock(
 			chalk `Welcome to ${manifest.name}@{dim ${manifest.version}} {bold @${userInfo().username}}`,
@@ -164,6 +171,10 @@ export default async function (input, flags) {
 		console.clear();
 
 		switch (command) {
+		case 'collection':
+		case 'collections':
+			commands.collection(subCommands);
+			break;
 		case 'settings':
 		case 'config':
 			commands.settings(subCommands);
