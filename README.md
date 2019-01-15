@@ -126,8 +126,8 @@ List of awesome people that have helped to keep this project alive:
 Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all what you need to know about and [here](/docs/ROADMAP.md) you can find some things that I'd like to improve.
 
 ## :space_invader: Related Stuff
-
 - [Splash CLI Website](https://splash-cli.now.sh) - Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).
+-🔥[StockPapers][stockpapers] 🔥 - Looking for mobile wallpapers? [StockPapers][stockpapers] is the solution!
 - [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
 - [Download Collections](https://github.com/Rawnly/collection-downloader-py) - Download **Unsplash** collections (_written in Python_)
 
@@ -152,3 +152,4 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 [old-branch]: https://github.com/rawnly/splash-cli/tree/node%3C%3D7
 [sample]: https://i.imgur.com/o0eXz6F.gif
 [help]: https://user-images.githubusercontent.com/16429579/33238956-68de7c6a-d298-11e7-841d-2da1c624fce8.png
+[stockpapers]: https://itunes.apple.com/us/app/stock-papers/id1443861313
