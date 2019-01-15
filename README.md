@@ -3,17 +3,21 @@
   <img src="https://img.shields.io/github/package-json/v/splash-cli/splash-cli.svg?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/travis/splash-cli/splash-cli/master.svg?style=for-the-badge" alt="Travis CI" />
 </p>
-
 <br>
 
-# Splash CLI
+<h1 align="center"> Splash CLI </h1>
+<h6 align="center">Get stunning wallpapers from <a href="https://unsplash.com">Unsplash</a> </h6>
+<hr />
 
 **Splash CLI** is an [**Unsplash**][uwebsite] client powered by _NodeJS_.
-You can use it to:
+You can use it as an Unsplash terminal client, for example you can:
 
 - Change wallpaper on your desktop
-- Create new collections (soon)
 - Like or download photos.
+
+- ~Create new collections~ (Coming Soon[*](docs/ROADMAP.md))
+- ~Edit collections~ (Coming Soon[*](docs/ROADMAP.md))
+- ~Upload photos~ (Coming Soon[*](docs/ROADMAP.md))
 
 ---
 
