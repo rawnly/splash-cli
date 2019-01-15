@@ -5,18 +5,22 @@ This file is a roadmap for who wants improve this repo.
 
 <br />
 
-- [x] ~Include `User Authentication` [#27](https://github.com/splash-cli/splash-cli/issues/27)~
-- [ ] Deeper user interaction (likes, collection, photos upload, etc.)
-<!-- - [ ] If Unsplash let me do that, I want to move away from `unsplash-js`, bad/outdated docs, it's great for web apps not CLI. -->
-
-- [x] ~Let user like a photo~
-- [ ] Let user create new collections (or maybe not)
-- [ ] Let user add a photo to an existing collection
 - [x] Let user clear the download destination folder (default: `~/Pictures/splash_photos`)
+
+- [ ] Deeper user interaction (likes, collection, photos upload, etc.) 
+    - [x] ~Include `User Authentication` [#27](https://github.com/splash-cli/splash-cli/issues/27)~
+    - [x] ~Let user like a photo~
+    - [x] ~Let user revert a wallpaper~
+    - [ ] Feature: Create new collections
+    - [ ] Feature: Add a photo to an existing collection
+    - [ ] Feature: Upload photos
+    - [ ] Feature: Manage (delete/edit) posted photos
+
 
 <br />
 
-By submitting a PR you agree to the [Developer Certificate of Origin](https://developercertificate.org)
+By submitting a PR you agree to the [Developer Certificate of Origin](https://developercertificate.org) 
+> (read below)
 
 ```
 Developer Certificate of Origin
