@@ -16,6 +16,7 @@ This file is a roadmap for who wants improve this repo.
     - [ ] Feature: Upload photos
     - [ ] Feature: Manage (delete/edit) posted photos
 
+I plan to do end "Deep use integration" and its subtasks before next minor release (v3.4.x)
 
 <br />
 
