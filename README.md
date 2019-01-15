@@ -24,7 +24,9 @@ You can use it to:
 	</a>
 </p>
 
-> Get beautiful wallpapers from [**Unsplash**][uwebsite]
+> 🔥[**StockPapers**][stockpapers]🔥 now available on [AppStore][stockpapers]
+
+<!-- > Get beautiful wallpapers from [**Unsplash**][uwebsite] -->
 
 ## :floppy_disk: Installation
 
@@ -126,10 +128,10 @@ List of awesome people that have helped to keep this project alive:
 Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all what you need to know about and [here](/docs/ROADMAP.md) you can find some things that I'd like to improve.
 
 ## :space_invader: Related Stuff
-- [Splash CLI Website](https://splash-cli.now.sh) - Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).
--🔥[StockPapers][stockpapers] 🔥 - Looking for mobile wallpapers? [StockPapers][stockpapers] is the solution!
-- [Unsplash](https://unsplash.com/) - Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
-- [Download Collections](https://github.com/Rawnly/collection-downloader-py) - Download **Unsplash** collections (_written in Python_)
+- [Splash CLI Website](https://splash-cli.now.sh) &mdash; Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).
+- 🔥[StockPapers][stockpapers] 🔥 &mdash; Looking for mobile wallpapers? [StockPapers][stockpapers] is the solution!
+- [Unsplash](https://unsplash.com/) &mdash; Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
+- [Collections Downloader](https://github.com/Rawnly/collection-downloader-py) &mdash; Download **Unsplash** collections (_written in Python_)
 
 ---
 
