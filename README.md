@@ -15,9 +15,9 @@ You can use it as an Unsplash terminal client, for example you can:
 - Change wallpaper on your desktop
 - Like or download photos.
 
-- ~Create new collections~ (Coming Soon[*](docs/ROADMAP.md))
-- ~Edit collections~ (Coming Soon[*](docs/ROADMAP.md))
-- ~Upload photos~ (Coming Soon[*](docs/ROADMAP.md))
+- ~Create new collections~ (Coming Soon[*](documentation/ROADMAP.md))
+- ~Edit collections~ (Coming Soon[*](documentation/ROADMAP.md))
+- ~Upload photos~ (Coming Soon[*](documentation/ROADMAP.md))
 
 ---
 
@@ -44,7 +44,7 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](h
 	$ yarn global add splash-cli
 ```
 
-## ❓ [FAQs](/docs/FAQ.md)
+## ❓ [FAQs](/documentation/FAQ.md)
 
 A list of **Frequently Asked Questions** can be found [**here**](https://github.com/splash-cli/splash-cli/issues?utf8=✓&q=is%3Aissue+label%3A%22%3Aquestion%3A++FAQ%22+)
 
@@ -129,7 +129,7 @@ List of awesome people that have helped to keep this project alive:
 
 ### How can I contribute?
 
-Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all what you need to know about and [here](/docs/ROADMAP.md) you can find some things that I'd like to improve.
+Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all what you need to know about and [here](/documentation/ROADMAP.md) you can find some things that I'd like to improve.
 
 ## :space_invader: Related Stuff
 - [Splash CLI Website](https://splash-cli.now.sh) &mdash; Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).
