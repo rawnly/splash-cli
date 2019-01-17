@@ -67,7 +67,7 @@
 		"simple-download": "^0.5.1",
 		"terminal-link": "^1.1.0",
 		"update-notifier": "^2.5.0",
-		"wallpaper": "^4.1.0"
+		"wallpaper": "latest"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
