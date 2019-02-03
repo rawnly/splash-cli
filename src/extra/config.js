@@ -2,7 +2,6 @@ import { pathFixer } from '../extra/utils';
 
 import Conf from 'conf';
 
-
 export const defaultSettings = {
 	lastWP: null,
 	'confirm-wallpaper': false,

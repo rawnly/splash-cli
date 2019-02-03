@@ -7,33 +7,35 @@ import { JSDOM } from 'jsdom';
 import { parseCollection, authenticatedRequest, tryParse, errorHandler, addTimeTo, now } from './utils';
 import { keys, config } from './config';
 
-
 export default class Unsplash {
-	endpoint = new URL('https://api.unsplash.com')
-	isLogged = config.has('user')
+	endpoint = new URL('https://api.unsplash.com');
+	isLogged = config.has('user');
 
-	static shared = new Unsplash(keys.client_id)
+	static shared = new Unsplash(keys.client_id);
 
 	constructor(client_id) {
 		this.endpoint.searchParams.set('client_id', client_id);
 	}
 
-	async getRandomPhoto({ collection = false, query = false, username = false, featured = false, count = 1 } = {}) {
+	async getRandomPhoto({ collection = false, query = false, username = false, featured = false, count = 1 } = {}) {
 		const endpoint = this.endpoint;
 
 		// Setup the route
 		endpoint.pathname = '/photos/random';
 
 		// Safe verification
-		if ( typeof count === 'number' ) {
+		if (typeof count === 'number') {
 			// Get only 1 photo
 			endpoint.searchParams.set('count', count);
 		}
 
 		// Parse collection aliases
-		if ( collection ) {
+		if (collection) {
 			if (collection.includes(',')) {
-				collection = collection.split(',').map(parseCollection).join(',');
+				collection = collection
+					.split(',')
+					.map(parseCollection)
+					.join(',');
 
 				endpoint.searchParams.set('collections', collection);
 			} else {
@@ -42,20 +44,19 @@ export default class Unsplash {
 		}
 
 		// Encode query
-		if ( query ) {
+		if (query) {
 			endpoint.searchParams.set('query', query);
 		}
 
 		// Encode username
-		if ( username ) {
+		if (username) {
 			endpoint.searchParams.set('username', username);
 		}
 
 		// Limit to featured photos
-		if ( typeof featured === 'boolean' ) {
+		if (typeof featured === 'boolean') {
 			endpoint.searchParams.set('featured', featured);
 		}
-
 
 		try {
 			if (this.isLogged) {
@@ -76,7 +77,6 @@ export default class Unsplash {
 		const endpoint = this.endpoint;
 
 		endpoint.pathname = `/photos/${parseID(id)}`;
-
 
 		try {
 			if (this.isLogged) {
@@ -114,32 +114,12 @@ export default class Unsplash {
 	}
 
 	async picOfTheDay() {
-		const configKey = 'pic-of-the-day';
-
-		if ( config.has(configKey) ) {
-			const setting = config.get(configKey);
-
-			const lastUpdate = new Date(setting.date.lastUpdate);
-			const willUpdate = addTimeTo(lastUpdate, setting.date.delay);
-
-			if ( lastUpdate.getTime() >= willUpdate.getTime() ) return this.getPhoto(setting.photo);
-		}
-
 		try {
-			const { body: html } = await got('https://unsplash.com');
-			const { window: { document } } = new JSDOM(html);
-
-			const id = Array.from(document.querySelectorAll('a')).find(el => /Photo of the day/i.test(el.innerHTML)).href.match(/[a-zA-Z0-9_-]{11}/g)[0];
-
-			config.set('pic-of-the-day', {
-				photo: id,
-				date: {
-					lastUpdate: now(),
-					delay: 1000 * 60 * 30
-				}
+			const { body: photo } = await got('https://lambda.splash-cli.app/day', {
+				json: true,
 			});
 
-			return this.getPhoto(id);
+			return await this.getPhoto(photo.id);
 		} catch (error) {
 			errorHandler(error);
 		}

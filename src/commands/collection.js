@@ -2,8 +2,10 @@ import { prompt } from 'inquirer';
 import chalk from 'chalk';
 import tlink from 'terminal-link';
 
+import { prompt } from 'inquirer';
+
 import { errorHandler, warnIfNotLogged, printBlock } from '../extra/utils';
-import { CollectionManager } from './libs/Collection';
+import { CollectionManager, Collection } from './libs/Collection';
 
 // TODO: finish to write this command
 export default async function userCommand([cmd, input]) {

@@ -20,22 +20,16 @@ import commands from './commands/index';
 import { defaultSettings as defaults } from './extra/config';
 import Unsplash from './extra/Unsplash';
 
-import {
-	clearSettings,
-	download,
-	errorHandler,
-	printBlock,
-	pathFixer
-} from './extra/utils';
+import { clearSettings, download, errorHandler, printBlock, pathFixer } from './extra/utils';
 
 const config = new Conf({ defaults });
 
 const spinner = new Ora({
 	color: 'yellow',
-	spinner: isMonth('december') ? 'christmas' : 'earth'
+	spinner: isMonth('december') ? 'christmas' : 'earth',
 });
 
-export default async function (input, flags) {
+export default async function(input, flags) {
 	const [command, ...subCommands] = input;
 	const options = {};
 
@@ -43,7 +37,6 @@ export default async function (input, flags) {
 	for (let i = 0; i < subCommands.length; i += 1) {
 		options[subCommands[i]] = subCommands[i];
 	}
-
 
 	if (flags.quiet) {
 		const emptyFunction = () => null;
@@ -68,7 +61,7 @@ export default async function (input, flags) {
 	}
 
 	if (fs.existsSync(config.get('directory'))) {
-		mkdirp(config.get('directory'), error => {
+		mkdirp(config.get('directory'), (error) => {
 			if (error) return errorHandler(error);
 		});
 	}
@@ -84,21 +77,18 @@ export default async function (input, flags) {
 		await clearSettings();
 		await Unsplash.shared.picOfTheDay();
 
-
-
 		printBlock(
-			chalk `Welcome to ${manifest.name}@{dim ${manifest.version}} {bold @${userInfo().username}}`,
+			chalk`Welcome to ${manifest.name}@{dim ${manifest.version}} {bold @${userInfo().username}}`,
 			'',
-			chalk `{dim CLI setup {green completed}!}`,
+			chalk`{dim CLI setup {green completed}!}`,
 			'',
-			chalk `{bold Enjoy "{yellow ${manifest.name}}" running {green splash}}`
+			chalk`{bold Enjoy "{yellow ${manifest.name}}" running {green splash}}`,
 		);
 
 		process.exit();
 	} else if (!config.has('pic-of-the-day') || !config.get('pic-of-the-day').date.delay) {
 		await Unsplash.shared.picOfTheDay();
 	}
-
 
 	if (!command) {
 		console.clear();
@@ -135,13 +125,13 @@ export default async function (input, flags) {
 			} else if (flags.id && parseID(flags.id)) {
 				photo = await Unsplash.shared.getPhoto(parseID(flags.id));
 			} else {
-				if (flags.id) spinner.warn = chalk `Invalid ID: "{yellow ${flags.id}}"`;
+				if (flags.id) spinner.warn = chalk`Invalid ID: "{yellow ${flags.id}}"`;
 
 				photo = await Unsplash.shared.getRandomPhoto({
 					query: flags.query,
 					username: flags.user,
 					featured: Boolean(flags.featured),
-					collection: flags.collection
+					collection: flags.collection,
 				});
 			}
 
@@ -153,9 +143,8 @@ export default async function (input, flags) {
 				}
 
 				if (photo.errors) {
-					return printBlock(chalk `{bold {red ERROR:}}`, ...photo.errors);
+					return printBlock(chalk`{bold {red ERROR:}}`, ...photo.errors);
 				}
-
 
 				const { url } = await Unsplash.shared.getDownloadLink(photo.id);
 
@@ -192,9 +181,9 @@ export default async function (input, flags) {
 			break;
 		default:
 			printBlock(
-				chalk `{bold {red Error}}: "{yellow ${command}}" is not a {dim splash} command.`,
+				chalk`{bold {red Error}}: "{yellow ${command}}" is not a {dim splash} command.`,
 				'',
-				chalk `See {dim splash --help}`
+				chalk`See {dim splash --help}`,
 			);
 			break;
 		}
