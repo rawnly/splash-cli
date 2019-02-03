@@ -40,6 +40,14 @@ export default async function settings([action, target]) {
 		}
 	);
 
+	const _confirmWallpaper = generateQuestion(
+		'_confirmWallpaper',
+		'Do you want to confirm each wallpaper?', {
+			default: false,
+			type: 'confirm'
+		}
+	);
+
 	const _updateInterval = generateQuestion('_updateInterval', 'Set the "pic of the day" update interval', { default: ms(1000 * 60 * 30), });
 
 
@@ -117,6 +125,9 @@ export default async function settings([action, target]) {
 		case 'askforcollection':
 			questions.push(_askForCollection);
 			break;
+		case 'confirm':
+			questions.push(_confirmWallpaper);
+			break;
 		case 'prompt':
 		case 'prompts':
 			questions.push(_askForCollection, _askForLike);
@@ -127,11 +138,12 @@ export default async function settings([action, target]) {
 			questions.push(_updateInterval);
 			break;
 		default:
-			questions.push(_userFolder, _directory, _askForCollection, _askForLike, _updateInterval);
+			questions.push(_userFolder, _directory, _confirmWallpaper, _askForCollection, _askForLike, _updateInterval);
 			break;
 		}
 
 		const {
+			_confirmWallpaper: confirmWallpaper,
 			_userFolder: folder,
 			_directory: dir,
 			_askForCollection: collection,
@@ -140,6 +152,11 @@ export default async function settings([action, target]) {
 		} = await ask(questions);
 
 		let validSetting = false;
+
+		if (confirmWallpaper !== undefined) {
+			config.set('confirm-wallpaper', confirmWallpaper);
+			validSetting = true;
+		}
 
 		if (picUpdateInterval !== undefined) {
 			config.set('pic-of-the-day', Object.assign({}, config.get('pic-of-the-day'), { date: { delay: picUpdateInterval } }));

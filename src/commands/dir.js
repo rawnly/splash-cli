@@ -14,7 +14,7 @@ export default async function dirCMD([cmd]) {
 		return printBlock(chalk `Found {cyan ${await Directory.count()}} photos.`);
 	case 'help':
 	case 'h':
-	case 'hwo':
+	case 'how':
 		printBlock('DIR HELP', '', chalk `
 				{bold {black {bgWhite COMMANDS}}}   	{bold {black {bgYellow ALIASES}}} 		{bold {black {bgWhite DESCRIPTION}}}
 

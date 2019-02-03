@@ -5,7 +5,7 @@ import { promisify } from 'util';
 import chalk from 'chalk';
 import Ora from 'ora';
 import { config } from '../../extra/config';
-import { errorHandler, pathFixer } from '../../extra/utils';
+import { errorHandler, fixPath } from '../../extra/utils';
 
 const ls = promisify(fs.readdir);
 const rm = promisify(fs.unlink);

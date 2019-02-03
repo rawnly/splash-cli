@@ -2,8 +2,9 @@ import { pathFixer } from '../extra/utils';
 
 import Conf from 'conf';
 
-
 export const defaultSettings = {
+	lastWP: null,
+	'confirm-wallpaper': false,
 	directory: pathFixer('~/Pictures/splash_photos'),
 	aliases: [
 		{ name: 'editorial', id: 317099 },
