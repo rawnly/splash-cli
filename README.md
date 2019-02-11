@@ -21,6 +21,8 @@ You can use it as an Unsplash terminal client, for example you can:
 
 ---
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4bc977dd83604e21b351bc28b7047d69)](https://app.codacy.com/app/Splash-Cli/splash-cli_2?utm_source=github.com&utm_medium=referral&utm_content=splash-cli/splash-cli&utm_campaign=Badge_Grade_Settings)
+
 <h6 align="center"> <a href="https://github.com/rawnly/dot-files">Terminal Setup</a> </h6>
 <p align="center">
 	<a href="https://splash-cli.now.sh" title="Splash CLI">
