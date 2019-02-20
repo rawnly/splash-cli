@@ -17,8 +17,11 @@
 	},
 	"scripts": {
 		"build": "rm -rf build && npm run test && babel src -d build && npm run copyHTML",
+		"buildW": "rimraf build && npm run test && babel src -d build && npm run copyHTMLW",
 		"copyHTML": "rm -rf build/pages && cp -rf src/pages build",
+		"copyHTMLW": "rimraf build/pages && cp-cli src/pages build",
 		"start": "npm run build && node build/bin/index.js",
+		"startW": "npm run buildW && node build/bin/index.js",
 		"fix": "eslint src/**/*.js --color --fix",
 		"test": "eslint src/**/*.js --color"
 	},
@@ -77,6 +80,8 @@
 		"babel-plugin-transform-regenerator": "^6.26.0",
 		"babel-plugin-transform-runtime": "^6.23.0",
 		"babel-preset-env": "^1.6.1",
-		"eslint": "4.x"
+		"cp-cli": "^2.0.0",
+		"eslint": "4.x",
+		"rimraf": "^2.6.3"
 	}
 }
