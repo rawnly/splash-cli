@@ -1,3 +1,4 @@
+import { prompt } from 'inquirer';
 import chalk from 'chalk';
 import tlink from 'terminal-link';
 
