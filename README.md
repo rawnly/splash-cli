@@ -48,7 +48,7 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](h
 
 ## ❓ [FAQs](/documentation/FAQ.md)
 
-A list of **Frequently Asked Questions** can be found [**here**](https://github.com/splash-cli/splash-cli/issues?utf8=✓&q=is%3Aissue+label%3A%22%3Aquestion%3A++FAQ%22+)
+A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://github.com/splash-cli/splash-cli/issues?utf8=✓&q=is%3Aissue+label%3A%22%3Aquestion%3A++FAQ%22+)
 
 #### - What is **Splash CLI**?
 
