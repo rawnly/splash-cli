@@ -21,8 +21,6 @@ You can use it as an Unsplash terminal client, for example you can:
 
 ---
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4bc977dd83604e21b351bc28b7047d69)](https://app.codacy.com/app/Splash-Cli/splash-cli_2?utm_source=github.com&utm_medium=referral&utm_content=splash-cli/splash-cli&utm_campaign=Badge_Grade_Settings)
-
 <h6 align="center"> <a href="https://github.com/rawnly/dot-files">Terminal Setup</a> </h6>
 <p align="center">
 	<a href="https://splash-cli.now.sh" title="Splash CLI">
@@ -62,9 +60,9 @@ A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://g
 > - Download photos by ID.
 > - Pick random photo from an user or a collection.
 
-#### - Why did you make it?
+#### - Why did you made it?
 
-> When I wrote **Splash CLI** it was just for fun, I never thought that someone could find this tool so useful/funny 😅
+> When I written **Splash CLI** it was just for fun, I never tought that someone could find this tool so useful/funny 😅
 
 ## :paw_prints: Usage
 
@@ -131,7 +129,7 @@ List of awesome people that have helped to keep this project alive:
 
 ### How can I contribute?
 
-Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all that you need to know about and [here](/documentation/ROADMAP.md) you can find some things that I'd like to improve.
+Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all what you need to know about and [here](/documentation/ROADMAP.md) you can find some things that I'd like to improve.
 
 ## :space_invader: Related Stuff
 - [Splash CLI Website](https://splash-cli.app) &mdash; Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).

@@ -1,5 +1,6 @@
 require('babel-polyfill');
 
+import got from 'got';
 import isMonth from '@splash-cli/is-month';
 import parseID from '@splash-cli/parse-unsplash-id';
 import chalk from 'chalk';
@@ -29,6 +30,11 @@ const spinner = new Ora({
 	spinner: isMonth('december') ? 'christmas' : 'earth',
 });
 
+/**
+ *
+ * @param {String[]} input
+ * @param {Object} flags
+ */
 export default async function(input, flags) {
 	const [command, ...subCommands] = input;
 	const options = {};
@@ -76,6 +82,9 @@ export default async function(input, flags) {
 	if (frun()) {
 		await clearSettings();
 		await Unsplash.shared.picOfTheDay();
+		await got('https://analytics.splash-cli.app', {
+			method: 'POST',
+		});
 
 		printBlock(
 			chalk`Welcome to ${manifest.name}@{dim ${manifest.version}} {bold @${userInfo().username}}`,

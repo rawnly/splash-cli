@@ -11,10 +11,48 @@ export default class Unsplash {
 	endpoint = new URL('https://api.unsplash.com');
 	isLogged = config.has('user');
 
-	static shared = new Unsplash(keys.client_id);
-
 	constructor(client_id) {
 		this.endpoint.searchParams.set('client_id', client_id);
+	}
+
+	static shared = new Unsplash(keys.client_id);
+
+	async getCollection(id) {
+		const endpoint = this.endpoint;
+
+		// Setup the route
+		endpoint.pathname = `/collections/${id}`;
+
+		try {
+			if (this.isLogged) {
+				return authenticatedRequest(this.endpoint.pathname);
+			}
+
+			const response = await got(this.endpoint.href);
+			if (response.statusCode !== 200) return errorHandler(new Error(response.statusMessage));
+			return tryParse(response.body);
+		} catch (error) {
+			errorHandler(error);
+		}
+	}
+
+	async getUser(id) {
+		const endpoint = this.endpoint;
+
+		// Setup the route
+		endpoint.pathname = `/users/${id}`;
+
+		try {
+			if (this.isLogged) {
+				return authenticatedRequest(this.endpoint.pathname);
+			}
+
+			const response = await got(this.endpoint.href);
+			if (response.statusCode !== 200) return errorHandler(new Error(response.statusMessage));
+			return tryParse(response.body);
+		} catch (error) {
+			errorHandler(error);
+		}
 	}
 
 	async getRandomPhoto({ collection = false, query = false, username = false, featured = false, count = 1 } = {}) {
@@ -115,7 +153,7 @@ export default class Unsplash {
 
 	async picOfTheDay() {
 		try {
-			const { body: photo } = await got('https://lambda.splash-cli.app/day', {
+			const { body: photo } = await got('https://lambda.splash-cli.app', {
 				json: true,
 			});
 

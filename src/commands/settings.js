@@ -10,7 +10,6 @@ import { prompt as ask } from 'inquirer';
 import { config } from '../extra/config';
 import { clearSettings, errorHandler, highlightJSON, printBlock, pathFixer } from '../extra/utils';
 
-
 export default async function settings([action, target]) {
 	const questions = [];
 
@@ -19,37 +18,37 @@ export default async function settings([action, target]) {
 
 	const _directory = generateQuestion('_directory', 'Default download path:', {
 		default: config.get('directory'),
-		filter: input => pathFixer(input)
+		filter: (input) => pathFixer(input),
 	});
 
 	const _askForLike = generateQuestion('_askForLike', 'Prompt to like the downloaded photo after download?', {
 		type: 'confirm',
-		default: config.get('askForLike')
+		default: config.get('askForLike'),
 	});
 
-	const _askForCollection = generateQuestion('_askForCollection', 'Prompt to add the downloaded photo to a collection?', {
+	const _askForCollection = generateQuestion(
+		'_askForCollection',
+		'Prompt to add the downloaded photo to a collection?',
+		{
+			type: 'confirm',
+			prefix: chalk`{red {bold [BETA]}}`,
+			default: config.get('askForCollection'),
+		},
+	);
+
+	const _userFolder = generateQuestion('_userFolder', 'Do you want store photos by username?', {
+		default: config.get('userFolder'),
 		type: 'confirm',
-		default: config.get('askForCollection')
 	});
 
-	const _userFolder = generateQuestion(
-		'_userFolder',
-		'Do you want store photos by username?', {
-			default: config.get('userFolder'),
-			type: 'confirm'
-		}
-	);
+	const _confirmWallpaper = generateQuestion('_confirmWallpaper', 'Do you want to confirm each wallpaper?', {
+		default: false,
+		type: 'confirm',
+	});
 
-	const _confirmWallpaper = generateQuestion(
-		'_confirmWallpaper',
-		'Do you want to confirm each wallpaper?', {
-			default: false,
-			type: 'confirm'
-		}
-	);
-
-	const _updateInterval = generateQuestion('_updateInterval', 'Set the "pic of the day" update interval', { default: ms(1000 * 60 * 30), });
-
+	const _updateInterval = generateQuestion('_updateInterval', 'Set the "pic of the day" cache expiration', {
+		default: ms(1000 * 60 * 60 * 3),
+	});
 
 	switch (action) {
 	case 'get':
@@ -71,7 +70,7 @@ export default async function settings([action, target]) {
 		delete settings['pic-of-the-day'];
 
 		if (!settings || (target && !settings[target])) {
-			return printBlock(chalk `Settings key: "{cyan ${target}}" {red {bold NOT} available}.`);
+			return printBlock(chalk`Settings key: "{cyan ${target}}" {red {bold NOT} available}.`);
 		}
 
 		if (settings[target]) {
@@ -79,27 +78,32 @@ export default async function settings([action, target]) {
 
 			o[target] = settings[target];
 
-			return printBlock(chalk `{bold {bgYellow {black SETTINGS}}}\n`, highlightJSON(o));
+			return printBlock(chalk`{bold {bgYellow {black SETTINGS}}}\n`, highlightJSON(o));
 		}
 
-		printBlock(chalk `{bold {bgYellow {black SETTINGS}}}\n`, highlightJSON(settings));
+		printBlock(chalk`{bold {bgYellow {black SETTINGS}}}\n`, highlightJSON(settings));
 		break;
 	case 'clear':
 	case 'reset':
 	case 'restore':
-		ask([generateQuestion('confirm', chalk `Are you sure? This action is {underline NOT reversable}!`, { type: 'confirm', default: false })])
+		ask([
+			generateQuestion('confirm', chalk`Are you sure? This action is {underline NOT reversable}!`, {
+				type: 'confirm',
+				default: false,
+			}),
+		])
 			.then(async ({ confirm }) => {
 				if (confirm) {
 					frun.clear();
 
 					await clearSettings();
 
-					printBlock(chalk `{yellow Settings Restored!}`);
+					printBlock(chalk`{yellow Settings Restored!}`);
 				} else {
-					printBlock(chalk `{red {bold Operation aborted!}}`);
+					printBlock(chalk`{red {bold Operation aborted!}}`);
 				}
 			})
-			.catch(error => {
+			.catch((error) => {
 				errorHandler(error);
 			});
 		break;
@@ -148,7 +152,7 @@ export default async function settings([action, target]) {
 			_directory: dir,
 			_askForCollection: collection,
 			_askForLike: like,
-			_updateInterval: picUpdateInterval
+			_updateInterval: picUpdateInterval,
 		} = await ask(questions);
 
 		let validSetting = false;
@@ -159,7 +163,10 @@ export default async function settings([action, target]) {
 		}
 
 		if (picUpdateInterval !== undefined) {
-			config.set('pic-of-the-day', Object.assign({}, config.get('pic-of-the-day'), { date: { delay: picUpdateInterval } }));
+			config.set(
+				'pic-of-the-day',
+				Object.assign({}, config.get('pic-of-the-day'), { date: { delay: picUpdateInterval } }),
+			);
 			validSetting = true;
 		}
 
@@ -185,28 +192,28 @@ export default async function settings([action, target]) {
 
 		if (!validSetting) {
 			printBlock(
-				chalk `{bold {red OOPS!}}`,
-				chalk `It seems that there were a {red problem} with your {cyan settings}...`,
+				chalk`{bold {red OOPS!}}`,
+				chalk`It seems that there were a {red problem} with your {cyan settings}...`,
 				'',
-				'{green Please try again} or {yellow report the issue} {dim (--report)}'
+				'{green Please try again} or {yellow report the issue} {dim (--report)}',
 			);
 			break;
 		}
 
 		printBlock(
-			chalk `{bold Settings saved!}`,
+			chalk`{bold Settings saved!}`,
 			'Run:',
 			'',
-			chalk `{dim $ splash} {green settings {bold get}}`,
+			chalk`{dim $ splash} {green settings {bold get}}`,
 			'',
-			'To view them.'
+			'To view them.',
 		);
 		break;
 	}
 }
 
 function generateQuestion(name, message, options = {}) {
-	const fieldRequired = input => {
+	const fieldRequired = (input) => {
 		if (input.length) return true;
 		return 'Error: that field is required!';
 	};
