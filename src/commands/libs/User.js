@@ -10,40 +10,39 @@ import { prompt } from 'inquirer';
 import got from 'got';
 
 import { config } from '../../extra/config';
-import { 
-	authenticatedRequest, 
-	errorHandler, 
-	authenticate, 
-	tryParse, 
-	printBlock , 
-	generateAuthenticationURL
+import {
+	authenticatedRequest,
+	errorHandler,
+	authenticate,
+	tryParse,
+	printBlock,
+	generateAuthenticationURL,
 } from '../../extra/utils';
 
 export default class User {
-	static user = config.get('user') || {}
+	static user = config.get('user') || {};
 
 	static auth = {
 		test: async ({ access_token, refresh_token } = {}) => {
-
 			try {
 				const user = config.get('user');
 
 				const { body } = await got('https://api.unsplash.com/me', {
 					headers: {
-						'Authorization': `Bearer ${user.token}`
-					}
+						Authorization: `Bearer ${user.token}`,
+					},
 				});
 
 				const profile = JSON.parse(body);
 
-				printBlock(chalk `{bold Welcome {cyan @${profile.username}}!}`);
+				printBlock(chalk`{bold Welcome {cyan @${profile.username}}!}`);
 
 				await User.auth.logout(true);
 
 				config.set('user', {
 					profile,
 					token: user.token,
-					refresh: user.token
+					refresh: user.token,
 				});
 
 				process.exit();
@@ -53,65 +52,99 @@ export default class User {
 		},
 		login: async () => {
 			const spinner = new Ora('Waiting...');
-			const authURL = generateAuthenticationURL('public', 'read_user', 'write_user', 'read_photos', 'write_photos', 'write_likes', 'write_followers', 'read_collections', 'write_collections');
+			const authURL = generateAuthenticationURL(
+				'public',
+				'read_user',
+				'write_user',
+				'read_photos',
+				'write_photos',
+				'write_likes',
+				'write_followers',
+				'read_collections',
+				'write_collections',
+			);
 
-			http.createServer(async (req, res) => {
-				const render = filename => {
-					try {
-						const html = fs.readFileSync(path.join(__dirname, '..', '..', 'pages', filename + '.html'));
-						res.writeHead(200, { 'Content-Type': 'text/html' });
-						res.write(html);
-						res.end();
-					} catch (error) {
-						errorHandler(error);
-					}
-				};
-
-				const send = (data) => {
-					try {
-						res.writeHead(200, {
-							'Content-Type': 'text/html'
-						});
-						res.write(data);
-						res.end();
-					} catch (error) {
-						errorHandler(error);
-					}
-				};
-
-				const redirect = to => {
-					res.writeHead(302, {
-						'Location': to
-					});
-					res.end();
-				};
-
-				if (req.url == '/login') return redirect(authURL);
-
-				if (req.url.includes('code')) {
-					if (req.url.match(/code=(.*)/)[1]) {
-						if (spinner) spinner.text = 'Authenticating...';
-
+			http
+				.createServer(async (req, res) => {
+					const render = (filename) => {
 						try {
-							spinner.stop();
-							const authorizationCode = req.url.match(/code=(.*)/)[1];
-							
-							let { body: data } = await authenticate({
-								client_id: 'a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c',
-								client_secret: '0a86783ec8a023cdfa38a39e9ffab7f1c974e48389dc045a8e4b3978d6966e94',
-								code: authorizationCode,
-								redirect_uri: 'http://localhost:5835'
+							const html = fs.readFileSync(path.join(__dirname, '..', '..', 'pages', filename + '.html'));
+							res.writeHead(200, { 'Content-Type': 'text/html' });
+							res.write(html);
+							res.end();
+						} catch (error) {
+							errorHandler(error);
+						}
+					};
+
+					const send = (data) => {
+						try {
+							res.writeHead(200, {
+								'Content-Type': 'text/html',
 							});
+							res.write(data);
+							res.end();
+						} catch (error) {
+							errorHandler(error);
+						}
+					};
 
-							if (typeof data == 'string') {
-								data = tryParse(data);
-							}
+					const redirect = (to) => {
+						res.writeHead(302, {
+							Location: to,
+						});
+						res.end();
+					};
 
-							if (data.error) {
-								spinner.fail(data.error);
+					if (req.url == '/login') return redirect(authURL);
 
-								send(data.error_description);
-								errorHandler(new Error(data.error_description));
+					if (req.url.includes('code')) {
+						if (req.url.match(/code=(.*)/)[1]) {
+							if (spinner) spinner.text = 'Authenticating...';
+
+							try {
+								spinner.stop();
+								const authorizationCode = req.url.match(/code=(.*)/)[1];
+
+								let { body: data } = await authenticate({
+									client_id: 'a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c',
+									client_secret: '0a86783ec8a023cdfa38a39e9ffab7f1c974e48389dc045a8e4b3978d6966e94',
+									code: authorizationCode,
+									redirect_uri: 'http://localhost:5835',
+								});
+
+								if (typeof data == 'string') {
+									data = tryParse(data);
+								}
+
+								if (data.error) {
+									spinner.fail(data.error);
+
+									send(data.error_description);
+									errorHandler(new Error(data.error_description));
+
+									setTimeout(() => {
+										process.exit(0);
+									}, 500);
+
+									return;
+								}
+
+								config.set('user', {
+									token: data.access_token,
+									refresh: data.refresh_token,
+									profile: {},
+								});
+
+								send('You can now close this tab.');
+
+								spinner.stop();
+
+								return User.auth.test(data);
+							} catch (error) {
+								send('An error is occurred. Please check you terminal app.');
+								spinner.fail('Failed.');
+								errorHandler(error);
 
 								setTimeout(() => {
 									process.exit(0);
@@ -119,42 +152,19 @@ export default class User {
 
 								return;
 							}
-
-							config.set('user', {
-								token: data.access_token,
-								refresh: data.refresh_token,
-								profile: {}
-							});
-
-							send('You can now close this tab.');
-
-							spinner.stop();
-
-							return User.auth.test(data);
-						} catch (error) {
-							send('An error is occurred. Please check you terminal app.');
-							spinner.fail('Failed.');
-							errorHandler(error);
-
-
-							setTimeout(() => {
-								process.exit(0);
-							}, 500);
-
-							return;
 						}
 					}
-				}
 
-				return render('index');
-			}).listen(5835, () => {
-				printBlock(
-					chalk `{yellow {bold Splash CLI:} Please click on the link below to login}`,
-					chalk `{cyan {dim ${terminalLink('Click Here', authURL)}}}`
-				);
+					return render('index');
+				})
+				.listen(5835, () => {
+					printBlock(
+						chalk`{yellow {bold Splash CLI:} Please click on the link below to login}`,
+						chalk`{cyan {dim ${terminalLink('Click Here', authURL)}}}`,
+					);
 
-				spinner.start();
-			});
+					spinner.start();
+				});
 		},
 		logout: async (force = false) => {
 			if (force) {
@@ -162,22 +172,24 @@ export default class User {
 				return true;
 			}
 
-			const { isSure } = await prompt([{
-				name: 'isSure',
-				message: 'Are you sure?',
-				default: false,
-				type: 'confirm'
-			}]);
+			const { isSure } = await prompt([
+				{
+					name: 'isSure',
+					message: 'Are you sure?',
+					default: false,
+					type: 'confirm',
+				},
+			]);
 
 			if (isSure !== true) {
-				console.log(chalk `{bold {red Aborted}}`);
+				console.log(chalk`{bold {red Aborted}}`);
 				return false;
 			}
 
 			config.delete('user');
 			return true;
-		}
-	}
+		},
+	};
 
 	static async get() {
 		let user;
@@ -194,9 +206,13 @@ export default class User {
 	}
 
 	static parseUser(user) {
-		return chalk `
+		return chalk`
 			{yellow Name}: ${user.name} {dim (@${user.username})}
-			{yellow Bio}: ${user.bio.trim().split('\n').map(item => item.replace(/^\s|\s$/g, '')).join('\n')}
+			{yellow Bio}: ${user.bio
+		.trim()
+		.split('\n')
+		.map((item) => item.replace(/^\s|\s$/g, ''))
+		.join('\n')}
 			{yellow Location}: ${user.location}
 
 			{dim —————————————————————————————————————————}
@@ -208,7 +224,10 @@ export default class User {
 
 			{yellow Followers}: ${user.followers_count}
 			{yellow Following}: ${user.following_count}
-		`.split('\n').map(item => '  ' + item.trim()).join('\n');
+		`
+			.split('\n')
+			.map((item) => '  ' + item.trim())
+			.join('\n');
 	}
 
 	static async update(payload) {
@@ -216,18 +235,20 @@ export default class User {
 			method: 'PUT',
 			body: JSON.stringify(payload, null, 2),
 			headers: {
-				'Content-Type': 'application/json'
-			}
+				'Content-Type': 'application/json',
+			},
 		});
 	}
 
 	static async getLikes() {
-		const { profile: { username, total_likes: totalLikes } } = config.get('user');
+		const {
+			profile: { username, total_likes: totalLikes },
+		} = config.get('user');
 		const likedPhotos = [];
 
 		const photos = await authenticatedRequest(`users/${username}/likes`);
 
-		photos.map(photo => {
+		photos.map((photo) => {
 			likedPhotos.push({
 				id: photo.id,
 				html: photo.links.html,
@@ -235,21 +256,25 @@ export default class User {
 				user: {
 					username: photo.user.username,
 					name: photo.user.name,
-					profile: photo.user.links.html
-				}
+					profile: photo.user.links.html,
+				},
 			});
 		});
 
 		return likedPhotos;
 	}
 
-	static getCollections() {
+	static async getCollections() {
+		const {
+			profile: { username },
+		} = config.get('user');
 
+		return await authenticatedRequest(`users/${username}/collections`);
 	}
 
 	static async likePhoto(id) {
 		return await authenticatedRequest(`photos/${id}/like`, {
-			method: 'POST'
+			method: 'POST',
 		});
 	}
 }
