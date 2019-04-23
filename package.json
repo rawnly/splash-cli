@@ -1,6 +1,6 @@
 {
 	"name": "splash-cli",
-	"version": "3.3.3-1",
+	"version": "3.3.3-3",
 	"main": "build/extra/Unsplash.js",
 	"readme": "README.md",
 	"homepage": "https://splash-cli.now.sh",
@@ -16,14 +16,15 @@
 		"url": "https://github.com/rawnly"
 	},
 	"scripts": {
-		"build": "rm -rf build && npm run test && babel src -d build && npm run copyHTML",
-		"buildW": "rimraf build && npm run test && babel src -d build && npm run copyHTMLW",
+		"build": "rm -rf build && babel src -d build&& npm run test && npm run copyHTML",
+		"buildW": "rimraf build && babel src -d build&& npm run test && npm run copyHTMLW",
 		"copyHTML": "rm -rf build/pages && cp -rf src/pages build",
 		"copyHTMLW": "rimraf build/pages && cp-cli src/pages build",
 		"start": "npm run build && node build/bin/index.js",
+		"start.nobuild": "node build/bin/index.js",
 		"startW": "npm run buildW && node build/bin/index.js",
 		"fix": "eslint src/**/*.js --color --fix",
-		"test": "eslint src/**/*.js --color"
+		"test": "ava"
 	},
 	"bin": {
 		"splash": "build/bin/index.js"
@@ -51,8 +52,10 @@
 		"@splash-cli/is-month": "^1.1.1",
 		"@splash-cli/parse-unsplash-id": "^0.0.1",
 		"@splash-cli/show-copy": "^1.1.0",
+		"ava": "^1.4.1",
 		"babel-polyfill": "^6.26.0",
 		"chalk": "^2.4.1",
+		"cli-table": "^0.3.1",
 		"conf": "^1.4.0",
 		"dotenv": "^6.2.0",
 		"figures": "^2.0.0",
@@ -60,6 +63,7 @@
 		"got": "^8.3.1",
 		"inquirer": "^5.2.0",
 		"is-image": "^2.0.0",
+		"isomorphic-fetch": "^2.2.1",
 		"jsdom": "^11.10.0",
 		"lodash": "^4.17.10",
 		"meow": "^5.0.0",
@@ -73,15 +77,26 @@
 		"wallpaper": "^4.2.0"
 	},
 	"devDependencies": {
+		"@babel/plugin-transform-spread": "^7.2.2",
 		"babel-cli": "^6.26.0",
 		"babel-eslint": "8",
+		"babel-plugin-module-resolver": "^3.2.0",
 		"babel-plugin-transform-async-to-generator": "^6.24.1",
 		"babel-plugin-transform-class-properties": "^6.24.1",
+		"babel-plugin-transform-object-rest-spread": "^6.26.0",
 		"babel-plugin-transform-regenerator": "^6.26.0",
 		"babel-plugin-transform-runtime": "^6.23.0",
 		"babel-preset-env": "^1.6.1",
 		"cp-cli": "^2.0.0",
 		"eslint": "4.x",
 		"rimraf": "^2.6.3"
+	},
+	"ava": {
+		"babel": {
+			"testOptions": {
+				"babelrc": false,
+				"configFile": false
+			}
+		}
 	}
 }
