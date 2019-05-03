@@ -5,7 +5,7 @@ import { promisify } from 'util';
 import chalk from 'chalk';
 import Ora from 'ora';
 import { config } from '../../extra/config';
-import { errorHandler, fixPath } from '../../extra/utils';
+import { errorHandler, pathFixer } from '../../extra/utils';
 
 const ls = promisify(fs.readdir);
 const rm = promisify(fs.unlink);
@@ -47,6 +47,6 @@ export default class Directory {
 	}
 
 	static getPath() {
-		return fixPath(config.get('directory'));
+		return pathFixer(config.get('directory'));
 	}
 }
