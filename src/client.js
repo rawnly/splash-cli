@@ -82,7 +82,7 @@ export default async function(input, flags) {
 	if (frun()) {
 		await clearSettings();
 		await Unsplash.shared.picOfTheDay();
-		await got('https://analytics.splash-cli.app', {
+		await got('https://analytics.splash-cli.app/api/users', {
 			method: 'POST',
 		});
 
