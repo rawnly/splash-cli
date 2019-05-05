@@ -82,9 +82,6 @@ export default async function(input, flags) {
 	if (frun()) {
 		await clearSettings();
 		await Unsplash.shared.picOfTheDay();
-		await got('https://analytics.splash-cli.app/api/users', {
-			method: 'POST',
-		});
 
 		printBlock(
 			chalk`Welcome to ${manifest.name}@{dim ${manifest.version}} {bold @${userInfo().username}}`,
@@ -93,6 +90,14 @@ export default async function(input, flags) {
 			'',
 			chalk`{bold Enjoy "{yellow ${manifest.name}}" running {green splash}}`,
 		);
+
+		try {
+			await got('https://analytics.splash-cli.app/api/users', {
+				method: 'POST',
+			});
+		} catch (error) {
+			errorHandler(error);
+		}
 
 		process.exit();
 	} else if (!config.has('pic-of-the-day') || !config.get('pic-of-the-day').date.delay) {
