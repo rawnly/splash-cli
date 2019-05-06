@@ -1,8 +1,29 @@
 import chalk from 'chalk';
 import tlink from 'terminal-link';
+import parseID from '@splash-cli/parse-unsplash-id';
 
-import { errorHandler, warnIfNotLogged, printBlock } from '../extra/utils';
+import { errorHandler, warnIfNotLogged, printBlock, authenticate, authenticatedRequest } from '../extra/utils';
 import { CollectionManager } from './libs/Collection';
+import Aliases from './libs/Alias';
+import { prompt } from 'inquirer';
+
+const getCreateQuestions = (name = null) => [
+	{
+		name: 'name',
+		message: 'Name:',
+		default: name,
+	},
+	{
+		name: 'description',
+		message: 'Description:',
+	},
+	{
+		name: 'private',
+		message: 'Is this collection private?',
+		default: false,
+		type: 'confirm',
+	},
+];
 
 // TODO: finish to write this command
 export default async function userCommand([cmd, input]) {
@@ -12,6 +33,64 @@ export default async function userCommand([cmd, input]) {
 		if (cmd) cmd = cmd.toString().toLowerCase();
 
 		switch (cmd) {
+		case 'new':
+		case 'create':
+			const { name: title, description, private: isPrivate } = await prompt(getCreateQuestions(input));
+			const newCollection = await CollectionManager.create(title, description, isPrivate);
+
+			if (!Aliases.has(title)) {
+				Aliases.set(title, newCollection.id);
+			}
+
+			return userCommand(['get', `${newCollection.id}`]);
+		case 'add':
+		case 'add-photos':
+			printBlock(chalk`{bold {yellow Type "stop" or "exit" to add photos.}}`);
+			let photos = [];
+
+			if (!input) {
+				errorHandler(new Error('Missing collection ID!'));
+				return;
+			}
+
+			const c = Aliases.get(input) || parseInt(input);
+			const addPhotos = async (array) => {
+				const { photo_id } = await prompt([
+					{
+						name: 'photo_id',
+						message: 'Photo ID or URL',
+						prefix: chalk.green(`(${array.length})`),
+					},
+				]);
+
+				if (photo_id === 'stop' || photo_id === 'exit') return;
+
+				const id = parseID(photo_id);
+				array.push(id);
+
+				await addPhotos(array);
+			};
+
+			await addPhotos(photos);
+
+			// TODO: End implementation
+			await Promise.all(
+				photos.map(
+					async (photo) =>
+						await authenticatedRequest(`/collections/${c}/add`, {
+							method: 'POST',
+							body: JSON.stringify({
+								photo_id: photo,
+							}),
+							headers: {
+								'Content-Type': 'application/json',
+							},
+						}),
+				),
+			);
+
+			printBlock('Congratualtions!');
+			break;
 		case 'get':
 			let collection = await CollectionManager.get(input);
 			collection = await collection.info();
