@@ -20,8 +20,8 @@ You can use it as an Unsplash terminal client, for example you can:
 - Like or download photos.
 
 - ~Create new collections~ (Coming Soon[*](documentation/ROADMAP.md))
-- ~Edit collections~ (Coming Soon[*](documentation/ROADMAP.md))
-- ~Upload photos~ (Coming Soon[*](documentation/ROADMAP.md))
+<!-- - ~Edit collections~ (Coming Soon[*](documentation/ROADMAP.md)) -->
+- ~Upload photos~ (See [#47](https://github.com/splash-cli/splash-cli/issues/47))
 
 ---
 
