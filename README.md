@@ -1,6 +1,6 @@
 <p align="center">
   <!-- <img src="https://img.shields.io/npm/dt/splash-cli.svg?style=for-the-badge" alt="Downloads" /> -->
-  <img alt="npm" src="https://img.shields.io/npm/dw/splash-cli.svg?style=for-the-badge">
+  <img alt="npm" src="https://img.shields.io/npm/dm/splash-cli.svg?style=for-the-badge">
   <img src="https://img.shields.io/github/package-json/v/splash-cli/splash-cli.svg?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/travis/splash-cli/splash-cli/master.svg?style=for-the-badge" alt="Travis CI" />
 	<br />
