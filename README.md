@@ -18,9 +18,9 @@ You can use it as an Unsplash terminal client, for example you can:
 
 - Change wallpaper on your desktop
 - Like or download photos.
+- Create new collections
+- Edit collections
 
-- ~Create new collections~ (Coming Soon[*](documentation/ROADMAP.md))
-<!-- - ~Edit collections~ (Coming Soon[*](documentation/ROADMAP.md)) -->
 - ~Upload photos~ (See [#47](https://github.com/splash-cli/splash-cli/issues/47))
 
 ---
@@ -136,6 +136,7 @@ List of awesome people that have helped to keep this project alive:
 Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all what you need to know about and [here](/documentation/ROADMAP.md) you can find some things that I'd like to improve.
 
 ## :space_invader: Related Stuff
+
 - [Splash CLI Website](https://splash-cli.app) &mdash; Powered by [`Next.js`](https://nextjs.org) you can take a look at the code [here](https://github.com/splash-cli/splash-cli-website/).
 - 🔥[StockPapers][stockpapers] 🔥 &mdash; Looking for mobile wallpapers? [StockPapers][stockpapers] is the solution!
 - [Unsplash](https://unsplash.com/) &mdash; Free [do whatever you want](https://unsplash.com/license) high-resolution photos.
