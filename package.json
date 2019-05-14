@@ -1,6 +1,6 @@
 {
 	"name": "splash-cli",
-	"version": "3.3.5",
+	"version": "3.4.0",
 	"main": "build/extra/Unsplash.js",
 	"readme": "README.md",
 	"homepage": "https://splash-cli.now.sh",
