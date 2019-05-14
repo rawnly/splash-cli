@@ -16,6 +16,10 @@ export const mapTableContent = (content) =>
 	content.map((command) =>
 		command.map((item, index) => {
 			if (index === 0) {
+				if (item.includes(':')) {
+					return item;
+				}
+
 				return chalk`{cyan {bold ${item}}}`;
 			}
 
@@ -24,7 +28,7 @@ export const mapTableContent = (content) =>
 					return item.map((text) => chalk`{yellow ${text}}`).join(', ');
 				}
 
-				return item === 'null' ? chalk`{dim ${item}}` : chalk`{yellow ${item}}`;
+				return item === 'null' || !item ? chalk`{gray --}` : chalk`{yellow ${item}}`;
 			}
 
 			if (index === 2) {

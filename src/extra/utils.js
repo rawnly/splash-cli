@@ -5,6 +5,7 @@ import path from 'path';
 import os from 'os';
 import { URL } from 'url';
 
+import fuzzy from 'fuzzy';
 import { prompt } from 'inquirer';
 import isMonth from '@splash-cli/is-month';
 import showCopy from '@splash-cli/show-copy';
@@ -12,7 +13,6 @@ import chalk from 'chalk';
 import figures from 'figures';
 import got from 'got';
 import isImage from 'is-image';
-import { JSDOM } from 'jsdom';
 import mkdirp from 'mkdirp';
 import Ora from 'ora';
 import RemoteFile from 'simple-download';
@@ -22,8 +22,9 @@ import normalize from 'normalize-url';
 
 import { config, defaultSettings, keys } from './config';
 
-import User from '../commands/libs/User';
 import Alias from '../commands/libs/Alias';
+import User from '../commands/libs/User';
+import { Collection } from '../commands/libs/Collection';
 
 /**
  * @description Generate auth URL
@@ -84,6 +85,16 @@ export async function authenticate({ client_id, client_secret, code, redirect_ur
  */
 export async function authenticatedRequest(endpoint, options = {}) {
 	warnIfNotLogged();
+	let isJSON = false;
+
+	if (options.json) {
+		options.headers = {
+			...options.headers,
+			'Content-Type': 'application/json',
+		};
+
+		delete options.json;
+	}
 
 	const { token } = config.get('user');
 	const httpOptions = {
@@ -94,7 +105,7 @@ export async function authenticatedRequest(endpoint, options = {}) {
 		},
 	};
 
-	const response = await got(`https://api.unsplash.com/${endpoint}`, httpOptions);
+	const response = await got(normalize(`https://api.unsplash.com/${endpoint}`), httpOptions);
 
 	switch (response.statusCode) {
 	case 200:
@@ -212,6 +223,39 @@ export function isPath(p) {
 	return /([a-z]\:|)(\w+|\~+|\.|)\\\w+|(\w+|\~+|)\/\w+/i.test(p);
 }
 
+export const getCollection = async () => {
+	let list = await User.getCollections();
+	list = list.map(({ title, id, curated, updatedAt, description }) => ({
+		id,
+		title,
+		curated,
+		updatedAt,
+		description,
+	}));
+
+	const searchCollections = (collections, defaultValue = '') => (answers, input) => {
+		input = input || defaultValue || '';
+
+		return new Promise(async (resolve) => {
+			collections = collections.map((item) => chalk`{dim [${item.id}]} {yellow ${item.title}}`);
+			const fuzzyResult = fuzzy.filter(input, collections);
+			resolve(fuzzyResult.map((el) => el.original));
+		});
+	};
+
+	const { collection_id } = await prompt([
+		{
+			name: 'collection_id',
+			type: 'autocomplete',
+			message: 'Please choose a collection',
+			source: (answers, input) => searchCollections(list)(answers, input),
+			filter: (value) => parseInt(value.match(/\[(\d+)\].*?/i)[1].trim()),
+		},
+	]);
+
+	return collection_id;
+};
+
 /**
  * @description Download a photo
  *
@@ -327,7 +371,6 @@ export async function download(photo, url, flags, setAsWP = true) {
 		} else if (photo.liked_by_user) {
 			logger.info(chalk`{dim Photo liked by user.}`);
 			console.log();
-			return;
 		}
 
 		if (flags.save) return;
@@ -349,23 +392,27 @@ export async function download(photo, url, flags, setAsWP = true) {
 				message: 'Do you like this photo?',
 				type: 'confirm',
 				default: true,
-				when: () => promptLike && photo.liked_by_user == false && !flags.quiet,
+				when: () => promptLike && !photo.liked_by_user && !flags.quiet,
 			},
-			// {
-			// 	name: 'addToCollection',
-			// 	message: 'Do you want add this photo to a collection?',
-			// 	type: 'confirm',
-			// 	default: false,
-			// 	when: () => promptCollection && !flags.quiet,
-			// },
+			{
+				name: 'addToCollection',
+				message: 'Do you want add this photo to a collection?',
+				type: 'confirm',
+				default: false,
+				when: () => promptCollection && !flags.quiet,
+			},
 		]);
 
-		if (!confirmed) {
+		if (!confirmed && confirmWallpaper) {
 			const lastWP = config.get('lastWP');
 			wallpaper.set(lastWP);
+			return;
 		}
 
-		if (liked === true) {
+		const currentWallpaper = await wallpaper.get();
+		config.set('lastWP', currentWallpaper);
+
+		if (liked === true && promptLike) {
 			const id = photo._id || photo.id;
 
 			try {
@@ -373,6 +420,22 @@ export async function download(photo, url, flags, setAsWP = true) {
 
 				console.log();
 				console.log('Photo liked.');
+			} catch (error) {
+				errorHandler(error);
+			}
+		}
+
+		if (addToCollection === true && promptCollection) {
+			const id = photo._id || photo.id;
+
+			try {
+				const collection_id = await getCollection();
+				const collection = new Collection(collection_id);
+
+				await collection.addPhoto(id);
+
+				console.log();
+				console.log('Photo added to the collection.');
 			} catch (error) {
 				errorHandler(error);
 			}

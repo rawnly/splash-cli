@@ -56,6 +56,8 @@ export default async function settings([action, target]) {
 			target = 'pic-of-the-day';
 		}
 
+		const { token: Bearer } = config.get('user');
+
 		const settings = config.get(); //target ? config.get(target) : config.get();
 
 		if (settings['pic-of-the-day'].date.delay) {
@@ -71,6 +73,10 @@ export default async function settings([action, target]) {
 
 		if (!settings || (target && !settings[target])) {
 			return printBlock(chalk`Settings key: "{cyan ${target}}" {red {bold NOT} available}.`);
+		}
+
+		if (Bearer) {
+			settings['OAuth Token'] = Bearer;
 		}
 
 		if (settings[target]) {
