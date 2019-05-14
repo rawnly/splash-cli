@@ -3,7 +3,7 @@
 	"version": "3.4.0",
 	"main": "build/extra/Unsplash.js",
 	"readme": "README.md",
-	"homepage": "https://splash-cli.now.sh",
+	"homepage": "https://splash-cli.app",
 	"description": "Get beautiful wallpapers from unsplash.",
 	"license": "MIT",
 	"repository": {
