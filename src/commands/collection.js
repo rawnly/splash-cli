@@ -316,6 +316,7 @@ View more ${tlink('here', collection.links.html)}
 				['create', 'make', 'CREATE A NEW COLLECTION'],
 				[chalk`photos{gray :add}`, 'null', 'ADD PHOTOS TO A COLLECTION'],
 				[chalk`photos{gray :remove}`, 'null', 'REMOVE PHOTOS FROM A COLLECTION'],
+				['help', 'how', 'SHOWS THIS MESSAGE'],
 			]);
 
 			const table = new Table(TableUtility.helpTableConfiguration);
