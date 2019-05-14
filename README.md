@@ -1,7 +1,11 @@
 <p align="center">
-  <img src="https://img.shields.io/npm/dt/splash-cli.svg?style=for-the-badge" alt="Downloads" />
+  <!-- <img src="https://img.shields.io/npm/dt/splash-cli.svg?style=for-the-badge" alt="Downloads" /> -->
+  <img alt="npm" src="https://img.shields.io/npm/dw/splash-cli.svg?style=for-the-badge">
   <img src="https://img.shields.io/github/package-json/v/splash-cli/splash-cli.svg?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/travis/splash-cli/splash-cli/master.svg?style=for-the-badge" alt="Travis CI" />
+	<br />
+  <img alt="Website" src="https://img.shields.io/website/https/splash-cli.app.svg?down_color=red&style=for-the-badge">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues/splash-cli/splash-cli.svg?style=for-the-badge">
 </p>
 <br>
 
@@ -16,8 +20,8 @@ You can use it as an Unsplash terminal client, for example you can:
 - Like or download photos.
 
 - ~Create new collections~ (Coming Soon[*](documentation/ROADMAP.md))
-- ~Edit collections~ (Coming Soon[*](documentation/ROADMAP.md))
-- ~Upload photos~ (Coming Soon[*](documentation/ROADMAP.md))
+<!-- - ~Edit collections~ (Coming Soon[*](documentation/ROADMAP.md)) -->
+- ~Upload photos~ (See [#47](https://github.com/splash-cli/splash-cli/issues/47))
 
 ---
 
