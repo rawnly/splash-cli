@@ -64,9 +64,9 @@ A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://g
 > - Download photos by ID.
 > - Pick random photo from an user or a collection.
 
-#### - Why did you made it?
+#### - Why did you make it?
 
-> When I written **Splash CLI** it was just for fun, I never tought that someone could find this tool so useful/funny 😅
+> When I wrote **Splash CLI** it was just for fun, I never tought that someone could find this tool so useful/funny 😅
 
 ## :paw_prints: Usage
 
