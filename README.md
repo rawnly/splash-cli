@@ -145,21 +145,22 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 ---
 
 <p align="center">
-	Made with love by <a href="https://federicovitale.me"> Federico Vitale </a> in :it:
+	Made with love by <a href="https://fedevitale.dev"> Federico Vitale </a> in :it:
 </p>
 
 <p align="center">
 	<a href="https://twitter.com/rawnlydev"> Twitter </a>
 	-
-	<a href="https://splash-cli.now.sh"> Official Website </a>
+	<a href="https://splash-cli.app"> Official Website </a>
 	-
-	<a href="https://instagram.com/fede.vitale"> Instagram </a>
+	<a href="https://instagram.com/fedevitale.dev"> Instagram </a>
 </p>
 
 [uwebsite]: https://unsplash.com
 [desk]: https://github.com/rawnly/splashdesktop
 [oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
 [hyper]: https://github.com/zeit/hyper
+[splash-site]: https://splash-cli.app
 [old-branch]: https://github.com/rawnly/splash-cli/tree/node%3C%3D7
 [sample]: https://i.imgur.com/o0eXz6F.gif
 [help]: https://user-images.githubusercontent.com/16429579/33238956-68de7c6a-d298-11e7-841d-2da1c624fce8.png
