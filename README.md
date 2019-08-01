@@ -37,6 +37,8 @@ You can use it as an Unsplash terminal client, for example you can:
 <!-- > Get beautiful wallpapers from [**Unsplash**][uwebsite] -->
 
 ## :floppy_disk: Installation
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fsplash-cli%2Fsplash-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fsplash-cli%2Fsplash-cli?ref=badge_shield)
+
 
 To install `splash-cli` you must use a **node package manager** such as [yarn](https://yarnpkg.com) or [npm](https://npmjs.com).
 
@@ -165,3 +167,7 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 [sample]: https://i.imgur.com/o0eXz6F.gif
 [help]: https://user-images.githubusercontent.com/16429579/33238956-68de7c6a-d298-11e7-841d-2da1c624fce8.png
 [stockpapers]: https://itunes.apple.com/us/app/stock-papers/id1443861313
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fsplash-cli%2Fsplash-cli.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fsplash-cli%2Fsplash-cli?ref=badge_large)
