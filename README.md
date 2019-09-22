@@ -27,12 +27,12 @@ You can use it as an Unsplash terminal client, for example you can:
 
 <h6 align="center"> <a href="https://github.com/rawnly/dot-files">Terminal Setup</a> </h6>
 <p align="center">
-	<a href="https://splash-cli.now.sh" title="Splash CLI">
+	<a href="https://splash-cli.app" title="Splash CLI">
 		<img src="https://user-images.githubusercontent.com/16429579/46895514-07154800-ce79-11e8-9e1c-0df66a38a915.gif" />
 	</a>
 </p>
 
-> 🔥[**StockPapers**][stockpapers]🔥 now available on [AppStore][stockpapers]
+> :eyes: [**Looking for mainteiners!**][mailtome] :eyes:
 
 <!-- > Get beautiful wallpapers from [**Unsplash**][uwebsite] -->
 
@@ -165,3 +165,4 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 [sample]: https://i.imgur.com/o0eXz6F.gif
 [help]: https://user-images.githubusercontent.com/16429579/33238956-68de7c6a-d298-11e7-841d-2da1c624fce8.png
 [stockpapers]: https://itunes.apple.com/us/app/stock-papers/id1443861313
+[mailtome]: mailto:fedevitale99@gmail.com?subject=Splash%20CLI%20%20Mainteniner
