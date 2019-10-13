@@ -146,6 +146,7 @@ export default async function(input, flags) {
 					username: flags.user,
 					featured: Boolean(flags.featured),
 					collection: flags.collection,
+					orientation: flags.orientation
 				});
 			}
 
