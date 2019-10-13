@@ -3,7 +3,7 @@ import chalk from 'chalk';
 
 import pkg from '../../package.json';
 
-export default chalk `{bold Usage} [{dim v${pkg.version}}]
+export default chalk`{bold Usage} [{dim v${pkg.version}}]
 	${isMonth('december') ? chalk`{yellow Merry Christmas!}\n` : ''}
 	$ {green splash} {dim [command] [flags]}
 
@@ -20,9 +20,12 @@ export default chalk `{bold Usage} [{dim v${pkg.version}}]
 	{yellow -h --help}			{dim THIS MESSAGE}
 	{yellow -v --version}			{dim v${pkg.version}}
 
-	${process.platform === 'darwin' ? (
-		chalk`{yellow --scale {dim <auto|fill|fit|stretch|center>}}  {dim SET WALLPAPER SCALE}\n\t{yellow --screen {dim <all|main|monitor number>}}	{dim SET AS WALLPAPER ON SELECTED MONITOR}`
-	) : ('')}
+	${
+	process.platform === 'darwin'
+		? chalk`{yellow --scale {dim <auto|fill|fit|stretch|center>}}  {dim SET WALLPAPER SCALE}\n\t{yellow --screen {dim <all|main|monitor number>}}	{dim SET AS WALLPAPER ON SELECTED MONITOR}`
+		: ''
+}
+	{yellow --orientation {dim <landscape|portrait|squarish>}} {dim SET WALLPAPER ORIENTATION (DEFAULT: 'landscape')}
 
 	{yellow -s --save {dim [optional_path]}} 	{dim DOWNLOAD WITHOUT SETTING AS WALLPAPER}
 	{yellow --set {dim <path>}} 			{dim SET GIVEN PHOTO AS WALLPAPER}
@@ -38,7 +41,7 @@ export default chalk `{bold Usage} [{dim v${pkg.version}}]
 	{red --day}				{dim GET THE PHOTO OF THE DAY}
 	{red --id {dim <id or url>}}		{dim PHOTO BY ID}
 	{red --collection {dim <id or alias>}}	{dim RANDOM PHOTO FROM PROVIDED COLLECTION}
-	
+
 {bold {magenta Search Filters}}
 	{magenta -f --featured}			{dim LIMIT TO ONLY FEATURED PHOTOS}
 	{magenta --query {dim <query>}}			{dim RANDOM FROM QUERY}
