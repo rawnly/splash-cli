@@ -26,8 +26,8 @@ export const defaultSettings = {
 export const config = new Conf({ defaults: defaultSettings });
 
 export const keys = {
-	client_id: 'a70f2ffae3634a7bbb5b3f94998e49ccb2e85922fa3215ccb61e022cf57ca72c',
-	client_secret: '0a86783ec8a023cdfa38a39e9ffab7f1c974e48389dc045a8e4b3978d6966e94',
+	client_id: '891db6b7b57458f71f6d0c54918fa150c269dec61e6cfd3ce51a0d74e89e6df2',
+	client_secret: 'c415049c76eed5e2d072b49191be46d78f27609f4e273a64e37e0f7b2324d9ad',
 	redirect_uri: 'http://localhost:5835/'
 };
 

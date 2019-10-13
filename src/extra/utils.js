@@ -78,6 +78,25 @@ export async function authenticate({ client_id, client_secret, code, redirect_ur
 	});
 }
 
+export async function grabKeys(updateConfig = false) {
+	const url = new URL('https://keys.splash-cli.app');
+
+	const response = await got(normalize(url.href), {
+		method: 'GET',
+		json: true,
+		headers: {
+			Accept: 'application/json',
+		},
+	});
+
+	if (updateConfig) {
+		config.set('client_id', response.body.client_id);
+		config.set('client_secret', response.body.client_secret);
+	}
+
+	return response;
+}
+
 /**
  * @description Make an authenticated request (with bearer)
  * @param {String} endpoint
@@ -85,7 +104,6 @@ export async function authenticate({ client_id, client_secret, code, redirect_ur
  */
 export async function authenticatedRequest(endpoint, options = {}) {
 	warnIfNotLogged();
-	let isJSON = false;
 
 	if (options.json) {
 		options.headers = {
