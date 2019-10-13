@@ -56,12 +56,14 @@ export default async function settings([action, target]) {
 			target = 'pic-of-the-day';
 		}
 
-		const { token: Bearer } = config.get('user');
+		const user = config.get('user');
 
 		const settings = config.get(); //target ? config.get(target) : config.get();
 
-		if (settings['pic-of-the-day'].date.delay) {
-			settings['pic-of-the-day'].date.delay = ms(settings['pic-of-the-day'].date.delay);
+		if (settings['pic-of-the-day'] && settings['pic-of-the-day'].date) {
+			if (settings['pic-of-the-day'].date.delay) {
+				settings['pic-of-the-day'].date.delay = ms(settings['pic-of-the-day'].date.delay);
+			}
 		}
 
 		settings.picOfTheDay = settings['pic-of-the-day'];
@@ -75,8 +77,8 @@ export default async function settings([action, target]) {
 			return printBlock(chalk`Settings key: "{cyan ${target}}" {red {bold NOT} available}.`);
 		}
 
-		if (Bearer) {
-			settings['OAuth Token'] = Bearer;
+		if (user && user.token) {
+			settings['OAuth Token'] = user.token;
 		}
 
 		if (settings[target]) {
