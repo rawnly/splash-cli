@@ -1,7 +1,7 @@
 <p align="center">
-	<a href="https://www.producthunt.com/posts/splash-cli?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-splash-cli" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=136902&theme=light" alt="Splash CLI - Beautiful wallpapers from Unsplash in your terminal 🖼️🛠️ | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>
+	<a href="https://www.producthunt.com/posts/splash-cli?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-splash-cli" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=136902&theme=dark" alt="Splash CLI - Beautiful wallpapers from Unsplash in your terminal 🖼️🛠️ | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>
 	&nbsp;&nbsp;&nbsp;
-	<a href="https://www.producthunt.com/posts/splash-cli?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-splash-cli" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=136902&theme=light&period=daily" alt="Splash CLI - Beautiful wallpapers from Unsplash in your terminal 🖼️🛠️ | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>
+	<a href="https://www.producthunt.com/posts/splash-cli?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-splash-cli" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=136902&theme=dark&period=daily" alt="Splash CLI - Beautiful wallpapers from Unsplash in your terminal 🖼️🛠️ | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a>
 </p>
 <p align="center">
   <!-- <img src="https://img.shields.io/npm/dt/splash-cli.svg?style=for-the-badge" alt="Downloads" /> -->
