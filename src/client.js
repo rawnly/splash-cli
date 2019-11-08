@@ -37,7 +37,7 @@ const spinner = new Ora({
  * @param {Object} flags
  */
 export default async function(input, flags) {
-	dns.lookup('unsplash.com', (error) => {
+	dns.lookup('api.unsplash.com', (error) => {
 		if (error && error.code === 'ENOTFOUND') {
 			console.error(chalk.red('\n Please check your internet connection.\n'));
 			process.exit(1);
