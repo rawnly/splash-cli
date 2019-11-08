@@ -2,7 +2,6 @@ import { URL } from 'url';
 
 import got from 'got';
 import parseID from '@splash-cli/parse-unsplash-id';
-import { JSDOM } from 'jsdom';
 
 import { parseCollection, authenticatedRequest, tryParse, errorHandler, addTimeTo, now } from './utils';
 import { keys, config } from './config';
@@ -55,7 +54,14 @@ export default class Unsplash {
 		}
 	}
 
-	async getRandomPhoto({ collection = false, query = false, username = false, featured = false, count = 1 } = {}) {
+	async getRandomPhoto({
+		collection = false,
+		query = false,
+		username = false,
+		featured = false,
+		count = 1,
+		orientation = 'landscape',
+	} = {}) {
 		const endpoint = this.endpoint;
 
 		// Setup the route
@@ -89,6 +95,10 @@ export default class Unsplash {
 		// Encode username
 		if (username) {
 			endpoint.searchParams.set('username', username);
+		}
+
+		if (orientation) {
+			endpoint.searchParams.set('orientation', orientation);
 		}
 
 		// Limit to featured photos

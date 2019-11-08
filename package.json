@@ -33,6 +33,9 @@
 		"prestartW": "npm run buildW",
 		"pretest": "npm run build"
 	},
+	"pkg": {
+		"scripts": "build/**/*.js"
+	},
 	"bin": {
 		"splash": "build/bin/index.js"
 	},
