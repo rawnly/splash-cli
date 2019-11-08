@@ -11,6 +11,7 @@ yarn.lock
 
 node_modules
 build
+dist
 
 *.pid
 *.sh
