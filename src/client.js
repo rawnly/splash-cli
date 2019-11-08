@@ -1,5 +1,6 @@
 require('babel-polyfill');
 
+import dns from 'dns';
 import got from 'got';
 import isMonth from '@splash-cli/is-month';
 import parseID from '@splash-cli/parse-unsplash-id';
@@ -36,6 +37,13 @@ const spinner = new Ora({
  * @param {Object} flags
  */
 export default async function(input, flags) {
+	dns.lookup('unsplash.com', (error) => {
+		if (error && error.code === 'ENOTFOUND') {
+			console.error(chalk.red('\n Please check your internet connection.\n'));
+			process.exit(1);
+		}
+	});
+
 	const [command, ...subCommands] = input;
 	const options = {};
 
@@ -146,7 +154,7 @@ export default async function(input, flags) {
 					username: flags.user,
 					featured: Boolean(flags.featured),
 					collection: flags.collection,
-					orientation: flags.orientation
+					orientation: flags.orientation,
 				});
 			}
 
