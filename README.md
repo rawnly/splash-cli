@@ -78,6 +78,7 @@ A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://g
 > Splash is easy and quick to use, just run `splash` to get started.
 
 ```
+
   Get beautiful wallpapers from unsplash.
 
   Usage [v3.4.4]
@@ -99,6 +100,7 @@ A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://g
 
   	--scale <auto|fill|fit|stretch|center>  SET WALLPAPER SCALE
   	--screen <all|main|monitor number>	SET AS WALLPAPER ON SELECTED MONITOR
+  	--orientation <landscape|portrait|squarish> SET WALLPAPER ORIENTATION (DEFAULT: 'landscape')
 
   	-s --save [optional_path] 	DOWNLOAD WITHOUT SETTING AS WALLPAPER
   	--set <path> 			SET GIVEN PHOTO AS WALLPAPER
@@ -118,6 +120,8 @@ A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://g
   Search Filters
   	-f --featured			LIMIT TO ONLY FEATURED PHOTOS
   	--query <query>			RANDOM FROM QUERY
+
+
 ```
 
 ## Suggested Collections
