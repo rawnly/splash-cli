@@ -11,7 +11,7 @@ node_modules
 
 *.pid
 *.sh
-
+dist
 .gitlogs
 .vscode
 .eslintrc.json
