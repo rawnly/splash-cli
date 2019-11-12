@@ -163,7 +163,7 @@ export default class Unsplash {
 
 	async picOfTheDay() {
 		try {
-			const { body: photo } = await got('https://lambda.splash-cli.app', {
+			const { body: photo } = await got('https://lambda.splash-cli.app/api', {
 				json: true,
 			});
 
