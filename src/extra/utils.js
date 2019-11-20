@@ -129,16 +129,16 @@ export async function authenticatedRequest(endpoint, options = {}) {
 	const response = await got(normalize(`https://api.unsplash.com/${endpoint}`), httpOptions);
 
 	switch (response.statusCode) {
-		case 200:
-		case 201:
-		case 203:
-		case 404:
-		case 500:
-		case 302:
-		case 422:
-			return tryParse(response.body);
-		default:
-			return response;
+	case 200:
+	case 201:
+	case 203:
+	case 404:
+	case 500:
+	case 302:
+	case 422:
+		return tryParse(response.body);
+	default:
+		return response;
 	}
 }
 
@@ -213,27 +213,18 @@ export const parseCollection = (alias) => {
 	return alias;
 };
 
-export async function reportPrompt(error, ask = true) {
+export async function reportPrompt(error) {
 	const { shouldReport } = await prompt({
 		name: 'shouldReport',
 		message: 'Report the error?',
 		type: 'confirm',
-		when: (x) => !ask,
+		default: true,
+		when: () => !config.get('shouldReportErrorsAutomatically'),
 	});
 
-	if (shouldReport) {
-		const system = getSystemInfos();
-		const user = getUserInfo();
-
-		Sentry.setExtras(system);
-		Sentry.setUser(user);
-
-		Sentry.setTags({
-			OS: system.platform.OS === 'darwin' ? system.platform['OS RELEASE'] : system.platform.OS,
-			version: system.CLIENT_VERSION,
-		});
-
-		Sentry.captureException(error);
+	if (shouldReport || config.get('shouldReportErrorsAutomatically') === true) {
+		const event_id = Sentry.captureException(error);
+		config.set('lastEventId', event_id);
 	}
 }
 
@@ -241,7 +232,9 @@ export async function reportPrompt(error, ask = true) {
  * @description Beautify any type of error
  * @param {Error} error
  */
-export function errorHandler(error, skipReport = false) {
+export async function errorHandler(error) {
+	config.set('lastError', error);
+
 	const spinner = new Ora();
 	spinner.stop();
 	printBlock(
@@ -257,8 +250,10 @@ export function errorHandler(error, skipReport = false) {
 		'',
 	);
 
-	reportPrompt(error, skipReport);
+	if (config.get('shouldReportErrors') === true || config.get('shouldReportErrorsAutomatically'))
+		await reportPrompt(error);
 
+	// Log the error
 	logger.error(error);
 }
 
@@ -630,3 +625,6 @@ export const getUserInfo = () => ({
 	username: os.userInfo().username,
 	shell: os.userInfo().shell,
 });
+
+export const randomString = (len = 7) =>
+	('' + eval(`1e${len}`)).replace(/[01]/g, () => (0 | (Math.random() * 16)).toString(16));
