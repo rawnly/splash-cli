@@ -26,6 +26,17 @@ export default async function settings([action, target]) {
 		default: config.get('askForLike'),
 	});
 
+	const _askForReport = generateQuestion('_askForReport', 'Prompt to report errors?', {
+		type: 'confirm',
+		default: config.get('shouldReportErrors'),
+	});
+
+	const _askForAutoReport = generateQuestion('_askForAutoReport', 'Auto report errors?', {
+		type: 'confirm',
+		default: config.get('shouldReportErrorsAutomatically'),
+		when: (a) => a._askForReport === false,
+	});
+
 	const _askForCollection = generateQuestion(
 		'_askForCollection',
 		'Prompt to add the downloaded photo to a collection?',
@@ -69,6 +80,7 @@ export default async function settings([action, target]) {
 		settings.picOfTheDay = settings['pic-of-the-day'];
 		settings.settingsPath = config.path;
 
+		delete settings['error'];
 		delete settings['keys'];
 		delete settings['user'];
 		delete settings['pic-of-the-day'];
@@ -119,6 +131,11 @@ export default async function settings([action, target]) {
 	case 'set':
 	default:
 		switch (target) {
+		case 'report':
+		case 'errors':
+		case 'error':
+			questions.push(_askForReport, _askForAutoReport);
+			break;
 		case 'directory':
 		case 'dir':
 			questions.push(_directory);
@@ -150,7 +167,16 @@ export default async function settings([action, target]) {
 			questions.push(_updateInterval);
 			break;
 		default:
-			questions.push(_userFolder, _directory, _confirmWallpaper, _askForCollection, _askForLike, _updateInterval);
+			questions.push(
+				_userFolder,
+				_askForReport,
+				_askForAutoReport,
+				_directory,
+				_confirmWallpaper,
+				_askForCollection,
+				_askForLike,
+				_updateInterval,
+			);
 			break;
 		}
 
@@ -161,12 +187,24 @@ export default async function settings([action, target]) {
 			_askForCollection: collection,
 			_askForLike: like,
 			_updateInterval: picUpdateInterval,
+			_askForAutoReport: shouldAutoReportErrors,
+			_askForReport: shouldReportErrors,
 		} = await ask(questions);
 
 		let validSetting = false;
 
 		if (confirmWallpaper !== undefined) {
 			config.set('confirm-wallpaper', confirmWallpaper);
+			validSetting = true;
+		}
+
+		if (shouldAutoReportErrors !== undefined) {
+			config.set('shouldReportErrorsAutomatically', shouldAutoReportErrors);
+			validSetting = true;
+		}
+
+		if (shouldReportErrors !== undefined) {
+			config.set('shouldReportErrors', shouldReportErrors);
 			validSetting = true;
 		}
 
