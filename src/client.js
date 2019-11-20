@@ -1,5 +1,8 @@
 require('babel-polyfill');
 
+import dotenv from 'dotenv';
+
+import { prompt } from 'inquirer';
 import dns from 'dns';
 import got from 'got';
 import isMonth from '@splash-cli/is-month';
@@ -22,7 +25,21 @@ import commands from './commands/index';
 import { defaultSettings as defaults } from './extra/config';
 import Unsplash from './extra/Unsplash';
 
-import { clearSettings, download, errorHandler, printBlock, pathFixer } from './extra/utils';
+import {
+	clearSettings,
+	download,
+	errorHandler,
+	printBlock,
+	pathFixer,
+	getSystemInfos,
+	getUserInfo,
+	randomString,
+} from './extra/utils';
+
+import * as Sentry from '@sentry/node';
+import SentryAPIClient from './extra/SentryAPI';
+
+dotenv.config();
 
 const config = new Conf({ defaults });
 
@@ -37,8 +54,53 @@ const spinner = new Ora({
  * @param {Object} flags
  */
 export default async function(input, flags) {
+	console.log('Last Event ID', config.get('lastEventId', null));
+	console.log('Last Error', config.get('lastEventId', null));
+
+	if (config.get('lastEventId', null) !== null || config.get('lastError', null) !== null) {
+		const event_id = config.get('lastEventId', null);
+		const error = config.get('lastError', null);
+
+		if (event_id != null) {
+			console.clear();
+
+			const { shouldSendFeedback } = await prompt({
+				name: 'shouldSendFeedback',
+				type: 'confirm',
+				message: chalk`Error catched. Would you like to send some feedback?`,
+			});
+
+			if (shouldSendFeedback) {
+				await SentryAPIClient.shared.userFeedBack(error, event_id);
+			}
+		}
+
+		config.set('lastError', null);
+		config.set('lastEventId', null);
+	}
+
+	if (!!process.env.SENTRY_DSN) {
+		Sentry.init({ dsn: process.env.SENTRY_DSN });
+
+		try {
+			const system = getSystemInfos();
+			const user = getUserInfo();
+
+			Sentry.setExtras(system);
+			Sentry.setUser(user);
+
+			Sentry.setTags({
+				OS: system.PLATFORM.OS === 'darwin' ? system.PLATFORM.RELEASE : system.PLATFORM.OS,
+				version: system.CLIENT_VERSION,
+			});
+		} catch (e) {
+			errorHandler(e);
+		}
+	}
+
 	dns.lookup('api.unsplash.com', (error) => {
 		if (error && error.code === 'ENOTFOUND') {
+			Sentry.captureMessage('No Internet Connection', Sentry.Severity.Warning);
 			console.error(chalk.red('\n Please check your internet connection.\n'));
 			process.exit(1);
 		}
@@ -50,6 +112,15 @@ export default async function(input, flags) {
 	// Parse commands
 	for (let i = 0; i < subCommands.length; i += 1) {
 		options[subCommands[i]] = subCommands[i];
+	}
+
+	if (flags.report) {
+		console.clear();
+		console.log(chalk`{yellow {bold ERROR REPORTING}}`);
+		console.log();
+		const event_id = Sentry.captureMessage(`MESSAGE ${randomString(6)}`, Sentry.Severity.Info);
+		await SentryAPIClient.shared.userFeedBack(null, event_id);
+		process.exit(0);
 	}
 
 	if (flags.quiet) {
@@ -91,6 +162,8 @@ export default async function(input, flags) {
 		await clearSettings();
 		await Unsplash.shared.picOfTheDay();
 
+		Sentry.captureMessage('New User', Sentry.Severity.Info);
+
 		printBlock(
 			chalk`Welcome to ${manifest.name}@{dim ${manifest.version}} {bold @${userInfo().username}}`,
 			'',
@@ -99,13 +172,17 @@ export default async function(input, flags) {
 			chalk`{bold Enjoy "{yellow ${manifest.name}}" running {green splash}}`,
 		);
 
-		try {
-			await got('https://analytics.splash-cli.app/api/users', {
-				method: 'POST',
-			});
-		} catch (error) {
-			errorHandler(error);
-		}
+		dns.lookup('https://analytics.splash-cli.app/api/users', async (err) => {
+			if (err) return;
+
+			try {
+				await got('https://analytics.splash-cli.app/api/users', {
+					method: 'POST',
+				});
+			} catch (error) {
+				errorHandler(error);
+			}
+		});
 
 		process.exit();
 	} else if (!config.has('pic-of-the-day') || !config.get('pic-of-the-day').date.delay) {
@@ -166,6 +243,11 @@ export default async function(input, flags) {
 				}
 
 				if (photo.errors) {
+					const UnsplashError = new Error('Unsplash Error');
+					Sentry.setExtra('Unsplash Error', photo.errors);
+					const event_id = Sentry.captureException(UnsplashError);
+					config.set('lastEventId', event_id);
+
 					return printBlock(chalk`{bold {red ERROR:}}`, ...photo.errors);
 				}
 
@@ -176,39 +258,38 @@ export default async function(input, flags) {
 				spinner.fail('Unable to connect.');
 			}
 		} catch (error) {
-			spinner.fail();
 			return errorHandler(error);
 		}
 	} else {
 		console.clear();
 
 		switch (command) {
-		case 'collection':
-		case 'collections':
-			commands.collection(subCommands);
-			break;
-		case 'settings':
-		case 'config':
-			commands.settings(subCommands);
-			break;
-		case 'alias':
-		case 'aliases':
-			commands.alias(subCommands);
-			break;
-		case 'user':
-			commands.user(subCommands);
-			break;
-		case 'directory':
-		case 'dir':
-			commands.dir(subCommands);
-			break;
-		default:
-			printBlock(
-				chalk`{bold {red Error}}: "{yellow ${command}}" is not a {dim splash} command.`,
-				'',
-				chalk`See {dim splash --help}`,
-			);
-			break;
+			case 'collection':
+			case 'collections':
+				commands.collection(subCommands);
+				break;
+			case 'settings':
+			case 'config':
+				commands.settings(subCommands);
+				break;
+			case 'alias':
+			case 'aliases':
+				commands.alias(subCommands);
+				break;
+			case 'user':
+				commands.user(subCommands);
+				break;
+			case 'directory':
+			case 'dir':
+				commands.dir(subCommands);
+				break;
+			default:
+				printBlock(
+					chalk`{bold {red Error}}: "{yellow ${command}}" is not a {dim splash} command.`,
+					'',
+					chalk`See {dim splash --help}`,
+				);
+				break;
 		}
 	}
 }
