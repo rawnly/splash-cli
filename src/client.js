@@ -54,10 +54,10 @@ const spinner = new Ora({
  * @param {Object} flags
  */
 export default async function(input, flags) {
-	console.log('Last Event ID', config.get('lastEventId', null));
-	console.log('Last Error', config.get('lastEventId', null));
-
-	if (config.get('lastEventId', null) !== null || config.get('lastError', null) !== null) {
+	if (
+		config.get('lastEventId', null) !== null ||
+		(config.get('lastError', null) !== null && !!process.env.SENTRY_DSN)
+	) {
 		const event_id = config.get('lastEventId', null);
 		const error = config.get('lastError', null);
 
@@ -77,25 +77,25 @@ export default async function(input, flags) {
 
 		config.set('lastError', null);
 		config.set('lastEventId', null);
+
+		return;
 	}
 
-	if (!!process.env.SENTRY_DSN) {
-		Sentry.init({ dsn: process.env.SENTRY_DSN });
+	Sentry.init({ dsn: process.env.SENTRY_DSN });
 
-		try {
-			const system = getSystemInfos();
-			const user = getUserInfo();
+	try {
+		const system = getSystemInfos();
+		const user = getUserInfo();
 
-			Sentry.setExtras(system);
-			Sentry.setUser(user);
+		Sentry.setExtras(system);
+		Sentry.setUser(user);
 
-			Sentry.setTags({
-				OS: system.PLATFORM.OS === 'darwin' ? system.PLATFORM.RELEASE : system.PLATFORM.OS,
-				version: system.CLIENT_VERSION,
-			});
-		} catch (e) {
-			errorHandler(e);
-		}
+		Sentry.setTags({
+			OS: system.PLATFORM.OS === 'darwin' ? system.PLATFORM.RELEASE : system.PLATFORM.OS,
+			version: system.CLIENT_VERSION,
+		});
+	} catch (e) {
+		errorHandler(e);
 	}
 
 	dns.lookup('api.unsplash.com', (error) => {
