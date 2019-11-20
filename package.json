@@ -32,7 +32,7 @@
 		"postbuildW": "npm run copyHTMLW",
 		"prestartW": "npm run buildW",
 		"pretest": "npm run build",
-		"prepublish": "npm run fix && npm run test"
+		"prepublish": "npm run fix"
 	},
 	"pkg": {
 		"scripts": "build/**/*.js"

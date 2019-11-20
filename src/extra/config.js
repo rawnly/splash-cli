@@ -28,8 +28,8 @@ export const defaultSettings = {
 export const config = new Conf({ defaults: defaultSettings });
 
 export const keys = {
-	client_id: '891db6b7b57458f71f6d0c54918fa150c269dec61e6cfd3ce51a0d74e89e6df2',
-	client_secret: 'c415049c76eed5e2d072b49191be46d78f27609f4e273a64e37e0f7b2324d9ad',
+	client_id: process.env.CLIENT_ID,
+	client_secret: process.env.CLIENT_SECRET,
 	redirect_uri: 'http://localhost:5835/',
 };
 
