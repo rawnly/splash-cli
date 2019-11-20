@@ -1,6 +1,9 @@
 require('babel-polyfill');
 require('regenerator-runtime');
 
+const pkg = require('../../package.json');
+const Sentry = require('@sentry/node');
+
 import path from 'path';
 import os from 'os';
 import { URL } from 'url';
@@ -126,16 +129,16 @@ export async function authenticatedRequest(endpoint, options = {}) {
 	const response = await got(normalize(`https://api.unsplash.com/${endpoint}`), httpOptions);
 
 	switch (response.statusCode) {
-	case 200:
-	case 201:
-	case 203:
-	case 404:
-	case 500:
-	case 302:
-	case 422:
-		return tryParse(response.body);
-	default:
-		return response;
+		case 200:
+		case 201:
+		case 203:
+		case 404:
+		case 500:
+		case 302:
+		case 422:
+			return tryParse(response.body);
+		default:
+			return response;
 	}
 }
 
@@ -210,11 +213,35 @@ export const parseCollection = (alias) => {
 	return alias;
 };
 
+export async function reportPrompt(error, ask = true) {
+	const { shouldReport } = await prompt({
+		name: 'shouldReport',
+		message: 'Report the error?',
+		type: 'confirm',
+		when: (x) => !ask,
+	});
+
+	if (shouldReport) {
+		const system = getSystemInfos();
+		const user = getUserInfo();
+
+		Sentry.setExtras(system);
+		Sentry.setUser(user);
+
+		Sentry.setTags({
+			OS: system.platform.OS === 'darwin' ? system.platform['OS RELEASE'] : system.platform.OS,
+			version: system.CLIENT_VERSION,
+		});
+
+		Sentry.captureException(error);
+	}
+}
+
 /**
  * @description Beautify any type of error
  * @param {Error} error
  */
-export function errorHandler(error) {
+export function errorHandler(error, skipReport = false) {
 	const spinner = new Ora();
 	spinner.stop();
 	printBlock(
@@ -229,6 +256,8 @@ export function errorHandler(error) {
 		chalk`{yellow {bold Splash Error}:}`,
 		'',
 	);
+
+	reportPrompt(error, skipReport);
 
 	logger.error(error);
 }
@@ -560,3 +589,44 @@ export const confirmWithExtra = (name, message, extra, options) => {
 		filter: (input) => input.toLowerCase(),
 	};
 };
+
+/**
+ * @name getSystemInfos
+ */
+export const getSystemInfos = () => {
+	const getRelease = () => {
+		if (process.platform === 'darwin') {
+			return {
+				12: 'MacOS Mountain Lion',
+				13: 'MacOS Mavericks',
+				14: 'MacOS Yosemite',
+				15: 'MacOS El Capitan',
+				16: 'MacOS Sierra',
+				17: 'MacOS High Sierra',
+				19: 'MacOS Catalina',
+				18: 'MacOS Mojave',
+			}[os.release().split('.')[0]];
+		}
+
+		return os.release();
+	};
+
+	return {
+		CLIENT_VERSION: `v${pkg.version}`,
+		NODE: process.version,
+		PLATFORM: {
+			OS: process.platform === 'darwin' ? 'MacOS' : process.platform,
+			RELEASE: getRelease(),
+			RAM: `${Math.floor(os.totalmem() / 1024 / 1024 / 1024)}GB`,
+			CPU: `${os.cpus().length} CORES`,
+		},
+	};
+};
+
+/**
+ * @name getUserInfo
+ */
+export const getUserInfo = () => ({
+	username: os.userInfo().username,
+	shell: os.userInfo().shell,
+});
