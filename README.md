@@ -81,7 +81,7 @@ A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://g
 
   Get beautiful wallpapers from unsplash.
 
-  Usage [v3.4.7]
+  Usage [v3.4.8]
 
   	$ splash [command] [flags]
 
@@ -96,7 +96,7 @@ A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://g
 
   Options
   	-h --help			THIS MESSAGE
-  	-v --version			v3.4.7
+  	-v --version			v3.4.8
 
   	--scale <auto|fill|fit|stretch|center>  SET WALLPAPER SCALE
   	--screen <all|main|monitor number>	SET AS WALLPAPER ON SELECTED MONITOR

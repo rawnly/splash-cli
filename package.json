@@ -1,6 +1,6 @@
 {
 	"name": "splash-cli",
-	"version": "3.4.7",
+	"version": "3.4.8",
 	"main": "build/extra/Unsplash.js",
 	"readme": "README.md",
 	"homepage": "https://splash-cli.app",
@@ -31,7 +31,8 @@
 		"postbuild": "npm run copyHTML",
 		"postbuildW": "npm run copyHTMLW",
 		"prestartW": "npm run buildW",
-		"pretest": "npm run build"
+		"pretest": "npm run build",
+		"prepublish": "npm run fix && npm run test"
 	},
 	"pkg": {
 		"scripts": "build/**/*.js"
@@ -68,6 +69,7 @@
 		"chalk": "^2.4.1",
 		"cli-table": "^0.3.1",
 		"conf": "^1.4.0",
+		"cross-env": "^6.0.3",
 		"dotenv": "^6.2.0",
 		"figures": "^2.0.0",
 		"first-run": "^1.2.0",
@@ -97,6 +99,7 @@
 		"babel-plugin-module-resolver": "^3.2.0",
 		"babel-plugin-transform-async-to-generator": "^6.24.1",
 		"babel-plugin-transform-class-properties": "^6.24.1",
+		"babel-plugin-transform-inline-environment-variables": "^0.4.3",
 		"babel-plugin-transform-object-rest-spread": "^6.26.0",
 		"babel-plugin-transform-regenerator": "^6.26.0",
 		"babel-plugin-transform-runtime": "^6.23.0",
