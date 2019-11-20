@@ -29,7 +29,7 @@ export default class SentryAPIClient {
 				name: 'email',
 				message: 'Your Email address',
 				validate: (text) => (text.includes('@') ? true : 'Insert a valid email address'),
-				default: 'fedevitale99@gmail.com',
+				default: config.get('userEmail'),
 			},
 			{
 				name: 'comments',
@@ -51,6 +51,8 @@ ${JSON.stringify(error, null, 2)}
 				type: 'confirm',
 			},
 		]);
+
+		config.set('userEmail', payload.email);
 
 		try {
 			await got(`${this.BASE_URL}/projects/federico-vitale/splash-cli/user-feedback/`, {
