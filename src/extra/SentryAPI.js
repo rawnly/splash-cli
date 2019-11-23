@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import { prompt } from 'inquirer';
 import { errorHandler } from './utils';
 
+import { config } from './config';
+
 dotenv.config();
 
 export default class SentryAPIClient {
