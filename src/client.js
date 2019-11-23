@@ -67,7 +67,7 @@ export default async function(input, flags) {
 			const { shouldSendFeedback } = await prompt({
 				name: 'shouldSendFeedback',
 				type: 'confirm',
-				message: chalk`Error catched. Would you like to send some feedback?`,
+				message: chalk`Error caught. Would you like to send some feedback?`,
 			});
 
 			if (shouldSendFeedback) {
