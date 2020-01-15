@@ -24,3 +24,6 @@ jobs:
         npm test
       env:
         CI: true
+        CLIENT_ID: ${{ secrets.SPLASHCLI__CLIENTID }}
+        CLIENT_SECRET: ${{ secrets.SPLASHCLI__CLIENTSECRET }}
+        SENTRY_DSN: ${{ secrets.SENTRY__SPLASHCLI_DSN }}
