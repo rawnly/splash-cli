@@ -4,64 +4,61 @@ import Meow from 'meow';
 import client from '../client';
 import help from './help';
 
-const {
-	input,
-	flags
-} = Meow(help, {
+const { input, flags } = Meow(help, {
 	flags: {
 		help: {
 			type: 'boolean',
-			alias: 'h'
+			alias: 'h',
 		},
 		version: {
 			type: 'boolean',
-			alias: 'v'
+			alias: 'v',
 		},
 		set: {
-			type: 'string'
+			type: 'string',
 		},
 		collection: {
-			type: 'string'
+			type: 'string',
 		},
 		day: {
-			type: 'boolean'
+			type: 'boolean',
 		},
 		featured: {
 			type: 'boolean',
-			alias: 'f'
+			alias: 'f',
 		},
 		quiet: {
 			type: 'boolean',
-			alias: 'q'
+			alias: 'q',
 		},
 		user: {
 			type: 'string',
-			alias: 'u'
+			alias: 'u',
 		},
 		settings: {
-			type: 'boolean'
+			type: 'boolean',
 		},
 		id: {
-			type: 'string'
+			type: 'string',
 		},
 		query: {
-			type: 'string'
+			type: 'string',
 		},
 		orientation: {
 			type: 'string',
-			alias: 'o'
+			alias: 'o',
 		},
 		save: {
 			type: 'string',
-			alias: 's'
+			alias: 's',
 		},
 		info: {
 			type: 'boolean',
-			alias: 'i'
+			alias: 'i',
 		},
 		scale: 'string',
-		screen: 'string'
-	}
+		screen: 'string',
+	},
 });
 
 client(input, flags);
