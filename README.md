@@ -55,7 +55,7 @@ To install `splash-cli` you must use a **node package manager** such as [yarn](h
 
 ## ❓ [FAQs](/documentation/FAQ.md)
 
-A list of **Frequently Asked Questions** (FAQ) can be found [**here**](https://github.com/splash-cli/splash-cli/issues?utf8=✓&q=is%3Aissue+label%3A%22%3Aquestion%3A++FAQ%22+)
+A list of **Frequently Asked Questions** (FAQ) can be found [**here**][faqs]
 
 #### - What is **Splash CLI**?
 
@@ -166,6 +166,7 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 	<a href="https://instagram.com/fedevitale.dev"> Instagram </a>
 </p>
 
+[faqs]: https://github.com/splash-cli/splash-cli/labels/%3Aquestion%3A%20%20FAQ
 [uwebsite]: https://unsplash.com
 [desk]: https://github.com/rawnly/splashdesktop
 [oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh
@@ -175,4 +176,4 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 [sample]: https://i.imgur.com/o0eXz6F.gif
 [help]: https://user-images.githubusercontent.com/16429579/33238956-68de7c6a-d298-11e7-841d-2da1c624fce8.png
 [stockpapers]: https://itunes.apple.com/us/app/stock-papers/id1443861313
-[mailtome]: mailto:fedevitale99@gmail.com?subject=Splash%20CLI%20%20Mainteniner
+[mailtome]: mailto:hi@fedevitale.dev?subject=Splash%20CLI%20%20Maintenining
