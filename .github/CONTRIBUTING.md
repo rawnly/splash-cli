@@ -7,6 +7,13 @@ To contribute and add your features to the project follow the steps below:
 - Install local dependencies via `npm` or `yarn`
 - Do your awesome stuff :pop:
 
+## Build & Run:
+To build `splash-cli` correctly you **must** have some *Unsplash API credentials* (you can get some [there][unsplash_dev]) and right now (10 March 2020) a valid [*Sentry DSN*][sentry_website].
+
+Put everything inside a `.env` file in the root dir of the project (a template is available here: [`.env.example`][env_example])
+
+Then you can start play with the code. Have fun ✌️
+
 ## Explanation:
 
 #### Add a new flag
@@ -67,3 +74,8 @@ Create a new file inside commands where you will export your new function as a m
 
 Please remember to update the `README` and run **tests**  and all the documentation.
 If you want to help me more, you can also update documentation on the website repo [here](https://github.com/splash-cli/splash-cli-website/blob/master/pages/docs.js).
+
+
+[unsplash_dev]: https://unsplash.com/developers
+[env_example]: https://github.com/splash-cli/splash-cli/blob/master/.env.example
+[sentry_website]: https://sentry.io
