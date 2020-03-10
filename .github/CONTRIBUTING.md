@@ -73,7 +73,7 @@ Create a new file inside commands where you will export your new function as a m
 ```
 
 Please remember to update the `README` and run **tests**  and all the documentation.
-If you want to help me more, you can also update documentation on the website repo [here](https://github.com/splash-cli/splash-cli-website/blob/master/pages/docs.js).
+
 
 
 [unsplash_dev]: https://unsplash.com/developers
