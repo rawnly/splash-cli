@@ -37,7 +37,7 @@ You can use it as an Unsplash terminal client, for example you can:
 	</a>
 </p>
 
-> :eyes: [**Looking for mainteiners!**][mailtome] :eyes:
+> :eyes: [**Looking for maintainers!**][mailtome] :eyes:
 
 <!-- > Get beautiful wallpapers from [**Unsplash**][uwebsite] -->
 
