@@ -251,7 +251,7 @@ export default async function settings([action, target, value]) {
 			}
 
 			if (like !== undefined) {
-				config.set('askForLike', collection);
+				config.set('askForLike', like);
 				validSetting = true;
 			}
 
