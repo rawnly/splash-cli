@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 require('babel-polyfill');
 
 import dotenv from 'dotenv';
