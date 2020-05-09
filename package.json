@@ -1,6 +1,6 @@
 {
 	"name": "splash-cli",
-	"version": "3.4.10",
+	"version": "3.4.11",
 	"main": "build/extra/Unsplash.js",
 	"readme": "README.md",
 	"homepage": "https://splash-cli.app",
@@ -17,19 +17,14 @@
 	},
 	"scripts": {
 		"build": "babel src -d build",
-		"buildW": "babel src -d build",
 		"copyHTML": "rm -rf build/pages && cp -rf src/pages build",
-		"copyHTMLW": "rimraf build/pages && cp-cli src/pages build",
 		"start": "node build/bin/index.js",
 		"start.norebuild": "node build/bin/index.js",
-		"startW": "npm run buildW && node build/bin/index.js",
 		"fix": "eslint src/**/*.js --color --fix",
 		"test": "ava",
 		"prebuild": "rm -rf build && npm run fix",
-		"prebuildW": "rimraf build && npm run fix",
 		"prestart": "npm run build",
 		"postbuild": "npm run copyHTML",
-		"postbuildW": "npm run copyHTMLW",
 		"prestartW": "npm run buildW",
 		"pretest": "npm run build",
 		"prepublish": "npm run fix"
@@ -60,6 +55,7 @@
 		"baeutiful"
 	],
 	"dependencies": {
+		"@scarf/scarf": "^1.0.5",
 		"@sentry/node": "5.9.0",
 		"@splash-cli/is-month": "^1.1.1",
 		"@splash-cli/parse-unsplash-id": "^0.0.1",
