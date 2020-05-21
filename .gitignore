@@ -24,3 +24,5 @@ user_login.js
 .env
 .vscode
 .idea
+
+*-lock

@@ -57,6 +57,7 @@ ${JSON.stringify(error, null, 2)}
 		config.set('userEmail', payload.email);
 
 		try {
+			// FIXME: 400 BAD REQUEST issue: #69
 			await got(`${this.BASE_URL}/projects/federico-vitale/splash-cli/user-feedback/`, {
 				method: 'POST',
 				body: JSON.stringify({ ...payload, event_id }),
