@@ -9,10 +9,17 @@
   <img src="https://img.shields.io/github/package-json/v/splash-cli/splash-cli.svg?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/github/workflow/status/splash-cli/splash-cli/Node CI?style=for-the-badge" alt="GithubWorkflow" />
 	<br />
-  <img alt="Website" src="https://img.shields.io/website/https/splash-cli.app.svg?down_color=red&style=for-the-badge">
-  <img alt="GitHub issues" src="https://img.shields.io/github/issues/splash-cli/splash-cli.svg?style=for-the-badge">
+  <img alt="Website" src="https://img.shields.io/website/https/splash-cli.app.svg?down_color=red&style=for-the-badge"/>
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues/splash-cli/splash-cli.svg?style=for-the-badge"/>
+
+<br/>
+<a href="https://sonarcloud.io/dashboard?id=splash-cli_splash-cli">
+  <img alt="Sonar Cloud" src="https://sonarcloud.io/images/project_badges/sonarcloud-black.svg" />
+</a>
 </p>
 <br>
+
+
 
 <h1 align="center"> Splash CLI </h1>
 <h6 align="center">Get stunning wallpapers from <a href="https://unsplash.com">Unsplash</a> </h6>
