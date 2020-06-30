@@ -55,7 +55,6 @@
 		"baeutiful"
 	],
 	"dependencies": {
-		"@scarf/scarf": "^1.0.5",
 		"@sentry/node": "5.15.5",
 		"@splash-cli/is-month": "^1.1.1",
 		"@splash-cli/parse-unsplash-id": "^0.0.1",
