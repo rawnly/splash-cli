@@ -11,8 +11,8 @@ This file is a roadmap for who wants improve this repo.
     - [x] ~Include `User Authentication` [#27](https://github.com/splash-cli/splash-cli/issues/27)~
     - [x] ~Let user like a photo~
     - [x] ~Let user revert a wallpaper~
-    - [ ] Feature: Create new collections
-    - [ ] Feature: Add a photo to an existing collection
+    - [x] Feature: Create new collections
+    - [x] Feature: Add a photo to an existing collection
     - [ ] Feature: Upload photos
     - [ ] Feature: Manage (delete/edit) posted photos
 
