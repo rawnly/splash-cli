@@ -31,6 +31,10 @@ const { input, flags } = Meow(help, {
 			type: 'boolean',
 			alias: 'q',
 		},
+		rotate: 'string',
+		colorspace: 'string',
+		flip: 'boolean',
+		grayscale: 'boolean',
 		user: {
 			type: 'string',
 			alias: 'u',
