@@ -20,7 +20,6 @@ jobs:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-      - run: npm test
 
   publish-npm:
     needs: build
