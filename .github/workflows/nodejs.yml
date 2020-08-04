@@ -4,9 +4,7 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [8.x, 10.x, 12.x]
@@ -24,6 +22,6 @@ jobs:
         npm test
       env:
         CI: true
-        CLIENT_ID: ${{ secrets.SPLASHCLI__CLIENTID }}
-        CLIENT_SECRET: ${{ secrets.SPLASHCLI__CLIENTSECRET }}
-        SENTRY_DSN: ${{ secrets.SENTRY__SPLASHCLI_DSN }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
