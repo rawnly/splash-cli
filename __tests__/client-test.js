@@ -1,5 +1,5 @@
 import test from 'ava';
-import Unsplash from './build/extra/Unsplash';
+import Unsplash from '../build/extra/Unsplashh';
 
 const expressions = {
 	PHOTO_ID: /[A-z0-9(-|_|)]+/gi,
