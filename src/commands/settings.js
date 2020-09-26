@@ -10,7 +10,7 @@ import * as TableUtility from '../extra/table-utility';
 import Table from 'cli-table';
 
 import { prompt as ask } from 'inquirer';
-import { config } from '../extra/config';
+import config from '../extra/storage';
 import { clearSettings, errorHandler, highlightJSON, printBlock, pathFixer } from '../extra/utils';
 
 export default async function settings([action, target, value]) {

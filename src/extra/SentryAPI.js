@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import { prompt } from 'inquirer';
 import { errorHandler } from './utils';
 
-import { config } from './config';
+import config from './storage';
 
 dotenv.config();
 

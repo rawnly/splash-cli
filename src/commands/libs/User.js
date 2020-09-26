@@ -9,7 +9,9 @@ import chalk from 'chalk';
 import { prompt } from 'inquirer';
 import got from 'got';
 
-import { config, keys } from '../../extra/config';
+import config from '../../extra/storage'
+import { keys } from '../../extra/config';
+
 import {
 	authenticatedRequest,
 	errorHandler,

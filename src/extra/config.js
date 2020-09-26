@@ -1,6 +1,4 @@
-import { pathFixer } from '../extra/utils';
-
-import Conf from 'conf';
+import { pathFixer } from './utils';
 
 export const defaultSettings = {
 	lastWP: null,
@@ -25,27 +23,8 @@ export const defaultSettings = {
 	},
 };
 
-export const config = new Conf({ defaults: defaultSettings });
-
 export const keys = {
 	client_id: process.env.CLIENT_ID,
 	client_secret: process.env.CLIENT_SECRET,
 	redirect_uri: 'http://localhost:5835/',
 };
-
-if (config.has('user') && config.get('user').token) {
-	config.set('keys', {
-		applicationId: keys.client_id,
-		secret: keys.client_secret,
-		callbackUrl: keys.redirect_uri,
-		bearerToken: config.get('user').token,
-	});
-} else {
-	config.set('keys', {
-		applicationId: keys.client_id,
-		secret: keys.client_secret,
-		callbackUrl: keys.redirect_uri,
-	});
-}
-
-export const commandsList = {};
