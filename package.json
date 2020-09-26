@@ -17,9 +17,9 @@
 		"url": "https://github.com/rawnly"
 	},
 	"scripts": {
-		"build": "babel src -d build",
+		"build": "babel src -d build --source-maps",
 		"copyHTML": "rm -rf build/pages && cp -rf src/pages build",
-		"start": "node build/bin/index.js",
+		"start": "node build/bin/index.js --enable-source-maps",
 		"start.norebuild": "node build/bin/index.js",
 		"fix": "eslint src/**/*.js --color --fix",
 		"test": "ava __tests__/*",
