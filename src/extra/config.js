@@ -1,6 +1,5 @@
 import { pathFixer } from '../extra/utils';
-
-import Conf from 'conf';
+export { default as config } from './storage'
 
 export const defaultSettings = {
 	lastWP: null,
@@ -24,8 +23,6 @@ export const defaultSettings = {
 		},
 	},
 };
-
-export const config = new Conf({ defaults: defaultSettings });
 
 export const keys = {
 	client_id: process.env.CLIENT_ID,
