@@ -2,6 +2,7 @@
 	"name": "splash-cli",
 	"version": "3.4.14",
 	"main": "build/extra/Unsplash.js",
+	"type": "commonjs",
 	"readme": "README.md",
 	"homepage": "https://splash-cli.app",
 	"description": "Get beautiful wallpapers from unsplash.",
@@ -21,12 +22,11 @@
 		"start": "node build/bin/index.js",
 		"start.norebuild": "node build/bin/index.js",
 		"fix": "eslint src/**/*.js --color --fix",
-		"test": "ava",
+		"test": "ava __tests__/*",
 		"prebuild": "rm -rf build && npm run fix",
 		"prestart": "npm run build",
 		"postbuild": "npm run copyHTML",
 		"prestartW": "npm run buildW",
-		"pretest": "npm run build",
 		"prepublish": "npm run fix"
 	},
 	"pkg": {
@@ -105,6 +105,9 @@
 		"rimraf": "^2.6.3"
 	},
 	"ava": {
+		"files": [
+			"__tests__/*"
+		],
 		"babel": {
 			"testOptions": {
 				"babelrc": false,
