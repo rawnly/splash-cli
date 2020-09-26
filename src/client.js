@@ -23,7 +23,7 @@ import isImage from 'is-image';
 import manifest from '../package.json';
 import commands from './commands/index';
 
-import { defaultSettings as defaults } from './extra/config';
+import config from './extra/storage'
 import Unsplash from './extra/Unsplash';
 
 import {
@@ -41,8 +41,6 @@ import * as Sentry from '@sentry/node';
 import SentryAPIClient from './extra/SentryAPI';
 
 dotenv.config();
-
-const config = new Conf({ defaults });
 
 const spinner = new Ora({
 	color: 'yellow',

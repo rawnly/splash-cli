@@ -1,5 +1,5 @@
 import { pathFixer } from '../extra/utils';
-export { default as config } from './storage'
+import config from './storage'
 
 export const defaultSettings = {
 	lastWP: null,
