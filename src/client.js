@@ -9,7 +9,6 @@ import got from 'got';
 import isMonth from '@splash-cli/is-month';
 import parseID from '@splash-cli/parse-unsplash-id';
 import chalk from 'chalk';
-import Conf from 'conf';
 import frun from 'first-run';
 import fs from 'fs';
 import randomFrom from 'lodash/sample';
@@ -23,7 +22,8 @@ import isImage from 'is-image';
 import manifest from '../package.json';
 import commands from './commands/index';
 
-import { defaultSettings as defaults } from './extra/config';
+import { keys } from './extra/config'
+import config from './extra/storage'
 import Unsplash from './extra/Unsplash';
 
 import {
@@ -42,8 +42,6 @@ import SentryAPIClient from './extra/SentryAPI';
 
 dotenv.config();
 
-const config = new Conf({ defaults });
-
 const spinner = new Ora({
 	color: 'yellow',
 	spinner: isMonth('december') ? 'christmas' : 'earth',
@@ -55,6 +53,23 @@ const spinner = new Ora({
  * @param {Object} flags
  */
 export default async function(input, flags) {
+	if (config.has('user') && config.get('user').token) {
+		config.set('keys', {
+			applicationId: keys.client_id,
+			secret: keys.client_secret,
+			callbackUrl: keys.redirect_uri,
+			bearerToken: config.get('user').token,
+		});
+	} else {
+		config.set('keys', {
+			applicationId: keys.client_id,
+			secret: keys.client_secret,
+			callbackUrl: keys.redirect_uri,
+		});
+	}
+
+
+
 	if (
 		config.get('lastEventId', null) !== null ||
 		(config.get('lastError', null) !== null && !!process.env.SENTRY_DSN)
@@ -78,8 +93,6 @@ export default async function(input, flags) {
 
 		config.set('lastError', null);
 		config.set('lastEventId', null);
-
-		return;
 	}
 
 	Sentry.init({ dsn: process.env.SENTRY_DSN });
