@@ -2,7 +2,7 @@ import { prompt } from 'inquirer';
 import chalk from 'chalk';
 
 import { errorHandler, warnIfNotLogged, printBlock } from '../extra/utils';
-import { config } from '../extra/config';
+import config from '../extra/storage';
 import User from './libs/User';
 import * as TableUtility from '../extra/table-utility';
 import Table from 'cli-table';

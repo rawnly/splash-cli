@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import figures from 'figures';
 
 import { printBlock } from '../extra/utils';
-import { config } from '../extra/config';
+import config from '../extra/storage';
 import Alias from './libs/Alias';
 import * as TableUtility from '../extra/table-utility';
 import Table from 'cli-table';

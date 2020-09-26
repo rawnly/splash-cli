@@ -4,7 +4,7 @@ import { promisify } from 'util';
 
 import chalk from 'chalk';
 import Ora from 'ora';
-import { config } from '../../extra/config';
+import config from '../../extra/storage';
 import { errorHandler, pathFixer } from '../../extra/utils';
 
 const ls = promisify(fs.readdir);

@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 
 import { printBlock } from '../../extra/utils';
-import { config } from '../../extra/config';
+import config from '../../extra/storage';
 
 export default class Alias {
 	static aliases = config.get('aliases') || [];

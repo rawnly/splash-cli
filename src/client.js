@@ -9,7 +9,6 @@ import got from 'got';
 import isMonth from '@splash-cli/is-month';
 import parseID from '@splash-cli/parse-unsplash-id';
 import chalk from 'chalk';
-import Conf from 'conf';
 import frun from 'first-run';
 import fs from 'fs';
 import randomFrom from 'lodash/sample';
