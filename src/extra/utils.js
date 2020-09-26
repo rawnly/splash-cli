@@ -24,7 +24,8 @@ import wallpaper from 'wallpaper';
 import normalize from 'normalize-url';
 import sharp from 'sharp';
 
-import { config, defaultSettings, keys } from './config';
+import config from './storage'
+import { defaultSettings, keys } from './config';
 
 import Alias from '../commands/libs/Alias';
 import User from '../commands/libs/User';

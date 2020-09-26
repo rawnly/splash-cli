@@ -3,8 +3,9 @@ import { URL } from 'url';
 import got from 'got';
 import parseID from '@splash-cli/parse-unsplash-id';
 
-import { parseCollection, authenticatedRequest, tryParse, errorHandler, addTimeTo, now } from './utils';
-import { keys, config } from './config';
+import { parseCollection, authenticatedRequest, tryParse, errorHandler } from './utils';
+import config from './storage'
+import { keys } from './config';
 
 export default class Unsplash {
 	endpoint = new URL('https://api.unsplash.com');
