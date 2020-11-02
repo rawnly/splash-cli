@@ -68,8 +68,6 @@ export default async function(input, flags) {
 		});
 	}
 
-
-
 	if (
 		config.get('lastEventId', null) !== null ||
 		(config.get('lastError', null) !== null && !!process.env.SENTRY_DSN)
