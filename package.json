@@ -1,6 +1,6 @@
 {
 	"name": "splash-cli",
-	"version": "3.4.14",
+	"version": "3.4.15",
 	"main": "build/extra/Unsplash.js",
 	"type": "commonjs",
 	"readme": "README.md",
@@ -26,7 +26,6 @@
 		"prebuild": "rm -rf build && npm run fix",
 		"prestart": "npm run build",
 		"postbuild": "npm run copyHTML",
-		"prestartW": "npm run buildW",
 		"prepublish": "npm run fix"
 	},
 	"pkg": {
