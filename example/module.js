@@ -1,9 +1,5 @@
 const Unsplash = require('..').default;
 
-const splash = new Unsplash();
-
-process.exit();
-
 async function newWallpaper(collection = 'editorial') {
 	const options = {};
 	const splash = Unsplash.shared;
@@ -13,7 +9,7 @@ async function newWallpaper(collection = 'editorial') {
 	} else {
 		options.day = true;
 	}
-    
+
 	if ( process.platform == 'darwin' ) {
 		options.screen = 'all';
 	}

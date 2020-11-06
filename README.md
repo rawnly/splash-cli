@@ -85,50 +85,53 @@ A list of **Frequently Asked Questions** (FAQ) can be found [**here**][faqs]
 > Splash is easy and quick to use, just run `splash` to get started.
 
 ```
-
   Get beautiful wallpapers from unsplash.
 
-  Usage [v3.4.10]
+  Usage [v3.4.15]
 
-  	$ splash [command] [flags]
+        $ splash [command] [flags]
 
   Commands
-  	settings <get|set|restore>	GET/SET/RESTORE SETTINGS
-  	alias <get|set|remove>		GET/SET COLLECTION ALIASES
-  	collection <get|delete>		MANAGE COLLECTIONS
-  	dir <clean|get|count>		MANAGE THE DOWNLOAD DIRECTORY
-  	user <login|logout|get|...> 	MANAGE USER LOGIN/LOGOUT - GET USER INFOS
-  	-------------------------------------------------------------------------
-  	HINT: use `[command] help` for the list of all options
+        settings <get|set|restore>      GET/SET/RESTORE SETTINGS
+        alias <get|set|remove>          GET/SET COLLECTION ALIASES
+        collection <get|delete>         MANAGE COLLECTIONS
+        dir <clean|get|count>           MANAGE THE DOWNLOAD DIRECTORY
+        user <login|logout|get|...>     MANAGE USER LOGIN/LOGOUT - GET USER INFOS
+        -------------------------------------------------------------------------
+        HINT: use `[command] help` for the list of all options
 
   Options
-  	-h --help			THIS MESSAGE
-  	-v --version			v3.4.10
+        -h --help                       THIS MESSAGE
+        -v --version                    v3.4.14
 
-  	--scale <auto|fill|fit|stretch|center>  SET WALLPAPER SCALE
-  	--screen <all|main|monitor number>	SET AS WALLPAPER ON SELECTED MONITOR
-  	--orientation <landscape|portrait|squarish> SET WALLPAPER ORIENTATION (DEFAULT: 'landscape')
+        --scale <auto|fill|fit|stretch|center>  SET WALLPAPER SCALE
+        --screen <all|main|monitor number>      SET AS WALLPAPER ON SELECTED MONITOR
 
-  	-s --save [optional_path] 	DOWNLOAD WITHOUT SETTING AS WALLPAPER
-  	--set <path> 			SET GIVEN PHOTO AS WALLPAPER
+        -s --save [optional_path]       DOWNLOAD WITHOUT SETTING AS WALLPAPER
+        --set <path>                    SET GIVEN PHOTO AS WALLPAPER
 
-  	-i --info			SHOW EXIF
-  	-q --quiet			NO OUTPUT
+        -i --info                       SHOW EXIF
+        -q --quiet                      NO OUTPUT
 
+  Image Manipulation
+        --rotate <degrees>              ROTATE THE IMAGE BY GIVEN DEGREES
+        --grayscale                     MAKES THE IMAGE BW
+        --flip                           FLIP THE PHOTO ON THE "Y" AXIS
+        --colorspace <srgb|rgb|cmyk|lab|b-w> CHANGE IMAGE "COLORSPACE"
 
   Source Filters
-  	-c --curated			RANDOM CURATED PHOTO
-  	-u --user <username>		RANDOM PHOTO FROM PROVIDED USER
+        -c --curated                    RANDOM CURATED PHOTO
+        -u --user <username>            RANDOM PHOTO FROM PROVIDED USER
 
-  	--day				GET THE PHOTO OF THE DAY
-  	--id <id or url>		PHOTO BY ID
-  	--collection <id or alias>	RANDOM PHOTO FROM PROVIDED COLLECTION
+        --day                           GET THE PHOTO OF THE DAY
+        --id <id or url>                PHOTO BY ID
+        --collection <id or alias>      RANDOM PHOTO FROM PROVIDED COLLECTION
+
 
   Search Filters
-  	-f --featured			LIMIT TO ONLY FEATURED PHOTOS
-  	--query <query>			RANDOM FROM QUERY
-
-
+        -f --featured                   LIMIT TO ONLY FEATURED PHOTOS
+        --query <query>                 RANDOM FROM QUERY
+        --orientation <landscape|portrait|squarish> SET WALLPAPER ORIENTATION (DEFAULT: 'landscape')
 ```
 
 ## Suggested Collections

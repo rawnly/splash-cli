@@ -26,3 +26,6 @@ user_login.js
 .idea
 
 *-lock
+
+.vscode
+.idea
