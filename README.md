@@ -152,6 +152,9 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 - [Collections Downloader](https://github.com/Rawnly/collection-downloader-py) &mdash; Download **Unsplash** collections (_written in Python_)
 
 ---
+## Sponsor
+This package is a [Treeware](treeware) so if you're enjoy it, consider sponsoring by [buying the world a tree](treeware_buy).
+
 
 <p align="center">
 	Made with love by <a href="https://fedevitale.dev"> Federico Vitale </a> in :it:
@@ -165,6 +168,8 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 	<a href="https://instagram.com/fedevitale.dev"> Instagram </a>
 </p>
 
+[treeware]: https://treeware.earth/
+[treeware_buy]: https://plant.treeware.earth/splash-cli/splash-cli
 [faqs]: https://github.com/splash-cli/splash-cli/labels/%3Aquestion%3A%20%20FAQ
 [uwebsite]: https://unsplash.com
 [desk]: https://github.com/rawnly/splashdesktop
