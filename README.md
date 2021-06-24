@@ -3,6 +3,7 @@
 </p>
 
 ![splash-cli](https://socialify.git.ci/splash-cli/splash-cli/image?description=1&font=KoHo&forks=1&language=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Dark)
+[![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen?style=for-the-badge)](https://plant.treeware.earth/splash-cli/splash-cli)
 
 <p align="center">
 <img alt="npm" src="https://img.shields.io/npm/dm/splash-cli.svg?style=for-the-badge">
@@ -153,7 +154,8 @@ Hi thank you for the interest! [Here](/.github/CONTRIBUTING.md) you can find all
 
 ---
 ## Sponsor
-This package is a [Treeware](treeware) so if you're enjoy it, consider sponsoring by [buying the world a tree](treeware_buy).
+This package is [Treeware](https://treeware.earth). If you're enjoying it, then we ask that you [**buy the world a tree**](https://plant.treeware.earth/splash-cli/splash-cli) to thank us for our work. By contributing to the Treeware forest you’ll be creating employment for local families and restoring wildlife habitats.
+
 
 
 <p align="center">
