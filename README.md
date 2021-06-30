@@ -2,14 +2,25 @@
 	<a href="https://www.producthunt.com/posts/splash-cli?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-splash-cli" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=136902&theme=dark&period=daily" alt="Splash CLI - Beautiful wallpapers from Unsplash in your terminal 🖼️🛠️ | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" />
 </p>
 
+
+	
 ![splash-cli](https://socialify.git.ci/splash-cli/splash-cli/image?description=1&font=KoHo&forks=1&language=1&owner=1&pattern=Floating%20Cogs&pulls=1&stargazers=1&theme=Dark)
-[![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen?style=for-the-badge)](https://plant.treeware.earth/splash-cli/splash-cli)
+	
+
 
 <p align="center">
 <img alt="npm" src="https://img.shields.io/npm/dm/splash-cli.svg?style=for-the-badge">
 <img src="https://img.shields.io/github/package-json/v/splash-cli/splash-cli.svg?style=for-the-badge" alt="Version" />
 <img src="https://img.shields.io/github/workflow/status/splash-cli/splash-cli/Node CI?style=for-the-badge" alt="GithubWorkflow" />
 <img alt="Website" src="https://img.shields.io/website/https/splash-cli.app.svg?down_color=red&style=for-the-badge"/>
+	<a href="https://plant.treeware.earth/splash-cli/splash-cli">
+		<img src="https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen?style=for-the-badge" alt="Buy usa  tree" />
+	</a>
+</p>
+<p align="center">
+	<a href="https://stars.medv.io/splash-cli/splash-cli">
+		<img src="https://stars.medv.io/splash-cli/splash-cli.svg" alt="stars_spark" />
+	</a>
 </p>
 
 <h6 align="center">Get stunning wallpapers from <a href="https://unsplash.com">Unsplash</a> </h6>
