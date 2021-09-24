@@ -22,6 +22,7 @@
 		"start": "node build/bin/index.js --enable-source-maps",
 		"start.norebuild": "node build/bin/index.js",
 		"fix": "eslint src/**/*.js --color --fix",
+		"lint-staged": "lint-staged",
 		"test": "jest",
 		"prebuild": "rm -rf build && npm run fix",
 		"prestart": "npm run build",
