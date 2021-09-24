@@ -12,13 +12,13 @@ To build `splash-cli` correctly you **must** have some *Unsplash API credentials
 
 Put everything inside a `.env` file in the root dir of the project (a template is available here: [`.env.example`][env_example])
 
-Then you can start play with the code. Have fun ✌️
+Then you can start play with the code. Have fun ✌️ (we use [YARN](https://yarnpkg.com))
 
 ## Explanation:
 
 #### Add a new flag
 To add flags and arguments you should do something like this:
-> :warn: You maybe would change the params somewhere else, that's ok. 
+> :warn: You maybe would change the params somewhere else, that's ok.
 If you need help please create a new issue
 
 ##### Example
@@ -28,7 +28,7 @@ If you need help please create a new issue
         // Do your awesome stuff
         console.log('CUSTOM FLAG')
 
-        // please remember the return statement at the end if you don't want to 
+        // please remember the return statement at the end if you don't want to
         // continue the process with the download
         return;
 
