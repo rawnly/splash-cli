@@ -10,6 +10,7 @@
 		"codeFrame": true,
 		"allowImportExportEverywhere": false
 	},
+	"plugins": ["jest"],
 	"rules": {
 		"indent": ["warn", "tab"],
 		"linebreak-style": ["error", "unix"],
