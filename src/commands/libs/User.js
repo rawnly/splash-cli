@@ -250,7 +250,7 @@ export default class User {
 			{yellow Bio}: ${user.bio
 		.trim()
 		.split( '\n' )
-		.map( ( item ) => item.replace( /^\s|\s$/g, '' ) )
+		.map( ( item ) => item.trim() )
 		.join( '\n' )}
 			{yellow Location}: ${user.location}
 
