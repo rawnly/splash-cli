@@ -1,0 +1,48 @@
+release:
+  branches:
+    - name: master
+    - name: develop
+      channel: beta
+      prerelease: beta
+    - name: feature/*
+      channel: alpha
+      prerelease: alpha
+
+plugins:
+- - "@semantic-release/commit-analyzer"
+  - preset: conventionalcommits
+    releaseRules:
+      - type: "docs"
+        scope: "README"
+        release: "patch"
+      - type: "refactor"
+        release: "patch"
+      - type: "style"
+        release: "patch"
+
+- - "@semantic-release/release-notes-generator"
+  - preset: conventionalcommits
+    parserOpts:
+      noteKeywords:
+      - BREAKING CHANGE
+      - BREAKING CHANGES
+      - BREAKING
+    writerOpts:
+      commitsSort:
+      - subject
+      - scope
+
+- - "@semantic-release/changelog"
+  - changelogFile: "documentation/CHANGELOG.md"
+
+
+- - "@semantic-release/git"
+  - message: "${nextRelease.version} CHANGELOG [skip ci]\n\n${nextRelease.notes}"
+    assets:
+     - "documentation/CHANGELOG.md"
+
+- - "@semantic-release/github"
+
+- - "@semantic-release/git"
+  - assets:
+      - "documentation/CHANGELOG.md"
