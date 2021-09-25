@@ -18,6 +18,8 @@ jobs:
       run: |
         yarn install --exact
         yarn build
+    - name: release
+      run: yarn semantic-release
       env:
         CI: true
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
