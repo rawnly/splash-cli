@@ -181,6 +181,9 @@ This package is [Treeware](https://treeware.earth). If you're enjoying it, then 
 	<a href="https://instagram.com/fedevitale.dev"> Instagram </a>
 </p>
 
+[![Stargazers over time](https://starchart.cc/splash-cli/splash-cli.svg)](https://starchart.cc/splash-cli/splash-cli)
+
+
 [treeware]: https://treeware.earth/
 [treeware_buy]: https://plant.treeware.earth/splash-cli/splash-cli
 [faqs]: https://github.com/splash-cli/splash-cli/labels/%3Aquestion%3A%20%20FAQ
