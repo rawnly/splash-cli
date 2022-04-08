@@ -1,9 +1,11 @@
 # Splash CLI v4
-A new era for Splash CLI is coming! After many weeks 
-thinking how to upgrade the project codebase I decided to 
+[![Go](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml/badge.svg?branch=go-rewrite&event=push)](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml)
+
+A new era for Splash CLI is coming! After many weeks
+thinking how to upgrade the project codebase I decided to
 completely rewrite the CLI from the ground in Go.
 
-The idea is to replicate the original functionality to keep 
+The idea is to replicate the original functionality to keep
 the new experience as close to the original as possible.
 
 ### Why Go?
@@ -28,8 +30,8 @@ To build the project locally you can use the following command:
 ```shell
     got install
     go build -ldflags "-X 'main.ClientId=<your-client-id>' -X 'main.ClientSecret=<your-client-secret>'"
-    
+
     # OR via makefile
-    
-    make build 
+
+    make build
 ```
