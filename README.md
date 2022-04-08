@@ -1,5 +1,5 @@
 # Splash CLI v4
-[![Go](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml/badge.svg?branch=go-rewrite&event=push)](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml)
+[![Go](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml/badge.svg?branch=go-rewrite)](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml)
 
 A new era for Splash CLI is coming! After many weeks
 thinking how to upgrade the project codebase I decided to
