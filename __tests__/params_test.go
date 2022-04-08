@@ -1,6 +1,7 @@
-package unsplash
+package __tests__
 
 import (
+	"github.com/rawnly/splash-cli/unsplash"
 	"net/url"
 	"testing"
 )
@@ -20,9 +21,9 @@ func TestStringify(t *testing.T) {
 		Scope:   []string{"public", "user"},
 	}
 
-	expected := url.PathEscape("?page=1&per_page=10&q=test spacing&scope=public,user")
+	expected := url.PathEscape("page=1&per_page=10&q=test spacing&scope=public,user")
 
-	if Stringify(p) != expected {
-		t.Errorf("Expected %s, got %s", expected, Stringify(p))
+	if unsplash.Stringify(p) != expected {
+		t.Errorf("Expected %s, got %s", expected, unsplash.Stringify(p))
 	}
 }

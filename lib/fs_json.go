@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 )
 
-func WriteJson(filepath string, data map[string]string) error {
+func WriteJson(filepath string, data any) error {
 	file, err := json.MarshalIndent(data, "", "")
 
 	if err != nil {
@@ -15,7 +15,7 @@ func WriteJson(filepath string, data map[string]string) error {
 	return ioutil.WriteFile(filepath, file, 0644)
 }
 
-func ReadJson(file string, data *map[string]string) error {
+func ReadJson(file string, data any) error {
 	b, err := ioutil.ReadFile(file)
 
 	if err != nil {

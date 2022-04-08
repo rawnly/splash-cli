@@ -1,10 +1,12 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"github.com/briandowns/spinner"
 	"github.com/eiannone/keyboard"
 	"github.com/rawnly/splash-cli/lib"
+	"github.com/rawnly/splash-cli/lib/storage"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/models"
 	"github.com/reujab/wallpaper"
@@ -41,11 +43,6 @@ func handleSpinnerError(
 	os.Exit(1)
 }
 
-func handleError(err error, cmd *cobra.Command) {
-	cmd.PrintErr(err.Error())
-	os.Exit(1)
-}
-
 func newSpinner(cmd *cobra.Command, message string) *spinner.Spinner {
 	s := spinner.New(spinner.CharSets[SpinnerType], SpinnerSpeed)
 	s.Writer = cmd.OutOrStdout()
@@ -54,7 +51,7 @@ func newSpinner(cmd *cobra.Command, message string) *spinner.Spinner {
 	return s
 }
 
-func GetRootCommand(api *unsplash.Api) *cobra.Command {
+func GetRootCommand(api *unsplash.Api, ctx context.Context) *cobra.Command {
 	flags := &photoFlags{
 		Day: false,
 	}
@@ -67,6 +64,8 @@ func GetRootCommand(api *unsplash.Api) *cobra.Command {
 			var photo *models.Photo
 			var err error
 
+			s := ctx.Value("storage").(storage.Storage)
+
 			ConnectionSpinnerSuffix := []string{" Connecting to Unsplash...", "Failed to connect\n", "✔ Connected"}
 			DownloadSpinnerSuffix := []string{" Downloading photo...", "Failed to download\n", "✔ Downloaded"}
 			SetWallpaperSpinnerSuffix := []string{" Setting wallpaper...", "Failed to set wallpaper\n", "✔ Wallpaper set"}
@@ -75,7 +74,21 @@ func GetRootCommand(api *unsplash.Api) *cobra.Command {
 			connectionSpinner.Start()
 
 			if flags.Day {
-				photo, err = api.GetPhotoOfTheDay()
+
+				if s.Data.PhotoOfTheDayId != "" {
+					photo, err = api.GetPhoto(s.Data.PhotoOfTheDayId)
+				} else {
+					photo, err = api.GetPhotoOfTheDay()
+
+					s.Data.PhotoOfTheDayId = photo.Id
+					s.Data.PhotoOfTheDayUrl = photo.Urls.Raw
+					s.Data.PhotoOfTheDayDate = time.Now().Unix()
+
+					if err := s.Save(); err != nil {
+						handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[2])
+					}
+				}
+
 				handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 			} else if flags.Id != "" {
 				photo, err = api.GetPhoto(flags.Id)

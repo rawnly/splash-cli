@@ -20,3 +20,16 @@ the new experience as close to the original as possible.
 - [ ] Add photos to collections
 - [ ] Like photos
 - More to come
+
+### Build Locally
+To build the project locally you can use the following command:
+
+```bash
+```shell
+    got install
+    go build -ldflags "-X 'main.ClientId=<your-client-id>' -X 'main.ClientSecret=<your-client-secret>'"
+    
+    # OR via makefile
+    
+    make build 
+```

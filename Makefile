@@ -1,0 +1,12 @@
+.PHONY: all
+
+all:
+	@echo "make <cmd>"
+	@echo ""
+	@echo "commands:"
+	@echo " build - runs go build with ldflags Clientid=${UNSPLASH_CLIENT_ID} and Clientsecret=${UNSPLASH_CLIENT_SECRET}"
+	@echo ""
+
+build:
+	@rm -f splash-cli
+	@go build -ldflags="-X 'main.ClientId=${UNSPLASH_CLIENT_ID}' -X 'main.ClientSecret=${UNSPLASH_CLIENT_SECRET}' -X 'main.Version=4.0.0-alpha'"
