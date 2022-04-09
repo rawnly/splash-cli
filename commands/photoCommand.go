@@ -94,7 +94,7 @@ func GetRootCommand(api *unsplash.Api, ctx context.Context) *cobra.Command {
 				photo, err = api.GetPhoto(flags.Id)
 				handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 			} else {
-				photos, err := api.GetRandomPhoto(unsplash.RandomPhotoParams{
+				photos, err := api.GetRandomPhoto(models.RandomPhotoParams{
 					Orientation: flags.Orientation,
 					Query:       flags.Query,
 					Count:       1,

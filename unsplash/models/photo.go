@@ -25,3 +25,11 @@ type PhotoUrls struct {
 type PhotoOfTheDay struct {
 	Id string `json:"id"`
 }
+
+type RandomPhotoParams struct {
+	Orientation string   `url:"orientation" default:"landscape"`
+	Query       string   `url:"query"`
+	Collections []string `url:"collections" separator:"comma"`
+	Count       int      `url:"count" default:"1"`
+	User        string   `url:"user"`
+}

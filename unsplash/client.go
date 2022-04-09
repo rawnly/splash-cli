@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/rawnly/splash-cli/lib"
+	"github.com/rawnly/splash-cli/lib/network"
 	"github.com/rawnly/splash-cli/unsplash/models"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
@@ -80,7 +81,7 @@ func (a Api) get(pathname string, params interface{}) ([]byte, error) {
 	baseUrl := fmt.Sprintf("https://api.unsplash.com%s", pathname)
 
 	if params != nil {
-		baseUrl += fmt.Sprintf("?%s", Stringify(params))
+		baseUrl += fmt.Sprintf("?%s", network.Stringify(params))
 	}
 
 	logrus.Debug("GET", baseUrl)
@@ -124,7 +125,7 @@ func (a Api) GetPhoto(id string) (*models.Photo, error) {
 	return &photo, nil
 }
 
-func (a Api) GetRandomPhoto(params RandomPhotoParams) ([]models.Photo, error) {
+func (a Api) GetRandomPhoto(params models.RandomPhotoParams) ([]models.Photo, error) {
 	var photo []models.Photo
 
 	data, err := a.get("/photos/random", params)
