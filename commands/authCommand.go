@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/briandowns/spinner"
 	"github.com/rawnly/splash-cli/lib/storage"
+	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/spf13/cobra"
 	"net/http"
@@ -36,15 +37,15 @@ func GetAuthLoginCommand(api *unsplash.Api, ctx context.Context) *cobra.Command 
 			sp.Suffix = " Waiting for authcode..."
 
 			fmt.Println("Please visit the following URL to login:")
-			fmt.Println(
-				api.AuthenticationUrl(
-					"read_user",
-					"write_likes",
-					"public",
-					"read_collections",
-					"write_collections",
-				),
+			authenticationUrl := api.AuthenticationUrl(
+				"read_user",
+				"write_likes",
+				"public",
+				"read_collections",
+				"write_collections",
 			)
+
+			terminal.Link("Click to Login", authenticationUrl)
 
 			fmt.Println("")
 			sp.Start()
