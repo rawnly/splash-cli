@@ -69,11 +69,13 @@ func main() {
 
 	api := unsplash.Api{
 		ClientId:     ClientId,
+		RedirectUri:  "http://localhost:8888",
 		ClientSecret: ClientSecret,
 		Client:       http.Client{},
 	}
 
 	cmd := commands.GetRootCommand(&api, ctx)
+	cmd.AddCommand(commands.GetAuthCommand(&api, ctx))
 
 	logrus.SetOutput(cmd.OutOrStdout())
 
