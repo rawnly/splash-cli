@@ -2,7 +2,7 @@ package storage
 
 import (
 	"github.com/rawnly/splash-cli/lib"
-	"github.com/rawnly/splash-cli/unsplash"
+	"github.com/rawnly/splash-cli/unsplash/models"
 	"github.com/sirupsen/logrus"
 )
 
@@ -11,7 +11,7 @@ type StorageData struct {
 	PhotoOfTheDayId   string `json:"photo_of_the_day__id"`
 	PhotoOfTheDayUrl  string `json:"photo_of_the_day__url"`
 
-	unsplash.AuthRes
+	models.AuthRes
 }
 
 type Storage struct {

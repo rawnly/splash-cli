@@ -72,6 +72,7 @@ func main() {
 		RedirectUri:  "http://localhost:8888",
 		ClientSecret: ClientSecret,
 		Client:       http.Client{},
+		Context:      ctx,
 	}
 
 	cmd := commands.GetRootCommand(&api, ctx)

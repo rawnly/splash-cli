@@ -1,2 +1,4 @@
 dist
 splash-cli
+.env.*
+.env

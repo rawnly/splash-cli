@@ -107,6 +107,12 @@ func GetRootCommand(api *unsplash.Api, ctx context.Context) *cobra.Command {
 				}
 			}
 
+			err = api.Like(photo.Id)
+
+			if err != nil {
+				handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
+			}
+
 			connectionSpinner.FinalMSG = ConnectionSpinnerSuffix[2]
 			connectionSpinner.Stop()
 
@@ -126,7 +132,7 @@ func GetRootCommand(api *unsplash.Api, ctx context.Context) *cobra.Command {
 				downloadSpinner.FinalMSG = "[SKIPPED] Download"
 				downloadSpinner.Stop()
 			} else {
-				location, err = unsplash.DownloadPhoto(photo.Urls.Raw, downloadLocation)
+				location, err = lib.DownloadFile(photo.Urls.Raw, downloadLocation)
 
 				if err != nil {
 					downloadSpinner.FinalMSG = "[FAILED] Download"

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/briandowns/spinner"
+	"github.com/rawnly/splash-cli/lib/console"
 	"github.com/rawnly/splash-cli/lib/storage"
 	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash"
@@ -19,10 +20,8 @@ func GetAuthCommand(api *unsplash.Api, ctx context.Context) *cobra.Command {
 		Long:  "Authenticate with Unsplash",
 	}
 
-	cmd.AddCommand(
-		GetAuthLoginCommand(api, ctx),
-		GetAuthLogoutCommand(api, ctx),
-	)
+	cmd.AddCommand(GetAuthLoginCommand(api, ctx))
+	cmd.AddCommand(GetAuthLogoutCommand(api, ctx))
 
 	return cmd
 }
@@ -37,7 +36,7 @@ func GetAuthLoginCommand(api *unsplash.Api, ctx context.Context) *cobra.Command 
 			sp.Suffix = " Waiting for authcode..."
 
 			fmt.Println("Please visit the following URL to login:")
-			authenticationUrl := api.AuthenticationUrl(
+			authenticationUrl := api.BuildAuthenticationUrl(
 				"read_user",
 				"write_likes",
 				"public",
@@ -50,7 +49,7 @@ func GetAuthLoginCommand(api *unsplash.Api, ctx context.Context) *cobra.Command 
 			fmt.Println("")
 			sp.Start()
 
-			go loginServer(codeChan, ctx)
+			go loginServer(codeChan, api, ctx)
 
 			sp.Suffix = " Authenticating..."
 
@@ -76,26 +75,60 @@ func GetAuthLoginCommand(api *unsplash.Api, ctx context.Context) *cobra.Command 
 				return
 			}
 
+			me, err := api.Me()
+
+			if err == nil {
+				sp.Stop()
+				fmt.Println(fmt.Sprintf("Welcome %s!", console.Yellow(me.Username)))
+				return
+			}
+
 			sp.FinalMSG = "Welcome to Splash!"
 			sp.Stop()
+
+			fmt.Println("")
+			fmt.Println("An error occured while fetching your data.")
+
+			cmd.PrintErr(err)
 		},
 	}
 
 	return cmd
 }
 
-func GetAuthLogoutCommand(api *unsplash.Api, ctx context.Context) *cobra.Command {
+func GetAuthLogoutCommand(_ *unsplash.Api, ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:  "logout",
 		Long: "Logout from Unsplash",
 		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("Logging out...")
+
+			s := ctx.Value("storage").(storage.Storage)
+
+			s.Data.AccessToken = ""
+			s.Data.RefreshToken = ""
+
+			if err := s.Save(); err != nil {
+				cmd.PrintErr(err)
+				return
+			}
+
+			fmt.Println("You have been logged out.")
 		},
 	}
 
 	return cmd
 }
 
-func loginServer(code chan string, ctx context.Context) {
+func loginServer(code chan string, api *unsplash.Api, ctx context.Context) {
+	authenticationUrl := api.BuildAuthenticationUrl(
+		"read_user",
+		"write_likes",
+		"public",
+		"read_collections",
+		"write_collections",
+	)
+
 	srv := http.Server{
 		Addr: ":8888",
 	}
@@ -107,6 +140,10 @@ func loginServer(code chan string, ctx context.Context) {
 				panic(err.Error())
 			}
 		}
+	})
+
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, authenticationUrl, http.StatusTemporaryRedirect)
 	})
 
 	if err := srv.ListenAndServe(); err != http.ErrServerClosed && err != nil {

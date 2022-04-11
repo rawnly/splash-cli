@@ -18,6 +18,7 @@ the new experience as close to the original as possible.
 ### Feature List
 - [x] Change wallpaper on your desktop
 - [x] Download photos
+- [x] Login to your account
 - [ ] Create new collections
 - [ ] Add photos to collections
 - [ ] Like photos
