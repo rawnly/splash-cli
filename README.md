@@ -1,5 +1,6 @@
 # Splash CLI v4
 [![Go](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml/badge.svg?branch=go-rewrite)](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml)
+> Are you looking for the v3.x `splash-cli`? Check out the [master](https://github.com/splash-cli/splash-cli/tree/master) branch
 
 A new era for Splash CLI is coming! After many weeks
 thinking how to upgrade the project codebase I decided to
