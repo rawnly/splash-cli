@@ -29,7 +29,7 @@ the new experience as close to the original as possible.
 To build the project locally you can use the following command:
 
 ```shell
-    got install
+    go install
     go build -ldflags "-X 'main.ClientId=<your-client-id>' -X 'main.ClientSecret=<your-client-secret>'"
 
     # OR via makefile
