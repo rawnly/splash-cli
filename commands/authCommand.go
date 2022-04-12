@@ -44,7 +44,7 @@ func GetAuthLoginCommand(api *unsplash.Api, ctx context.Context) *cobra.Command 
 				"write_collections",
 			)
 
-			terminal.Link("Click to Login", authenticationUrl)
+			terminal.HyperLink("Click to Login", authenticationUrl)
 
 			fmt.Println("")
 			sp.Start()

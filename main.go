@@ -75,7 +75,7 @@ func main() {
 		Context:      ctx,
 	}
 
-	cmd := commands.GetRootCommand(&api, ctx)
+	cmd := commands.GetRootCommand(&api, ctx, Version)
 	cmd.AddCommand(commands.GetAuthCommand(&api, ctx))
 
 	logrus.SetOutput(cmd.OutOrStdout())

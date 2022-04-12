@@ -54,6 +54,7 @@ func AddAuthorization(req *http.Request, authorizationKind string, token string)
 		authorizationKind = AuthorizationKindBearer
 	}
 
+	fmt.Println("authorizationKind", authorizationKind, "token", token)
 	req.Header.Add("Authorization", fmt.Sprintf("%s %s", authorizationKind, token))
 }
 
@@ -67,10 +68,14 @@ func ExecuteRequest(req *http.Request) func(client http.Client) ([]byte, error) 
 
 		defer response.Body.Close()
 
-		if response.StatusCode != 200 {
+		if IsError(response) {
 			return nil, errors.New("Error: " + response.Status)
 		}
 
 		return ioutil.ReadAll(response.Body)
 	}
+}
+
+func IsError(response *http.Response) bool {
+	return response.StatusCode >= 300
 }

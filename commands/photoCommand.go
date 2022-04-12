@@ -51,15 +51,16 @@ func newSpinner(cmd *cobra.Command, message string) *spinner.Spinner {
 	return s
 }
 
-func GetRootCommand(api *unsplash.Api, ctx context.Context) *cobra.Command {
+func GetRootCommand(api *unsplash.Api, ctx context.Context, version string) *cobra.Command {
 	flags := &photoFlags{
 		Day: false,
 	}
 
 	cmd := &cobra.Command{
-		Use:   "splash",
-		Short: "Get a photo",
-		Args:  cobra.NoArgs,
+		Use:     "splash",
+		Short:   "Get a photo",
+		Args:    cobra.NoArgs,
+		Version: version,
 		Run: func(cmd *cobra.Command, args []string) {
 			var photo *models.Photo
 			var err error
