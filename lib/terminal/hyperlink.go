@@ -17,8 +17,8 @@ const (
 
 func hasFlag(flag string) bool {
 	for _, s := range os.Args {
-		s = strings.Replace(s, "--", "", 1)
-		s = strings.Replace(s, "-", "", 1)
+		re, _ := regexp.Compile(`^-{1,2}`)
+		s = re.ReplaceAllString(s, "")
 
 		if s == flag {
 			return true
@@ -58,6 +58,7 @@ func parseVersion(version string) (int, int, int) {
 	return major, minor, patch
 }
 
+// SupportsHyperLinks Code inspired by https://github.com/jamestalmage/supports-hyperlinks/
 func SupportsHyperLinks(env map[string]string) bool {
 	if hasKey("FORCE_HYPERLINK", env) {
 		intValue, err := strconv.Atoi(env["FORCE_HYPERLINK"])
@@ -69,7 +70,7 @@ func SupportsHyperLinks(env map[string]string) bool {
 		return !(len(env["FORCE_HYPERLINK"]) > 0 && intValue == 0)
 	}
 
-	if hasFlag("no-hyperlink") || hasFlag("no-hyperlinks") || hasFlag("hyperlink=false") || hasFlag("hyperlink=never") {
+	if hasFlag("no-hyperlink") || hasFlag("no-hyperlinks") {
 		return false
 	}
 

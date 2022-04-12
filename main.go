@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/rawnly/splash-cli/commands"
+	"github.com/rawnly/splash-cli/cmd"
 	"github.com/rawnly/splash-cli/lib/storage"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/sirupsen/logrus"
@@ -64,6 +64,7 @@ func main() {
 
 	// load storage into context
 	ctx = context.WithValue(ctx, "storage", s)
+	ctx = context.WithValue(ctx, "isLoggedIn", s.Data.AccessToken != "" && s.Data.RefreshToken != "")
 
 	go runChecks(ctx)
 
@@ -75,8 +76,8 @@ func main() {
 		Context:      ctx,
 	}
 
-	cmd := commands.GetRootCommand(&api, ctx, Version)
-	cmd.AddCommand(commands.GetAuthCommand(&api, ctx))
+	cmd := cmd.GetRootCommand(&api, ctx, Version)
+	cmd.AddCommand(cmd.GetAuthCommand(&api, ctx))
 
 	logrus.SetOutput(cmd.OutOrStdout())
 
@@ -86,5 +87,8 @@ func main() {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 
-	_ = cmd.Execute()
+	if err := cmd.Execute(); err != nil {
+		logrus.Fatal(err)
+		os.Exit(1)
+	}
 }

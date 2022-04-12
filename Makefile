@@ -15,5 +15,5 @@ increment-build:
 
 
 build:
-	@rm -f splash-cli
-	@go build -ldflags="-X 'main.ClientId=${UNSPLASH_CLIENT_ID}' -X 'main.ClientSecret=${UNSPLASH_CLIENT_SECRET}' -X 'main.Version=4.0.0-alpha.$(cat .build)'"
+	@rm -f splash splash-cli
+	@go build -o splash -ldflags="-X 'main.ClientId=${UNSPLASH_CLIENT_ID}' -X 'main.ClientSecret=${UNSPLASH_CLIENT_SECRET}' -X 'main.Version=4.0.0-alpha.$(cat .build)'"

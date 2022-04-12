@@ -54,7 +54,7 @@ func AddAuthorization(req *http.Request, authorizationKind string, token string)
 		authorizationKind = AuthorizationKindBearer
 	}
 
-	fmt.Println("authorizationKind", authorizationKind, "token", token)
+	logrus.Debug("authorizationKind", authorizationKind, "token", token)
 	req.Header.Add("Authorization", fmt.Sprintf("%s %s", authorizationKind, token))
 }
 
