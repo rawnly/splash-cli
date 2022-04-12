@@ -76,10 +76,10 @@ func main() {
 		Context:      ctx,
 	}
 
-	cmd := cmd.GetRootCommand(&api, ctx, Version)
-	cmd.AddCommand(cmd.GetAuthCommand(&api, ctx))
+	rootCmd := cmd.GetRootCommand(&api, ctx, Version)
+	rootCmd.AddCommand(cmd.GetAuthCommand(&api, ctx))
 
-	logrus.SetOutput(cmd.OutOrStdout())
+	logrus.SetOutput(rootCmd.OutOrStdout())
 
 	if Debug != "" {
 		logrus.SetLevel(logrus.DebugLevel)
@@ -87,7 +87,7 @@ func main() {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 
-	if err := cmd.Execute(); err != nil {
+	if err := rootCmd.Execute(); err != nil {
 		logrus.Fatal(err)
 		os.Exit(1)
 	}
