@@ -60,6 +60,7 @@ func AddAuthorization(req *http.Request, authorizationKind string, token string)
 
 func ExecuteRequest(req *http.Request) func(client http.Client) ([]byte, error) {
 	return func(client http.Client) ([]byte, error) {
+		logrus.Debugf("%s %s %s", req.Method, req.URL, req.Header.Get("Authorization"))
 		response, err := client.Do(req)
 
 		if err != nil {

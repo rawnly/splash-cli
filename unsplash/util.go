@@ -3,7 +3,7 @@ package unsplash
 import (
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/network"
-	"github.com/rawnly/splash-cli/lib/storage"
+	"github.com/spf13/viper"
 	"net/http"
 )
 
@@ -12,8 +12,10 @@ func (a Api) sendRequest(req *http.Request) ([]byte, error) {
 	token := a.ClientId
 	authorizationKind := network.AuthorizationKindClient
 
-	if s := a.getStorage(); s != nil {
-		token = s.Data.AccessToken
+	accessToken := viper.GetString("access-token")
+
+	if accessToken != "" {
+		token = accessToken
 		authorizationKind = network.AuthorizationKindBearer
 	}
 
@@ -39,22 +41,6 @@ func (a Api) post(pathname string, params interface{}, body any) ([]byte, error)
 	}
 
 	return a.sendRequest(req)
-}
-
-func (a Api) getStorage() *storage.Storage {
-	v := a.Context.Value("storage")
-
-	if v == nil {
-		return nil
-	}
-
-	s := v.(storage.Storage)
-
-	if err := s.Load(); err != nil {
-		return nil
-	}
-
-	return &s
 }
 
 func (a Api) buildUrl(pathname string, data map[string]string) (string, error) {

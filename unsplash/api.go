@@ -1,7 +1,6 @@
 package unsplash
 
 import (
-	"context"
 	"net/http"
 )
 
@@ -10,5 +9,4 @@ type Api struct {
 	ClientSecret string
 	RedirectUri  string
 	Client       http.Client
-	Context      context.Context
 }
