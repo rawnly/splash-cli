@@ -3,15 +3,19 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/MakeNowJust/heredoc"
 	"github.com/briandowns/spinner"
 	"github.com/eiannone/keyboard"
 	"github.com/rawnly/splash-cli/cmd/auth"
+	"github.com/rawnly/splash-cli/cmd/settings"
+	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
+	"github.com/rawnly/splash-cli/lib/keys"
+	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/models"
 	"github.com/reujab/wallpaper"
-	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -55,16 +59,11 @@ func newSpinner(cmd *cobra.Command, message string) *spinner.Spinner {
 	return s
 }
 
-var (
-	version = "dev"
-	commit  = "none"
-)
-
 var rootCmd = &cobra.Command{
 	Use:     "splash",
 	Short:   "Get a photo",
 	Args:    cobra.NoArgs,
-	Version: fmt.Sprintf("%s (%s)", version, commit),
+	Version: config.GetVersion(),
 	Example: heredoc.Doc(`
 			$ splash --day
 			$ splash --query "mountains" --orientation "landscape"
@@ -89,6 +88,8 @@ var rootCmd = &cobra.Command{
 		DownloadSpinnerSuffix := []string{" Downloading photo...", "Failed to download\n", "✔ Downloaded"}
 		SetWallpaperSpinnerSuffix := []string{" Setting wallpaper...", "Failed to set wallpaper\n", "✔ Wallpaper set"}
 
+		terminal.Clear()
+
 		connectionSpinner := newSpinner(cmd, ConnectionSpinnerSuffix[0])
 		connectionSpinner.Start()
 
@@ -108,6 +109,15 @@ var rootCmd = &cobra.Command{
 		idFlag, err := cmd.Flags().GetString("id")
 		cobra.CheckErr(err)
 
+		userFlag, err := cmd.Flags().GetString("user")
+		cobra.CheckErr(err)
+
+		topicsFlag, err := cmd.Flags().GetStringSlice("topics")
+		cobra.CheckErr(err)
+
+		collectionsFlag, err := cmd.Flags().GetStringSlice("collections")
+		cobra.CheckErr(err)
+
 		saveFlag, err := cmd.Flags().GetBool("save")
 		cobra.CheckErr(err)
 
@@ -117,12 +127,12 @@ var rootCmd = &cobra.Command{
 			} else {
 				photo, err = api.GetPhotoOfTheDay()
 
-				viper.Set("photo-of-the-day.id", photo.Id)
-				viper.Set("photo-of-the-day.last-update", time.Now().Unix())
+				viper.Set("photo_of_the_day.id", photo.Id)
+				viper.Set("photo_of_the_day.last_update", time.Now().Unix())
 
 				if err := viper.WriteConfig(); err != nil {
 					connectionSpinner.Stop()
-					fmt.Println("Failed to save config")
+					fmt.Println("Failed to save settings")
 					cobra.CheckErr(err)
 				}
 
@@ -140,6 +150,9 @@ var rootCmd = &cobra.Command{
 				Orientation: orientationFlag,
 				Query:       queryFlag,
 				Count:       1,
+				Username:    userFlag,
+				Topics:      topicsFlag,
+				Collections: collectionsFlag,
 			})
 
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
@@ -157,8 +170,16 @@ var rootCmd = &cobra.Command{
 		downloadSpinner := newSpinner(cmd, DownloadSpinnerSuffix[0])
 		downloadSpinner.Start()
 
-		downloadLocation, err := lib.HomeFile(fmt.Sprintf("Pictures/%s.jpg", photo.Id))
-		handleSpinnerError(err, downloadSpinner, cmd, DownloadSpinnerSuffix[1])
+		downloadFolder := viper.GetString("download_dir")
+
+		if downloadFolder == "" {
+			folder, err := lib.HomePrefix("Pictures")
+			handleSpinnerError(err, downloadSpinner, cmd, DownloadSpinnerSuffix[1])
+
+			downloadFolder = folder
+		}
+
+		downloadLocation := fmt.Sprintf("%s/%s.jpg", downloadFolder, photo.Id)
 
 		var location string
 
@@ -171,6 +192,7 @@ var rootCmd = &cobra.Command{
 			location, err = lib.DownloadFile(photo.Urls.Raw, downloadLocation)
 
 			if err != nil {
+				cobra.CheckErr(err)
 				downloadSpinner.FinalMSG = "[FAILED] Download"
 				downloadSpinner.Stop()
 
@@ -214,11 +236,6 @@ var rootCmd = &cobra.Command{
 
 		fmt.Println("")
 
-		if cast.ToBool(ctx.Value("isLoggedIn")) {
-			err = api.Like(photo.Id)
-			cobra.CheckErr(err)
-		}
-
 		if saveFlag {
 			fmt.Println("[SKIPPED] Wallpaper")
 			return
@@ -233,20 +250,69 @@ var rootCmd = &cobra.Command{
 		wallpaperSpinner.FinalMSG = SetWallpaperSpinnerSuffix[2]
 		wallpaperSpinner.Stop()
 
+		terminal.Clear()
+
+		// Print photo data
 		fmt.Println("")
+		text, err := lib.StringTemplate(heredoc.Doc(`
+			{{ if .Description }} {{ color "dim+h" ">"}} {{ color "dim+h" .Description }}{{ end }}
+
+			Downloads: {{ formatNumber .Downloads }}
+			Views: {{ formatNumber .Views }}
+			Liked by {{ formatNumber .Likes }} users
+
+			Shot by {{ color "cyan+b" .User.Name }} (@{{ color "yellow" .User.Username }})
+		`), photo)
+		cobra.CheckErr(err)
+
+		fmt.Println(text)
+
+		if !keys.IsLoggedIn(ctx) {
+			fmt.Println("Login to like this photo.")
+		} else if photo.LikedByUser {
+			fmt.Println("❤️  You liked this photo.")
+		} else {
+			shouldPrompt := viper.GetBool(config.DefaultUserConfig.AutoLikePhotos.Key)
+
+			if !shouldPrompt {
+				return
+			}
+
+			shouldLike := false
+
+			err := survey.AskOne(&survey.Confirm{
+				Default: false,
+				Message: "Do you like this photo?",
+			}, &shouldLike)
+			cobra.CheckErr(err)
+
+			if shouldLike {
+				err := api.Like(photo.Id)
+				cobra.CheckErr(err)
+
+				fmt.Println("Liked!")
+			}
+		}
 	},
 }
 
 func init() {
 	rootCmd.Flags().String("scale", "auto", "Set wallpaper scale")
-	rootCmd.Flags().Bool("day", false, "Get a the photo of the day")
-	rootCmd.Flags().StringP("orientation", "o", "landscape", "Get a random photo with the specified orientation")
-	rootCmd.Flags().StringP("query", "q", "", "Get a random photo with the specified query")
-	rootCmd.Flags().String("id", "", "Get a specific photo by id")
+	rootCmd.Flags().Bool("day", false, "Retrieve the photo of the day")
+	rootCmd.Flags().StringP("orientation", "o", "landscape", "Filter by photo orientation")
+	rootCmd.Flags().StringP("query", "q", "", "Limit selection to photos matching a search term.")
+	rootCmd.Flags().StringSliceP("topics", "t", []string{}, "Public topic ID(s) to filter selection. If multiple, comma-separated")
+	rootCmd.Flags().StringSliceP("collections", "c", []string{}, "Public collection ID(s) to filter selection. If multiple, comma-separated")
+	rootCmd.Flags().StringP("user", "u", "", "Limit selection to a single user.")
+	rootCmd.Flags().String("id", "", "Retrieve a single photo by ID")
 	rootCmd.Flags().BoolP("save", "s", false, "Save the photo without setting it as wallpaper")
 	rootCmd.Flags().Bool("no-cache", false, "Ignore cache")
+	//rootCmd.Flags().Bool("quiet", false, "Hide spinners / prompts")
 
+	rootCmd.AddCommand(settings.Cmd)
 	rootCmd.AddCommand(auth.Command)
+
+	rootCmd.SetVersionTemplate("{{ .Version }}")
 }
 
 func Execute(ctx context.Context) {

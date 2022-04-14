@@ -5,16 +5,29 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"regexp"
 )
 
-func HomeFile(file string) (string, error) {
+// Adds $HOME before the path if it is not absolute
+func HomePrefix(path string) (string, error) {
+	if len(path) > 0 && path[0] == '/' {
+		return path, nil
+	}
+
+	re, err := regexp.Compile("^~?")
+	if err != nil {
+		return "", err
+	}
+
+	path = re.ReplaceAllString(path, "")
+
 	homedir, err := os.UserHomeDir()
 
 	if err != nil {
 		return "", err
 	}
 
-	return fmt.Sprintf("%s/%s", homedir, file), nil
+	return fmt.Sprintf("%s/%s", homedir, path), nil
 }
 
 func FileExists(filename string) bool {

@@ -12,10 +12,11 @@ builds:
     env:
       - CGO_ENABLED=0
     ldflags:
-      - -X "github.com/rawnly/splash-cli/cmd/root.version={{ .Version }}"
-      - -X "github.com/rawnly/splash-cli/cmd/root.commit={{ .Commit }}"
       - -s -w -X "main.ClientId={{ .Env.UNSPLASH_CLIENT_ID }}"
       - -s -w -X "main.ClientSecret={{ .Env.UNSPLASH_CLIENT_SECRET }}"
+      - -s -w -X "main.Debug={{ .Env.DEBUG }}"
+      - -s -w -X "github.com/rawnly/splash-cli/config.Version={{ .Version }}"
+      - -s -w -X "github.com/rawnly/splash-cli/config.Commit={{ .Commit }}"
     goos:
       - linux
       - windows
@@ -28,13 +29,14 @@ archives:
       386: i386
       amd64: x86_64
 release:
+  prerelease: auto
   github:
     owner: splash-cli
     name: splash-cli
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  name_template: "{{ incpatch .Version }}-alpha"
 changelog:
   sort: asc
   filters:

@@ -57,8 +57,8 @@ var loginCmd = &cobra.Command{
 			return
 		}
 
-		viper.Set("access-token", res.AccessToken)
-		viper.Set("refresh-token", res.RefreshToken)
+		viper.Set("auth.access_token", res.AccessToken)
+		viper.Set("auth.refresh_token", res.RefreshToken)
 
 		if err := viper.WriteConfig(); err != nil {
 			sp.FinalMSG = "An error occurred while saving data."

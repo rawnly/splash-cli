@@ -3,6 +3,7 @@ package models
 type User struct {
 	Id       string `json:"id"`
 	Username string `json:"username"`
+	Name     string `json:"name"`
 }
 
 type Me struct {

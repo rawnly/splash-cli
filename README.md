@@ -16,7 +16,7 @@ the new experience as close to the original as possible.
 - No need to use any build tools
 - Blazing fast (~2500%) (0.22s vs 5s)
 
-### Feature List
+#### Feature List
 - [x] Change wallpaper on your desktop
 - [x] Download photos
 - [x] Login to your account
@@ -25,12 +25,23 @@ the new experience as close to the original as possible.
 - [ ] Like photos
 - More to come
 
-### Build Locally
+## Installation
+- Download the [latest pre-release](https://github.com/splash-cli/splash-cli/releases)
+- Move the `splash-cli` binary to your `$PATH`
+- Enjoy
+
+## Build Locally
 To build the project locally you can use the following command:
 
 ```shell
     goreleaser --snapshot --rm-dist
+    
+    # Or
+    
+    make build
 ```
+> NOTE: If you have an `.env` file in your project root `make` will automatically inject values inside script commands.
+
 
 Be sure to set up your environment before running the command.
 Required environment variables are:
@@ -38,3 +49,4 @@ Required environment variables are:
  - `UNSPLASH_CLIENT_SECRET`
 
 You can get credentials on the [Unsplash Developer Portal](https://unsplash.com/developers).
+

@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/rawnly/splash-cli/cmd"
+	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -17,7 +17,7 @@ var ClientSecret = "YOUR_CLIENT_SECRET"
 var Debug string
 
 func runChecks() {
-	timestamp := viper.GetInt64("photo-of-the-day.last-update")
+	timestamp := viper.GetInt64("photo_of_the_day.last_update")
 	now := time.Now().Unix()
 
 	if timestamp == 0 {
@@ -28,9 +28,8 @@ func runChecks() {
 	if (now - timestamp) > int64((time.Hour * 6).Seconds()) {
 		logrus.Debug("Clearing photo of the day")
 
-		viper.Set("photo-of-the-day.last-update", 0)
-		viper.Set("photo-of-the-day.url", "")
-		viper.Set("photo-of-the-day.id", "")
+		viper.Set("photo_of_the_day.last_update", 0)
+		viper.Set("photo_of_the_day.id", "")
 
 		err := viper.WriteConfig()
 		cobra.CheckErr(err)
@@ -43,16 +42,18 @@ func init() {
 	viper.AddConfigPath("$HOME/.config")
 	viper.AddConfigPath("$HOME/.splash-cli")
 
+	config.DefaultUserConfig.LoadDefaults()
+
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			logrus.Debug("No config file found")
+			logrus.Debug("No settings file found")
 
 			// Create file if not exists
 			if err := viper.SafeWriteConfig(); err != nil {
 				cobra.CheckErr(err)
 			}
 		} else {
-			logrus.Fatal("Error reading config file:", err)
+			logrus.Fatal("Error reading settings file:", err)
 		}
 	}
 
@@ -61,11 +62,6 @@ func init() {
 
 	go runChecks()
 }
-
-var (
-	version string = "dev"
-	commit  string = "none"
-)
 
 func main() {
 	ctx := context.Background()
@@ -76,9 +72,9 @@ func main() {
 		Client:       http.Client{},
 	}
 
-	// Load config
-	accessToken := viper.GetString("access-token")
-	refreshToken := viper.GetString("refresh-token")
+	// Load settings
+	accessToken := viper.GetString("auth.access_token")
+	refreshToken := viper.GetString("auth.refresh_token")
 
 	ctx = context.WithValue(ctx, "isLoggedIn", accessToken != "" && refreshToken != "")
 	ctx = context.WithValue(ctx, "api", api)
@@ -88,8 +84,6 @@ func main() {
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
 	}
-
-	fmt.Println(fmt.Sprintf("Splash CLI %s (%s)", version, commit))
 
 	cmd.Execute(ctx)
 }

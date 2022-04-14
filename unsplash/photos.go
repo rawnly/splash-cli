@@ -56,6 +56,14 @@ func (a Api) Like(id string) error {
 	return nil
 }
 
+func (a Api) Unlike(id string) error {
+	if _, err := a.delete(fmt.Sprintf("/photos/%s/like", id), nil); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (a Api) GetPhotoOfTheDay() (*models.Photo, error) {
 	var response models.PhotoOfTheDay
 

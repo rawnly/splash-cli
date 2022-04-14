@@ -18,8 +18,8 @@ var logoutCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Logging out...")
 
-		viper.Set("access-token", "")
-		viper.Set("refresh-token", "")
+		viper.Set("auth.access_token", "")
+		viper.Set("auth.refresh_token", "")
 
 		if err := viper.WriteConfig(); err != nil {
 			cmd.PrintErr(err)
