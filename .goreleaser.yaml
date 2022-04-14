@@ -11,6 +11,9 @@ builds:
   - binary: splash
     env:
       - CGO_ENABLED=0
+    ldflags:
+      - -X github.com/rawnly/splash-cli/cmd/root.version={{ .Version }}
+      - -X github.com/rawnly/splash-cli/cmd/root.commit={{ .Commit }}
     goos:
       - linux
       - windows
@@ -22,10 +25,6 @@ archives:
       windows: Windows
       386: i386
       amd64: x86_64
-release:
-  github:
-    owner: splash-cli
-    name: splash-cli
 checksum:
   name_template: 'checksums.txt'
 snapshot:

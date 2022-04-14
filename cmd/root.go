@@ -56,6 +56,11 @@ func newSpinner(cmd *cobra.Command, message string) *spinner.Spinner {
 	return s
 }
 
+var (
+	version = "dev"
+	commit  = "none"
+)
+
 var rootCmd = &cobra.Command{
 	Use:     "splash",
 	Short:   "Get a photo",
