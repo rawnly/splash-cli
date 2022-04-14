@@ -14,7 +14,6 @@ import (
 var ClientId = "YOUR_CLIENT_ID"
 var ClientSecret = "YOUR_CLIENT_SECRET"
 var Debug string
-var Version string = "4.0.0--alpha"
 
 func runChecks() {
 	timestamp := viper.GetInt64("photo-of-the-day.last-update")
