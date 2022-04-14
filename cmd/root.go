@@ -60,7 +60,7 @@ var rootCmd = &cobra.Command{
 	Use:     "splash",
 	Short:   "Get a photo",
 	Args:    cobra.NoArgs,
-	Version: config.Version,
+	Version: config.GetVersion(),
 	Example: heredoc.Doc(`
 			$ splash --day
 			$ splash --query "mountains" --orientation "landscape"
