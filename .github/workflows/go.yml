@@ -42,6 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           UNSPLASH_CLIENT_ID: ${{ secrets.UNSPLASH_CLIENT_ID }}
           UNSPLASH_CLIENT_SECRET: ${{ secrets.UNSPLASH_CLIENT_SECRET }}
+          DEBUG: true
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -69,6 +70,7 @@ jobs:
         distribution: goreleaser
         args: release --rm-dist
       env:
+        DEBUG: false
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         UNSPLASH_CLIENT_ID: ${{ secrets.UNSPLASH_CLIENT_ID }}
         UNSPLASH_CLIENT_SECRET: ${{ secrets.UNSPLASH_CLIENT_SECRET }}
