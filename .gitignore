@@ -2,3 +2,4 @@ dist
 splash
 .env.*
 .env
+dist/
