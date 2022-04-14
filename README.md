@@ -2,6 +2,29 @@
 [![Go](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml/badge.svg?branch=go-rewrite)](https://github.com/splash-cli/splash-cli/actions/workflows/go.yml)
 > Are you looking for the v3.x `splash-cli`? Check out the [master](https://github.com/splash-cli/splash-cli/tree/master) branch
 
+
+	
+![splash-cli](https://socialify.git.ci/splash-cli/splash-cli/image?description=1&language=1&owner=1&pattern=Brick%20Wall&theme=Dark)	
+
+
+<p align="center">
+    <a href="https://splash-cli.app">
+        <img alt="Website" src="https://img.shields.io/website/https/splash-cli.app.svg?down_color=red&style=for-the-badge"/>
+    </a>
+	<a href="https://plant.treeware.earth/splash-cli/splash-cli">
+		<img src="https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen?style=for-the-badge" alt="Buy usa  tree" />
+	</a>
+</p>
+<p align="center">
+	<a href="https://stars.medv.io/splash-cli/splash-cli">
+		<img src="https://stars.medv.io/splash-cli/splash-cli.svg" alt="stars_spark" />
+	</a>
+</p>
+
+<h6 align="center">Get stunning wallpapers from <a href="https://unsplash.com">Unsplash</a> </h6>
+<hr />
+
+
 A new era for Splash CLI is coming! After many weeks
 thinking how to upgrade the project codebase I decided to
 completely rewrite the CLI from the ground in Go.
