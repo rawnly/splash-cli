@@ -12,7 +12,7 @@ func (a Api) sendRequest(req *http.Request) ([]byte, error) {
 	token := a.ClientId
 	authorizationKind := network.AuthorizationKindClient
 
-	accessToken := viper.GetString("access-token")
+	accessToken := viper.GetString("auth.access_token")
 
 	if accessToken != "" {
 		token = accessToken
@@ -35,6 +35,26 @@ func (a Api) get(pathname string, params interface{}) ([]byte, error) {
 
 func (a Api) post(pathname string, params interface{}, body any) ([]byte, error) {
 	req, err := network.Request("POST", pathname, params, body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return a.sendRequest(req)
+}
+
+func (a Api) put(pathname string, params interface{}, body any) ([]byte, error) {
+	req, err := network.Request("PUT", pathname, params, body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return a.sendRequest(req)
+}
+
+func (a Api) delete(pathname string, params interface{}) ([]byte, error) {
+	req, err := network.Request("DELETE", pathname, params, nil)
 
 	if err != nil {
 		return nil, err

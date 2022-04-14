@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/briandowns/spinner"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -31,4 +32,10 @@ func GetEnv() map[string]string {
 	}
 
 	return env
+}
+
+func Clear() {
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	_ = cmd.Run()
 }

@@ -2,13 +2,15 @@ package config
 
 import "fmt"
 
-var Version string = "dev"
-var Commit string = "unknown"
+var (
+	Version = "dev"
+	Commit  = "none"
+)
 
 func GetVersion() string {
-	if len(Commit) >= 7 {
+	if len(Commit) > 7 {
 		Commit = Commit[:7]
 	}
 
-	return fmt.Sprintf("%s (%s)", Version, Commit)
+	return fmt.Sprintf("%s (%s)\n", Version, Commit)
 }

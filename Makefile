@@ -2,7 +2,7 @@
 env := $(shell cat .env | xargs)
 
 build:
-	$(env) goreleaser --snapshot --rm-dist
+	$(env) goreleaser build --snapshot --rm-dist --single-target
 
 build-prod:
 	$(env) goreleaser release --rm-dist

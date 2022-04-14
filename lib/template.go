@@ -16,13 +16,14 @@ type Template struct {
 }
 
 var templatFuncs = map[string]interface{}{
-	"color":    color,
-	"dim":      ansi.ColorFunc("white+d"),
-	"bold":     ansi.ColorFunc(ansi.DefaultFG + "+b"),
-	"bgYellow": ansi.ColorFunc("black+b:yellow"),
-	"bgRed":    ansi.ColorFunc("black+b:red"),
-	"diff":     func(a interface{}, b interface{}) interface{} { return a.(int32) - b.(int32) },
-	"abs":      math.Abs,
+	"color":        color,
+	"dim":          ansi.ColorFunc("white+d"),
+	"bold":         ansi.ColorFunc(ansi.DefaultFG + "+b"),
+	"bgYellow":     ansi.ColorFunc("black+b:yellow"),
+	"bgRed":        ansi.ColorFunc("black+b:red"),
+	"diff":         func(a interface{}, b interface{}) interface{} { return a.(int32) - b.(int32) },
+	"abs":          math.Abs,
+	"formatNumber": formatNumber,
 }
 
 func NewTemplate(templateString string, name string) (*template.Template, error) {
@@ -78,4 +79,25 @@ func color(colorName string, input interface{}) (string, error) {
 		return "", err
 	}
 	return ansi.Color(text, colorName), nil
+}
+
+func StringTemplate(text string, data interface{}) (string, error) {
+	return Template{
+		Data:     data,
+		Template: text,
+	}.String()
+}
+
+func formatNumber(n int) string {
+	if n < 1000 {
+		return fmt.Sprintf("%d", n)
+	}
+	if n < 1000000 {
+		return fmt.Sprintf("%.1fK", float64(n)/1000)
+	}
+	if n < 1000000000 {
+		return fmt.Sprintf("%.1fM", float64(n)/1000000)
+	}
+
+	return fmt.Sprintf("%.1fG", float64(n)/1000000000)
 }

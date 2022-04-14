@@ -12,6 +12,7 @@ type Photo struct {
 	Color       string    `json:"color"`
 	LikedByUser bool      `json:"liked_by_user"`
 	Urls        PhotoUrls `json:"urls"`
+	User        User      `json:"user"`
 }
 
 type PhotoUrls struct {
@@ -27,9 +28,10 @@ type PhotoOfTheDay struct {
 }
 
 type RandomPhotoParams struct {
+	Topics      []string `url:"topics" separator:"comma"`
 	Orientation string   `url:"orientation" default:"landscape"`
 	Query       string   `url:"query"`
 	Collections []string `url:"collections" separator:"comma"`
 	Count       int      `url:"count" default:"1"`
-	User        string   `url:"user"`
+	Username    string   `url:"username"`
 }
