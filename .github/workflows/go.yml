@@ -2,7 +2,7 @@ name: Go
 
 on:
   push:
-    branches: [ go-rewrite ]
+    branches: [ go-rewrite, canary, feature/* ]
 
 jobs:
 
