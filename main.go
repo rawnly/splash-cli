@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/rawnly/splash-cli/cmd"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/sirupsen/logrus"
@@ -14,7 +15,6 @@ import (
 var ClientId = "YOUR_CLIENT_ID"
 var ClientSecret = "YOUR_CLIENT_SECRET"
 var Debug string
-var Version string = "4.0.0--alpha"
 
 func runChecks() {
 	timestamp := viper.GetInt64("photo-of-the-day.last-update")
@@ -62,6 +62,11 @@ func init() {
 	go runChecks()
 }
 
+var (
+	version string = "dev"
+	commit  string = "none"
+)
+
 func main() {
 	ctx := context.Background()
 	api := unsplash.Api{
@@ -83,6 +88,8 @@ func main() {
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
 	}
+
+	fmt.Println(fmt.Sprintf("Splash CLI %s (%s)", version, commit))
 
 	cmd.Execute(ctx)
 }
