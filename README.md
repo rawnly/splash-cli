@@ -29,10 +29,12 @@ the new experience as close to the original as possible.
 To build the project locally you can use the following command:
 
 ```shell
-    go install
-    go build -ldflags "-X 'main.ClientId=<your-client-id>' -X 'main.ClientSecret=<your-client-secret>'"
-
-    # OR via makefile
-
-    make build
+    goreleaser --snapshot --rm-dist
 ```
+
+Be sure to set up your environment before running the command.
+Required environment variables are:
+ - `UNSPLASH_CLIENT_ID`
+ - `UNSPLASH_CLIENT_SECRET`
+
+You can get credentials on the [Unsplash Developer Portal](https://unsplash.com/developers).

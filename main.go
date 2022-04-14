@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/rawnly/splash-cli/cmd"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/sirupsen/logrus"
@@ -61,6 +62,11 @@ func init() {
 	go runChecks()
 }
 
+var (
+	version string = "dev"
+	commit  string = "none"
+)
+
 func main() {
 	ctx := context.Background()
 	api := unsplash.Api{
@@ -82,6 +88,8 @@ func main() {
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
 	}
+
+	fmt.Println(fmt.Sprintf("Splash CLI %s (%s)", version, commit))
 
 	cmd.Execute(ctx)
 }
