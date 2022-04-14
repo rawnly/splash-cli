@@ -7,7 +7,6 @@ import (
 	"github.com/briandowns/spinner"
 	"github.com/eiannone/keyboard"
 	"github.com/rawnly/splash-cli/cmd/auth"
-	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/models"
@@ -65,7 +64,7 @@ var rootCmd = &cobra.Command{
 	Use:     "splash",
 	Short:   "Get a photo",
 	Args:    cobra.NoArgs,
-	Version: config.GetVersion(),
+	Version: fmt.Sprintf("%s (%s)", version, commit),
 	Example: heredoc.Doc(`
 			$ splash --day
 			$ splash --query "mountains" --orientation "landscape"
