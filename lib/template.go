@@ -15,10 +15,10 @@ type Template struct {
 	Template string
 }
 
-var templatFuncs = map[string]interface{}{
+var templateFunctions = map[string]interface{}{
 	"color":        color,
-	"dim":          ansi.ColorFunc("white+d"),
-	"bold":         ansi.ColorFunc(ansi.DefaultFG + "+b"),
+	"dim":          ansi.ColorFunc("default+d"),
+	"bold":         ansi.ColorFunc("default+b"),
 	"bgYellow":     ansi.ColorFunc("black+b:yellow"),
 	"bgRed":        ansi.ColorFunc("black+b:red"),
 	"diff":         func(a interface{}, b interface{}) interface{} { return a.(int32) - b.(int32) },
@@ -29,7 +29,7 @@ var templatFuncs = map[string]interface{}{
 func NewTemplate(templateString string, name string) (*template.Template, error) {
 	return template.
 		New(name).
-		Funcs(templatFuncs).
+		Funcs(templateFunctions).
 		Parse(templateString)
 }
 
