@@ -14,7 +14,7 @@ the new experience as close to the original as possible.
 - No need to install any dependencies
 - Lighter bundle size
 - No need to use any build tools
-- Blazing fast (~50%)
+- Blazing fast (~2500%) (0.22s vs 5s)
 
 ### Feature List
 - [x] Change wallpaper on your desktop

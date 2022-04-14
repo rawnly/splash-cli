@@ -1,19 +1,19 @@
-.PHONY: all
+.PHONY: build
 
-BUILD_NUMBER := $(cat .build)
+LAST_COMMIT := $(shell git log --pretty=format:'%H' -n 1)
+BIN_NAME := "splash"
+BUILD_NUMBER := $(shell git rev-list HEAD --count)
+version = "4.0.0-alpha.${BUILD_NUMBER}"
 
-all:
-	@echo "make <cmd>"
+build-prod:
+	@echo "-----------------------------"
+	@echo "Version ${version}"
+	@echo "Commit: ${LAST_COMMIT}"
+	@echo "-----------------------------"
+
+	@rm -f ${BIN_NAME}
+	@go build -o ${BIN_NAME} -ldflags="-X 'main.ClientId=${UNSPLASH_CLIENT_ID}' -X 'main.ClientSecret=${UNSPLASH_CLIENT_SECRET}' -X 'main.Version=${version}' -X 'main.Debug=${DEBUG}' -X 'github.com/rawnly/splash-cli/config.Version=${version}' -X 'github.com/rawnly/splash-cli/config.Commit=${LAST_COMMIT}'"
+
 	@echo ""
-	@echo "commands:"
-	@echo " build - runs go build with ldflags Clientid=${UNSPLASH_CLIENT_ID} and Clientsecret=${UNSPLASH_CLIENT_SECRET}"
-	@echo ""
+	@echo "Build complete"
 
-increment-build:
-	@echo "Incrementing build number"
-	@echo "BUILD_NUMBER: ${BUILD_NUMBER}"
-
-
-build:
-	@rm -f splash splash-cli
-	@go build -o splash -ldflags="-X 'main.ClientId=${UNSPLASH_CLIENT_ID}' -X 'main.ClientSecret=${UNSPLASH_CLIENT_SECRET}' -X 'main.Version=4.0.0-alpha.$(cat .build)'"

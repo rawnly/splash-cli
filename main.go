@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"github.com/rawnly/splash-cli/cmd"
-	"github.com/rawnly/splash-cli/lib/storage"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -16,11 +16,8 @@ var ClientSecret = "YOUR_CLIENT_SECRET"
 var Debug string
 var Version string = "4.0.0--alpha"
 
-func runChecks(ctx context.Context) {
-	s := ctx.Value("storage").(storage.Storage)
-	logrus.Debug("Checking photo of the day ctx")
-
-	timestamp := s.Data.PhotoOfTheDayDate
+func runChecks() {
+	timestamp := viper.GetInt64("photo-of-the-day.last-update")
 	now := time.Now().Unix()
 
 	if timestamp == 0 {
@@ -28,67 +25,64 @@ func runChecks(ctx context.Context) {
 		return
 	}
 
-	if (now - timestamp) > int64((time.Hour * 12).Seconds()) {
+	if (now - timestamp) > int64((time.Hour * 6).Seconds()) {
 		logrus.Debug("Clearing photo of the day")
 
-		s.Data.PhotoOfTheDayDate = 0
-		s.Data.PhotoOfTheDayUrl = ""
-		s.Data.PhotoOfTheDayId = ""
+		viper.Set("photo-of-the-day.last-update", 0)
+		viper.Set("photo-of-the-day.url", "")
+		viper.Set("photo-of-the-day.id", "")
 
-		if err := s.Save(); err != nil {
-			logrus.Error(err)
+		err := viper.WriteConfig()
+		cobra.CheckErr(err)
+	}
+}
+
+func init() {
+	viper.SetConfigType("json")
+	viper.SetConfigName("splash-cli")
+	viper.AddConfigPath("$HOME/.config")
+	viper.AddConfigPath("$HOME/.splash-cli")
+
+	if err := viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			logrus.Debug("No config file found")
+
+			// Create file if not exists
+			if err := viper.SafeWriteConfig(); err != nil {
+				cobra.CheckErr(err)
+			}
+		} else {
+			logrus.Fatal("Error reading config file:", err)
 		}
 	}
+
+	logrus.Debug("Config loaded")
+	logrus.Debugf("Using %s", viper.ConfigFileUsed())
+
+	go runChecks()
 }
 
 func main() {
 	ctx := context.Background()
-
-	s := storage.Storage{
-		Data: storage.StorageData{
-			PhotoOfTheDayDate: 0,
-			PhotoOfTheDayId:   "",
-			PhotoOfTheDayUrl:  "",
-		},
-	}
-
-	if err := s.Init(); err != nil {
-		logrus.Fatal(err)
-		os.Exit(1)
-	}
-
-	if err := s.Load(); err != nil {
-		logrus.Fatal(err)
-		os.Exit(1)
-	}
-
-	// load storage into context
-	ctx = context.WithValue(ctx, "storage", s)
-	ctx = context.WithValue(ctx, "isLoggedIn", s.Data.AccessToken != "" && s.Data.RefreshToken != "")
-
-	go runChecks(ctx)
-
 	api := unsplash.Api{
 		ClientId:     ClientId,
 		RedirectUri:  "http://localhost:8888",
 		ClientSecret: ClientSecret,
 		Client:       http.Client{},
-		Context:      ctx,
 	}
 
-	rootCmd := cmd.GetRootCommand(&api, ctx, Version)
-	rootCmd.AddCommand(cmd.GetAuthCommand(&api, ctx))
+	// Load config
+	accessToken := viper.GetString("access-token")
+	refreshToken := viper.GetString("refresh-token")
 
-	logrus.SetOutput(rootCmd.OutOrStdout())
+	ctx = context.WithValue(ctx, "isLoggedIn", accessToken != "" && refreshToken != "")
+	ctx = context.WithValue(ctx, "api", api)
 
-	if Debug != "" {
+	if Debug == "true" {
 		logrus.SetLevel(logrus.DebugLevel)
 	} else {
-		logrus.SetLevel(logrus.InfoLevel)
+		logrus.SetLevel(logrus.WarnLevel)
 	}
 
-	if err := rootCmd.Execute(); err != nil {
-		logrus.Fatal(err)
-		os.Exit(1)
-	}
+	cmd.Execute(ctx)
 }
