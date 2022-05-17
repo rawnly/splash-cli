@@ -17,15 +17,16 @@ var ClientSecret = "YOUR_CLIENT_SECRET"
 var Debug string
 
 func runChecks() {
-	timestamp := viper.GetInt64("photo_of_the_day.last_update")
 	now := time.Now().Unix()
+	timestamp := viper.GetInt64("photo_of_the_day.last_update")
+	refreshInterval := viper.GetDuration("photo_of_the_day.refresh_interval")
 
 	if timestamp == 0 {
 		logrus.Debug("No timestamp found")
 		return
 	}
 
-	if (now - timestamp) > int64((time.Hour * 6).Seconds()) {
+	if (now - timestamp) > int64(refreshInterval.Seconds()) {
 		logrus.Debug("Clearing photo of the day")
 
 		viper.Set("photo_of_the_day.last_update", 0)
@@ -34,6 +35,17 @@ func runChecks() {
 		err := viper.WriteConfig()
 		cobra.CheckErr(err)
 	}
+}
+
+func updateTopics(api *unsplash.Api) {
+	topics, err := api.GetTopics()
+
+	if err != nil {
+		return
+	}
+
+	viper.Set("topics.list", topics)
+	viper.Set("topics.last_update", time.Now().Unix())
 }
 
 func init() {
@@ -84,6 +96,8 @@ func main() {
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
 	}
+
+	go updateTopics(&api)
 
 	cmd.Execute(ctx)
 }
