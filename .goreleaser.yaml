@@ -21,6 +21,20 @@ builds:
       - linux
       - windows
       - darwin
+brews:
+  -
+    name: splash-cli
+    homepage: https://splash-cli.app
+    license: MIT
+    folder: Formula
+    description: Splash is a command line interface for Unsplash.
+    tap:
+      owner: rawnly
+      name: homebrew-tap
+      branch: master
+    commit_author:
+      name: Goreleaser BOT
+      email: goreleaser@fedevitale.dev
 archives:
   - replacements:
       darwin: Darwin
