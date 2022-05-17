@@ -3,7 +3,7 @@
 project_name: splash
 universal_binaries:
   - name_template: splash
-    replace: true
+    replace: false
 before:
   hooks:
     - go mod tidy
