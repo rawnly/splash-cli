@@ -26,6 +26,22 @@ the new experience as close to the original as possible.
 - More to come
 
 ## Installation
+
+#### Via NPM 
+```shell
+# Via NPM 
+npm install splash-cli@next
+
+# Via YARN
+yarn global add splash-cli@next
+```
+
+#### Via Homebrew
+```shell
+brew tap rawnly/tap
+brew install splash-cli
+```
+
 - Download the [latest pre-release](https://github.com/splash-cli/splash-cli/releases)
 - Move the `splash-cli` binary to your `$PATH`
 - Enjoy
@@ -38,7 +54,7 @@ To build the project locally you can use the following command:
     
     # Or
     
-    make build
+    make build # this will only build for the current platform
 ```
 > NOTE: If you have an `.env` file in your project root `make` will automatically inject values inside script commands.
 
