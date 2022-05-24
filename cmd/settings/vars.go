@@ -8,12 +8,14 @@ import (
 	"os"
 )
 
+const SETTINGS_AUTO_LIKE = "auto_like_photos"
+const SETTINGS_DOWNLOADS_DIR = "download_dir"
+const SETTINGS_STORE_BY_USERNAME = "store_by_username"
+
 var KeyMapping = map[string]string{
-	"askforlike":         "auto_like_photos",
-	"like":               "auto_like_photos",
-	"directory":          "download_dir",
-	"downloads":          "download_dir",
-	"download-directory": "download_dir",
+	"downloads-dir":    SETTINGS_DOWNLOADS_DIR,
+	"auto-like":        SETTINGS_AUTO_LIKE,
+	"username-storage": SETTINGS_STORE_BY_USERNAME,
 }
 
 func UnknownKey(key string) {

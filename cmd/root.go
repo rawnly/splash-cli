@@ -7,7 +7,9 @@ import (
 	"github.com/MakeNowJust/heredoc"
 	"github.com/briandowns/spinner"
 	"github.com/eiannone/keyboard"
+	"github.com/rawnly/splash-cli/cmd/alias"
 	"github.com/rawnly/splash-cli/cmd/auth"
+	"github.com/rawnly/splash-cli/cmd/collection"
 	"github.com/rawnly/splash-cli/cmd/settings"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
@@ -143,6 +145,7 @@ var rootCmd = &cobra.Command{
 
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 		} else if idFlag != "" {
+			idFlag = lib.ParsePhotoIDFromUrl(idFlag)
 			photo, err = api.GetPhoto(idFlag)
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 		} else {
@@ -152,7 +155,7 @@ var rootCmd = &cobra.Command{
 				Count:       1,
 				Username:    userFlag,
 				Topics:      topicsFlag,
-				Collections: collectionsFlag,
+				Collections: lib.ParseCollections(collectionsFlag),
 			})
 
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
@@ -308,9 +311,12 @@ func init() {
 	rootCmd.Flags().BoolP("save", "s", false, "Save the photo without setting it as wallpaper")
 	rootCmd.Flags().Bool("no-cache", false, "Ignore cache")
 	//rootCmd.Flags().Bool("quiet", false, "Hide spinners / prompts")
+	rootCmd.PersistentFlags().Bool("plain", false, "Plain output. Good for tty")
 
+	rootCmd.AddCommand(auth.Cmd)
+	rootCmd.AddCommand(alias.Cmd)
 	rootCmd.AddCommand(settings.Cmd)
-	rootCmd.AddCommand(auth.Command)
+	rootCmd.AddCommand(collection.Cmd)
 
 	rootCmd.SetVersionTemplate("{{ .Version }}")
 }

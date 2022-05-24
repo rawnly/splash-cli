@@ -17,6 +17,7 @@ type Template struct {
 
 var templateFunctions = map[string]interface{}{
 	"color":        color,
+	"underline":    ansi.ColorFunc("default+u"),
 	"dim":          ansi.ColorFunc("default+d"),
 	"bold":         ansi.ColorFunc("default+b"),
 	"bgYellow":     ansi.ColorFunc("black+b:yellow"),

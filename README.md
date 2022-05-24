@@ -42,6 +42,7 @@ brew tap rawnly/tap
 brew install splash-cli
 ```
 
+#### Manually
 - Download the [latest pre-release](https://github.com/splash-cli/splash-cli/releases)
 - Move the `splash-cli` binary to your `$PATH`
 - Enjoy
@@ -56,7 +57,8 @@ To build the project locally you can use the following command:
     
     make build # this will only build for the current platform
 ```
-> NOTE: If you have an `.env` file in your project root `make` will automatically inject values inside script commands.
+> **Note**
+> If you have an `.env` file in your project root `make` will automatically inject values inside script commands.
 
 
 Be sure to set up your environment before running the command.

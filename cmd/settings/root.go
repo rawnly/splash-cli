@@ -4,15 +4,28 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/MakeNowJust/heredoc"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var Cmd = &cobra.Command{
 	Use:   "settings",
 	Short: "Manage user settings",
+	Aliases: []string{
+		"config",
+	},
 	Example: heredoc.Doc(`
+		$ splash settings # This will prompt a survey
 		$ splash settings set downloads-dir ~/Downloads
 		$ splash settings get autoLike
 	`),
+	Run: func(cmd *cobra.Command, args []string) {
+		settings, err := AllSettingsSurvey()
+		cobra.CheckErr(err)
+
+		viper.Set(SETTINGS_DOWNLOADS_DIR, settings.DownloadsDir)
+		viper.Set(SETTINGS_AUTO_LIKE, settings.AutoLike)
+		viper.Set(SETTINGS_STORE_BY_USERNAME, settings.StoreByUsername)
+	},
 }
 
 func init() {
@@ -26,7 +39,7 @@ type Settings struct {
 	StoreByUsername bool   `survey:"storeByUsername"`
 }
 
-func SettingsSurvey() (*Settings, error) {
+func AllSettingsSurvey() (*Settings, error) {
 	var settings Settings
 
 	questions := []*survey.Question{
