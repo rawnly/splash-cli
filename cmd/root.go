@@ -176,7 +176,7 @@ var rootCmd = &cobra.Command{
 		downloadFolder := viper.GetString("download_dir")
 
 		if downloadFolder == "" {
-			folder, err := lib.HomePrefix("Pictures")
+			folder, err := lib.HomePath("Pictures")
 			handleSpinnerError(err, downloadSpinner, cmd, DownloadSpinnerSuffix[1])
 
 			downloadFolder = folder
