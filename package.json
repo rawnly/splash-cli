@@ -1,18 +1,40 @@
 {
   "name": "splash-cli",
-  "version": "4.0.0-alpha.5",
-  "main": "index.js",
-  "repository": "git@github.com:splash-cli/splash-cli",
-  "author": "Federico <fedevitale99@gmail.com>",
+  "description": "Get beautiful wallpapers from unsplash.",
+  "version": "4.0.0-alpha.6",
   "license": "MIT",
+  "readme": "README.md",
+  "homepage": "https://splash-cli.app",
+  "main": "index.js",
   "scripts": {
     "postinstall": "go-npm install",
     "preuninstall": "go-npm uninstall"
   },
+  "keywords": [
+    "cli",
+    "unsplash",
+    "wallpapers",
+    "splash-cli",
+    "photos",
+    "photo",
+    "beautiful"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/splash-cli/splash-cli"
+  },
+  "author": {
+    "email": "mail@fedevitale.dev",
+    "name": "Federico Vitale",
+    "url": "https://github.com/rawnly"
+  },
   "goBinary": {
-    "name": "splash",
+    "name": "splash-cli",
     "path": "./bin",
-    "url": "https://github.com/splash-cli/splash-cli/releases/download/{{version}}/splash_{{version}}_{{platform}}_{{arch}}.tar.gz"
+    "url": "https://github.com/splash-cli/splash-cli/releases/download/{{version}}/splash-cli_{{version}}_{{platform}}_{{arch}}.tar.gz"
   },
   "dependencies": {
     "go-npm": "^0.1.9"
