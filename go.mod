@@ -8,7 +8,7 @@ require (
 	github.com/briandowns/spinner v1.18.1
 	github.com/eiannone/keyboard v0.0.0-20200508000154-caf4b762e807
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
-	github.com/reujab/wallpaper v0.0.0-20210630195606-5f9f655b3740
+	github.com/rawnly/go-wallpaper v1.0.2
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/cobra v1.4.1-0.20220408174622-9d15fe657a50
@@ -31,10 +31,10 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
-	golang.org/x/sys v0.0.0-20220412211240-33da011f77ad // indirect
+	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	gopkg.in/ini.v1 v1.66.4 // indirect
+	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
