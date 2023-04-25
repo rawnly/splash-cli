@@ -3,10 +3,14 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/MakeNowJust/heredoc"
 	"github.com/briandowns/spinner"
 	"github.com/eiannone/keyboard"
+	"github.com/rawnly/go-wallpaper"
 	"github.com/rawnly/splash-cli/cmd/alias"
 	"github.com/rawnly/splash-cli/cmd/auth"
 	"github.com/rawnly/splash-cli/cmd/collection"
@@ -17,11 +21,8 @@ import (
 	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/models"
-	"github.com/reujab/wallpaper"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
-	"time"
 )
 
 type photoFlags struct {
@@ -34,8 +35,10 @@ type photoFlags struct {
 	IgnoreCache bool   `json:"ignore-cache" default:"false" description:"Ignore cache and download image again"`
 }
 
-const SpinnerSpeed = 200 * time.Millisecond
-const SpinnerType = 39
+const (
+	SpinnerSpeed = 200 * time.Millisecond
+	SpinnerType  = 39
+)
 
 func handleSpinnerError(
 	err error,
@@ -97,6 +100,9 @@ var rootCmd = &cobra.Command{
 
 		// Parse Flags
 		dayFlag, err := cmd.Flags().GetBool("day")
+		cobra.CheckErr(err)
+
+		screenFlag, err := cmd.Flags().GetInt("screen")
 		cobra.CheckErr(err)
 
 		ignoreCacheFlag, err := cmd.Flags().GetBool("no-cache")
@@ -220,7 +226,7 @@ var rootCmd = &cobra.Command{
 					wallpaperSpinner.FinalMSG = ""
 					wallpaperSpinner.Start()
 
-					err = wallpaper.SetFromURL(photo.Urls.Full)
+					err = wallpaper.SetFromURL(photo.Urls.Full, screenFlag)
 					handleSpinnerError(err, wallpaperSpinner, cmd, SetWallpaperSpinnerSuffix[1])
 
 					wallpaperSpinner.FinalMSG = SetWallpaperSpinnerSuffix[2]
@@ -247,7 +253,7 @@ var rootCmd = &cobra.Command{
 		wallpaperSpinner := newSpinner(cmd, SetWallpaperSpinnerSuffix[0])
 		wallpaperSpinner.Start()
 
-		err = wallpaper.SetFromFile(location)
+		err = wallpaper.SetFromFile(location, screenFlag)
 		handleSpinnerError(err, wallpaperSpinner, cmd, SetWallpaperSpinnerSuffix[1])
 
 		wallpaperSpinner.FinalMSG = SetWallpaperSpinnerSuffix[2]
@@ -309,8 +315,9 @@ func init() {
 	rootCmd.Flags().StringP("user", "u", "", "Limit selection to a single user.")
 	rootCmd.Flags().String("id", "", "Retrieve a single photo by ID")
 	rootCmd.Flags().BoolP("save", "s", false, "Save the photo without setting it as wallpaper")
+	rootCmd.Flags().Int("screen", -1, "Set wallpaper on a specific screen. (macos only)")
 	rootCmd.Flags().Bool("no-cache", false, "Ignore cache")
-	//rootCmd.Flags().Bool("quiet", false, "Hide spinners / prompts")
+	// rootCmd.Flags().Bool("quiet", false, "Hide spinners / prompts")
 	rootCmd.PersistentFlags().Bool("plain", false, "Plain output. Good for tty")
 
 	rootCmd.AddCommand(auth.Cmd)
