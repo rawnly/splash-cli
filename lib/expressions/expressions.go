@@ -2,8 +2,10 @@ package expressions
 
 import "regexp"
 
-const CollectionIdExtractor string = "unsplash\\.com\\/collections\\/([A-z0-9]+)\\/([a-z\\-]+)$"
-const PhotoIdExtractor string = "unsplash\\.com\\/photos\\/([A-z0-9]+)$"
+const (
+	CollectionIdExtractor string = "unsplash\\.com\\/collections\\/([A-z0-9]+)\\/([a-z\\-]+)\\/?$"
+	PhotoIdExtractor      string = "unsplash\\.com\\/photos\\/([A-z0-9]+)\\/?$"
+)
 
 func IsPhotoUrl(url string) bool {
 	re := regexp.MustCompile(PhotoIdExtractor)

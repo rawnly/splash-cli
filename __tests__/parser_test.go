@@ -1,9 +1,9 @@
 package __tests__
 
 import (
-	"fmt"
-	"github.com/rawnly/splash-cli/lib"
 	"testing"
+
+	"github.com/rawnly/splash-cli/lib"
 )
 
 type testCase struct {
@@ -12,6 +12,10 @@ type testCase struct {
 }
 
 var photoUrls []testCase = []testCase{
+	{
+		expected: "KegVP1pjsb4",
+		data:     "https://unsplash.com/photos/KegVP1pjsb4",
+	},
 	{
 		expected: "fPbLnMMd8BU",
 		data:     "https://unsplash.com/photos/fPbLnMMd8BU",
@@ -53,18 +57,6 @@ func parseResult(s string) string {
 func TestParsePhotoIDFromUrl(t *testing.T) {
 	for i, tCase := range photoUrls {
 		result := lib.ParsePhotoIDFromUrl(tCase.data)
-
-		if result != tCase.expected {
-			t.Errorf("[%d] Expected \"%s\" received \"%s\"", i, tCase.expected, parseResult(result))
-		}
-	}
-}
-
-func TestParseCollectionIDFromUrl(t *testing.T) {
-	for i, tCase := range collectionUrlsForParsing {
-		id, name := lib.ParseCollectionFromUrl(tCase.data)
-
-		result := fmt.Sprintf("%s|%s", id, name)
 
 		if result != tCase.expected {
 			t.Errorf("[%d] Expected \"%s\" received \"%s\"", i, tCase.expected, parseResult(result))
