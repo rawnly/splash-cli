@@ -4,7 +4,7 @@ import "regexp"
 
 const (
 	CollectionIdExtractor string = "unsplash\\.com\\/collections\\/([A-z0-9]+)\\/([a-z\\-]+)\\/?$"
-	PhotoIdExtractor      string = "unsplash\\.com\\/photos\\/([A-z0-9]+)\\/?$"
+	PhotoIdExtractor      string = "https?:\\/\\/unsplash\\.com\\/photos\\/(\\w+-)+(\\w+)$"
 )
 
 func IsPhotoUrl(url string) bool {
@@ -23,7 +23,7 @@ func ExtractPhotoId(url string) string {
 	re := regexp.MustCompile(PhotoIdExtractor)
 
 	if re.MatchString(url) {
-		return re.FindStringSubmatch(url)[1]
+		return re.FindStringSubmatch(url)[2]
 	}
 
 	return ""
