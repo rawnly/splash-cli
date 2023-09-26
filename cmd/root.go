@@ -153,10 +153,6 @@ var rootCmd = &cobra.Command{
 		} else if idFlag != "" {
 			idFlag = lib.ParsePhotoIDFromUrl(idFlag)
 
-			fmt.Println(idFlag)
-
-			return
-
 			photo, err = api.GetPhoto(idFlag)
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 		} else {
