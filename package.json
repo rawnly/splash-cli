@@ -1,7 +1,7 @@
 {
   "name": "splash-cli",
   "description": "Get beautiful wallpapers from unsplash.",
-  "version": "4.0.0",
+  "version": "4.0.0-alpha.8",
   "license": "MIT",
   "readme": "README.md",
   "homepage": "https://splash-cli.app",
@@ -32,11 +32,11 @@
     "url": "https://github.com/rawnly"
   },
   "goBinary": {
-    "name": "splash-cli",
+    "name": "splash",
     "path": "./bin",
-    "url": "https://github.com/splash-cli/splash-cli/releases/download/{{version}}/splash-cli_{{version}}_{{platform}}_{{arch}}.tar.gz"
+    "url": "https://github.com/rawnly/splash-cli/releases/download/{{version}}/splash_{{version}}_{{platform}}_{{arch}}.tar.gz"
   },
   "dependencies": {
-    "go-npm": "^0.1.9"
+    "@gzuidhof/go-npm": "^0.1.13"
   }
 }
