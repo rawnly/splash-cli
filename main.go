@@ -2,19 +2,24 @@ package main
 
 import (
 	"context"
+	"net/http"
+	"time"
+
+	"github.com/getsentry/sentry-go"
 	"github.com/rawnly/splash-cli/cmd"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"net/http"
-	"time"
 )
 
-var ClientId = "YOUR_CLIENT_ID"
-var ClientSecret = "YOUR_CLIENT_SECRET"
-var Debug string
+var (
+	ClientId     = "YOUR_CLIENT_ID"
+	ClientSecret = "YOUR_CLIENT_SECRET"
+	SentryDSN    = "YOUR_SENTRY_DSN"
+	Debug        string
+)
 
 func runChecks() {
 	now := time.Now().Unix()
@@ -39,13 +44,25 @@ func runChecks() {
 
 func updateTopics(api *unsplash.Api) {
 	topics, err := api.GetTopics()
-
 	if err != nil {
 		return
 	}
 
 	viper.Set("topics.list", topics)
 	viper.Set("topics.last_update", time.Now().Unix())
+}
+
+func setupSentry() {
+	if SentryDSN == "YOUR_SENTRY_DSN" {
+		return
+	}
+
+	err := sentry.Init(sentry.ClientOptions{
+		Dsn:              SentryDSN,
+		TracesSampleRate: 1.0,
+	})
+
+	cobra.CheckErr(err)
 }
 
 func init() {
@@ -95,6 +112,9 @@ func main() {
 		logrus.SetLevel(logrus.DebugLevel)
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
+
+		go setupSentry()
+		defer sentry.Flush(2 * time.Second)
 	}
 
 	go updateTopics(&api)

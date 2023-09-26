@@ -22,8 +22,7 @@ builds:
       - windows
       - darwin
 brews:
-  -
-    name: splash-cli
+  - name: splash-cli
     homepage: https://splash-cli.app
     license: MIT
     folder: Formula
@@ -45,16 +44,16 @@ archives:
 release:
   prerelease: auto
   github:
-    owner: splash-cli
+    owner: rawnly
     name: splash-cli
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 snapshot:
   name_template: "{{ incpatch .Version }}-alpha"
 changelog:
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
-      - '^ci:'
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
