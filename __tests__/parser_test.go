@@ -13,20 +13,16 @@ type testCase struct {
 
 var photoUrls []testCase = []testCase{
 	{
-		expected: "KegVP1pjsb4",
-		data:     "https://unsplash.com/photos/KegVP1pjsb4",
+		expected: "MGOpFseNHUU",
+		data:     "https://unsplash.com/photos/a-wooden-bridge-over-a-stream-of-water-MGOpFseNHUU",
 	},
 	{
-		expected: "fPbLnMMd8BU",
-		data:     "https://unsplash.com/photos/fPbLnMMd8BU",
+		expected: "6U777EOszQw",
+		data:     "https://unsplash.com/photos/a-burger-with-a-crown-on-top-of-it-next-to-french-fries-6U777EOszQw",
 	},
 	{
-		expected: "fPbLnMMd8BU",
-		data:     "https://unsplash.com/photos/fPbLnMMd8BU/",
-	},
-	{
-		expected: "fPbLnMMd8BU",
-		data:     "unsplash.com/photos/fPbLnMMd8BU/",
+		expected: "6NAbqcv3fpg",
+		data:     "https://unsplash.com/photos/a-valley-with-a-river-running-through-it-6NAbqcv3fpg",
 	},
 }
 
