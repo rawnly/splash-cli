@@ -1,7 +1,7 @@
 {
   "name": "splash-cli",
   "description": "Get beautiful wallpapers from unsplash.",
-  "version": "4.0.0-alpha.9",
+  "version": "4.0.0-alpha.10",
   "license": "MIT",
   "readme": "README.md",
   "homepage": "https://splash-cli.app",
