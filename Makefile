@@ -6,3 +6,6 @@ build:
 
 build-prod:
 	$(env) goreleaser release --clean
+
+install:
+	$(env) go install

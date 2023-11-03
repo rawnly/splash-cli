@@ -1,10 +1,11 @@
 package lib
 
 import (
+	"strconv"
+
 	"github.com/rawnly/splash-cli/lib/expressions"
 	"github.com/rawnly/splash-cli/lib/slice"
 	"github.com/spf13/viper"
-	"strconv"
 )
 
 const AliasViperKey = "aliases"
@@ -12,7 +13,6 @@ const AliasViperKey = "aliases"
 func ParseStringValue(value string) any {
 	if value == "true" || value == "false" {
 		val, err := strconv.ParseBool(value)
-
 		if err != nil {
 			return false
 		}
@@ -21,7 +21,6 @@ func ParseStringValue(value string) any {
 	}
 
 	val, err := strconv.Atoi(value)
-
 	if err != nil {
 		return value
 	}
@@ -31,7 +30,7 @@ func ParseStringValue(value string) any {
 
 func ParsePhotoIDFromUrl(urlOrId string) string {
 	if expressions.IsPhotoUrl(urlOrId) {
-		return expressions.ExtractPhotoId(urlOrId)
+		return expressions.CleanupUrl(urlOrId)
 	}
 
 	return urlOrId
@@ -66,3 +65,4 @@ func SetAlias(name string, value string) error {
 
 	return viper.WriteConfig()
 }
+

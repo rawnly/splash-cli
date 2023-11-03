@@ -24,6 +24,10 @@ var photoUrls []testCase = []testCase{
 		expected: "6NAbqcv3fpg",
 		data:     "https://unsplash.com/photos/a-valley-with-a-river-running-through-it-6NAbqcv3fpg",
 	},
+	{
+		expected: "-_bSa4Sn1Bs",
+		data:     "https://unsplash.com/photos/green-and-yellow-leaf-plant--_bSa4Sn1Bs",
+	},
 }
 
 var collectionUrlsForParsing []testCase = []testCase{
