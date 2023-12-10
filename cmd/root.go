@@ -17,6 +17,7 @@ import (
 	"github.com/rawnly/splash-cli/cmd/settings"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
+	"github.com/rawnly/splash-cli/lib/blurhash"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash"
@@ -86,6 +87,7 @@ var rootCmd = &cobra.Command{
 
 		ctx := cmd.Context()
 		api := ctx.Value("api").(unsplash.Api)
+		analytics := keys.GetAnalyticsInstance(ctx)
 
 		photoOfTheDayId := viper.GetString("photo-of-the-day.id")
 
@@ -130,6 +132,8 @@ var rootCmd = &cobra.Command{
 		cobra.CheckErr(err)
 
 		if dayFlag {
+			analytics.Capture("photo_of_the_day", nil)
+
 			if photoOfTheDayId != "" && !ignoreCacheFlag {
 				photo, err = api.GetPhoto(photoOfTheDayId)
 			} else {
@@ -153,9 +157,15 @@ var rootCmd = &cobra.Command{
 		} else if idFlag != "" {
 			idFlag = lib.ParsePhotoIDFromUrl(idFlag)
 
+			analytics.Capture("photo_by_id", map[string]interface{}{
+				"photo_id": idFlag,
+			})
+
 			photo, err = api.GetPhoto(idFlag)
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 		} else {
+			analytics.Capture("random_photo", nil)
+
 			photos, err := api.GetRandomPhoto(models.RandomPhotoParams{
 				Orientation: orientationFlag,
 				Query:       queryFlag,
@@ -190,6 +200,8 @@ var rootCmd = &cobra.Command{
 		}
 
 		downloadLocation := fmt.Sprintf("%s/%s.jpg", downloadFolder, photo.Id)
+
+		_ = blurhash.Prepare(photo)
 
 		var location string
 

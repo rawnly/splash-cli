@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"os/user"
 	"strconv"
 
 	"github.com/rawnly/splash-cli/lib/expressions"
@@ -9,6 +10,23 @@ import (
 )
 
 const AliasViperKey = "aliases"
+
+func GetHomeDir() string {
+	usr, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+
+	return usr.HomeDir
+}
+
+func ExpandPath(path string) string {
+	if path[:2] == "~/" {
+		return GetHomeDir() + path[1:]
+	}
+
+	return path
+}
 
 func ParseStringValue(value string) any {
 	if value == "true" || value == "false" {
@@ -65,4 +83,3 @@ func SetAlias(name string, value string) error {
 
 	return viper.WriteConfig()
 }
-

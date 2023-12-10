@@ -2,10 +2,10 @@ package terminal
 
 import (
 	"fmt"
-	"github.com/briandowns/spinner"
 	"os"
-	"os/exec"
 	"strings"
+
+	"github.com/briandowns/spinner"
 )
 
 type Spinner struct {
@@ -35,7 +35,7 @@ func GetEnv() map[string]string {
 }
 
 func Clear() {
-	cmd := exec.Command("clear")
-	cmd.Stdout = os.Stdout
-	_ = cmd.Run()
+	// cmd := exec.Command("clear")
+	// cmd.Stdout = os.Stdout
+	// _ = cmd.Run()
 }
