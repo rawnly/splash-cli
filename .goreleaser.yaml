@@ -14,6 +14,7 @@ builds:
     ldflags:
       - -s -w -X "main.ClientId={{ .Env.UNSPLASH_CLIENT_ID }}"
       - -s -w -X "main.ClientSecret={{ .Env.UNSPLASH_CLIENT_SECRET }}"
+      - -s -w -X "main.PostHogKey={{ .Env.POSTHOG_API_KEY }}"
       - -s -w -X "main.Debug={{ .Env.DEBUG }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.Version={{ .Version }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.Commit={{ .Commit }}"

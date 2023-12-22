@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/rawnly/splash-cli/unsplash/models"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/rawnly/splash-cli/unsplash/models"
 )
 
 func (a Api) BuildAuthenticationUrl(scopes ...string) string {
@@ -29,13 +30,11 @@ func (a Api) Authenticate(code string) (*models.AuthRes, error) {
 	}
 
 	data, err := json.Marshal(payload)
-
 	if err != nil {
 		return nil, err
 	}
 
 	response, err := http.Post(baseUrl, "application/json", bytes.NewBuffer(data))
-
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +55,6 @@ func (a Api) Authenticate(code string) (*models.AuthRes, error) {
 
 func (a Api) Me() (*models.Me, error) {
 	r, err := a.get("/me", nil)
-
 	if err != nil {
 		return nil, err
 	}

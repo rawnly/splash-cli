@@ -5,10 +5,13 @@ go 1.18
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.4
 	github.com/MakeNowJust/heredoc v1.0.0
+	github.com/bbrks/go-blurhash v1.1.1
 	github.com/briandowns/spinner v1.18.1
 	github.com/eiannone/keyboard v0.0.0-20200508000154-caf4b762e807
 	github.com/getsentry/sentry-go v0.24.1
+	github.com/google/uuid v1.4.0
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
+	github.com/posthog/posthog-go v0.0.0-20230801140217-d607812dee69
 	github.com/rawnly/go-wallpaper v1.0.2
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cast v1.4.1

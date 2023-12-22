@@ -3,6 +3,9 @@ package auth
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/briandowns/spinner"
 	"github.com/rawnly/splash-cli/lib/console"
 	"github.com/rawnly/splash-cli/lib/keys"
@@ -10,8 +13,6 @@ import (
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"net/http"
-	"time"
 )
 
 var loginCmd = &cobra.Command{
@@ -49,7 +50,6 @@ var loginCmd = &cobra.Command{
 
 		code := <-codeChan
 		res, err := api.Authenticate(code)
-
 		if err != nil {
 			sp.FinalMSG = "An error occured while authenticating"
 			sp.Stop()
@@ -80,6 +80,9 @@ var loginCmd = &cobra.Command{
 
 		fmt.Println("")
 		fmt.Println("An error occured while fetching your data.")
+
+		viper.Set("user_id", me.Id)
+		_ = viper.WriteConfig()
 
 		cmd.PrintErr(err)
 	},

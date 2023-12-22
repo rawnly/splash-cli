@@ -13,6 +13,7 @@ type Photo struct {
 	LikedByUser bool      `json:"liked_by_user"`
 	Urls        PhotoUrls `json:"urls"`
 	User        User      `json:"user"`
+	Blurhash    string    `json:"blur_hash"`
 }
 
 type PhotoUrls struct {
