@@ -27,15 +27,6 @@ the new experience as close to the original as possible.
 
 ## Installation
 
-#### Via NPM 
-```shell
-# Via NPM 
-npm install splash-cli@next
-
-# Via YARN
-yarn global add splash-cli@next
-```
-
 #### Via Homebrew
 ```shell
 brew tap rawnly/tap
