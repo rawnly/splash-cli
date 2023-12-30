@@ -59,6 +59,11 @@ func (a *Analytics) PromptConsent() bool {
 	}
 
 	viper.Set("user_opt_out_analytics", !confirm)
+
+	_ = a.Capture("user_opt_out_analytics", map[string]interface{}{
+		"opt_out": !confirm,
+	})
+
 	a.Enabled = confirm
 
 	return confirm

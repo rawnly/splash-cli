@@ -19,14 +19,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	ClientId     = "YOUR_CLIENT_ID"
-	ClientSecret = "YOUR_CLIENT_SECRET"
-	SentryDSN    = "YOUR_SENTRY_DSN"
-	PostHogKey   = "YOUR_POSTHOG_KEY"
-	Debug        string
-)
-
 func runChecks() {
 	now := time.Now().Unix()
 	timestamp := viper.GetInt64("photo_of_the_day.last_update")
@@ -58,12 +50,12 @@ func updateTopics(api *unsplash.Api) {
 }
 
 func setupSentry() {
-	if SentryDSN == "YOUR_SENTRY_DSN" {
+	if !config.IsSentryEnabled() {
 		return
 	}
 
 	err := sentry.Init(sentry.ClientOptions{
-		Dsn:              SentryDSN,
+		Dsn:              config.SentryDSN,
 		TracesSampleRate: 1.0,
 	})
 
@@ -71,7 +63,7 @@ func setupSentry() {
 }
 
 func setupPosthog() *analytics.Analytics {
-	return analytics.New(PostHogKey, Debug == "true")
+	return analytics.New(config.PostHogKey, config.IsDebug())
 }
 
 func init() {
@@ -102,6 +94,8 @@ func init() {
 }
 
 func main() {
+	ClientId, ClientSecret := config.GetKeys()
+
 	ctx := context.Background()
 	analyticsClient := setupPosthog()
 	api := unsplash.Api{
@@ -119,7 +113,7 @@ func main() {
 	ctx = context.WithValue(ctx, keys.ApiInstance, api)
 	ctx = context.WithValue(ctx, keys.Analytics, analyticsClient)
 
-	if Debug == "true" {
+	if config.IsDebug() {
 		logrus.SetLevel(logrus.DebugLevel)
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
