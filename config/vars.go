@@ -19,7 +19,12 @@ var (
 	PostHogKey   = DEFAULT_POSTHOG_KEY
 	Version      = "dev"
 	Commit       = "none"
-	Debug        = "false"
+	Debug        string
+)
+
+const (
+	LOG_FORMAT_JSON string = "json"
+	LOG_FORMAT_TEXT string = "text"
 )
 
 func GetVersion() string {
@@ -34,7 +39,21 @@ func GetVersion() string {
 	return fmt.Sprintf("%s (%s)\n", Version, Commit)
 }
 
+func GetFormatterType() string {
+	format := os.Getenv("LOG_FORMAT")
+
+	if format == LOG_FORMAT_JSON {
+		return LOG_FORMAT_JSON
+	}
+
+	return LOG_FORMAT_TEXT
+}
+
 func IsDebug() bool {
+	if Debug == "" {
+		Debug = os.Getenv("DEBUG")
+	}
+
 	return Debug == "true"
 }
 
