@@ -294,9 +294,16 @@ var rootCmd = &cobra.Command{
 		} else if photo.LikedByUser {
 			fmt.Println("❤️  You liked this photo.")
 		} else {
-			shouldPrompt := viper.GetBool(config.DefaultUserConfig.AutoLikePhotos.Key)
+			// if the key is true then the user allows us to like the photo automatically when is downloaded
+			autoLikeEnabled := viper.GetBool(config.DefaultUserConfig.AutoLikePhotos.Key)
 
-			if !shouldPrompt {
+			if autoLikeEnabled {
+				cobra.CheckErr(
+					api.Like(photo.Id),
+				)
+
+				fmt.Println("Liked!")
+
 				return
 			}
 

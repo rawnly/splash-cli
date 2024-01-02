@@ -1,9 +1,10 @@
 package config
 
 import (
-	"github.com/spf13/viper"
 	"reflect"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 type photoOfTheDayConfig struct {
@@ -40,11 +41,10 @@ var DefaultUserConfig = Config{
 		Value: false,
 	},
 	CollectionAliases: Value{
-		Key: "collection_aliases",
-		Value: map[string]string{
-			"editorial": "",
-		},
+		Key:   "collection_aliases",
+		Value: map[string]string{},
 	},
+	// used to cache last pohto of the day
 	PhotoOfTheDay: Value{
 		Key: "photo_of_the_day",
 		Value: photoOfTheDayConfig{
@@ -53,6 +53,7 @@ var DefaultUserConfig = Config{
 			RefreshInterval: time.Hour * 6,
 		},
 	},
+	// config used to store user authentication
 	Auth: Value{
 		Key: "auth",
 		Value: authConfig{
