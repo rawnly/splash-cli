@@ -1,10 +1,12 @@
 package unsplash
 
 import (
+	"net/http"
+
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/network"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"net/http"
 )
 
 // Utilities
@@ -13,10 +15,15 @@ func (a Api) sendRequest(req *http.Request) ([]byte, error) {
 	authorizationKind := network.AuthorizationKindClient
 
 	accessToken := viper.GetString("auth.access_token")
+	logrus.WithField("auth.accessToken", accessToken).Debug("ACCESS_TOKEN")
 
 	if accessToken != "" {
 		token = accessToken
 		authorizationKind = network.AuthorizationKindBearer
+
+		logrus.WithField("auth.accessToken", accessToken).Debug("Using access token")
+	} else {
+		logrus.WithField("clientId", token).Debug("Using clientId")
 	}
 
 	network.AddAuthorization(req, authorizationKind, token)
@@ -35,7 +42,6 @@ func (a Api) get(pathname string, params interface{}) ([]byte, error) {
 
 func (a Api) post(pathname string, params interface{}, body any) ([]byte, error) {
 	req, err := network.Request("POST", pathname, params, body)
-
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +51,6 @@ func (a Api) post(pathname string, params interface{}, body any) ([]byte, error)
 
 func (a Api) put(pathname string, params interface{}, body any) ([]byte, error) {
 	req, err := network.Request("PUT", pathname, params, body)
-
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +60,6 @@ func (a Api) put(pathname string, params interface{}, body any) ([]byte, error) 
 
 func (a Api) delete(pathname string, params interface{}) ([]byte, error) {
 	req, err := network.Request("DELETE", pathname, params, nil)
-
 	if err != nil {
 		return nil, err
 	}

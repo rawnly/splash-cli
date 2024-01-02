@@ -11,6 +11,7 @@ import (
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -40,6 +41,7 @@ var loginCmd = &cobra.Command{
 		)
 
 		terminal.HyperLink("Click to Login", authenticationUrl)
+		// _ = browser.OpenURL(authenticationUrl)
 
 		fmt.Println("")
 		sp.Start()
@@ -51,6 +53,8 @@ var loginCmd = &cobra.Command{
 		code := <-codeChan
 		res, err := api.Authenticate(code)
 		if err != nil {
+			logrus.WithField("error", err).Error("Error while saving config")
+
 			sp.FinalMSG = "An error occured while authenticating"
 			sp.Stop()
 			cmd.PrintErr(err)
@@ -60,31 +64,34 @@ var loginCmd = &cobra.Command{
 		viper.Set("auth.access_token", res.AccessToken)
 		viper.Set("auth.refresh_token", res.RefreshToken)
 
+		logrus.Debug("writing config")
 		if err := viper.WriteConfig(); err != nil {
+			logrus.WithField("error", err).Error("Error while saving config")
+
 			sp.FinalMSG = "An error occurred while saving data."
 			sp.Stop()
+
 			cmd.PrintErr(err)
 			return
 		}
 
-		me, err := api.Me()
+		logrus.Debug("config updated")
 
-		if err == nil {
+		me, err := api.Me(res.AccessToken)
+		if err != nil {
+			logrus.Fatal("Error while fetching user data: ", err)
+
+			sp.FinalMSG = "An error occured while fetching your data."
 			sp.Stop()
-			fmt.Println(fmt.Sprintf("Welcome %s!", console.Yellow(me.Username)))
-			return
+
+			cobra.CheckErr(err)
 		}
 
-		sp.FinalMSG = "Welcome to Splash!"
 		sp.Stop()
-
-		fmt.Println("")
-		fmt.Println("An error occured while fetching your data.")
+		fmt.Println(fmt.Sprintf("Welcome %s!", console.Yellow(me.Username)))
 
 		viper.Set("user_id", me.Id)
 		_ = viper.WriteConfig()
-
-		cmd.PrintErr(err)
 	},
 }
 
@@ -104,7 +111,7 @@ func loginServer(code chan string, api *unsplash.Api, ctx context.Context) {
 	)
 
 	srv := http.Server{
-		Addr: ":8888",
+		Addr: ":5835",
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

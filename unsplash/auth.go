@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
 
 	"github.com/rawnly/splash-cli/unsplash/models"
+	"github.com/sirupsen/logrus"
 )
 
 func (a Api) BuildAuthenticationUrl(scopes ...string) string {
@@ -40,7 +41,7 @@ func (a Api) Authenticate(code string) (*models.AuthRes, error) {
 	}
 
 	var authRes models.AuthRes
-	data, err = ioutil.ReadAll(response.Body)
+	data, err = io.ReadAll(response.Body)
 
 	if err != nil {
 		return nil, err
@@ -53,7 +54,12 @@ func (a Api) Authenticate(code string) (*models.AuthRes, error) {
 	return &authRes, nil
 }
 
-func (a Api) Me() (*models.Me, error) {
+func (a Api) Me(accessToken string) (*models.Me, error) {
+	logrus.WithField("client", map[string]string{
+		"client_id":     a.ClientId,
+		"client_secret": a.ClientSecret,
+	}).Debug("Fetching user information")
+
 	r, err := a.get("/me", nil)
 	if err != nil {
 		return nil, err

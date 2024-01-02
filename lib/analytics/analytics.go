@@ -7,6 +7,7 @@ import (
 	"github.com/posthog/posthog-go"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
@@ -15,8 +16,8 @@ type Analytics struct {
 	Enabled bool
 }
 
-func New(apiKey string, debug bool) *Analytics {
-	if apiKey == "YOUR_POSTHOG_KEY" || debug {
+func New(apiKey string) *Analytics {
+	if apiKey == "YOUR_POSTHOG_KEY" || config.IsDebug() {
 		return &Analytics{
 			Enabled: false,
 		}
@@ -59,12 +60,11 @@ func (a *Analytics) PromptConsent() bool {
 	}
 
 	viper.Set("user_opt_out_analytics", !confirm)
+	a.Enabled = confirm
 
 	_ = a.Capture("user_opt_out_analytics", map[string]interface{}{
 		"opt_out": !confirm,
 	})
-
-	a.Enabled = confirm
 
 	return confirm
 }
@@ -90,14 +90,13 @@ func (analytics *Analytics) Capture(event string, properties map[string]interfac
 
 	logrus.Debugf("Capturing event: %s", event)
 
-	if err := analytics.client.Enqueue(posthog.Capture{
+	err := analytics.client.Enqueue(posthog.Capture{
 		// TODO: : generate a uuid or use the unsplash id
 		DistinctId: viper.GetString("user_id"),
 		Event:      event,
 		Properties: props,
-	}); err != nil {
-		panic(err.Error())
-	}
+	})
+	cobra.CheckErr(err)
 
 	return nil
 }

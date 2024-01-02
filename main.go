@@ -83,7 +83,7 @@ func main() {
 	analyticsClient := setupPosthog()
 	api := unsplash.Api{
 		ClientId:     ClientId,
-		RedirectUri:  "http://localhost:8888",
+		RedirectUri:  "http://localhost:5835",
 		ClientSecret: ClientSecret,
 		Client:       http.Client{},
 	}
