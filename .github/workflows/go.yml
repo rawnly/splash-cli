@@ -3,14 +3,13 @@ name: Go
 on:
   workflow_dispatch:
   pull_request_target:
-    branches: [go-rewrite, canary]
+    branches: [main, develop]
   push:
-    branches: [go-rewrite, canary, feature/*]
+    branches: [main, develop, feature/*]
     paths-ignore:
       - README.md
       - .github/workflows/go.yml
       - .gitignore
-      - .goreleaser.yml
     tags:
       - "*"
 
