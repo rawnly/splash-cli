@@ -31,7 +31,12 @@ func setupLogs() {
 	}
 
 	if config.IsDebug() {
-		logrus.SetLevel(logrus.DebugLevel)
+		if os.Getenv("LOG_LEVEL") == "trace" {
+			logrus.SetLevel(logrus.TraceLevel)
+		} else {
+			logrus.SetLevel(logrus.DebugLevel)
+		}
+
 		logrus.SetReportCaller(true)
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
@@ -41,6 +46,7 @@ func setupLogs() {
 // Setup sentry if not in DEBUG mode
 func setupSentry() {
 	if !config.IsSentryEnabled() {
+		logrus.Trace("Sentry disabled")
 		return
 	}
 

@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"time"
 
+	gm "github.com/rawnly/splash-cli/lib/github/models"
 	"github.com/spf13/viper"
 )
 
@@ -18,6 +19,11 @@ type authConfig struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+type updateConfig struct {
+	LastUpdate int64       `json:"last_update"`
+	LatestTag  *gm.Version `json:"latest_tag"`
+}
+
 type Value struct {
 	Key   string      `json:"key"`
 	Value interface{} `json:"value"`
@@ -29,9 +35,17 @@ type Config struct {
 	CollectionAliases Value `json:"collection_aliases"`
 	PhotoOfTheDay     Value `json:"photo_of_the_day"`
 	Auth              Value `json:"auth"`
+	Update            Value `json:"update"`
 }
 
 var DefaultUserConfig = Config{
+	Update: Value{
+		Key: "update",
+		Value: updateConfig{
+			LastUpdate: -1,
+			LatestTag:  nil,
+		},
+	},
 	DownloadDir: Value{
 		Key:   "download_dir",
 		Value: "~/Pictures/splash_photos",
