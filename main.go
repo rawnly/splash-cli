@@ -11,33 +11,12 @@ import (
 	"github.com/rawnly/splash-cli/cmd"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
-	"github.com/rawnly/splash-cli/lib/analytics"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
-
-func runChecks() {
-	now := time.Now().Unix()
-	timestamp := viper.GetInt64("photo_of_the_day.last_update")
-	refreshInterval := viper.GetDuration("photo_of_the_day.refresh_interval")
-	if timestamp == 0 {
-		logrus.Debug("No timestamp found")
-		return
-	}
-
-	if (now - timestamp) > int64(refreshInterval.Seconds()) {
-		logrus.Debug("Clearing photo of the day")
-
-		viper.Set("photo_of_the_day.last_update", 0)
-		viper.Set("photo_of_the_day.id", "")
-
-		err := viper.WriteConfig()
-		cobra.CheckErr(err)
-	}
-}
 
 func updateTopics(api *unsplash.Api) {
 	topics, err := api.GetTopics()
@@ -49,24 +28,9 @@ func updateTopics(api *unsplash.Api) {
 	viper.Set("topics.last_update", time.Now().Unix())
 }
 
-func setupSentry() {
-	if !config.IsSentryEnabled() {
-		return
-	}
-
-	err := sentry.Init(sentry.ClientOptions{
-		Dsn:              config.SentryDSN,
-		TracesSampleRate: 1.0,
-	})
-
-	cobra.CheckErr(err)
-}
-
-func setupPosthog() *analytics.Analytics {
-	return analytics.New(config.PostHogKey, config.IsDebug())
-}
-
 func init() {
+	setupLogs()
+
 	viper.SetConfigType("json")
 	viper.SetConfigName("splash-cli")
 	viper.AddConfigPath("$HOME/.config")
@@ -90,7 +54,26 @@ func init() {
 	logrus.Debug("Config loaded")
 	logrus.Debugf("Using %s", viper.ConfigFileUsed())
 
-	go runChecks()
+	go func() {
+		now := time.Now().Unix()
+		timestamp := viper.GetInt64("photo_of_the_day.last_update")
+		refreshInterval := viper.GetDuration("photo_of_the_day.refresh_interval")
+
+		if timestamp == 0 {
+			logrus.Debug("No timestamp found")
+			return
+		}
+
+		if (now - timestamp) > int64(refreshInterval.Seconds()) {
+			logrus.Debug("Clearing photo of the day")
+
+			viper.Set("photo_of_the_day.last_update", 0)
+			viper.Set("photo_of_the_day.id", "")
+
+			err := viper.WriteConfig()
+			cobra.CheckErr(err)
+		}
+	}()
 }
 
 func main() {
@@ -113,11 +96,7 @@ func main() {
 	ctx = context.WithValue(ctx, keys.ApiInstance, api)
 	ctx = context.WithValue(ctx, keys.Analytics, analyticsClient)
 
-	if config.IsDebug() {
-		logrus.SetLevel(logrus.DebugLevel)
-	} else {
-		logrus.SetLevel(logrus.WarnLevel)
-
+	if !config.IsDebug() {
 		go setupSentry()
 		defer sentry.Flush(2 * time.Second)
 	}
