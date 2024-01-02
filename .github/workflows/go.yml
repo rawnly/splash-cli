@@ -22,19 +22,22 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: 1.21
+
       - name: Install dependencies
         continue-on-error: true
         run: |
           go get -u github.com/golang/dep/cmd/dep
           dep ensure
+
       - name: Run tests
         continue-on-error: true
         run: |
           go test -v ./__tests__
+
       - name: Snapshot
         uses: goreleaser/goreleaser-action@v2
         with:
-          args: --snapshot --rm-dist
+          args: --snapshot --clean
           version: latest
           distribution: goreleaser
         env:
@@ -43,6 +46,8 @@ jobs:
           UNSPLASH_CLIENT_ID: ${{ secrets.CLIENT_ID }}
           UNSPLASH_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+          LOG_FORMAT: json 
+          LOG_LEVEL: trace
           DEBUG: true
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -60,15 +65,12 @@ jobs:
         with:
           go-version: 1.21
 
-      - name: Test
-        run: go test -v ./__tests__
-
       - name: Release
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
           distribution: goreleaser
-          args: release --rm-dist
+          args: release --clean
         env:
           DEBUG: false
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
