@@ -1,7 +1,10 @@
 # Automatically read env file and inject in scripts
 env := $(shell cat .env | xargs)
 
-.PHONY: clean build
+default: clean build
+
+build-go:
+	$(env) go build
 
 build:
 	$(env) goreleaser build --snapshot --clean --single-target
@@ -13,4 +16,4 @@ install:
 	$(env) go install
 
 clean:
-	$(env) rm splash-cli.log
+	$(env) rm -f splash-cli.log

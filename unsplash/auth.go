@@ -20,8 +20,13 @@ func (a Api) BuildAuthenticationUrl(scopes ...string) string {
 	return fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code", baseUrl, a.ClientId, url.PathEscape(a.RedirectUri), scope)
 }
 
+type ErrorRes struct {
+	Error            string `json:"error"`
+	ErrorDescription string `json:"error_description"`
+}
+
 func (a Api) Authenticate(code string) (*models.AuthRes, error) {
-	baseUrl := "https://unsplash.com/oauth/token"
+	url := "https://unsplash.com/oauth/token"
 	payload := map[string]string{
 		"client_id":     a.ClientId,
 		"client_secret": a.ClientSecret,
@@ -35,18 +40,27 @@ func (a Api) Authenticate(code string) (*models.AuthRes, error) {
 		return nil, err
 	}
 
-	response, err := http.Post(baseUrl, "application/json", bytes.NewBuffer(data))
+	response, err := http.Post(url, "application/json", bytes.NewBuffer(data))
 	if err != nil {
 		return nil, err
+	}
+
+	data, err = io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if response.StatusCode != 200 {
+		var errorRes ErrorRes
+		if err := json.Unmarshal(data, &errorRes); err != nil {
+			return nil, err
+		}
+
+		logrus.WithField("error", errorRes).WithField("status", response.Status).Error("Error while authenticating")
+		return nil, fmt.Errorf(errorRes.ErrorDescription)
 	}
 
 	var authRes models.AuthRes
-	data, err = io.ReadAll(response.Body)
-
-	if err != nil {
-		return nil, err
-	}
-
 	if err := json.Unmarshal(data, &authRes); err != nil {
 		return nil, err
 	}

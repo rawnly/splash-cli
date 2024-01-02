@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
+	"github.com/cli/browser"
 	"github.com/rawnly/splash-cli/lib/console"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/lib/terminal"
@@ -41,7 +42,7 @@ var loginCmd = &cobra.Command{
 		)
 
 		terminal.HyperLink("Click to Login", authenticationUrl)
-		// _ = browser.OpenURL(authenticationUrl)
+		_ = browser.OpenURL(authenticationUrl)
 
 		fmt.Println("")
 		sp.Start()
@@ -53,18 +54,21 @@ var loginCmd = &cobra.Command{
 		code := <-codeChan
 		res, err := api.Authenticate(code)
 		if err != nil {
-			logrus.WithField("error", err).Error("Error while saving config")
-
-			sp.FinalMSG = "An error occured while authenticating"
+			sp.FinalMSG = "An error occured while authenticating\n"
 			sp.Stop()
+
 			cmd.PrintErr(err)
 			return
 		}
+
+		logrus.WithField("response", res).Debug("auth response")
 
 		viper.Set("auth.access_token", res.AccessToken)
 		viper.Set("auth.refresh_token", res.RefreshToken)
 
 		logrus.Debug("writing config")
+		cobra.CheckErr(viper.WriteConfig())
+
 		if err := viper.WriteConfig(); err != nil {
 			logrus.WithField("error", err).Error("Error while saving config")
 

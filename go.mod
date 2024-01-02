@@ -9,6 +9,7 @@ require (
 	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/bbrks/go-blurhash v1.1.1
 	github.com/briandowns/spinner v1.18.1
+	github.com/cli/browser v1.3.0
 	github.com/eiannone/keyboard v0.0.0-20200508000154-caf4b762e807
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/google/uuid v1.4.0
