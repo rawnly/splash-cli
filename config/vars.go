@@ -3,6 +3,8 @@ package config
 import (
 	"fmt"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -19,6 +21,7 @@ var (
 	PostHogKey   = DEFAULT_POSTHOG_KEY
 	Version      = "dev"
 	Commit       = "none"
+	Date         = "unknown"
 	Debug        string
 )
 
@@ -57,8 +60,16 @@ func IsDebug() bool {
 	return Debug == "true"
 }
 
+func GetEnvironment() string {
+	if IsDebug() {
+		return "dev"
+	}
+
+	return "prod"
+}
+
 func IsSentryEnabled() bool {
-	return SentryDSN != DEFAULT_SENTRY_DSN
+	return SentryDSN != DEFAULT_SENTRY_DSN && SentryDSN != ""
 }
 
 func IsPostHogEnabled() bool {
@@ -70,9 +81,24 @@ func GetKeys() (string, string) {
 		ClientId = os.Getenv("UNSPLASH_CLIENT_ID")
 	}
 
+	if ClientId == "" {
+		logrus.Fatal("`UNSPLASH_CLIENT_ID` not found")
+	}
+
 	if ClientSecret == DEFAULT_CLIENT_SECRET {
 		ClientSecret = os.Getenv("UNSPLASH_CLIENT_SECRET")
 	}
 
+	if ClientSecret == "" {
+		logrus.Fatal("`UNSPLASH_CLIENT_SECRET` not found")
+	}
+
 	return ClientId, ClientSecret
+}
+
+var SentryEventDetails = map[string]string{
+	"version":  Version,
+	"commit":   Commit,
+	"date":     Date,
+	"username": os.Getenv("USER"),
 }

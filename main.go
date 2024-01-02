@@ -139,10 +139,8 @@ func main() {
 	ctx = context.WithValue(ctx, keys.ApiInstance, api)
 	ctx = context.WithValue(ctx, keys.Analytics, analyticsClient)
 
-	if !config.IsDebug() {
-		go setupSentry()
-		defer sentry.Flush(2 * time.Second)
-	}
+	go setupSentry()
+	defer sentry.Flush(2 * time.Second)
 
 	go updateTopics(&api)
 

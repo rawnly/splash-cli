@@ -60,7 +60,12 @@ func (a *Analytics) PromptConsent() bool {
 	}
 
 	viper.Set("user_opt_out_analytics", !confirm)
-	a.Enabled = confirm
+
+	if !confirm {
+		a.Enabled = false
+	} else {
+		a.Enabled = config.IsPostHogEnabled()
+	}
 
 	_ = a.Capture("user_opt_out_analytics", map[string]interface{}{
 		"opt_out": !confirm,
@@ -71,7 +76,7 @@ func (a *Analytics) PromptConsent() bool {
 
 func (analytics *Analytics) Capture(event string, properties map[string]interface{}) error {
 	if !analytics.Enabled {
-		logrus.Debugf("Analytics disabled skipping event: %s", event)
+		logrus.Tracef("Analytics disabled skipping event: %s", event)
 		return nil
 	}
 
@@ -88,7 +93,7 @@ func (analytics *Analytics) Capture(event string, properties map[string]interfac
 		}
 	}
 
-	logrus.Debugf("Capturing event: %s", event)
+	logrus.Tracef("Capturing event: %s", event)
 
 	err := analytics.client.Enqueue(posthog.Capture{
 		// TODO: : generate a uuid or use the unsplash id

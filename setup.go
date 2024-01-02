@@ -21,12 +21,16 @@ func setupLogs() {
 	}
 
 	if config.GetFormatterType() == config.LOG_FORMAT_JSON {
-		logrus.SetFormatter(&logrus.JSONFormatter{})
+		logrus.SetFormatter(&logrus.JSONFormatter{
+			TimestampFormat:  "2006-01-02 15:04:05",
+			DisableTimestamp: true,
+		})
 	} else {
 		logrus.SetFormatter(&logrus.TextFormatter{
-			DisableColors:   false,
-			FullTimestamp:   true,
-			TimestampFormat: "2006-01-02 15:04:05",
+			DisableColors:    false,
+			FullTimestamp:    true,
+			DisableTimestamp: true,
+			TimestampFormat:  "2006-01-02 15:04:05",
 		})
 	}
 
@@ -46,13 +50,18 @@ func setupLogs() {
 // Setup sentry if not in DEBUG mode
 func setupSentry() {
 	if !config.IsSentryEnabled() {
-		logrus.Trace("Sentry disabled")
+		logrus.WithFields(logrus.Fields{
+			"dsn":   config.SentryDSN,
+			"debug": config.IsDebug(),
+		}).Trace("Sentry disabled")
 		return
 	}
 
 	err := sentry.Init(sentry.ClientOptions{
 		Dsn:              config.SentryDSN,
 		TracesSampleRate: 1.0,
+		Environment:      config.GetEnvironment(),
+		Debug:            config.IsDebug(),
 	})
 
 	cobra.CheckErr(err)
