@@ -33,9 +33,24 @@ brew tap rawnly/tap
 brew install splash-cli
 ```
 
+#### Via Go 
+```shell
+go install github.com/rawnly/splash-cli@latest
+```
+
+Be sure to set up your environment before running the command.
+Required environment variables are:
+ - `UNSPLASH_CLIENT_ID`
+ - `UNSPLASH_CLIENT_SECRET`
+
+You can get credentials on the [Unsplash Developer Portal](https://unsplash.com/developers).
+
+
+Also remember that the BIN name will be `splash-cli` and not `splash`
+
 #### Manually
 - Download the [latest pre-release](https://github.com/splash-cli/splash-cli/releases)
-- Move the `splash-cli` binary to your `$PATH`
+- Move the binary to your `$PATH`
 - Enjoy
 
 ## Build Locally
