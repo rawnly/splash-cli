@@ -1,6 +1,8 @@
 dist
 node_modules
 splash
+splash-cli
 .env.*
 .env
 dist/
+*.log
