@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -22,20 +23,18 @@ func Request(method string, pathname string, params interface{}, body any) (*htt
 		url += fmt.Sprintf("?%s", Stringify(params))
 	}
 
-	logrus.Debug(method, url)
+	logrus.WithField("method", method).Debug(url)
 
 	if body == nil {
 		return http.NewRequest(method, url, nil)
 	}
 
 	payload, err := json.Marshal(body)
-
 	if err != nil {
 		return nil, err
 	}
 
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(payload))
-
 	if err != nil {
 		return nil, err
 	}
@@ -59,9 +58,7 @@ func AddAuthorization(req *http.Request, authorizationKind string, token string)
 
 func ExecuteRequest(req *http.Request) func(client http.Client) ([]byte, error) {
 	return func(client http.Client) ([]byte, error) {
-		logrus.Debugf("%s %s %s", req.Method, req.URL, req.Header.Get("Authorization"))
 		response, err := client.Do(req)
-
 		if err != nil {
 			return nil, err
 		}
