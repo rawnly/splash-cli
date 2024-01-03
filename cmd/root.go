@@ -10,6 +10,7 @@ import (
 	"github.com/MakeNowJust/heredoc"
 	"github.com/briandowns/spinner"
 	"github.com/eiannone/keyboard"
+	"github.com/getsentry/sentry-go"
 	"github.com/rawnly/go-wallpaper"
 	"github.com/rawnly/splash-cli/cmd/alias"
 	"github.com/rawnly/splash-cli/cmd/auth"
@@ -22,6 +23,7 @@ import (
 	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/models"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -230,7 +232,8 @@ var rootCmd = &cobra.Command{
 
 				_, key, err := keyboard.GetSingleKey()
 				if err != nil {
-					panic(err.Error())
+					evtId := sentry.CaptureException(err)
+					logrus.WithField("event_id", evtId).Fatal(err)
 				}
 
 				switch key {
