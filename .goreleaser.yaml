@@ -8,6 +8,7 @@ before:
   hooks:
     - go mod tidy
     - go test -v ./__tests__
+    - rm -f splash-cli.log
 builds:
   - binary: splash
     env:
@@ -22,6 +23,7 @@ builds:
       - -s -w -X "github.com/rawnly/splash-cli/config.Version={{ .Version }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.Commit={{ .Commit }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.Date={{ .Date }}"
+      - -s -w -X "github.com/rawnly/splash-cli/config.SentryDebug={{ .Env.ENABLE_SENTRY_DEBUG }}"
     goos:
       - linux
       - windows

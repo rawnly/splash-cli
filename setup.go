@@ -61,7 +61,7 @@ func setupSentry() {
 		Dsn:              config.SentryDSN,
 		TracesSampleRate: 1.0,
 		Environment:      config.GetEnvironment(),
-		Debug:            config.IsDebug(),
+		Debug:            config.SentryDebug == "true",
 	})
 
 	cobra.CheckErr(err)

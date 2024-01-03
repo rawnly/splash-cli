@@ -23,6 +23,7 @@ var (
 	Commit       = "none"
 	Date         = "unknown"
 	Debug        string
+	SentryDebug  string
 )
 
 const (
