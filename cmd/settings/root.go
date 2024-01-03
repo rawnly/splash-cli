@@ -55,6 +55,7 @@ func AllSettingsSurvey() (*Settings, error) {
 			Prompt: &survey.Input{
 				Message: "Where would you like to download your photos?",
 				Help:    "This is where your photos will be downloaded to.",
+				Default: viper.GetString(SETTINGS_DOWNLOADS_DIR),
 			},
 		},
 		{
