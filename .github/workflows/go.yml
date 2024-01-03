@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         continue-on-error: true
         run: |
-          go get github.com/golang/dep/cmd/dep
+          go get -u
 
       - name: Snapshot
         uses: goreleaser/goreleaser-action@v2
@@ -62,7 +62,7 @@ jobs:
       - name: Create Tag 
         if: endsWith(github.ref, 'main')
         run: | 
-          git tag $(svu next)
+          git tag $(svu next --strip-prefix)
           git push --tags
 
       - name: Create Preview Tag 
