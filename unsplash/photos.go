@@ -3,8 +3,9 @@ package unsplash
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/rawnly/splash-cli/unsplash/models"
 	"io/ioutil"
+
+	"github.com/rawnly/splash-cli/unsplash/models"
 )
 
 func (a Api) GetPhoto(id string) (*models.Photo, error) {
@@ -12,7 +13,6 @@ func (a Api) GetPhoto(id string) (*models.Photo, error) {
 
 	pathname := fmt.Sprintf("/photos/%s", id)
 	data, err := a.get(pathname, nil)
-
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,6 @@ func (a Api) GetRandomPhoto(params models.RandomPhotoParams) ([]models.Photo, er
 	var photo []models.Photo
 
 	data, err := a.get("/photos/random", params)
-
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +66,7 @@ func (a Api) Unlike(id string) error {
 func (a Api) GetPhotoOfTheDay() (*models.Photo, error) {
 	var response models.PhotoOfTheDay
 
-	r, err := a.Client.Get("https://lambda.splash-cli.app/api")
+	r, err := a.Client.Get("https://lambda.splash-cli.app/api/wallpapers")
 	if err != nil {
 		return nil, err
 	}
