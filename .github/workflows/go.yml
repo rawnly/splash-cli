@@ -42,6 +42,7 @@ jobs:
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
           LOG_FORMAT: json 
           LOG_LEVEL: trace
+          ENABLE_SENTRY_DEBUG: false
           DEBUG: true
 
       - name: Upload Artifacts
@@ -55,6 +56,7 @@ jobs:
         run: | 
           echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
           sudo apt update && sudo apt install svu
+          git fetch --prune --progress --unshallow
           git tag $(svu next)
           git push --tags
 
@@ -88,6 +90,7 @@ jobs:
           args: release --clean
         env:
           DEBUG: false
+          ENABLE_SENTRY_DEBUG: false
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           UNSPLASH_CLIENT_ID: ${{ secrets.CLIENT_ID }}
           UNSPLASH_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
