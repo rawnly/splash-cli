@@ -94,6 +94,22 @@ func init() {
 
 func checkForUpdates() {
 	logrus.Debug("Checking for updates")
+
+	lastCheck := viper.GetInt64("update.last_update")
+
+	if time.Now().Unix()-lastCheck < 60*60*24 {
+		logrus.WithTime(time.Now()).
+			WithFields(logrus.Fields{
+				"last_check":      lastCheck,
+				"now":             time.Now().Unix(),
+				"version":         viper.GetString("update.latest_tag"),
+				"current_version": config.GetVersion(),
+			}).
+			Debug("Update check performed in the last 24 hours. Aborting check...")
+
+		return
+	}
+
 	updateNeeded, version := github.NeedsToUpdate()
 
 	viper.Set("update.last_update", time.Now().Unix())
