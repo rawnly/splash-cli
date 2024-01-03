@@ -46,6 +46,17 @@ release:
   github:
     owner: rawnly
     name: splash-cli
+  footer: |
+    ## How to Update
+    ### Homebrew
+    ```
+      brew update splash-cli
+    ```
+
+    ### Go
+    ```
+      go install github.com/rawnly/splash-cli@{{ .Version }}
+    ```
 checksum:
   name_template: "checksums.txt"
 snapshot:
