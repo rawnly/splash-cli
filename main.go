@@ -2,21 +2,38 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
 
+	"github.com/AlecAivazis/survey/v2"
+	"github.com/cli/browser"
 	"github.com/getsentry/sentry-go"
 	"github.com/google/uuid"
 	"github.com/rawnly/splash-cli/cmd"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
+	"github.com/rawnly/splash-cli/lib/github"
+	"github.com/rawnly/splash-cli/lib/github/models"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
+
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
+func printLdFlags() {
+	fmt.Printf("Version: %s\n", version)
+	fmt.Printf("Commit: %s\n", commit)
+	fmt.Printf("Date: %s\n", date)
+}
 
 func updateTopics(api *unsplash.Api) {
 	topics, err := api.GetTopics()
@@ -51,8 +68,7 @@ func init() {
 		}
 	}
 
-	logrus.Debug("Config loaded")
-	logrus.Debugf("Using %s", viper.ConfigFileUsed())
+	checkForUpdates()
 
 	go func() {
 		now := time.Now().Unix()
@@ -76,6 +92,49 @@ func init() {
 	}()
 }
 
+func checkForUpdates() {
+	logrus.Debug("Checking for updates")
+
+	lastCheck := viper.GetInt64("update.last_update")
+
+	if time.Now().Unix()-lastCheck < 60*60*24 {
+		logrus.WithTime(time.Now()).
+			WithFields(logrus.Fields{
+				"last_check":      lastCheck,
+				"now":             time.Now().Unix(),
+				"version":         viper.GetString("update.latest_tag"),
+				"current_version": config.GetVersion(),
+			}).
+			Debug("Update check performed in the last 24 hours. Aborting check...")
+
+		return
+	}
+
+	updateNeeded, version := github.NeedsToUpdate()
+
+	viper.Set("update.last_update", time.Now().Unix())
+	viper.Set("update.latest_tag", version)
+	_ = viper.WriteConfig()
+
+	if updateNeeded {
+		prompt := &survey.Confirm{
+			Default: true,
+			Message: fmt.Sprintf("A new version (%s) is available, would you like to update?", models.VersionToString(version)),
+		}
+
+		confirm := true
+		if err := survey.AskOne(prompt, &confirm); err != nil {
+			return
+		}
+
+		if !confirm {
+			return
+		}
+
+		_ = browser.OpenURL("https://github.com/rawnly/splash-cli/releases/latest")
+	}
+}
+
 func main() {
 	ClientId, ClientSecret := config.GetKeys()
 
@@ -83,7 +142,7 @@ func main() {
 	analyticsClient := setupPosthog()
 	api := unsplash.Api{
 		ClientId:     ClientId,
-		RedirectUri:  "http://localhost:8888",
+		RedirectUri:  "http://localhost:5835",
 		ClientSecret: ClientSecret,
 		Client:       http.Client{},
 	}
@@ -96,24 +155,22 @@ func main() {
 	ctx = context.WithValue(ctx, keys.ApiInstance, api)
 	ctx = context.WithValue(ctx, keys.Analytics, analyticsClient)
 
-	if !config.IsDebug() {
-		go setupSentry()
-		defer sentry.Flush(2 * time.Second)
-	}
+	go setupSentry()
+	defer sentry.Flush(2 * time.Second)
 
 	go updateTopics(&api)
 
 	defer func() {
-		logrus.Debug("Closing analytics client")
+		logrus.Trace("Closing analytics client")
+
 		if err := analyticsClient.Close(); err != nil {
 			logrus.Error("Error closing analytics client:", err)
 		}
 	}()
 
-	logrus.Debug("Checking if first run")
-
+	logrus.Trace("Checking if first run")
 	if viper.GetBool("has_run_before") == false {
-		logrus.Debug("First run detected")
+		logrus.Trace("First run detected")
 
 		viper.Set("has_run_before", true)
 		viper.Set("user_id", uuid.NewString())
@@ -131,7 +188,7 @@ func main() {
 	downloadPath = lib.ExpandPath(downloadPath)
 
 	if _, err := os.Stat(downloadPath); os.IsNotExist(err) {
-		logrus.Debug("Creating download path")
+		logrus.WithField("download-path", downloadPath).Debug("Creating download path")
 
 		err := os.MkdirAll(downloadPath, 0755)
 		cobra.CheckErr(err)

@@ -22,7 +22,6 @@ func HomePath(path string) (string, error) {
 	path = re.ReplaceAllString(path, "")
 
 	homedir, err := os.UserHomeDir()
-
 	if err != nil {
 		return "", err
 	}
@@ -41,7 +40,6 @@ func InsertHomeIfNeeded(path string) (string, error) {
 	}
 
 	homedir, err := os.UserHomeDir()
-
 	if err != nil {
 		return "", err
 	}
@@ -62,7 +60,6 @@ func FileExists(filename string) bool {
 // DownloadFile / Download a file from a URL and returns the path as string
 func DownloadFile(url string, filename string) (string, error) {
 	path, err := InsertHomeIfNeeded(filename)
-
 	if err != nil {
 		return "", err
 	}
@@ -71,7 +68,6 @@ func DownloadFile(url string, filename string) (string, error) {
 	out, err := os.Create(path)
 	if err != nil {
 		panic(err)
-		return "", err
 	}
 
 	// Get the data

@@ -12,24 +12,35 @@ import (
 
 // Setup the logs
 func setupLogs() {
-	if config.GetFormatterType() == config.LOG_FORMAT_JSON {
-		// You could set this to any `io.Writer` such as a file
-		file, err := os.OpenFile("splash-cli.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-		if err == nil {
-			logrus.SetOutput(file)
-		} else {
-			logrus.Info("Failed to log to file, using default stderr")
-		}
+	// You could set this to any `io.Writer` such as a file
+	file, err := os.OpenFile("splash-cli.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err == nil {
+		logrus.SetOutput(file)
+	} else {
+		logrus.Warn("Failed to log to file, using default stderr")
+	}
 
-		logrus.SetFormatter(&logrus.JSONFormatter{})
+	if config.GetFormatterType() == config.LOG_FORMAT_JSON {
+		logrus.SetFormatter(&logrus.JSONFormatter{
+			TimestampFormat:  "2006-01-02 15:04:05",
+			DisableTimestamp: true,
+		})
 	} else {
 		logrus.SetFormatter(&logrus.TextFormatter{
-			DisableColors: false,
+			DisableColors:    false,
+			FullTimestamp:    true,
+			DisableTimestamp: true,
+			TimestampFormat:  "2006-01-02 15:04:05",
 		})
 	}
 
 	if config.IsDebug() {
-		logrus.SetLevel(logrus.DebugLevel)
+		if os.Getenv("LOG_LEVEL") == "trace" {
+			logrus.SetLevel(logrus.TraceLevel)
+		} else {
+			logrus.SetLevel(logrus.DebugLevel)
+		}
+
 		logrus.SetReportCaller(true)
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
@@ -39,12 +50,18 @@ func setupLogs() {
 // Setup sentry if not in DEBUG mode
 func setupSentry() {
 	if !config.IsSentryEnabled() {
+		logrus.WithFields(logrus.Fields{
+			"dsn":   config.SentryDSN,
+			"debug": config.IsDebug(),
+		}).Trace("Sentry disabled")
 		return
 	}
 
 	err := sentry.Init(sentry.ClientOptions{
 		Dsn:              config.SentryDSN,
 		TracesSampleRate: 1.0,
+		Environment:      config.GetEnvironment(),
+		Debug:            config.SentryDebug == "true",
 	})
 
 	cobra.CheckErr(err)
@@ -52,5 +69,5 @@ func setupSentry() {
 
 // Setup posthog
 func setupPosthog() *analytics.Analytics {
-	return analytics.New(config.PostHogKey, config.IsDebug())
+	return analytics.New(config.PostHogKey)
 }
