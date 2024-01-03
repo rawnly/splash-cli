@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
@@ -51,23 +54,22 @@ jobs:
           name: Snapshot
           path: dist
 
+      - name: Install SVU
+        run: |
+          echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
+          sudo apt update && sudo apt install svu
+
       - name: Create Tag 
         if: endsWith(github.ref, 'main')
         run: | 
-          echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
-          sudo apt update && sudo apt install svu
-          git fetch --prune --progress --unshallow
           git tag $(svu next)
           git push --tags
 
       - name: Create Preview Tag 
         if: endsWith(github.ref, 'develop')
         run: | 
-          echo 'deb [trusted=yes] https://apt.fury.io/caarlos0/ /' | sudo tee /etc/apt/sources.list.d/caarlos0.list
-          sudo apt update && sudo apt install svu
           git_hash=$(git rev-parse --short "$GITHUB_SHA")
           git_branch=${GITHUB_REF#refs/heads/}
-          git fetch --prune --progress --unshallow
           git tag $(svu prerelease --pre-release $git_branch --build $git_hash)
           git push --tags
 
@@ -77,6 +79,9 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
