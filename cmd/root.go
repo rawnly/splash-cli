@@ -203,7 +203,9 @@ var rootCmd = &cobra.Command{
 
 		downloadLocation := fmt.Sprintf("%s/%s.jpg", downloadFolder, photo.Id)
 
-		_ = blurhash.Prepare(photo)
+		if !saveFlag {
+			_ = blurhash.Prepare(photo)
+		}
 
 		var location string
 
