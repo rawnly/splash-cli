@@ -1,6 +1,7 @@
 # Automatically read env file and inject in scripts
 env := $(shell cat .env | xargs)
 
+.PHONY: default test clean all
 default: build
 
 

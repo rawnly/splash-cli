@@ -30,10 +30,10 @@ var loginCmd = &cobra.Command{
 		sp.Suffix = " Waiting for authcode..."
 
 		ctx := cmd.Context()
-		api := keys.GetApiInstance(ctx)
+		api := keys.GetAPIInstance(ctx)
 
 		fmt.Println("Please visit the following URL to login:")
-		authenticationUrl := api.BuildAuthenticationUrl(
+		authenticationURL := api.BuildAuthenticationUrl(
 			"read_user",
 			"write_likes",
 			"public",
@@ -41,8 +41,8 @@ var loginCmd = &cobra.Command{
 			"write_collections",
 		)
 
-		terminal.HyperLink("Click to Login", authenticationUrl)
-		_ = browser.OpenURL(authenticationUrl)
+		terminal.HyperLink("Click to Login", authenticationURL)
+		_ = browser.OpenURL(authenticationURL)
 
 		fmt.Println("")
 		sp.Start()
@@ -69,7 +69,7 @@ var loginCmd = &cobra.Command{
 		logrus.Debug("writing config")
 		cobra.CheckErr(viper.WriteConfig())
 
-		if err := viper.WriteConfig(); err != nil {
+		if err = viper.WriteConfig(); err != nil {
 			logrus.WithField("error", err).Error("Error while saving config")
 
 			sp.FinalMSG = "An error occurred while saving data."
@@ -92,7 +92,7 @@ var loginCmd = &cobra.Command{
 		}
 
 		sp.Stop()
-		fmt.Println(fmt.Sprintf("Welcome %s!", console.Yellow(me.Username)))
+		fmt.Printf("Welcome %s!\n", console.Yellow(me.Username))
 
 		viper.Set("user_id", me.Id)
 		_ = viper.WriteConfig()
@@ -106,7 +106,7 @@ func init() {
 }
 
 func loginServer(code chan string, api *unsplash.Api, ctx context.Context) {
-	authenticationUrl := api.BuildAuthenticationUrl(
+	authenticationURL := api.BuildAuthenticationUrl(
 		"read_user",
 		"write_likes",
 		"public",
@@ -128,7 +128,7 @@ func loginServer(code chan string, api *unsplash.Api, ctx context.Context) {
 	})
 
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, authenticationUrl, http.StatusTemporaryRedirect)
+		http.Redirect(w, r, authenticationURL, http.StatusTemporaryRedirect)
 	})
 
 	if err := srv.ListenAndServe(); err != http.ErrServerClosed && err != nil {

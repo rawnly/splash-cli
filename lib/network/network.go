@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
@@ -69,7 +69,7 @@ func ExecuteRequest(req *http.Request) func(client http.Client) ([]byte, error) 
 			return nil, errors.New("Error: " + response.Status)
 		}
 
-		return ioutil.ReadAll(response.Body)
+		return io.ReadAll(response.Body)
 	}
 }
 

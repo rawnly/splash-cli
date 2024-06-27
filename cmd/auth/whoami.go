@@ -40,9 +40,9 @@ var whoamiCmd = &cobra.Command{
 		}
 
 		fmt.Println("")
-		fmt.Println(fmt.Sprintf("%s %s", console.Yellow("Username:"), me.Username))
-		fmt.Println(fmt.Sprintf("%s %s", console.Yellow("Name:"), me.FirstName+" "+me.LastName))
-		fmt.Println(fmt.Sprintf("%s %s", console.Yellow("Bio:"), me.Bio))
+		fmt.Printf("%s %s\n", console.Yellow("Username:"), me.Username)
+		fmt.Printf("%s %s\n", console.Yellow("Name:"), me.FirstName+" "+me.LastName)
+		fmt.Printf("%s %s\n", console.Yellow("Bio:"), me.Bio)
 		fmt.Println("")
 	},
 }

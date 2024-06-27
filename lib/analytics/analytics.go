@@ -35,7 +35,7 @@ func New(apiKey string) *Analytics {
 	}
 
 	return &Analytics{
-		Enabled: viper.GetBool("user_opt_out_analytics") == false,
+		Enabled: !viper.GetBool("user_opt_out_analytics"),
 		client:  client,
 	}
 }
@@ -87,10 +87,8 @@ func (analytics *Analytics) Capture(event string, properties map[string]interfac
 		Set("arch", runtime.GOARCH).
 		Set("go_version", runtime.Version())
 
-	if properties != nil {
-		for key, value := range properties {
-			props = props.Set(key, value)
-		}
+	for key, value := range properties {
+		props = props.Set(key, value)
 	}
 
 	logrus.Tracef("Capturing event: %s", event)

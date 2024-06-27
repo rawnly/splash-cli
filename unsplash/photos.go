@@ -3,7 +3,7 @@ package unsplash
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 
 	"github.com/rawnly/splash-cli/unsplash/models"
 )
@@ -39,8 +39,8 @@ func (a Api) GetRandomPhoto(params models.RandomPhotoParams) ([]models.Photo, er
 	return photo, nil
 }
 
-func (a Api) TrackDownload(photoId string) error {
-	if _, err := a.get(fmt.Sprintf("/photos/%s/download", photoId), nil); err != nil {
+func (a Api) TrackDownload(photoID string) error {
+	if _, err := a.get(fmt.Sprintf("/photos/%s/download", photoID), nil); err != nil {
 		return err
 	}
 
@@ -71,7 +71,7 @@ func (a Api) GetPhotoOfTheDay() (*models.Photo, error) {
 		return nil, err
 	}
 
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	if err != nil {
 		return nil, err
 	}

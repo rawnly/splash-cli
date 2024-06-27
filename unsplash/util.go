@@ -3,7 +3,6 @@ package unsplash
 import (
 	"net/http"
 
-	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/network"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -49,15 +48,6 @@ func (a Api) post(pathname string, params interface{}, body any) ([]byte, error)
 	return a.sendRequest(req)
 }
 
-func (a Api) put(pathname string, params interface{}, body any) ([]byte, error) {
-	req, err := network.Request("PUT", pathname, params, body)
-	if err != nil {
-		return nil, err
-	}
-
-	return a.sendRequest(req)
-}
-
 func (a Api) delete(pathname string, params interface{}) ([]byte, error) {
 	req, err := network.Request("DELETE", pathname, params, nil)
 	if err != nil {
@@ -65,11 +55,4 @@ func (a Api) delete(pathname string, params interface{}) ([]byte, error) {
 	}
 
 	return a.sendRequest(req)
-}
-
-func (a Api) buildUrl(pathname string, data map[string]string) (string, error) {
-	return lib.Template{
-		Data:     data,
-		Template: pathname,
-	}.String()
 }
