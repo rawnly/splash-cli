@@ -28,16 +28,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-type photoFlags struct {
-	Day         bool   `json:"day" description:"Get a the photo of the day"`
-	Orientation string `json:"orientation" default:"landscape" description:"Specifies the photo orientation"`
-	Query       string `json:"query" description:"Search for a photo"`
-	Id          string `json:"id" description:"Get a photo by id"`
-	Save        bool   `json:"save" description:"Save the photo without setting it as wallpaper"`
-	Scale       string `json:"scale" default:"auto" description:"Set wallpaper scale"`
-	IgnoreCache bool   `json:"ignore-cache" default:"false" description:"Ignore cache and download image again"`
-}
-
 const (
 	SpinnerSpeed = 200 * time.Millisecond
 	SpinnerType  = 39
@@ -216,7 +206,6 @@ var rootCmd = &cobra.Command{
 			downloadSpinner.Stop()
 		} else {
 			location, err = lib.DownloadFile(photo.Urls.Raw, downloadLocation)
-
 			if err != nil {
 				cobra.CheckErr(err)
 				downloadSpinner.FinalMSG = "[FAILED] Download"

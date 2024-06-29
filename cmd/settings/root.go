@@ -22,13 +22,14 @@ var Cmd = &cobra.Command{
 		settings, err := AllSettingsSurvey()
 		cobra.CheckErr(err)
 
-		viper.Set(SETTINGS_DOWNLOADS_DIR, settings.DownloadsDir)
-		viper.Set(SETTINGS_AUTO_LIKE, settings.AutoLike)
-		viper.Set(SETTINGS_STORE_BY_USERNAME, settings.StoreByUsername)
+		viper.Set(SettingsDownloadsDir, settings.DownloadsDir)
+		viper.Set(SettingsAutoLike, settings.AutoLike)
+		viper.Set(SettingsStoreByUsername, settings.StoreByUsername)
 	},
 }
 
 func init() {
+	Cmd.AddCommand(optOutAnalyticsCmd)
 	Cmd.AddCommand(setConfigCmd)
 	Cmd.AddCommand(getConfigCmd)
 }
@@ -55,7 +56,7 @@ func AllSettingsSurvey() (*Settings, error) {
 			Prompt: &survey.Input{
 				Message: "Where would you like to download your photos?",
 				Help:    "This is where your photos will be downloaded to.",
-				Default: viper.GetString(SETTINGS_DOWNLOADS_DIR),
+				Default: viper.GetString(SettingsDownloadsDir),
 			},
 		},
 		{

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/rawnly/splash-cli/lib/env"
 	"github.com/sirupsen/logrus"
 )
 
@@ -22,7 +23,7 @@ var (
 	Version      = "dev"
 	Commit       = "none"
 	Date         = "unknown"
-	Debug        string
+	Debug        bool
 	SentryDebug  string
 )
 
@@ -54,11 +55,7 @@ func GetFormatterType() string {
 }
 
 func IsDebug() bool {
-	if Debug == "" {
-		Debug = os.Getenv("DEBUG")
-	}
-
-	return Debug == "true"
+	return env.Bool("DEBUG", false)
 }
 
 func GetEnvironment() string {
@@ -79,15 +76,15 @@ func IsPostHogEnabled() bool {
 
 func GetKeys() (string, string) {
 	if ClientId == DEFAULT_CLIENT_ID {
-		ClientId = os.Getenv("UNSPLASH_CLIENT_ID")
+		ClientId = env.String("UNSPLASH_CLIENT_ID")
 	}
 
 	if ClientId == "" {
-		logrus.Fatal("`UNSPLASH_CLIENT_ID` not found")
+		logrus.Fatal("`UNSPLASH_CLIENT_ID` not found", DEFAULT_CLIENT_ID)
 	}
 
 	if ClientSecret == DEFAULT_CLIENT_SECRET {
-		ClientSecret = os.Getenv("UNSPLASH_CLIENT_SECRET")
+		ClientSecret = env.String("UNSPLASH_CLIENT_SECRET", DEFAULT_CLIENT_SECRET)
 	}
 
 	if ClientSecret == "" {

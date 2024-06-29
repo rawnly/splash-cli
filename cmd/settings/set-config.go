@@ -2,6 +2,7 @@ package settings
 
 import (
 	"fmt"
+
 	"github.com/mgutz/ansi"
 	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/spf13/cobra"
@@ -9,9 +10,11 @@ import (
 )
 
 var setConfigCmd = &cobra.Command{
-	Use:  "set",
-	Args: cobra.ExactArgs(2),
-	Run: func(cmd *cobra.Command, args []string) {
+	Use:     "set",
+	Args:    cobra.ExactArgs(2),
+	Short:   "Set a configuration value",
+	Example: "splash settings set downloads-dir ~/Downloads",
+	RunE: func(cmd *cobra.Command, args []string) error {
 		key := args[0]
 		value := args[1]
 
@@ -21,17 +24,16 @@ var setConfigCmd = &cobra.Command{
 
 		viper.Set(KeyMapping[key], value)
 
-		err := viper.WriteConfig()
-		cobra.CheckErr(err)
+		if err := viper.WriteConfig(); err != nil {
+			return err
+		}
 
 		newVal := viper.GetString(KeyMapping[key])
 		terminal.Clear()
 		fmt.Println("")
 		fmt.Printf("Setting updated to %s\n", ansi.Color(newVal, "yellow+u+b"))
 		fmt.Println("")
+
+		return nil
 	},
-}
-
-func init() {
-
 }

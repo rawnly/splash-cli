@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/rawnly/splash-cli/config"
+	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/analytics"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -12,8 +14,10 @@ import (
 
 // Setup the logs
 func setupLogs() {
+	home := lib.GetHomeDir()
+
 	// You could set this to any `io.Writer` such as a file
-	file, err := os.OpenFile("splash-cli.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	file, err := os.OpenFile(fmt.Sprintf("%s/%s", home, "splash-cli.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err == nil {
 		logrus.SetOutput(file)
 	} else {

@@ -2,6 +2,7 @@ package settings
 
 import (
 	"fmt"
+
 	"github.com/MakeNowJust/heredoc"
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/terminal"
@@ -9,17 +10,17 @@ import (
 	"github.com/spf13/viper"
 )
 
-//	return printBlock(chalk`Settings key: "{cyan ${target}}" {red {bold NOT} available}.`);
+// return printBlock(chalk`Settings key: "{cyan ${target}}" {red {bold NOT} available}.`);
 var getConfigCmd = &cobra.Command{
 	Use:     "get",
 	Example: "\t $ splash settings get downloads-dir",
 	Args:    cobra.ExactArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		key := args[0]
 		value := viper.GetString(KeyMapping[key])
 
 		if KeyMapping[key] == "" {
-			UnknownKey(key)
+			return UnknownKey(key)
 		}
 
 		template := lib.Template{
@@ -31,16 +32,16 @@ var getConfigCmd = &cobra.Command{
 		}
 
 		output, err := template.String()
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		terminal.Clear()
 
 		fmt.Println("")
 		fmt.Println(output)
 		fmt.Println("")
+
+		return nil
 	},
-}
-
-func init() {
-
 }

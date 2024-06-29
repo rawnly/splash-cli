@@ -6,6 +6,7 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/posthog/posthog-go"
 	"github.com/rawnly/splash-cli/config"
+	"github.com/rawnly/splash-cli/lib/env"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,6 +24,8 @@ func New(apiKey string) *Analytics {
 		}
 	}
 
+	isEnabled := env.Bool("SPLASH_CLI_TELEMETRY_ENABLED", true)
+
 	client, err := posthog.NewWithConfig(
 		apiKey,
 		posthog.Config{
@@ -35,7 +38,7 @@ func New(apiKey string) *Analytics {
 	}
 
 	return &Analytics{
-		Enabled: viper.GetBool("user_opt_out_analytics") == false,
+		Enabled: isEnabled,
 		client:  client,
 	}
 }

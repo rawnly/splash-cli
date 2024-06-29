@@ -18,7 +18,6 @@ builds:
       - -s -w -X "github.com/rawnly/splash-cli/config.ClientSecret={{ .Env.UNSPLASH_CLIENT_SECRET }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.PostHogKey={{ .Env.POSTHOG_API_KEY }}"
 
-      - -s -w -X "github.com/rawnly/splash-cli/config.Debug={{ .Env.DEBUG }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.SentryDSN={{ .Env.SENTRY_DSN }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.Version={{ .Version }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.Commit={{ .Commit }}"

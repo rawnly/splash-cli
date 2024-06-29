@@ -2,29 +2,33 @@ package settings
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/terminal"
-	"github.com/spf13/cobra"
-	"os"
 )
 
-const SETTINGS_AUTO_LIKE = "auto_like_photos"
-const SETTINGS_DOWNLOADS_DIR = "download_dir"
-const SETTINGS_STORE_BY_USERNAME = "store_by_username"
+const (
+	SettingsAutoLike        = "auto_like_photos"
+	SettingsDownloadsDir    = "download_dir"
+	SettingsStoreByUsername = "store_by_username"
+)
 
 var KeyMapping = map[string]string{
-	"downloads-dir":    SETTINGS_DOWNLOADS_DIR,
-	"auto-like":        SETTINGS_AUTO_LIKE,
-	"username-storage": SETTINGS_STORE_BY_USERNAME,
+	"downloads-dir":    SettingsDownloadsDir,
+	"auto-like":        SettingsAutoLike,
+	"username-storage": SettingsStoreByUsername,
 }
 
-func UnknownKey(key string) {
+func UnknownKey(key string) error {
 	template := "Settings key: {{ color \"cyan+b\" .key }} {{ color \"red+b\" \"NOT\" }} available.\n"
 
 	text, err := lib.StringTemplate(template, map[string]string{
 		"key": key,
 	})
-	cobra.CheckErr(err)
+	if err != nil {
+		return err
+	}
 
 	terminal.Clear()
 	fmt.Println("")
@@ -36,4 +40,5 @@ func UnknownKey(key string) {
 	}
 
 	os.Exit(1)
+	return nil
 }
