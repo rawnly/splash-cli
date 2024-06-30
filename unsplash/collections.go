@@ -3,12 +3,12 @@ package unsplash
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/rawnly/splash-cli/unsplash/models"
 )
 
-func (a Api) GetCollection(id string) (*models.Collection, error) {
+func (a API) GetCollection(id string) (*models.Collection, error) {
 	r, err := a.get(fmt.Sprintf("/collections/%s", id), nil)
-
 	if err != nil {
 		return nil, err
 	}

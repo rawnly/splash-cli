@@ -13,11 +13,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (a Api) BuildAuthenticationUrl(scopes ...string) string {
-	baseUrl := "https://unsplash.com/oauth/authorize"
+func (a API) BuildAuthenticationURL(scopes ...string) string {
+	baseURL := "https://unsplash.com/oauth/authorize"
 	scope := strings.Join(scopes, "+")
 
-	return fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code", baseUrl, a.ClientId, url.PathEscape(a.RedirectUri), scope)
+	return fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&scope=%s&response_type=code", baseURL, a.ClientID, url.PathEscape(a.RedirectURI), scope)
 }
 
 type ErrorRes struct {
@@ -25,12 +25,12 @@ type ErrorRes struct {
 	ErrorDescription string `json:"error_description"`
 }
 
-func (a Api) Authenticate(code string) (*models.AuthRes, error) {
+func (a API) Authenticate(code string) (*models.AuthRes, error) {
 	url := "https://unsplash.com/oauth/token"
 	payload := map[string]string{
-		"client_id":     a.ClientId,
+		"client_id":     a.ClientID,
 		"client_secret": a.ClientSecret,
-		"redirect_uri":  a.RedirectUri,
+		"redirect_uri":  a.RedirectURI,
 		"code":          code,
 		"grant_type":    "authorization_code",
 	}
@@ -68,9 +68,9 @@ func (a Api) Authenticate(code string) (*models.AuthRes, error) {
 	return &authRes, nil
 }
 
-func (a Api) Me(accessToken string) (*models.Me, error) {
+func (a API) Me(accessToken string) (*models.Me, error) {
 	logrus.WithField("client", map[string]string{
-		"client_id":     a.ClientId,
+		"client_id":     a.ClientID,
 		"client_secret": a.ClientSecret,
 	}).Debug("Fetching user information")
 

@@ -19,7 +19,7 @@ var setConfigCmd = &cobra.Command{
 		value := args[1]
 
 		if KeyMapping[key] == "" {
-			UnknownKey(key)
+			return UnknownKey(key)
 		}
 
 		viper.Set(KeyMapping[key], value)

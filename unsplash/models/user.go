@@ -1,13 +1,13 @@
 package models
 
 type User struct {
-	Id       string `json:"id"`
+	ID       string `json:"id"`
 	Username string `json:"username"`
 	Name     string `json:"name"`
 }
 
 type Me struct {
-	Id        string `json:"id"`
+	ID        string `json:"id"`
 	Username  string `json:"username"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`

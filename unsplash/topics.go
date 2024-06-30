@@ -2,6 +2,7 @@ package unsplash
 
 import (
 	"encoding/json"
+
 	"github.com/rawnly/splash-cli/unsplash/models"
 )
 
@@ -19,11 +20,10 @@ const (
 	OrderByOldest   = "oldest"
 )
 
-func (a Api) GetTopics() ([]models.Topic, error) {
+func (a API) GetTopics() ([]models.Topic, error) {
 	var topics []models.Topic
 
 	data, err := a.get("/topics", nil)
-
 	if err != nil {
 		return topics, err
 	}

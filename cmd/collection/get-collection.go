@@ -2,6 +2,7 @@ package collection
 
 import (
 	"fmt"
+
 	"github.com/MakeNowJust/heredoc"
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/keys"
@@ -10,8 +11,7 @@ import (
 )
 
 var getCollectionCmd = &cobra.Command{
-	Use:   "get",
-	Args:  cobra.ExactArgs(1),
+	Use: "get", Args: cobra.ExactArgs(1),
 	Short: "Get collection infos",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		templateString := heredoc.Doc(`
@@ -24,29 +24,26 @@ var getCollectionCmd = &cobra.Command{
 		`)
 
 		ctx := cmd.Context()
-		api := keys.GetApiInstance(ctx)
+		api := keys.GetAPIInstance(ctx)
 
 		id := lib.ParseCollections(args)[0]
 
 		collection, err := api.GetCollection(id)
-
 		if err != nil {
 			return err
 		}
 
 		template, err := lib.StringTemplate(templateString, collection)
-
 		if err != nil {
 			return err
 		}
 
 		fmt.Println(template)
-		terminal.HyperLink("Click here to learn more", collection.Links.Html)
+		terminal.HyperLink("Click here to learn more", collection.Links.HTML)
 
 		return nil
 	},
 }
 
 func init() {
-
 }

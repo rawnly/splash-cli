@@ -4,9 +4,9 @@ import (
 	"net/http"
 )
 
-type Api struct {
-	ClientId     string
+type API struct {
+	ClientID     string
 	ClientSecret string
-	RedirectUri  string
+	RedirectURI  string
 	Client       http.Client
 }

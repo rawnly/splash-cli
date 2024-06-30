@@ -9,7 +9,7 @@ type Collection struct {
 
 	Links struct {
 		Self   string `json:"self"`
-		Html   string `json:"html"`
+		HTML   string `json:"html"`
 		Photos string `json:"photos"`
 	} `json:"links"`
 

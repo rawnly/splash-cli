@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/bbrks/go-blurhash"
+	"github.com/getsentry/sentry-go"
 	"github.com/rawnly/go-wallpaper"
 	"github.com/rawnly/splash-cli/unsplash/models"
 	"github.com/sirupsen/logrus"
@@ -28,14 +29,15 @@ func Prepare(photo *models.Photo) error {
 	logrus.Debug("Saving image to ", file.Name())
 
 	if err := png.Encode(file, img); err != nil {
-		defer os.Remove(file.Name())
+		defer sentry.CaptureException(os.Remove(file.Name()))
 		return err
 	}
 
-	defer file.Close()
+	defer sentry.CaptureException(file.Close())
 
 	if err := wallpaper.SetFromFile(file.Name()); err != nil {
-		defer os.Remove(file.Name())
+		defer sentry.CaptureException(os.Remove(file.Name()))
+
 		logrus.Debug("Error while setting hash wallpaper: ", err)
 		return err
 	}

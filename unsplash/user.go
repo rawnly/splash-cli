@@ -3,12 +3,12 @@ package unsplash
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/rawnly/splash-cli/unsplash/models"
 )
 
-func (a Api) GetUser(username string) (*models.User, error) {
+func (a API) GetUser(username string) (*models.User, error) {
 	data, err := a.get(fmt.Sprintf("/users/%s", username), nil)
-
 	if err != nil {
 		return nil, err
 	}

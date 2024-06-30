@@ -23,19 +23,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	version = "dev"
-	commit  = "none"
-	date    = "unknown"
-)
-
-func printLdFlags() {
-	fmt.Printf("Version: %s\n", version)
-	fmt.Printf("Commit: %s\n", commit)
-	fmt.Printf("Date: %s\n", date)
-}
-
-func updateTopics(api *unsplash.Api) {
+func updateTopics(api *unsplash.API) {
 	topics, err := api.GetTopics()
 	if err != nil {
 		return
@@ -136,13 +124,13 @@ func checkForUpdates() {
 }
 
 func main() {
-	ClientId, ClientSecret := config.GetKeys()
+	ClientID, ClientSecret := config.GetKeys()
 
 	ctx := context.Background()
 	analyticsClient := setupPosthog()
-	api := unsplash.Api{
-		ClientId:     ClientId,
-		RedirectUri:  "http://localhost:5835",
+	api := unsplash.API{
+		ClientID:     ClientID,
+		RedirectURI:  "http://localhost:5835",
 		ClientSecret: ClientSecret,
 		Client:       http.Client{},
 	}
@@ -152,7 +140,7 @@ func main() {
 	refreshToken := viper.GetString("auth.refresh_token")
 
 	ctx = context.WithValue(ctx, keys.IsLogged, accessToken != "" && refreshToken != "")
-	ctx = context.WithValue(ctx, keys.ApiInstance, api)
+	ctx = context.WithValue(ctx, keys.APIInstance, api)
 	ctx = context.WithValue(ctx, keys.Analytics, analyticsClient)
 
 	go setupSentry()
@@ -169,14 +157,14 @@ func main() {
 	}()
 
 	logrus.Trace("Checking if first run")
-	if viper.GetBool("has_run_before") == false {
+	if !viper.GetBool("has_run_before") {
 		logrus.Trace("First run detected")
 
 		viper.Set("has_run_before", true)
 		viper.Set("user_id", uuid.NewString())
 
 		if analyticsClient.PromptConsent() {
-			analyticsClient.Capture("installation", nil)
+			_ = analyticsClient.Capture("installation", nil)
 		}
 
 		err := viper.WriteConfig()
@@ -194,7 +182,7 @@ func main() {
 		cobra.CheckErr(err)
 	}
 
-	analyticsClient.Capture("app_open", nil)
+	_ = analyticsClient.Capture("app_open", nil)
 
 	cmd.Execute(ctx)
 }

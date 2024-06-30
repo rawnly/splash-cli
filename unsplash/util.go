@@ -3,15 +3,14 @@ package unsplash
 import (
 	"net/http"
 
-	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/network"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 // Utilities
-func (a Api) sendRequest(req *http.Request) ([]byte, error) {
-	token := a.ClientId
+func (a API) sendRequest(req *http.Request) ([]byte, error) {
+	token := a.ClientID
 	authorizationKind := network.AuthorizationKindClient
 
 	accessToken := viper.GetString("auth.access_token")
@@ -31,7 +30,7 @@ func (a Api) sendRequest(req *http.Request) ([]byte, error) {
 	return network.ExecuteRequest(req)(a.Client)
 }
 
-func (a Api) get(pathname string, params interface{}) ([]byte, error) {
+func (a API) get(pathname string, params interface{}) ([]byte, error) {
 	req, err := network.Request("GET", pathname, params, nil)
 	if err != nil {
 		return nil, err
@@ -40,7 +39,7 @@ func (a Api) get(pathname string, params interface{}) ([]byte, error) {
 	return a.sendRequest(req)
 }
 
-func (a Api) post(pathname string, params interface{}, body any) ([]byte, error) {
+func (a API) post(pathname string, params interface{}, body any) ([]byte, error) {
 	req, err := network.Request("POST", pathname, params, body)
 	if err != nil {
 		return nil, err
@@ -49,27 +48,11 @@ func (a Api) post(pathname string, params interface{}, body any) ([]byte, error)
 	return a.sendRequest(req)
 }
 
-func (a Api) put(pathname string, params interface{}, body any) ([]byte, error) {
-	req, err := network.Request("PUT", pathname, params, body)
-	if err != nil {
-		return nil, err
-	}
-
-	return a.sendRequest(req)
-}
-
-func (a Api) delete(pathname string, params interface{}) ([]byte, error) {
+func (a API) delete(pathname string, params interface{}) ([]byte, error) {
 	req, err := network.Request("DELETE", pathname, params, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	return a.sendRequest(req)
-}
-
-func (a Api) buildUrl(pathname string, data map[string]string) (string, error) {
-	return lib.Template{
-		Data:     data,
-		Template: pathname,
-	}.String()
 }

@@ -9,17 +9,17 @@ import (
 )
 
 const (
-	DEFAULT_SENTRY_DSN    string = "YOUR_SENTRY_DSN"
-	DEFAULT_CLIENT_ID     string = "UNSPLASH_CLIENT_ID"
-	DEFAULT_CLIENT_SECRET string = "UNSPLASH_CLIENT_SECRET"
-	DEFAULT_POSTHOG_KEY   string = "YOUR_POSTHOG_KEY"
+	DefaultSentryDSN    string = "YOUR_SENTRY_DSN"
+	DefaultClientID     string = "UNSPLASH_CLIENT_ID"
+	DefaultClientSecret string = "UNSPLASH_CLIENT_SECRET"
+	DefaultPosthogKey   string = "YOUR_POSTHOG_KEY"
 )
 
 var (
-	ClientId     = DEFAULT_CLIENT_ID
-	ClientSecret = DEFAULT_CLIENT_SECRET
-	SentryDSN    = DEFAULT_SENTRY_DSN
-	PostHogKey   = DEFAULT_POSTHOG_KEY
+	ClientID     = DefaultClientID
+	ClientSecret = DefaultClientSecret
+	SentryDSN    = DefaultSentryDSN
+	PostHogKey   = DefaultPosthogKey
 	Version      = "dev"
 	Commit       = "none"
 	Date         = "unknown"
@@ -28,8 +28,8 @@ var (
 )
 
 const (
-	LOG_FORMAT_JSON string = "json"
-	LOG_FORMAT_TEXT string = "text"
+	LogFormatJSON string = "json"
+	LogFormatText string = "text"
 )
 
 func GetVersion() string {
@@ -47,11 +47,11 @@ func GetVersion() string {
 func GetFormatterType() string {
 	format := os.Getenv("LOG_FORMAT")
 
-	if format == LOG_FORMAT_JSON {
-		return LOG_FORMAT_JSON
+	if format == LogFormatJSON {
+		return LogFormatJSON
 	}
 
-	return LOG_FORMAT_TEXT
+	return LogFormatText
 }
 
 func IsDebug() bool {
@@ -67,31 +67,31 @@ func GetEnvironment() string {
 }
 
 func IsSentryEnabled() bool {
-	return SentryDSN != DEFAULT_SENTRY_DSN && SentryDSN != ""
+	return SentryDSN != DefaultSentryDSN && SentryDSN != ""
 }
 
 func IsPostHogEnabled() bool {
-	return PostHogKey != DEFAULT_POSTHOG_KEY
+	return PostHogKey != DefaultPosthogKey
 }
 
 func GetKeys() (string, string) {
-	if ClientId == DEFAULT_CLIENT_ID {
-		ClientId = env.String("UNSPLASH_CLIENT_ID")
+	if ClientID == DefaultClientID {
+		ClientID = env.String("UNSPLASH_CLIENT_ID")
 	}
 
-	if ClientId == "" {
-		logrus.Fatal("`UNSPLASH_CLIENT_ID` not found", DEFAULT_CLIENT_ID)
+	if ClientID == "" {
+		logrus.Fatal("`UNSPLASH_CLIENT_ID` not found", DefaultClientID)
 	}
 
-	if ClientSecret == DEFAULT_CLIENT_SECRET {
-		ClientSecret = env.String("UNSPLASH_CLIENT_SECRET", DEFAULT_CLIENT_SECRET)
+	if ClientSecret == DefaultClientSecret {
+		ClientSecret = env.String("UNSPLASH_CLIENT_SECRET", DefaultClientSecret)
 	}
 
 	if ClientSecret == "" {
 		logrus.Fatal("`UNSPLASH_CLIENT_SECRET` not found")
 	}
 
-	return ClientId, ClientSecret
+	return ClientID, ClientSecret
 }
 
 var SentryEventDetails = map[string]string{

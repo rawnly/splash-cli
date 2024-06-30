@@ -1,7 +1,7 @@
 package models
 
 type Photo struct {
-	Id          string    `json:"id"`
+	ID          string    `json:"id"`
 	Downloads   int       `json:"downloads"`
 	Likes       int       `json:"likes"`
 	Views       int       `json:"views"`
@@ -25,7 +25,7 @@ type PhotoUrls struct {
 }
 
 type PhotoOfTheDay struct {
-	Id string `json:"id"`
+	ID string `json:"id"`
 }
 
 type RandomPhotoParams struct {

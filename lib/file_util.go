@@ -8,7 +8,7 @@ import (
 	"regexp"
 )
 
-// Adds $HOME before the path if it is not absolute
+// HomePath Adds $HOME before the path if it is not absolute
 func HomePath(path string) (string, error) {
 	if len(path) > 0 && path[0] == '/' {
 		return path, nil
@@ -50,11 +50,7 @@ func InsertHomeIfNeeded(path string) (string, error) {
 func FileExists(filename string) bool {
 	_, err := os.Stat(filename)
 
-	if err == nil {
-		return true
-	}
-
-	return false
+	return err != nil
 }
 
 // DownloadFile / Download a file from a URL and returns the path as string
@@ -75,7 +71,7 @@ func DownloadFile(url string, filename string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Write the body to file
 	_, err = io.Copy(out, resp.Body)

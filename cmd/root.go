@@ -78,10 +78,10 @@ var rootCmd = &cobra.Command{
 		var err error
 
 		ctx := cmd.Context()
-		api := ctx.Value("api").(unsplash.Api)
+		api := ctx.Value("api").(unsplash.API)
 		analytics := keys.GetAnalyticsInstance(ctx)
 
-		photoOfTheDayId := viper.GetString("photo-of-the-day.id")
+		photoOfTheDayID := viper.GetString("photo-of-the-day.id")
 
 		ConnectionSpinnerSuffix := []string{" Connecting to Unsplash...", "Failed to connect\n", "✔ Connected"}
 		DownloadSpinnerSuffix := []string{" Downloading photo...", "Failed to download\n", "✔ Downloaded"}
@@ -124,39 +124,42 @@ var rootCmd = &cobra.Command{
 		cobra.CheckErr(err)
 
 		if dayFlag {
-			analytics.Capture("photo_of_the_day", nil)
+			_ = analytics.Capture("photo_of_the_day", nil)
 
-			if photoOfTheDayId != "" && !ignoreCacheFlag {
-				photo, err = api.GetPhoto(photoOfTheDayId)
+			if photoOfTheDayID != "" && !ignoreCacheFlag {
+				photo, err = api.GetPhoto(photoOfTheDayID)
 			} else {
 				photo, err = api.GetPhotoOfTheDay()
+				if err != nil {
+					handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[2])
+				}
 
-				viper.Set("photo_of_the_day.id", photo.Id)
+				viper.Set("photo_of_the_day.id", photo.ID)
 				viper.Set("photo_of_the_day.last_update", time.Now().Unix())
 
-				if err := viper.WriteConfig(); err != nil {
+				if err = viper.WriteConfig(); err != nil {
 					connectionSpinner.Stop()
 					fmt.Println("Failed to save settings")
 					cobra.CheckErr(err)
 				}
 
-				if err := viper.WriteConfig(); err != nil {
+				if err = viper.WriteConfig(); err != nil {
 					handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[2])
 				}
 			}
 
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 		} else if idFlag != "" {
-			idFlag = lib.ParsePhotoIDFromUrl(idFlag)
+			idFlag = lib.ParsePhotoIDFromURL(idFlag)
 
-			analytics.Capture("photo_by_id", map[string]interface{}{
+			_ = analytics.Capture("photo_by_id", map[string]interface{}{
 				"photo_id": idFlag,
 			})
 
 			photo, err = api.GetPhoto(idFlag)
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 		} else {
-			analytics.Capture("random_photo", nil)
+			_ = analytics.Capture("random_photo", nil)
 
 			photos, err := api.GetRandomPhoto(models.RandomPhotoParams{
 				Orientation: orientationFlag,
@@ -191,7 +194,7 @@ var rootCmd = &cobra.Command{
 			downloadFolder = folder
 		}
 
-		downloadLocation := fmt.Sprintf("%s/%s.jpg", downloadFolder, photo.Id)
+		downloadLocation := fmt.Sprintf("%s/%s.jpg", downloadFolder, photo.ID)
 
 		if !saveFlag {
 			_ = blurhash.Prepare(photo)
@@ -223,8 +226,8 @@ var rootCmd = &cobra.Command{
 
 				_, key, err := keyboard.GetSingleKey()
 				if err != nil {
-					evtId := sentry.CaptureException(err)
-					logrus.WithField("event_id", evtId).Fatal(err)
+					evtID := sentry.CaptureException(err)
+					logrus.WithField("event_id", evtID).Fatal(err)
 				}
 
 				switch key {
@@ -293,7 +296,7 @@ var rootCmd = &cobra.Command{
 
 			if autoLikeEnabled {
 				cobra.CheckErr(
-					api.Like(photo.Id),
+					api.Like(photo.ID),
 				)
 
 				fmt.Println("Liked!")
@@ -310,7 +313,7 @@ var rootCmd = &cobra.Command{
 			cobra.CheckErr(err)
 
 			if shouldLike {
-				err := api.Like(photo.Id)
+				err := api.Like(photo.ID)
 				cobra.CheckErr(err)
 
 				fmt.Println("Liked!")

@@ -9,7 +9,7 @@ import (
 )
 
 type photoOfTheDayConfig struct {
-	Id              string        `json:"id"`
+	ID              string        `json:"id"`
 	LastUpdate      int64         `json:"last_update"`
 	RefreshInterval time.Duration `json:"refresh_interval"`
 }
@@ -62,7 +62,7 @@ var DefaultUserConfig = Config{
 	PhotoOfTheDay: Value{
 		Key: "photo_of_the_day",
 		Value: photoOfTheDayConfig{
-			Id:              "",
+			ID:              "",
 			LastUpdate:      0,
 			RefreshInterval: time.Hour * 6,
 		},

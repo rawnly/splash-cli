@@ -24,7 +24,7 @@ func setupLogs() {
 		logrus.Warn("Failed to log to file, using default stderr")
 	}
 
-	if config.GetFormatterType() == config.LOG_FORMAT_JSON {
+	if config.GetFormatterType() == config.LogFormatJSON {
 		logrus.SetFormatter(&logrus.JSONFormatter{
 			TimestampFormat:  "2006-01-02 15:04:05",
 			DisableTimestamp: true,

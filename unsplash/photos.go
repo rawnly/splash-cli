@@ -3,12 +3,12 @@ package unsplash
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 
 	"github.com/rawnly/splash-cli/unsplash/models"
 )
 
-func (a Api) GetPhoto(id string) (*models.Photo, error) {
+func (a API) GetPhoto(id string) (*models.Photo, error) {
 	var photo models.Photo
 
 	pathname := fmt.Sprintf("/photos/%s", id)
@@ -24,7 +24,7 @@ func (a Api) GetPhoto(id string) (*models.Photo, error) {
 	return &photo, nil
 }
 
-func (a Api) GetRandomPhoto(params models.RandomPhotoParams) ([]models.Photo, error) {
+func (a API) GetRandomPhoto(params models.RandomPhotoParams) ([]models.Photo, error) {
 	var photo []models.Photo
 
 	data, err := a.get("/photos/random", params)
@@ -39,15 +39,15 @@ func (a Api) GetRandomPhoto(params models.RandomPhotoParams) ([]models.Photo, er
 	return photo, nil
 }
 
-func (a Api) TrackDownload(photoId string) error {
-	if _, err := a.get(fmt.Sprintf("/photos/%s/download", photoId), nil); err != nil {
+func (a API) TrackDownload(photoID string) error {
+	if _, err := a.get(fmt.Sprintf("/photos/%s/download", photoID), nil); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (a Api) Like(id string) error {
+func (a API) Like(id string) error {
 	if _, err := a.post(fmt.Sprintf("/photos/%s/like", id), nil, nil); err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (a Api) Like(id string) error {
 	return nil
 }
 
-func (a Api) Unlike(id string) error {
+func (a API) Unlike(id string) error {
 	if _, err := a.delete(fmt.Sprintf("/photos/%s/like", id), nil); err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func (a Api) Unlike(id string) error {
 	return nil
 }
 
-func (a Api) GetPhotoOfTheDay() (*models.Photo, error) {
+func (a API) GetPhotoOfTheDay() (*models.Photo, error) {
 	var response models.PhotoOfTheDay
 
 	r, err := a.Client.Get("https://lambda.splash-cli.app/api/wallpapers")
@@ -71,7 +71,7 @@ func (a Api) GetPhotoOfTheDay() (*models.Photo, error) {
 		return nil, err
 	}
 
-	data, err := ioutil.ReadAll(r.Body)
+	data, err := io.ReadAll(r.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func (a Api) GetPhotoOfTheDay() (*models.Photo, error) {
 		return nil, err
 	}
 
-	photo, err := a.GetPhoto(response.Id)
+	photo, err := a.GetPhoto(response.ID)
 	if err != nil {
 		return nil, err
 	}

@@ -51,7 +51,7 @@ func Int64(key string, defaultValue ...int64) int64 {
 	panic("Missing env variable: '" + key + "'")
 }
 
-// Int64 returns the value of the environment variable named by the key
+// Bool returns the value of the environment variable named by the key
 //
 // # If the environment variable is empty and no defaultValue is provided, it panics
 //

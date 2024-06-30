@@ -77,8 +77,8 @@ func (a *Analytics) PromptConsent() bool {
 	return confirm
 }
 
-func (analytics *Analytics) Capture(event string, properties map[string]interface{}) error {
-	if !analytics.Enabled {
+func (a *Analytics) Capture(event string, properties map[string]interface{}) error {
+	if !a.Enabled {
 		logrus.Tracef("Analytics disabled skipping event: %s", event)
 		return nil
 	}
@@ -90,16 +90,13 @@ func (analytics *Analytics) Capture(event string, properties map[string]interfac
 		Set("arch", runtime.GOARCH).
 		Set("go_version", runtime.Version())
 
-	if properties != nil {
-		for key, value := range properties {
-			props = props.Set(key, value)
-		}
+	for key, value := range properties {
+		props = props.Set(key, value)
 	}
 
 	logrus.Tracef("Capturing event: %s", event)
 
-	err := analytics.client.Enqueue(posthog.Capture{
-		// TODO: : generate a uuid or use the unsplash id
+	err := a.client.Enqueue(posthog.Capture{
 		DistinctId: viper.GetString("user_id"),
 		Event:      event,
 		Properties: props,

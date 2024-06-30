@@ -46,18 +46,18 @@ func ParseStringValue(value string) any {
 	return val
 }
 
-func ParsePhotoIDFromUrl(urlOrId string) string {
-	if expressions.IsPhotoUrl(urlOrId) {
-		return expressions.CleanupUrl(urlOrId)
+func ParsePhotoIDFromURL(urlOrID string) string {
+	if expressions.IsPhotoURL(urlOrID) {
+		return expressions.CleanupURL(urlOrID)
 	}
 
-	return urlOrId
+	return urlOrID
 }
 
 func ParseCollections(collections []string) []string {
 	return slice.Map(collections, func(collectionIdOrUrl string) string {
-		if expressions.IsCollectionUrl(collectionIdOrUrl) {
-			id, _ := expressions.ExtractCollectionId(collectionIdOrUrl)
+		if expressions.IsCollectionURL(collectionIdOrUrl) {
+			id, _ := expressions.ExtractCollectionID(collectionIdOrUrl)
 
 			return id
 		}

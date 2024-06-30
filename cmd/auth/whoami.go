@@ -30,7 +30,7 @@ var whoamiCmd = &cobra.Command{
 		os.Exit(1)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		api := cmd.Context().Value("api").(unsplash.Api)
+		api := cmd.Context().Value("api").(unsplash.API)
 
 		accessToken := viper.GetString("auth.access_token")
 		me, err := api.Me(accessToken)
@@ -40,9 +40,9 @@ var whoamiCmd = &cobra.Command{
 		}
 
 		fmt.Println("")
-		fmt.Println(fmt.Sprintf("%s %s", console.Yellow("Username:"), me.Username))
-		fmt.Println(fmt.Sprintf("%s %s", console.Yellow("Name:"), me.FirstName+" "+me.LastName))
-		fmt.Println(fmt.Sprintf("%s %s", console.Yellow("Bio:"), me.Bio))
+		fmt.Printf("%s %s\n", console.Yellow("Username:"), me.Username)
+		fmt.Printf("%s %s\n", console.Yellow("Name:"), me.FirstName+" "+me.LastName)
+		fmt.Printf("%s %s\n", console.Yellow("Bio:"), me.Bio)
 		fmt.Println("")
 	},
 }
