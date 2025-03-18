@@ -1,10 +1,9 @@
 # Splash CLI 
-A dead simple CLI to interact with Unsplash
+A simple, CLI to download Unsplash wallpapers. Nothing fancy — it just works.
 
 <center>
  <img src="https://github.com/user-attachments/assets/fb30ee98-d73e-4709-9a97-819a34bd78a6" />
 </center>
-
 
 
 ## 💿 Installation
