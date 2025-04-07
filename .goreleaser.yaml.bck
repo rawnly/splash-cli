@@ -1,33 +1,18 @@
 # This is an example .goreleaser.yml file with some sensible defaults.
 # Make sure to check the documentation at https://goreleaser.com
-
-# The lines below are called `modelines`. See `:help modeline`
-# Feel free to remove those if you don't want/need to use them.
-# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
-# vim: set ts=2 sw=2 tw=0 fo=cnqoj
-
-version: 2
-
 project_name: splash
-
 universal_binaries:
   - name_template: splash
     replace: false
-
 before:
   hooks:
     - go mod tidy
-    - go test -v ./__tests__/
+    - go test -v ./__tests__
     - rm -f splash-cli.log
-
 builds:
   - binary: splash
     env:
       - CGO_ENABLED=0
-    goos:
-      - linux
-      - windows
-      - darwin
     ldflags:
       - -s -w -X "github.com/rawnly/splash-cli/config.ClientId={{ .Env.UNSPLASH_CLIENT_ID }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.ClientSecret={{ .Env.UNSPLASH_CLIENT_SECRET }}"
@@ -39,11 +24,15 @@ builds:
       - -s -w -X "github.com/rawnly/splash-cli/config.Commit={{ .Commit }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.Date={{ .Date }}"
       - -s -w -X "github.com/rawnly/splash-cli/config.SentryDebug={{ .Env.ENABLE_SENTRY_DEBUG }}"
+    goos:
+      - linux
+      - windows
+      - darwin
 brews:
   - name: splash-cli
     homepage: https://untitled.dev
     license: MIT
-    directory: Formula
+    folder: Formula
     description: Splash is a command line interface for Unsplash.
     repository:
       owner: rawnly
@@ -68,28 +57,16 @@ release:
     ```
       go install github.com/rawnly/splash-cli@{{ .Version }}
     ```
-archives:
-  - formats: [tar.gz]
-    # this name template makes the OS and Arch compatible with the results of `uname`.
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
-    # use zip for windows archives
-    format_overrides:
-      - goos: windows
-        formats: [zip]
-
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "{{ incpatch .Version }}"
 changelog:
   sort: asc
   filters:
     exclude:
       - "^docs:"
       - "^test:"
-checksum:
-  name_template: "checksums.txt"
-snapshot:
-  name_template: "{{ incpatch .Version }}"
+      - "^ci:"
+gomod:
+  proxy: true
