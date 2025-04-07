@@ -4,5 +4,6 @@ splash
 splash-cli
 .env.*
 .env
+.envrc
 dist/
 *.log

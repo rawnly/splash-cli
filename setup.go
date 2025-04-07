@@ -13,7 +13,7 @@ import (
 // Setup the logs
 func setupLogs() {
 	// You could set this to any `io.Writer` such as a file
-	file, err := os.OpenFile("splash-cli.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	file, err := os.OpenFile("/var/log/splash-cli.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o666)
 	if err == nil {
 		logrus.SetOutput(file)
 	} else {
