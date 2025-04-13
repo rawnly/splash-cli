@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/getsentry/sentry-go"
@@ -8,14 +9,22 @@ import (
 	"github.com/rawnly/splash-cli/lib/analytics"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/voxelite-ai/env"
 )
 
 // Setup the logs
 func setupLogs() {
+	debug := env.Bool("SPLASH_CLI_DEBUG", false)
+	logLevel := env.String("LOG_LEVEL", "info")
+
 	// You could set this to any `io.Writer` such as a file
-	file, err := os.OpenFile("splash-cli.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	file, err := os.CreateTemp("", "splash-cli.log")
 	if err == nil {
 		logrus.SetOutput(file)
+
+		if debug {
+			fmt.Println("Log file created at:", file.Name())
+		}
 	} else {
 		logrus.Warn("Failed to log to file, using default stderr")
 	}
@@ -35,7 +44,7 @@ func setupLogs() {
 	}
 
 	if config.IsDebug() {
-		if os.Getenv("LOG_LEVEL") == "trace" {
+		if logLevel == "trace" {
 			logrus.SetLevel(logrus.TraceLevel)
 		} else {
 			logrus.SetLevel(logrus.DebugLevel)

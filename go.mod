@@ -1,8 +1,8 @@
 module github.com/rawnly/splash-cli
 
-go 1.21
+go 1.22.4
 
-toolchain go1.21.4
+toolchain go1.24.1
 
 require (
 	github.com/AlecAivazis/survey/v2 v2.3.7
@@ -12,7 +12,7 @@ require (
 	github.com/cli/browser v1.3.0
 	github.com/eiannone/keyboard v0.0.0-20220611211555-0d226195f203
 	github.com/getsentry/sentry-go v0.25.0
-	github.com/google/uuid v1.5.0
+	github.com/google/uuid v1.6.0
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
 	github.com/posthog/posthog-go v0.0.0-20230801140217-d607812dee69
 	github.com/rawnly/go-wallpaper v1.0.2
@@ -20,6 +20,7 @@ require (
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
+	github.com/voxelite-ai/env v0.0.1
 )
 
 require (
