@@ -8,18 +8,20 @@ import (
 	"github.com/spf13/cast"
 )
 
+type contextKey string
+
 const (
-	ApiInstance = "api"
-	IsLogged    = "isLoggedIn"
-	Analytics   = "analytics"
+	APIInstance contextKey = "api"
+	IsLogged    contextKey = "isLoggedIn"
+	Analytics   contextKey = "analytics"
 )
 
 func GetAnalyticsInstance(ctx context.Context) *analytics.Analytics {
 	return ctx.Value(Analytics).(*analytics.Analytics)
 }
 
-func GetApiInstance(ctx context.Context) unsplash.Api {
-	return ctx.Value(ApiInstance).(unsplash.Api)
+func GetAPIInstance(ctx context.Context) unsplash.Api {
+	return ctx.Value(APIInstance).(unsplash.Api)
 }
 
 func IsLoggedIn(ctx context.Context) bool {
