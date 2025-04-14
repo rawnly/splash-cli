@@ -50,11 +50,7 @@ func InsertHomeIfNeeded(path string) (string, error) {
 func FileExists(filename string) bool {
 	_, err := os.Stat(filename)
 
-	if err == nil {
-		return true
-	}
-
-	return false
+	return err != nil
 }
 
 // DownloadFile / Download a file from a URL and returns the path as string

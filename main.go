@@ -18,7 +18,7 @@ import (
 	"github.com/rawnly/splash-cli/lib/github/models"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/unsplash"
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -28,12 +28,6 @@ var (
 	commit  = "none"
 	date    = "unknown"
 )
-
-func printLdFlags() {
-	fmt.Printf("Version: %s\n", version)
-	fmt.Printf("Commit: %s\n", commit)
-	fmt.Printf("Date: %s\n", date)
-}
 
 func updateTopics(api *unsplash.Api) {
 	topics, err := api.GetTopics()
@@ -57,14 +51,14 @@ func init() {
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			logrus.Debug("No settings file found")
+			log.Debug().Msg("No settings file found")
 
 			// Create file if not exists
-			if err := viper.SafeWriteConfig(); err != nil {
+			if err = viper.SafeWriteConfig(); err != nil {
 				cobra.CheckErr(err)
 			}
 		} else {
-			logrus.Fatal("Error reading settings file:", err)
+			log.Fatal().Msgf("Error reading settings file: %s", err)
 		}
 	}
 
@@ -76,12 +70,12 @@ func init() {
 		refreshInterval := viper.GetDuration("photo_of_the_day.refresh_interval")
 
 		if timestamp == 0 {
-			logrus.Debug("No timestamp found")
+			log.Debug().Msg("No timestamp found")
 			return
 		}
 
 		if (now - timestamp) > int64(refreshInterval.Seconds()) {
-			logrus.Debug("Clearing photo of the day")
+			log.Debug().Msg("Clearing photo of the day")
 
 			viper.Set("photo_of_the_day.last_update", 0)
 			viper.Set("photo_of_the_day.id", "")
@@ -93,19 +87,17 @@ func init() {
 }
 
 func checkForUpdates() {
-	logrus.Debug("Checking for updates")
+	log.Debug().Msg("Checking for updates")
 
 	lastCheck := viper.GetInt64("update.last_update")
 
 	if time.Now().Unix()-lastCheck < 60*60*24 {
-		logrus.WithTime(time.Now()).
-			WithFields(logrus.Fields{
-				"last_check":      lastCheck,
-				"now":             time.Now().Unix(),
-				"version":         viper.GetString("update.latest_tag"),
-				"current_version": config.GetVersion(),
-			}).
-			Debug("Update check performed in the last 24 hours. Aborting check...")
+		log.Debug().
+			Int64("last_check", lastCheck).
+			Int64("now", time.Now().Unix()).
+			Str("version", viper.GetString("update.latest_tag")).
+			Str("current_version", config.GetVersion()).
+			Msg("Update check performed in the last 24 hours. Aborting check...")
 
 		return
 	}
@@ -136,14 +128,14 @@ func checkForUpdates() {
 }
 
 func main() {
-	ClientId, ClientSecret := config.GetKeys()
+	clientID, clientSecret := config.GetKeys()
 
 	ctx := context.Background()
 	analyticsClient := setupPosthog()
 	api := unsplash.Api{
-		ClientId:     ClientId,
+		ClientId:     clientID,
 		RedirectUri:  "http://localhost:5835",
-		ClientSecret: ClientSecret,
+		ClientSecret: clientSecret,
 		Client:       http.Client{},
 	}
 
@@ -152,7 +144,7 @@ func main() {
 	refreshToken := viper.GetString("auth.refresh_token")
 
 	ctx = context.WithValue(ctx, keys.IsLogged, accessToken != "" && refreshToken != "")
-	ctx = context.WithValue(ctx, keys.ApiInstance, api)
+	ctx = context.WithValue(ctx, keys.APIInstance, api)
 	ctx = context.WithValue(ctx, keys.Analytics, analyticsClient)
 
 	go setupSentry()
@@ -161,16 +153,16 @@ func main() {
 	go updateTopics(&api)
 
 	defer func() {
-		logrus.Trace("Closing analytics client")
+		log.Trace().Msg("Closing analytics client")
 
 		if err := analyticsClient.Close(); err != nil {
-			logrus.Error("Error closing analytics client:", err)
+			log.Error().Msgf("Error closing analytics client: %s", err)
 		}
 	}()
 
-	logrus.Trace("Checking if first run")
-	if viper.GetBool("has_run_before") == false {
-		logrus.Trace("First run detected")
+	log.Trace().Msg("Checking if first run")
+	if !viper.GetBool("has_run_before") {
+		log.Trace().Msg("First run detected")
 
 		viper.Set("has_run_before", true)
 		viper.Set("user_id", uuid.NewString())
@@ -188,9 +180,9 @@ func main() {
 	downloadPath = lib.ExpandPath(downloadPath)
 
 	if _, err := os.Stat(downloadPath); os.IsNotExist(err) {
-		logrus.WithField("download-path", downloadPath).Debug("Creating download path")
+		log.Debug().Str("download-path", downloadPath).Msg("Download path does not exist")
 
-		err := os.MkdirAll(downloadPath, 0755)
+		err := os.MkdirAll(downloadPath, 0o755)
 		cobra.CheckErr(err)
 	}
 

@@ -2,7 +2,7 @@ package github
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"io"
 	"net/http"
 
@@ -30,7 +30,7 @@ func GetLatestVersion() (*models.Version, error) {
 
 	if response.StatusCode != 200 {
 		logrus.WithField("status", response.StatusCode).Error("Error while fetching latest release")
-		return nil, fmt.Errorf("Something went wrong while fetching the latest release")
+		return nil, errors.New("something went wrong while fetching the latest release")
 	}
 
 	data, err := io.ReadAll(response.Body)

@@ -2,6 +2,7 @@ package collection
 
 import (
 	"fmt"
+
 	"github.com/MakeNowJust/heredoc"
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/keys"
@@ -24,18 +25,16 @@ var getCollectionCmd = &cobra.Command{
 		`)
 
 		ctx := cmd.Context()
-		api := keys.GetApiInstance(ctx)
+		api := keys.GetAPIInstance(ctx)
 
 		id := lib.ParseCollections(args)[0]
 
 		collection, err := api.GetCollection(id)
-
 		if err != nil {
 			return err
 		}
 
 		template, err := lib.StringTemplate(templateString, collection)
-
 		if err != nil {
 			return err
 		}
@@ -48,5 +47,4 @@ var getCollectionCmd = &cobra.Command{
 }
 
 func init() {
-
 }

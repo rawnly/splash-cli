@@ -140,17 +140,21 @@ var rootCmd = &cobra.Command{
 				photo, err = api.GetPhoto(photoOfTheDayId)
 			} else {
 				photo, err = api.GetPhotoOfTheDay()
+				if err != nil {
+					fmt.Println("Failed to get photo of the day")
+					cobra.CheckErr(err)
+				}
 
 				viper.Set("photo_of_the_day.id", photo.Id)
 				viper.Set("photo_of_the_day.last_update", time.Now().Unix())
 
-				if err := viper.WriteConfig(); err != nil {
+				if err = viper.WriteConfig(); err != nil {
 					connectionSpinner.Stop()
 					fmt.Println("Failed to save settings")
 					cobra.CheckErr(err)
 				}
 
-				if err := viper.WriteConfig(); err != nil {
+				if err = viper.WriteConfig(); err != nil {
 					handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[2])
 				}
 			}
@@ -159,7 +163,7 @@ var rootCmd = &cobra.Command{
 		} else if idFlag != "" {
 			idFlag = lib.ParsePhotoIDFromUrl(idFlag)
 
-			analytics.Capture("photo_by_id", map[string]interface{}{
+			analytics.Capture("photo_by_id", map[string]any{
 				"photo_id": idFlag,
 			})
 
@@ -216,7 +220,6 @@ var rootCmd = &cobra.Command{
 			downloadSpinner.Stop()
 		} else {
 			location, err = lib.DownloadFile(photo.Urls.Raw, downloadLocation)
-
 			if err != nil {
 				cobra.CheckErr(err)
 				downloadSpinner.FinalMSG = "[FAILED] Download"

@@ -30,7 +30,7 @@ var loginCmd = &cobra.Command{
 		sp.Suffix = " Waiting for authcode..."
 
 		ctx := cmd.Context()
-		api := keys.GetApiInstance(ctx)
+		api := keys.GetAPIInstance(ctx)
 
 		fmt.Println("Please visit the following URL to login:")
 		authenticationUrl := api.BuildAuthenticationUrl(

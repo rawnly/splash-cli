@@ -62,7 +62,6 @@ func parseVersion(version string) (int, int, int) {
 func SupportsHyperLinks(env map[string]string) bool {
 	if hasKey("FORCE_HYPERLINK", env) {
 		intValue, err := strconv.Atoi(env["FORCE_HYPERLINK"])
-
 		if err != nil {
 			return false
 		}
@@ -127,5 +126,5 @@ func HyperLink(text string, url string) {
 		return
 	}
 
-	fmt.Println(fmt.Sprintf("%s (%s)", text, url))
+	fmt.Printf("%s (%s)\n", text, url)
 }

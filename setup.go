@@ -7,6 +7,7 @@ import (
 	"github.com/getsentry/sentry-go"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib/analytics"
+	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/voxelite-ai/env"
@@ -16,6 +17,12 @@ import (
 func setupLogs() {
 	debug := env.Bool("SPLASH_CLI_DEBUG", false)
 	logLevel := env.String("LOG_LEVEL", "info")
+
+	lvl, err := zerolog.ParseLevel(logLevel)
+	if err != nil {
+		panic(err)
+	}
+	zerolog.SetGlobalLevel(lvl)
 
 	// You could set this to any `io.Writer` such as a file
 	file, err := os.CreateTemp("", "splash-cli.log")
