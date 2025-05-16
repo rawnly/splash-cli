@@ -12,6 +12,7 @@ import (
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash"
+	tokens "github.com/rawnly/splash-cli/unsplash/tokens"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -33,7 +34,7 @@ var loginCmd = &cobra.Command{
 		api := keys.GetAPIInstance(ctx)
 
 		fmt.Println("Please visit the following URL to login:")
-		authenticationUrl := api.BuildAuthenticationUrl(
+		authenticationURL := api.BuildAuthenticationUrl(
 			"read_user",
 			"write_likes",
 			"public",
@@ -41,8 +42,8 @@ var loginCmd = &cobra.Command{
 			"write_collections",
 		)
 
-		terminal.HyperLink("Click to Login", authenticationUrl)
-		_ = browser.OpenURL(authenticationUrl)
+		terminal.HyperLink("Click to Login", authenticationURL)
+		_ = browser.OpenURL(authenticationURL)
 
 		fmt.Println("")
 		sp.Start()
@@ -63,8 +64,8 @@ var loginCmd = &cobra.Command{
 
 		logrus.WithField("response", res).Debug("auth response")
 
-		viper.Set("auth.access_token", res.AccessToken)
-		viper.Set("auth.refresh_token", res.RefreshToken)
+		tokens.SetAccessToken(res.AccessToken)
+		tokens.SetRefreshToken(res.RefreshToken)
 
 		logrus.Debug("writing config")
 		cobra.CheckErr(viper.WriteConfig())

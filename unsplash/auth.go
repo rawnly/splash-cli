@@ -69,11 +69,6 @@ func (a Api) Authenticate(code string) (*models.AuthRes, error) {
 }
 
 func (a Api) Me(accessToken string) (*models.Me, error) {
-	logrus.WithField("client", map[string]string{
-		"client_id":     a.ClientId,
-		"client_secret": a.ClientSecret,
-	}).Debug("Fetching user information")
-
 	r, err := a.get("/me", nil)
 	if err != nil {
 		return nil, err

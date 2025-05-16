@@ -5,8 +5,8 @@ import (
 
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/network"
+	"github.com/rawnly/splash-cli/unsplash/tokens"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 )
 
 // Utilities
@@ -14,16 +14,15 @@ func (a Api) sendRequest(req *http.Request) ([]byte, error) {
 	token := a.ClientId
 	authorizationKind := network.AuthorizationKindClient
 
-	accessToken := viper.GetString("auth.access_token")
-	logrus.WithField("auth.accessToken", accessToken).Debug("ACCESS_TOKEN")
+	accessToken := tokens.GetAccessToken()
 
 	if accessToken != "" {
 		token = accessToken
 		authorizationKind = network.AuthorizationKindBearer
 
-		logrus.WithField("auth.accessToken", accessToken).Debug("Using access token")
+		logrus.Debug("Using access token")
 	} else {
-		logrus.WithField("clientId", token).Debug("Using clientId")
+		logrus.Debug("Using clientId")
 	}
 
 	network.AddAuthorization(req, authorizationKind, token)
