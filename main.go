@@ -18,6 +18,7 @@ import (
 	"github.com/rawnly/splash-cli/lib/github/models"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/unsplash"
+	"github.com/rawnly/splash-cli/unsplash/tokens"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -140,8 +141,8 @@ func main() {
 	}
 
 	// Load settings
-	accessToken := viper.GetString("auth.access_token")
-	refreshToken := viper.GetString("auth.refresh_token")
+	accessToken := tokens.GetAccessToken()
+	refreshToken := tokens.GetRefreshToken()
 
 	ctx = context.WithValue(ctx, keys.IsLogged, accessToken != "" && refreshToken != "")
 	ctx = context.WithValue(ctx, keys.APIInstance, api)

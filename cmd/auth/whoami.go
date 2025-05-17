@@ -7,8 +7,8 @@ import (
 	"github.com/rawnly/splash-cli/lib/console"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/unsplash"
+	"github.com/rawnly/splash-cli/unsplash/tokens"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var whoamiCmd = &cobra.Command{
@@ -32,7 +32,7 @@ var whoamiCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		api := cmd.Context().Value("api").(unsplash.Api)
 
-		accessToken := viper.GetString("auth.access_token")
+		accessToken := tokens.GetAccessToken()
 		me, err := api.Me(accessToken)
 		if err != nil {
 			cmd.PrintErr(err)

@@ -2,7 +2,9 @@ package auth
 
 import (
 	"fmt"
+
 	"github.com/MakeNowJust/heredoc"
+	tokens "github.com/rawnly/splash-cli/unsplash/tokens"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -17,6 +19,8 @@ var logoutCmd = &cobra.Command{
 	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Logging out...")
+
+		tokens.Clear()
 
 		viper.Set("auth.access_token", "")
 		viper.Set("auth.refresh_token", "")
