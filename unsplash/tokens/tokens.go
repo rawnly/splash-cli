@@ -1,14 +1,18 @@
 package tokens
 
 import (
-	"os"
+	"os/user"
 	"strings"
 
+	"github.com/spf13/cobra"
 	"github.com/zalando/go-keyring"
 )
 
 func username() string {
-	return os.Getenv("USER")
+	u, err := user.Current()
+	cobra.CheckErr(err)
+
+	return u.Username
 }
 
 const (
