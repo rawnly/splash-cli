@@ -17,6 +17,7 @@ import (
 	"github.com/rawnly/splash-cli/lib/github"
 	"github.com/rawnly/splash-cli/lib/github/models"
 	"github.com/rawnly/splash-cli/lib/keys"
+	"github.com/rawnly/splash-cli/lib/telemetry"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/tokens"
 	"github.com/rs/zerolog/log"
@@ -133,6 +134,12 @@ func main() {
 
 	ctx := context.Background()
 	analyticsClient := setupPosthog()
+	telemetryClient, err := telemetry.New()
+	if err != nil {
+		log.Debug().Err(err).Msg("Failed to initialize telemetry")
+		telemetryClient = &telemetry.Telemetry{Enabled: false}
+	}
+
 	api := unsplash.Api{
 		ClientId:     clientID,
 		RedirectUri:  "http://localhost:5835",
@@ -147,6 +154,7 @@ func main() {
 	ctx = context.WithValue(ctx, keys.IsLogged, accessToken != "" && refreshToken != "")
 	ctx = context.WithValue(ctx, keys.APIInstance, api)
 	ctx = context.WithValue(ctx, keys.Analytics, analyticsClient)
+	ctx = context.WithValue(ctx, keys.Telemetry, telemetryClient)
 
 	go setupSentry()
 	defer sentry.Flush(2 * time.Second)
@@ -159,6 +167,10 @@ func main() {
 		if err := analyticsClient.Close(); err != nil {
 			log.Error().Msgf("Error closing analytics client: %s", err)
 		}
+
+		if err := telemetryClient.Close(); err != nil {
+			log.Error().Msgf("Error closing telemetry client: %s", err)
+		}
 	}()
 
 	log.Trace().Msg("Checking if first run")
@@ -168,9 +180,16 @@ func main() {
 		viper.Set("has_run_before", true)
 		viper.Set("user_id", uuid.NewString())
 
+		// First prompt for analytics consent
 		if analyticsClient.PromptConsent() {
 			analyticsClient.Capture("installation", nil)
 		}
+
+		// Then prompt for telemetry consent
+		telemetryClient.PromptTelemetryConsent(ctx)
+		
+		// Always track installation if telemetry is enabled (after consent)
+		telemetryClient.TrackInstallation(ctx)
 
 		err := viper.WriteConfig()
 		cobra.CheckErr(err)

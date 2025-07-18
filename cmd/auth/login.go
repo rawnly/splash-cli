@@ -32,6 +32,11 @@ var loginCmd = &cobra.Command{
 
 		ctx := cmd.Context()
 		api := keys.GetAPIInstance(ctx)
+		telemetryClient := keys.GetTelemetryInstance(ctx)
+
+		// Track login command
+		ctx, done := telemetryClient.TrackCommand(ctx, "auth.login", args)
+		defer done()
 
 		fmt.Println("Please visit the following URL to login:")
 		authenticationURL := api.BuildAuthenticationUrl(

@@ -89,6 +89,11 @@ var rootCmd = &cobra.Command{
 		ctx := cmd.Context()
 		api := keys.GetAPIInstance(ctx)
 		analytics := keys.GetAnalyticsInstance(ctx)
+		telemetryClient := keys.GetTelemetryInstance(ctx)
+
+		// Track command execution
+		ctx, done := telemetryClient.TrackCommand(ctx, "splash", args)
+		defer done()
 
 		photoOfTheDayID := viper.GetString("photo-of-the-day.id")
 
@@ -364,7 +369,11 @@ func init() {
 }
 
 func Execute(ctx context.Context) {
+	telemetryClient := keys.GetTelemetryInstance(ctx)
+	
 	if err := rootCmd.ExecuteContext(ctx); err != nil {
+		// Track command errors
+		telemetryClient.TrackError(ctx, err, "unknown")
 		os.Exit(1)
 	}
 }
