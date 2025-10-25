@@ -21,7 +21,6 @@ import (
 	"github.com/rawnly/splash-cli/lib/blurhash"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/lib/terminal"
-	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/models"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -32,7 +31,7 @@ type photoFlags struct {
 	Day         bool   `json:"day" description:"Get a the photo of the day"`
 	Orientation string `json:"orientation" default:"landscape" description:"Specifies the photo orientation"`
 	Query       string `json:"query" description:"Search for a photo"`
-	Id          string `json:"id" description:"Get a photo by id"`
+	ID          string `json:"id" description:"Get a photo by id"`
 	Save        bool   `json:"save" description:"Save the photo without setting it as wallpaper"`
 	Scale       string `json:"scale" default:"auto" description:"Set wallpaper scale"`
 	IgnoreCache bool   `json:"ignore-cache" default:"false" description:"Ignore cache and download image again"`
@@ -88,10 +87,10 @@ var rootCmd = &cobra.Command{
 		var err error
 
 		ctx := cmd.Context()
-		api := ctx.Value("api").(unsplash.Api)
+		api := keys.GetAPIInstance(ctx)
 		analytics := keys.GetAnalyticsInstance(ctx)
 
-		photoOfTheDayId := viper.GetString("photo-of-the-day.id")
+		photoOfTheDayID := viper.GetString("photo-of-the-day.id")
 
 		ConnectionSpinnerSuffix := []string{" Connecting to Unsplash...", "Failed to connect\n", "✔ Connected"}
 		DownloadSpinnerSuffix := []string{" Downloading photo...", "Failed to download\n", "✔ Downloaded"}
@@ -136,8 +135,8 @@ var rootCmd = &cobra.Command{
 		if dayFlag {
 			analytics.Capture("photo_of_the_day", nil)
 
-			if photoOfTheDayId != "" && !ignoreCacheFlag {
-				photo, err = api.GetPhoto(photoOfTheDayId)
+			if photoOfTheDayID != "" && !ignoreCacheFlag {
+				photo, err = api.GetPhoto(photoOfTheDayID)
 			} else {
 				photo, err = api.GetPhotoOfTheDay()
 				if err != nil {
@@ -161,7 +160,7 @@ var rootCmd = &cobra.Command{
 
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
 		} else if idFlag != "" {
-			idFlag = lib.ParsePhotoIDFromUrl(idFlag)
+			idFlag = lib.ParsePhotoIDFromURL(idFlag)
 
 			analytics.Capture("photo_by_id", map[string]any{
 				"photo_id": idFlag,
@@ -172,7 +171,8 @@ var rootCmd = &cobra.Command{
 		} else {
 			analytics.Capture("random_photo", nil)
 
-			photos, err := api.GetRandomPhoto(models.RandomPhotoParams{
+			var photos []models.Photo
+			photos, err = api.GetRandomPhoto(models.RandomPhotoParams{
 				Orientation: orientationFlag,
 				Query:       queryFlag,
 				Count:       1,
@@ -199,7 +199,8 @@ var rootCmd = &cobra.Command{
 		downloadFolder := viper.GetString("download_dir")
 
 		if downloadFolder == "" {
-			folder, err := lib.HomePath("Pictures")
+			var folder string
+			folder, err = lib.HomePath("Pictures")
 			handleSpinnerError(err, downloadSpinner, cmd, DownloadSpinnerSuffix[1])
 
 			downloadFolder = folder
@@ -212,6 +213,11 @@ var rootCmd = &cobra.Command{
 		}
 
 		var location string
+
+		// debug printing
+		fmt.Println("Download location:", downloadLocation)
+		fmt.Println("Ignore cache:", ignoreCacheFlag)
+		fmt.Println("File exists:", lib.FileExists(downloadLocation))
 
 		if lib.FileExists(downloadLocation) && !ignoreCacheFlag {
 			location = downloadLocation
@@ -235,10 +241,11 @@ var rootCmd = &cobra.Command{
 				fmt.Println("Would you like to set it from the URL?")
 				fmt.Println("")
 
-				_, key, err := keyboard.GetSingleKey()
+				var key keyboard.Key
+				_, key, err = keyboard.GetSingleKey()
 				if err != nil {
-					evtId := sentry.CaptureException(err)
-					logrus.WithField("event_id", evtId).Fatal(err)
+					eventID := sentry.CaptureException(err)
+					logrus.WithField("event_id", eventID).Fatal(err)
 				}
 
 				switch key {

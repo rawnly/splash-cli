@@ -1,8 +1,10 @@
 package lib
 
 import (
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/http"
 	"os"
 	"regexp"
@@ -29,7 +31,7 @@ func HomePath(path string) (string, error) {
 	return fmt.Sprintf("%s/%s", homedir, path), nil
 }
 
-func InsertHomeIfNeeded(path string) (string, error) {
+func expandPath(path string) (string, error) {
 	if len(path) > 0 && path[0] != '~' {
 		return path, nil
 	}
@@ -48,14 +50,22 @@ func InsertHomeIfNeeded(path string) (string, error) {
 }
 
 func FileExists(filename string) bool {
-	_, err := os.Stat(filename)
+	p, err := expandPath(filename)
+	if err != nil {
+		return false
+	}
 
-	return err != nil
+	info, err := os.Stat(p)
+	if err != nil {
+		return !errors.Is(err, fs.ErrNotExist)
+	}
+
+	return !info.IsDir()
 }
 
 // DownloadFile / Download a file from a URL and returns the path as string
 func DownloadFile(url string, filename string) (string, error) {
-	path, err := InsertHomeIfNeeded(filename)
+	path, err := expandPath(filename)
 	if err != nil {
 		return "", err
 	}

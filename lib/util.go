@@ -20,6 +20,7 @@ func GetHomeDir() string {
 	return usr.HomeDir
 }
 
+// ExpandPath expands a path starting with ~ to the user's home directory
 func ExpandPath(path string) string {
 	if path[:2] == "~/" {
 		return GetHomeDir() + path[1:]
@@ -46,12 +47,12 @@ func ParseStringValue(value string) any {
 	return val
 }
 
-func ParsePhotoIDFromUrl(urlOrId string) string {
-	if expressions.IsPhotoUrl(urlOrId) {
-		return expressions.CleanupUrl(urlOrId)
+func ParsePhotoIDFromURL(urlOrID string) string {
+	if expressions.IsPhotoUrl(urlOrID) {
+		return expressions.CleanupUrl(urlOrID)
 	}
 
-	return urlOrId
+	return urlOrID
 }
 
 func ParseCollections(collections []string) []string {
