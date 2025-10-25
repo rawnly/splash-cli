@@ -3,11 +3,13 @@ package lib
 import (
 	"bytes"
 	"fmt"
-	"github.com/mgutz/ansi"
 	"io"
 	"math"
 	"strconv"
 	"text/template"
+
+	"github.com/lucasb-eyer/go-colorful"
+	"github.com/mgutz/ansi"
 )
 
 type Template struct {
@@ -25,6 +27,18 @@ var templateFunctions = map[string]interface{}{
 	"diff":         func(a interface{}, b interface{}) interface{} { return a.(int32) - b.(int32) },
 	"abs":          math.Abs,
 	"formatNumber": formatNumber,
+	"itermRGB":     itermRGB,
+}
+
+func itermRGB(hex string) string {
+	c, _ := colorful.Hex(hex)
+
+	return fmt.Sprintf(
+		`<key>Red Component</key><real>%.6f</real>
+<key>Green Component</key><real>%.6f</real>
+<key>Blue Component</key><real>%.6f</real>`,
+		c.R, c.G, c.B,
+	)
 }
 
 func NewTemplate(templateString string, name string) (*template.Template, error) {
@@ -36,7 +50,6 @@ func NewTemplate(templateString string, name string) (*template.Template, error)
 
 func (t Template) Execute(w io.Writer) error {
 	temp, err := NewTemplate(t.Template, "")
-
 	if err != nil {
 		return err
 	}

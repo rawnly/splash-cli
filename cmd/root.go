@@ -15,6 +15,7 @@ import (
 	"github.com/rawnly/splash-cli/cmd/alias"
 	"github.com/rawnly/splash-cli/cmd/auth"
 	"github.com/rawnly/splash-cli/cmd/collection"
+	"github.com/rawnly/splash-cli/cmd/extract"
 	"github.com/rawnly/splash-cli/cmd/settings"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
@@ -213,12 +214,6 @@ var rootCmd = &cobra.Command{
 		}
 
 		var location string
-
-		// debug printing
-		fmt.Println("Download location:", downloadLocation)
-		fmt.Println("Ignore cache:", ignoreCacheFlag)
-		fmt.Println("File exists:", lib.FileExists(downloadLocation))
-
 		if lib.FileExists(downloadLocation) && !ignoreCacheFlag {
 			location = downloadLocation
 
@@ -359,6 +354,7 @@ func init() {
 	rootCmd.AddCommand(alias.Cmd)
 	rootCmd.AddCommand(settings.Cmd)
 	rootCmd.AddCommand(collection.Cmd)
+	rootCmd.AddCommand(extract.Cmd)
 
 	rootCmd.SetVersionTemplate("{{ .Version }}")
 }
