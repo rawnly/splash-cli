@@ -7,14 +7,14 @@ type Platform string
 const (
 	PlatformGhostty Platform = "ghostty"
 	PlatformKitty   Platform = "kitty"
-	PlatfromIterm   Platform = "iterm"
+	PlatformIterm   Platform = "iterm"
 	PlatformWezterm Platform = "wezterm"
 )
 
 func PlatformValues() []string {
 	return []string{
 		string(PlatformGhostty),
-		string(PlatfromIterm),
+		string(PlatformIterm),
 		string(PlatformKitty),
 		string(PlatformWezterm),
 	}
@@ -34,7 +34,7 @@ func (p *Platform) Type() string {
 
 func (p *Platform) Set(v string) error {
 	switch v {
-	case string(PlatformGhostty), string(PlatfromIterm), string(PlatformKitty), string(PlatformWezterm):
+	case string(PlatformGhostty), string(PlatformIterm), string(PlatformKitty), string(PlatformWezterm):
 		*p = Platform(v)
 		return nil
 	}

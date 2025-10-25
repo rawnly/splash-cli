@@ -178,7 +178,7 @@ func GetTheme(imagePath string, theme Platform) (string, error) {
 
 	templates := map[Platform]string{
 		PlatformGhostty: ghosttyTemplate,
-		PlatfromIterm:   itermTemplate,
+		PlatformIterm:   itermTemplate,
 		PlatformKitty:   kittyTemplate,
 		PlatformWezterm: weztermTemplate,
 	}
