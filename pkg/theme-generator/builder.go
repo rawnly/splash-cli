@@ -1,10 +1,11 @@
-package base16
+package themegenerator
 
 import (
 	"fmt"
 
 	"github.com/MakeNowJust/heredoc"
 	"github.com/rawnly/splash-cli/lib"
+	"github.com/rawnly/splash-cli/pkg/base16"
 )
 
 var ghosttyTemplate = heredoc.Doc(`
@@ -25,22 +26,22 @@ palette = 1={{ .Base01 }}
 palette = 9={{ .Base09 }}
 # green
 palette = 2={{ .Base02 }}
-palette = 10={{ .Base10 }}
+palette = 10={{ .Base0A }}
 # yellow
 palette = 3={{ .Base03 }}
-palette = 11={{ .Base11 }}
+palette = 11={{ .Base0B }}
 # blue
 palette = 4={{ .Base04 }}
-palette = 12={{ .Base12 }}
+palette = 12={{ .Base0C }}
 # purple
 palette = 5={{ .Base05 }}
-palette = 13={{ .Base13 }}
+palette = 13={{ .Base0D }}
 # aqua
 palette = 6={{ .Base06 }}
-palette = 14={{ .Base14 }}
+palette = 14={{ .Base0E }}
 # white
 palette = 7={{ .Base07 }}
-palette = 15={{ .Base15 }}
+palette = 15={{ .Base0F }}
 `)
 
 var weztermTemplate = heredoc.Doc(`
@@ -56,42 +57,42 @@ base06 = "{{ .Base06 }}" # 6
 base07 = "{{ .Base07 }}" # 7
 base08 = "{{ .Base08 }}" # 8 - Red / errors
 base09 = "{{ .Base09 }}" # 9 - Orange / warnings
-base10 = "{{ .Base10 }}" # 10 - Yellow / highlights
-base11 = "{{ .Base11 }}" # 11 - Green / success
-base12 = "{{ .Base12 }}" # 12 - Cyan / accents
-base13 = "{{ .Base13 }}" # 13 - Blue / keywords
-base14 = "{{ .Base14 }}" # 14 - Magenta / constants
-base15 = "{{ .Base15 }}" # 15 - Brightest / white
+base10 = "{{ .Base0A }}" # 10 - Yellow / highlights
+base11 = "{{ .Base0B }}" # 11 - Green / success
+base12 = "{{ .Base0C }}" # 12 - Cyan / accents
+base13 = "{{ .Base0D }}" # 13 - Blue / keywords
+base14 = "{{ .Base0E }}" # 14 - Magenta / constants
+base15 = "{{ .Base0F }}" # 15 - Brightest / white
 
 [colors.mapping]
-foreground = "{base07}"
-background = "{base00}"
-cursor_bg = "{base07}"
-cursor_fg = "{base00}"
-cursor_border = "{base07}"
-selection_bg = "{base07}"
-selection_fg = "{base00}"
+foreground = "{{ .Base07 }}"
+background = "{{ .Base00 }}"
+cursor_bg = "{{ .Base07 }}"
+cursor_fg = "{{ .Base00 }}"
+cursor_border = "{{ .Base07 }}"
+selection_bg = "{{ .Base07 }}"
+selection_fg = "{{ .Base00 }}"
 
 ansi = [
-  "{base00}", # 0
-  "{base08}", # 1
-  "{base11}", # 2
-  "{base10}", # 3
-  "{base13}", # 4
-  "{base14}", # 5
-  "{base12}", # 6
-  "{base05}", # 7
+  "{{ .Base00 }}", # 0
+  "{{ .Base08 }}", # 1
+  "{{ .Base0B }}", # 2
+  "{{ .Base0A }}", # 3
+  "{{ .Base0D }}", # 4
+  "{{ .Base0E }}", # 5
+  "{{ .Base0C }}", # 6
+  "{{ .Base05 }}", # 7
 ]
 
 brights = [
   "{base03}", # 8
   "{base08}", # 9
-  "{base11}", # 10
-  "{base10}", # 11
-  "{base13}", # 12
-  "{base14}", # 13
-  "{base12}", # 14
-  "{base07}", # 15
+  "{base0B}", # 10
+  "{base0A}", # 11
+  "{base0D}", # 12
+  "{base0E}", # 13
+  "{base0C}", # 14
+  "{base0F}", # 15
 ]
 `)
 
@@ -109,12 +110,12 @@ color7  {{ .Base07 }}  # base07
 # 8–15: Bright colors
 color8  {{ .Base08 }}  # base08
 color9  {{ .Base09 }}  # base09
-color10 {{ .Base10 }}  # base10
-color11 {{ .Base11 }}  # base11
-color12 {{ .Base12 }}  # base12
-color13 {{ .Base13 }}  # base13
-color14 {{ .Base14 }}  # base14
-color15 {{ .Base15 }}  # base15
+color10 {{ .Base0A }}  # base10
+color11 {{ .Base0B }}  # base11
+color12 {{ .Base0C }}  # base12
+color13 {{ .Base0D }}  # base13
+color14 {{ .Base0E }}  # base14
+color15 {{ .Base0F }}  # base15
 
 # UI colors
 background            {{ .Base00 }}
@@ -140,21 +141,21 @@ var itermTemplate = heredoc.Doc(`
   <!-- Normal colors -->
   <key>Ansi 0 Color</key>  <dict>{{ itermRGB .Base00 }}</dict>
   <key>Ansi 1 Color</key>  <dict>{{ itermRGB .Base08 }}</dict>
-  <key>Ansi 2 Color</key>  <dict>{{ itermRGB .Base11 }}</dict>
-  <key>Ansi 3 Color</key>  <dict>{{ itermRGB .Base10 }}</dict>
-  <key>Ansi 4 Color</key>  <dict>{{ itermRGB .Base13 }}</dict>
-  <key>Ansi 5 Color</key>  <dict>{{ itermRGB .Base14 }}</dict>
-  <key>Ansi 6 Color</key>  <dict>{{ itermRGB .Base12 }}</dict>
+  <key>Ansi 2 Color</key>  <dict>{{ itermRGB .Base0B }}</dict>
+  <key>Ansi 3 Color</key>  <dict>{{ itermRGB .Base0A }}</dict>
+  <key>Ansi 4 Color</key>  <dict>{{ itermRGB .Base0D }}</dict>
+  <key>Ansi 5 Color</key>  <dict>{{ itermRGB .Base0E }}</dict>
+  <key>Ansi 6 Color</key>  <dict>{{ itermRGB .Base0C }}</dict>
   <key>Ansi 7 Color</key>  <dict>{{ itermRGB .Base05 }}</dict>
 
   <!-- Bright colors -->
   <key>Ansi 8 Color</key>  <dict>{{ itermRGB .Base03 }}</dict>
   <key>Ansi 9 Color</key>  <dict>{{ itermRGB .Base08 }}</dict>
-  <key>Ansi 10 Color</key> <dict>{{ itermRGB .Base11 }}</dict>
-  <key>Ansi 11 Color</key> <dict>{{ itermRGB .Base10 }}</dict>
-  <key>Ansi 12 Color</key> <dict>{{ itermRGB .Base13 }}</dict>
-  <key>Ansi 13 Color</key> <dict>{{ itermRGB .Base14 }}</dict>
-  <key>Ansi 14 Color</key> <dict>{{ itermRGB .Base12 }}</dict>
+  <key>Ansi 10 Color</key> <dict>{{ itermRGB .Base0B }}</dict>
+  <key>Ansi 11 Color</key> <dict>{{ itermRGB .Base0A }}</dict>
+  <key>Ansi 12 Color</key> <dict>{{ itermRGB .Base0D }}</dict>
+  <key>Ansi 13 Color</key> <dict>{{ itermRGB .Base0E }}</dict>
+  <key>Ansi 14 Color</key> <dict>{{ itermRGB .Base0C }}</dict>
   <key>Ansi 15 Color</key> <dict>{{ itermRGB .Base07 }}</dict>
 
   <!-- UI colors -->
@@ -169,67 +170,8 @@ var itermTemplate = heredoc.Doc(`
 </plist>
 `)
 
-type Platform string
-
-func (t *Platform) Values() []string {
-	return []string{
-		string(PlatformGhostty),
-		string(PlatfromIterm),
-		string(PlatformKitty),
-		string(PlatformWezterm),
-		string(PlatformAlacritty),
-	}
-}
-
-func (t *Platform) String() string {
-	return string(*t)
-}
-
-func (t *Platform) Type() string {
-	return "Theme"
-}
-
-func (t *Platform) Set(v string) error {
-	switch v {
-	case string(PlatformGhostty), string(PlatfromIterm), string(PlatformKitty), string(PlatformWezterm), string(PlatformAlacritty):
-		*t = Platform(v)
-		return nil
-	}
-
-	return fmt.Errorf("invalid platform: %s. Must be one of %v", v, t.Values())
-}
-
-func ThemeFromString(s string) (*Platform, error) {
-	var t Platform
-
-	switch s {
-	case "ghostty":
-		t = PlatformGhostty
-	case "wezterm":
-		t = PlatformWezterm
-	case "kitty":
-		t = PlatformKitty
-	case "iterm":
-		t = PlatfromIterm
-	}
-
-	if t == "" {
-		return nil, fmt.Errorf("invalid platform: %s, must be one of: %v", s, t.Values())
-	}
-
-	return &t, nil
-}
-
-const (
-	PlatformGhostty   Platform = "ghostty"
-	PlatformKitty     Platform = "kitty"
-	PlatfromIterm     Platform = "iterm"
-	PlatformWezterm   Platform = "wezterm"
-	PlatformAlacritty Platform = "alacritty"
-)
-
 func GetTheme(imagePath string, theme Platform) (string, error) {
-	scheme, _, err := GetScheme(imagePath)
+	scheme, _, err := base16.GetSchemeFromImage(imagePath)
 	if err != nil {
 		return "", err
 	}

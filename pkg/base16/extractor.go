@@ -24,12 +24,12 @@ type Scheme struct {
 	Base07 string `json:"base07"`
 	Base08 string `json:"base08"`
 	Base09 string `json:"base09"`
-	Base10 string `json:"base10"`
-	Base11 string `json:"base11"`
-	Base12 string `json:"base12"`
-	Base13 string `json:"base13"`
-	Base14 string `json:"base14"`
-	Base15 string `json:"base15"`
+	Base0A string `json:"base0A"`
+	Base0B string `json:"base0B"`
+	Base0C string `json:"base0C"`
+	Base0D string `json:"base0D"`
+	Base0E string `json:"base0E"`
+	Base0F string `json:"base0F"`
 }
 
 func buildScheme(cols []colorful.Color) Scheme {
@@ -44,16 +44,16 @@ func buildScheme(cols []colorful.Color) Scheme {
 		Base07: cols[7].Hex(),
 		Base08: cols[8].Hex(),
 		Base09: cols[9].Hex(),
-		Base10: cols[10].Hex(),
-		Base11: cols[11].Hex(),
-		Base12: cols[12].Hex(),
-		Base13: cols[13].Hex(),
-		Base14: cols[14].Hex(),
-		Base15: cols[15].Hex(),
+		Base0A: cols[10].Hex(),
+		Base0B: cols[11].Hex(),
+		Base0C: cols[12].Hex(),
+		Base0D: cols[13].Hex(),
+		Base0E: cols[14].Hex(),
+		Base0F: cols[15].Hex(),
 	}
 }
 
-func GetScheme(imagePath string) (*Scheme, []byte, error) {
+func GetSchemeFromImage(imagePath string) (*Scheme, []byte, error) {
 	f, err := os.Open(imagePath)
 	if err != nil {
 		return nil, nil, err

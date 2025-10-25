@@ -4,14 +4,15 @@ import (
 	"fmt"
 
 	"github.com/rawnly/splash-cli/pkg/base16"
+	generator "github.com/rawnly/splash-cli/pkg/theme-generator"
 	"github.com/reujab/wallpaper"
 	"github.com/spf13/cobra"
 )
 
-var flagPlatform base16.Platform
+var flagPlatform generator.Platform
 
 func init() {
-	Cmd.Flags().Var(&flagPlatform, "platform", fmt.Sprintf("platform to extract colors for (%v)", flagPlatform.Values()))
+	Cmd.Flags().VarP(&flagPlatform, "platform", "p", fmt.Sprintf("platform to extract colors for (%v)", flagPlatform.Values()))
 }
 
 var Cmd = &cobra.Command{
@@ -27,7 +28,7 @@ var Cmd = &cobra.Command{
 
 		if flagPlatform.String() == "" {
 			var json []byte
-			_, json, err = base16.GetScheme(filepath)
+			_, json, err = base16.GetSchemeFromImage(filepath)
 			if err != nil {
 				return err
 			}
@@ -36,7 +37,7 @@ var Cmd = &cobra.Command{
 			return nil
 		}
 
-		thm, err := base16.GetTheme(filepath, flagPlatform)
+		thm, err := generator.GetTheme(filepath, flagPlatform)
 		if err != nil {
 			return err
 		}
