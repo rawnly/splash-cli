@@ -54,9 +54,9 @@ func parseResult(s string) string {
 	}
 }
 
-func TestParsePhotoIDFromUrl(t *testing.T) {
+func TestParsePhotoIDFromURL(t *testing.T) {
 	for i, tCase := range photoUrls {
-		result := lib.ParsePhotoIDFromUrl(tCase.data)
+		result := lib.ParsePhotoIDFromURL(tCase.data)
 
 		if result != tCase.expected {
 			t.Errorf("[%d] Expected \"%s\" received \"%s\"", i, tCase.expected, parseResult(result))

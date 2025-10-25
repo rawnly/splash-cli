@@ -1,6 +1,6 @@
 module github.com/rawnly/splash-cli
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.24.1
 
@@ -9,13 +9,16 @@ require (
 	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/bbrks/go-blurhash v1.1.1
 	github.com/briandowns/spinner v1.23.0
+	github.com/cenkalti/dominantcolor v1.0.3
 	github.com/cli/browser v1.3.0
 	github.com/eiannone/keyboard v0.0.0-20220611211555-0d226195f203
 	github.com/getsentry/sentry-go v0.25.0
 	github.com/google/uuid v1.6.0
+	github.com/lucasb-eyer/go-colorful v1.3.0
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
 	github.com/posthog/posthog-go v0.0.0-20230801140217-d607812dee69
 	github.com/rawnly/go-wallpaper v1.0.2
+	github.com/reujab/wallpaper v0.0.0-20210630195606-5f9f655b3740
 	github.com/rs/zerolog v1.34.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cast v1.6.0
@@ -47,9 +50,10 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20231226003508-02704c960a9b // indirect
-	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/image v0.18.0 // indirect
+	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/term v0.15.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/text v0.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
