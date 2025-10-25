@@ -13,7 +13,7 @@ func TestGetTheme(t *testing.T) {
 		_, e := themegenerator.GetTheme("../../test-assets/demo.jpeg", themegenerator.Platform(platform))
 
 		if e != nil {
-			panic(e.Error())
+			t.Fatal(e.Error())
 		}
 	}
 }
