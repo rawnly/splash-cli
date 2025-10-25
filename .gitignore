@@ -7,3 +7,4 @@ splash-cli
 .envrc
 dist/
 *.log
+./showcase.sh
