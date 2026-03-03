@@ -1,9 +1,12 @@
 package github
 
 import (
+	"strings"
+
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib/github/models"
 	"github.com/sirupsen/logrus"
+	"golang.org/x/mod/semver"
 )
 
 func CurrentVersion() (*models.Version, error) {
@@ -23,7 +26,7 @@ func NeedsToUpdate() (bool, *models.Version) {
 		return false, nil
 	}
 
-	latest, err := GetLatestVersion()
+	latestVersion, latest, err := GetLatestVersion()
 	if err != nil {
 		logrus.WithField("error", err).Error("Error while fetching latest version:", err)
 		return false, nil
@@ -31,8 +34,24 @@ func NeedsToUpdate() (bool, *models.Version) {
 
 	// only while development version
 	if current == nil {
-		return true, latest
+		return true, latestVersion
 	}
 
-	return latest.IsNewerThan(current), latest
+	return isOutdated(config.Version, latest), latestVersion
+}
+
+func isOutdated(current, latest string) bool {
+	if !strings.HasPrefix(current, "v") {
+		current = "v" + current
+	}
+
+	if !strings.HasPrefix(latest, "v") {
+		latest = "v" + latest
+	}
+
+	if strings.Contains(semver.Prerelease(current), "dev") {
+		return false
+	}
+
+	return semver.Compare(current, latest) < 0
 }

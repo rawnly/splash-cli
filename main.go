@@ -90,11 +90,11 @@ func init() {
 func checkForUpdates() {
 	log.Debug().Msg("Checking for updates")
 
-	lastCheck := viper.GetInt64("update.last_update")
+	lastCheck := viper.GetTime("update.last_update")
 
-	if time.Now().Unix()-lastCheck < 60*60*24 {
+	if time.Since(lastCheck) < time.Hour*24 {
 		log.Debug().
-			Int64("last_check", lastCheck).
+			Time("last_check", lastCheck).
 			Int64("now", time.Now().Unix()).
 			Str("version", viper.GetString("update.latest_tag")).
 			Str("current_version", config.GetVersion()).

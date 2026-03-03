@@ -14,7 +14,7 @@ type ReleaseResponse struct {
 	TagName string `json:"tag_name"`
 }
 
-func GetLatestVersion() (*models.Version, error) {
+func GetLatestVersion() (*models.Version, string, error) {
 	url := "https://api.github.com/repos/rawnly/splash-cli/releases/latest"
 
 	client := http.Client{}
@@ -25,27 +25,29 @@ func GetLatestVersion() (*models.Version, error) {
 
 	if err != nil {
 		logrus.WithField("error", err).Error("Error while fetching latest release:", err)
-		return nil, err
+		return nil, "", err
 	}
 
-	if response.StatusCode != 200 {
+	if response.StatusCode != http.StatusOK {
 		logrus.WithField("status", response.StatusCode).Error("Error while fetching latest release")
-		return nil, errors.New("something went wrong while fetching the latest release")
+		return nil, "", errors.New("something went wrong while fetching the latest release")
 	}
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
 		logrus.WithField("error", err).Error("Error while reading response body:", err)
-		return nil, err
+		return nil, "", err
 	}
 
 	var releaseRes ReleaseResponse
 	if err := json.Unmarshal(data, &releaseRes); err != nil {
 		logrus.WithField("error", err).Error("Error while parsing response body:", err)
-		return nil, err
+		return nil, "", err
 	}
 
 	logrus.WithField("version", releaseRes.TagName).Debug("Latest release fetched")
 
-	return models.VersionFromString(releaseRes.TagName)
+	v, err := models.VersionFromString(releaseRes.TagName)
+
+	return v, releaseRes.TagName, err
 }
