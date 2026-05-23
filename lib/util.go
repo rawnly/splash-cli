@@ -22,7 +22,7 @@ func GetHomeDir() string {
 
 // ExpandPath expands a path starting with ~ to the user's home directory
 func ExpandPath(path string) string {
-	if path[:2] == "~/" {
+	if len(path) >= 2 && path[:2] == "~/" {
 		return GetHomeDir() + path[1:]
 	}
 
