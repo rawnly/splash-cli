@@ -138,7 +138,7 @@ var rootCmd = &cobra.Command{
 		api := keys.GetAPIInstance(ctx)
 		analytics := keys.GetAnalyticsInstance(ctx)
 
-		photoOfTheDayID := viper.GetString("photo-of-the-day.id")
+		photoOfTheDayID := viper.GetString("photo_of_the_day.id")
 
 		ConnectionSpinnerSuffix := []string{" Connecting to Unsplash...", "Failed to connect\n", "✔ Connected"}
 		DownloadSpinnerSuffix := []string{" Downloading photo...", "Failed to download\n", "✔ Downloaded"}
