@@ -75,6 +75,7 @@ func DownloadFile(url string, filename string) (string, error) {
 	if err != nil {
 		panic(err)
 	}
+	defer out.Close()
 
 	// Get the data
 	resp, err := http.Get(url)
@@ -89,5 +90,5 @@ func DownloadFile(url string, filename string) (string, error) {
 		return "", err
 	}
 
-	return filename, nil
+	return path, nil
 }
