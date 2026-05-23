@@ -90,7 +90,7 @@ func rangeOf(t any, fn func(key string, value interface{})) {
 	for i := 0; i < v.NumField(); i++ {
 		val := v.Field(i).Interface()
 		key := v.Type().Field(i).Name
-		jsonKey := v.Type().Field(i).Tag.Get("")
+		jsonKey := v.Type().Field(i).Tag.Get("json")
 
 		if jsonKey != "" {
 			fn(jsonKey, val)
