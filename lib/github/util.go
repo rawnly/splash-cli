@@ -9,8 +9,10 @@ import (
 	"golang.org/x/mod/semver"
 )
 
+var getLatestVersion = GetLatestVersion
+
 func CurrentVersion() (*models.Version, error) {
-	if config.Version == "dev" {
+	if config.Version == "" || strings.Contains(config.Version, "dev") {
 		return nil, nil
 	}
 
@@ -19,28 +21,30 @@ func CurrentVersion() (*models.Version, error) {
 	return models.VersionFromString(config.Version)
 }
 
-func NeedsToUpdate() (bool, *models.Version) {
+func NeedsToUpdate() (bool, *models.Version, error) {
 	current, err := CurrentVersion()
 	if err != nil {
 		logrus.WithField("error", err).Error("Error while fetching current version:", err)
-		return false, nil
+		return false, nil, err
 	}
 
-	latestVersion, latest, err := GetLatestVersion()
+	if current == nil {
+		return false, nil, nil
+	}
+
+	latestVersion, latest, err := getLatestVersion()
 	if err != nil {
 		logrus.WithField("error", err).Error("Error while fetching latest version:", err)
-		return false, nil
+		return false, nil, err
 	}
 
-	// only while development version
-	if current == nil {
-		return true, latestVersion
-	}
-
-	return isOutdated(config.Version, latest), latestVersion
+	return isOutdated(config.Version, latest), latestVersion, nil
 }
 
 func isOutdated(current, latest string) bool {
+	current = strings.TrimSpace(current)
+	latest = strings.TrimSpace(latest)
+
 	if !strings.HasPrefix(current, "v") {
 		current = "v" + current
 	}
@@ -53,5 +57,5 @@ func isOutdated(current, latest string) bool {
 		return false
 	}
 
-	return semver.Compare(current, latest) < 0
+	return semver.IsValid(current) && semver.IsValid(latest) && semver.Compare(current, latest) < 0
 }

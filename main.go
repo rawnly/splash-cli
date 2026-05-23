@@ -2,20 +2,15 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"time"
 
-	"github.com/AlecAivazis/survey/v2"
-	"github.com/cli/browser"
 	"github.com/getsentry/sentry-go"
 	"github.com/google/uuid"
 	"github.com/rawnly/splash-cli/cmd"
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
-	"github.com/rawnly/splash-cli/lib/github"
-	"github.com/rawnly/splash-cli/lib/github/models"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/tokens"
@@ -62,73 +57,12 @@ func init() {
 			log.Fatal().Msgf("Error reading settings file: %s", err)
 		}
 	}
-
-	checkForUpdates()
-
-	go func() {
-		now := time.Now().Unix()
-		timestamp := viper.GetInt64("photo_of_the_day.last_update")
-		refreshInterval := viper.GetDuration("photo_of_the_day.refresh_interval")
-
-		if timestamp == 0 {
-			log.Debug().Msg("No timestamp found")
-			return
-		}
-
-		if (now - timestamp) > int64(refreshInterval.Seconds()) {
-			log.Debug().Msg("Clearing photo of the day")
-
-			viper.Set("photo_of_the_day.last_update", 0)
-			viper.Set("photo_of_the_day.id", "")
-
-			err := viper.WriteConfig()
-			cobra.CheckErr(err)
-		}
-	}()
-}
-
-func checkForUpdates() {
-	log.Debug().Msg("Checking for updates")
-
-	lastCheck := viper.GetTime("update.last_update")
-
-	if time.Since(lastCheck) < time.Hour*24 {
-		log.Debug().
-			Time("last_check", lastCheck).
-			Int64("now", time.Now().Unix()).
-			Str("version", viper.GetString("update.latest_tag")).
-			Str("current_version", config.GetVersion()).
-			Msg("Update check performed in the last 24 hours. Aborting check...")
-
-		return
-	}
-
-	updateNeeded, version := github.NeedsToUpdate()
-
-	viper.Set("update.last_update", time.Now().Unix())
-	viper.Set("update.latest_tag", version)
-	_ = viper.WriteConfig()
-
-	if updateNeeded {
-		prompt := &survey.Confirm{
-			Default: true,
-			Message: fmt.Sprintf("A new version (%s) is available, would you like to update?", models.VersionToString(version)),
-		}
-
-		confirm := true
-		if err := survey.AskOne(prompt, &confirm); err != nil {
-			return
-		}
-
-		if !confirm {
-			return
-		}
-
-		_ = browser.OpenURL("https://github.com/rawnly/splash-cli/releases/latest")
-	}
 }
 
 func main() {
+	coreLogger := log.With().Str("service", "core").Logger()
+	anaylticsLogger := log.With().Str("service", "analytics").Logger() //.With().Str("service", "analytics").Logger
+
 	clientID, clientSecret := config.GetKeys()
 
 	ctx := context.Background()
@@ -153,17 +87,42 @@ func main() {
 
 	go updateTopics(&api)
 
-	defer func() {
-		log.Trace().Msg("Closing analytics client")
+	// update photo of the day cache
+	go func() {
+		log := log.With().Str("service", "photo-of-the-day").Logger()
 
-		if err := analyticsClient.Close(); err != nil {
-			log.Error().Msgf("Error closing analytics client: %s", err)
+		lastCheck := viper.GetTime("photo_of_the_day.last_update")
+		refreshInterval := viper.GetDuration("photo_of_the_day.refresh_interval")
+
+		if lastCheck.IsZero() {
+			log.Debug().Msg("no cached photo of the day timestamp found")
+			return
+		}
+
+		if time.Since(lastCheck) > refreshInterval {
+			log.Debug().Msg("cache expired")
+
+			viper.Set("photo_of_the_day.last_update", 0)
+			viper.Set("photo_of_the_day.id", "")
+
+			// fail silently
+			_ = viper.WriteConfig()
+
+			return
 		}
 	}()
 
-	log.Trace().Msg("Checking if first run")
+	defer func() {
+		anaylticsLogger.Trace().Msg("closing client")
+
+		if err := analyticsClient.Close(); err != nil {
+			anaylticsLogger.Error().Msgf("closing analytics client: %s", err)
+		}
+	}()
+
+	coreLogger.Trace().Str("service", "core").Msg("checking if first run")
 	if !viper.GetBool("has_run_before") {
-		log.Trace().Msg("First run detected")
+		coreLogger.Trace().Msg("first run detected")
 
 		viper.Set("has_run_before", true)
 		viper.Set("user_id", uuid.NewString())
@@ -181,7 +140,7 @@ func main() {
 	downloadPath = lib.ExpandPath(downloadPath)
 
 	if _, err := os.Stat(downloadPath); os.IsNotExist(err) {
-		log.Debug().Str("download-path", downloadPath).Msg("Download path does not exist")
+		coreLogger.Debug().Str("download-path", downloadPath).Msg("Download path does not exist")
 
 		err := os.MkdirAll(downloadPath, 0o755)
 		cobra.CheckErr(err)

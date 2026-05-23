@@ -57,7 +57,7 @@ func (a Api) Authenticate(code string) (*models.AuthRes, error) {
 		}
 
 		logrus.WithField("error", errorRes).WithField("status", response.Status).Error("Error while authenticating")
-		return nil, fmt.Errorf(errorRes.ErrorDescription)
+		return nil, fmt.Errorf("%s", errorRes.ErrorDescription)
 	}
 
 	var authRes models.AuthRes

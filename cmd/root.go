@@ -9,6 +9,7 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/MakeNowJust/heredoc"
 	"github.com/briandowns/spinner"
+	"github.com/cli/browser"
 	"github.com/eiannone/keyboard"
 	"github.com/getsentry/sentry-go"
 	"github.com/rawnly/go-wallpaper"
@@ -19,10 +20,11 @@ import (
 	"github.com/rawnly/splash-cli/config"
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/blurhash"
+	"github.com/rawnly/splash-cli/lib/github"
 	"github.com/rawnly/splash-cli/lib/keys"
 	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/rawnly/splash-cli/unsplash/models"
-	"github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -81,6 +83,52 @@ var rootCmd = &cobra.Command{
 				--orientation "landscape"
 				--query "mountains"
 			`),
+	},
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		log.Debug().Msg("Checking for updates")
+
+		lastCheck := viper.GetTime("update.last_update")
+
+		if time.Since(lastCheck) < time.Hour*24 {
+			log.Debug().
+				Time("last_check", lastCheck).
+				Int64("now", time.Now().Unix()).
+				Str("version", viper.GetString("update.latest_tag")).
+				Str("current_version", config.GetVersion()).
+				Msg("Update check performed in the last 24 hours. Aborting check...")
+
+			return
+		}
+
+		updateNeeded, version, err := github.NeedsToUpdate()
+		if err != nil {
+			log.Debug().Err(err).Msg("Update check failed")
+			return
+		}
+
+		log.Debug().Bool("updateNeeded", updateNeeded).Any("version", version).Msg("Checking for updates")
+
+		viper.Set("update.last_update", time.Now().Unix())
+		viper.Set("update.latest_tag", version)
+		_ = viper.WriteConfig()
+
+		if updateNeeded && version != nil {
+			prompt := &survey.Confirm{
+				Default: true,
+				Message: fmt.Sprintf("A new version (%s) is available, would you like to update?", version.String()),
+			}
+
+			confirm := true
+			if err := survey.AskOne(prompt, &confirm); err != nil {
+				return
+			}
+
+			if !confirm {
+				return
+			}
+
+			_ = browser.OpenURL("https://github.com/rawnly/splash-cli/releases/latest")
+		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		var photo *models.Photo
@@ -245,7 +293,7 @@ var rootCmd = &cobra.Command{
 				_, key, err = keyboard.GetSingleKey()
 				if err != nil {
 					eventID := sentry.CaptureException(err)
-					logrus.WithField("event_id", eventID).Fatal(err)
+					log.Fatal().Any("event_id", eventID).Err(err).Send()
 				}
 
 				switch key {
