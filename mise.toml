@@ -1,2 +1,24 @@
 [tools]
 go = "1.26.0"
+
+[env]
+DEBUG = false
+LOG_LEVEL = "trace"
+LOG_FORMAT = "json"
+
+[tasks.build]
+description = "Build the splash binary"
+run = "goreleaser build --snapshot --clean --single-target -o splash"
+
+
+[tasks.debug]
+description = "Build a verbose debug snapshot"
+run = "goreleaser build --snapshot --clean --single-target -o splash --auto-snapshot --verbose"
+
+[tasks.test]
+description = "Run the test suite with race detection"
+run = "go test -v ./... -race"
+
+[tasks.release]
+description = "Create a release build"
+run = "goreleaser release --clean"
