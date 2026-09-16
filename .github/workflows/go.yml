@@ -2,6 +2,8 @@ name: Go
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 on:
   workflow_dispatch:
@@ -24,21 +26,14 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 1.24.1
+      - name: Set up mise
+        uses: jdx/mise-action@v4
 
       - name: Install dependencies
-        run: |
-          go mod download
+        run: go mod download
 
       - name: Snapshot
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          args: --snapshot --clean
-          version: latest
-          distribution: goreleaser
+        run: mise exec goreleaser -- goreleaser --snapshot --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
@@ -64,17 +59,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 1.24.1
+      - name: Set up mise
+        uses: jdx/mise-action@v4
 
       - name: Release
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          version: latest
-          distribution: goreleaser
-          args: release --clean
+        run: mise run release
         env:
           DEBUG: false
           ENABLE_SENTRY_DEBUG: false
@@ -83,3 +72,9 @@ jobs:
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Sign release with Packslip
+        uses: jdx/packslip@v1
+        with:
+          artifacts: dist/*.tar.gz dist/*.zip
+          bin: splash

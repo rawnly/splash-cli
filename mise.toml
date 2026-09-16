@@ -1,8 +1,10 @@
 [tools]
 go = "1.26.0"
+goreleaser = "latest"
+shellcheck = "0.11.0"
 
 [env]
-DEBUG = false
+DEBUG = "false"
 LOG_LEVEL = "trace"
 LOG_FORMAT = "json"
 

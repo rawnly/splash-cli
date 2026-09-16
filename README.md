@@ -1,14 +1,15 @@
-# Splash CLI 
+# Splash CLI
+
 A simple, CLI to download Unsplash wallpapers. Nothing fancy — it just works.
 
 <center>
  <img src="https://github.com/user-attachments/assets/fb30ee98-d73e-4709-9a97-819a34bd78a6" />
 </center>
 
-
 ## 💿 Installation
 
 #### Via Homebrew
+
 ```shell
 brew tap rawnly/tap
 brew install splash-cli
@@ -16,7 +17,8 @@ brew install splash-cli
 
 You can now run `splash` and have fun!
 
-#### Via Go 
+#### Via Go
+
 ```shell
 go install github.com/rawnly/splash-cli@latest
 ```
@@ -24,8 +26,9 @@ go install github.com/rawnly/splash-cli@latest
 Be sure to set up your environment before running the command.
 
 Required environment variables are:
- - `UNSPLASH_CLIENT_ID`
- - `UNSPLASH_CLIENT_SECRET`
+
+- `UNSPLASH_CLIENT_ID`
+- `UNSPLASH_CLIENT_SECRET`
 
 You can get credentials on the [Unsplash Developer Portal](https://unsplash.com/developers).
 
@@ -33,12 +36,13 @@ You can get credentials on the [Unsplash Developer Portal](https://unsplash.com/
 > Remember that the binary name is `splash-cli` and not `splash` when installing via go
 
 #### Manual installation
+
 - Download the [latest pre-release](https://github.com/splash-cli/splash-cli/releases)
 - Move the binary to your `$PATH`
 - Enjoy
 
-
 ## 💻 Usage
+
 ```
 Get a photo
 
@@ -79,6 +83,7 @@ Use "splash [command] --help" for more information about a command.
 ```
 
 ## 🧰 Build Locally
+
 To build the project locally you can use the following command:
 
 ```shell
@@ -88,5 +93,6 @@ To build the project locally you can use the following command:
     
     make build # this will only build for the current platform
 ```
+
 > **Note**
 > If you have an `.env` file in your project root `make` will automatically inject values inside script commands.
