@@ -1,6 +1,7 @@
 [tools]
 go = "1.26.0"
 goreleaser = "latest"
+lefthook = "latest"
 shellcheck = "0.11.0"
 
 [env]
