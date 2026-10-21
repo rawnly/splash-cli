@@ -33,6 +33,7 @@ var loginCmd = &cobra.Command{
 		ctx := cmd.Context()
 		api := keys.GetAPIInstance(ctx)
 
+		resume := terminal.Blocked("auth", "Log in to Unsplash in your browser")
 		fmt.Println("Please visit the following URL to login:")
 		authenticationURL := api.BuildAuthenticationUrl(
 			"read_user",
@@ -53,6 +54,7 @@ var loginCmd = &cobra.Command{
 		sp.Suffix = " Authenticating..."
 
 		code := <-codeChan
+		resume()
 		res, err := api.Authenticate(code)
 		if err != nil {
 			sp.FinalMSG = "An error occured while authenticating\n"
@@ -68,8 +70,6 @@ var loginCmd = &cobra.Command{
 		tokens.SetRefreshToken(res.RefreshToken)
 
 		logrus.Debug("writing config")
-		cobra.CheckErr(viper.WriteConfig())
-
 		if err := viper.WriteConfig(); err != nil {
 			logrus.WithField("error", err).Error("Error while saving config")
 

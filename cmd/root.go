@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -119,7 +120,10 @@ var rootCmd = &cobra.Command{
 			}
 
 			confirm := true
-			if err := survey.AskOne(prompt, &confirm); err != nil {
+			resume := terminal.Blocked("permission", prompt.Message)
+			err := survey.AskOne(prompt, &confirm)
+			resume()
+			if err != nil {
 				return
 			}
 
@@ -201,9 +205,6 @@ var rootCmd = &cobra.Command{
 					cobra.CheckErr(err)
 				}
 
-				if err = viper.WriteConfig(); err != nil {
-					handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[2])
-				}
 			}
 
 			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
@@ -234,6 +235,11 @@ var rootCmd = &cobra.Command{
 			if len(photos) > 0 {
 				photo = &photos[0]
 			}
+		}
+
+		if photo == nil {
+			connectionSpinner.Stop()
+			cobra.CheckErr(errors.New("no photos found"))
 		}
 
 		connectionSpinner.FinalMSG = ConnectionSpinnerSuffix[2]
@@ -290,7 +296,9 @@ var rootCmd = &cobra.Command{
 				fmt.Println("")
 
 				var key keyboard.Key
+				resume := terminal.Blocked("permission", "Download failed. Set wallpaper from the URL?")
 				_, key, err = keyboard.GetSingleKey()
+				resume()
 				if err != nil {
 					eventID := sentry.CaptureException(err)
 					log.Fatal().Any("event_id", eventID).Err(err).Send()
@@ -372,10 +380,12 @@ var rootCmd = &cobra.Command{
 
 			shouldLike := false
 
+			resume := terminal.Blocked("question", "Do you like this photo?")
 			err := survey.AskOne(&survey.Confirm{
 				Default: false,
 				Message: "Do you like this photo?",
 			}, &shouldLike)
+			resume()
 			cobra.CheckErr(err)
 
 			if shouldLike {
