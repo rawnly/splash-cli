@@ -3,6 +3,7 @@ package settings
 import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/MakeNowJust/heredoc"
+	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -18,13 +19,19 @@ var Cmd = &cobra.Command{
 		$ splash settings set downloads-dir ~/Downloads
 		$ splash settings get autoLike
 	`),
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		status := terminal.Status(cmd.Context())
+		status.Report("blocked", "question", "Configure wallpaper preferences")
 		settings, err := AllSettingsSurvey()
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
+		status.Report("working", "", "Applying settings")
 
 		viper.Set(SETTINGS_DOWNLOADS_DIR, settings.DownloadsDir)
 		viper.Set(SETTINGS_AUTO_LIKE, settings.AutoLike)
 		viper.Set(SETTINGS_STORE_BY_USERNAME, settings.StoreByUsername)
+		return nil
 	},
 }
 

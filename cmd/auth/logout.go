@@ -17,7 +17,7 @@ var logoutCmd = &cobra.Command{
 	Example: heredoc.Doc(`
 		$ splash auth logout
 	`),
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Println("Logging out...")
 
 		tokens.Clear()
@@ -26,10 +26,10 @@ var logoutCmd = &cobra.Command{
 		viper.Set("auth.refresh_token", "")
 
 		if err := viper.WriteConfig(); err != nil {
-			cmd.PrintErr(err)
-			return
+			return err
 		}
 
 		fmt.Println("You have been logged out.")
+		return nil
 	},
 }

@@ -82,6 +82,16 @@ Flags:
 Use "splash [command] --help" for more information about a command.
 ```
 
+## Terminal program status
+
+Splash reports its status using the [Program Status Protocol (OSC 7501)](https://www.superlogical.com/rex/docs/build/program-status).
+Supporting terminals such as Rex can show when Splash is working, waiting for input or browser authentication, finished, or failed.
+
+Reports use `app=splash-cli` and are sent only to interactive standard output.
+They are disabled with `--plain`, when standard output is redirected or piped, or with `TERM=dumb`.
+No terminal capability query is needed; terminals without support ignore the sequences.
+Cancelling a prompt or pressing Ctrl-C reports `idle` rather than a failure.
+
 ## 🧰 Build Locally
 
 To build the project locally you can use the following command:

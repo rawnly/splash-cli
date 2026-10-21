@@ -24,10 +24,12 @@ require (
 	github.com/voxelite-ai/env v0.0.1
 	github.com/zalando/go-keyring v0.2.6
 	golang.org/x/mod v0.33.0
+	golang.org/x/term v0.15.0
 )
 
 require (
 	al.essio.dev/pkg/shellescape v1.6.0 // indirect
+	github.com/creack/pty v1.1.24 // indirect
 	github.com/danieljoos/wincred v1.2.2 // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
@@ -49,7 +51,6 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20231226003508-02704c960a9b // indirect
 	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/term v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

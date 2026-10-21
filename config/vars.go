@@ -3,8 +3,6 @@ package config
 import (
 	"fmt"
 	"os"
-
-	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -77,13 +75,13 @@ func IsPostHogEnabled() bool {
 	return PostHogKey != DEFAULT_POSTHOG_KEY
 }
 
-func GetKeys() (string, string) {
+func GetKeys() (string, string, error) {
 	if ClientId == DEFAULT_CLIENT_ID {
 		ClientId = os.Getenv("UNSPLASH_CLIENT_ID")
 	}
 
 	if ClientId == "" {
-		logrus.Fatal("`UNSPLASH_CLIENT_ID` not found")
+		return "", "", fmt.Errorf("`UNSPLASH_CLIENT_ID` not found")
 	}
 
 	if ClientSecret == DEFAULT_CLIENT_SECRET {
@@ -91,10 +89,10 @@ func GetKeys() (string, string) {
 	}
 
 	if ClientSecret == "" {
-		logrus.Fatal("`UNSPLASH_CLIENT_SECRET` not found")
+		return "", "", fmt.Errorf("`UNSPLASH_CLIENT_SECRET` not found")
 	}
 
-	return ClientId, ClientSecret
+	return ClientId, ClientSecret, nil
 }
 
 var SentryEventDetails = map[string]string{

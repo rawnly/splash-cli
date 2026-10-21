@@ -9,18 +9,17 @@ import (
 	"github.com/rawnly/splash-cli/lib/analytics"
 	"github.com/rs/zerolog"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 	"github.com/voxelite-ai/env"
 )
 
 // Setup the logs
-func setupLogs() {
+func setupLogs() error {
 	debug := env.Bool("SPLASH_CLI_DEBUG", false)
 	logLevel := env.String("LOG_LEVEL", "info")
 
 	lvl, err := zerolog.ParseLevel(logLevel)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	zerolog.SetGlobalLevel(lvl)
 
@@ -61,26 +60,25 @@ func setupLogs() {
 	} else {
 		logrus.SetLevel(logrus.WarnLevel)
 	}
+	return nil
 }
 
 // Setup sentry if not in DEBUG mode
-func setupSentry() {
+func setupSentry() error {
 	if !config.IsSentryEnabled() {
 		logrus.WithFields(logrus.Fields{
 			"dsn":   config.SentryDSN,
 			"debug": config.IsDebug(),
 		}).Trace("Sentry disabled")
-		return
+		return nil
 	}
 
-	err := sentry.Init(sentry.ClientOptions{
+	return sentry.Init(sentry.ClientOptions{
 		Dsn:              config.SentryDSN,
 		TracesSampleRate: 1.0,
 		Environment:      config.GetEnvironment(),
 		Debug:            config.SentryDebug == "true",
 	})
-
-	cobra.CheckErr(err)
 }
 
 // Setup posthog

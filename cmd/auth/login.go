@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -24,15 +25,18 @@ var loginCmd = &cobra.Command{
 	Annotations: map[string]string{
 		"flow": "user-auth",
 	},
-	Run: func(cmd *cobra.Command, args []string) {
-		codeChan := make(chan string)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		codeChan := make(chan string, 1)
 
 		sp := spinner.New(spinner.CharSets[14], 100*time.Millisecond)
 		sp.Suffix = " Waiting for authcode..."
 
 		ctx := cmd.Context()
+		status := terminal.Status(ctx)
+		defer sp.Stop()
 		api := keys.GetAPIInstance(ctx)
 
+		status.Report("blocked", "auth", "Log in to Unsplash in your browser")
 		fmt.Println("Please visit the following URL to login:")
 		authenticationURL := api.BuildAuthenticationUrl(
 			"read_user",
@@ -48,18 +52,29 @@ var loginCmd = &cobra.Command{
 		fmt.Println("")
 		sp.Start()
 
-		go loginServer(codeChan, &api, ctx)
+		serverCtx, cancel := context.WithCancel(ctx)
+		defer cancel()
+		serverErrors := make(chan error, 1)
+		go func() {
+			serverErrors <- loginServer(codeChan, &api, serverCtx)
+		}()
 
+		var code string
+		select {
+		case code = <-codeChan:
+		case err := <-serverErrors:
+			return err
+		case <-ctx.Done():
+			return ctx.Err()
+		}
 		sp.Suffix = " Authenticating..."
-
-		code := <-codeChan
+		status.Report("working", "", "Authenticating with Unsplash")
 		res, err := api.Authenticate(code)
 		if err != nil {
 			sp.FinalMSG = "An error occured while authenticating\n"
 			sp.Stop()
 
-			cmd.PrintErr(err)
-			return
+			return err
 		}
 
 		logrus.WithField("response", res).Debug("auth response")
@@ -68,35 +83,30 @@ var loginCmd = &cobra.Command{
 		tokens.SetRefreshToken(res.RefreshToken)
 
 		logrus.Debug("writing config")
-		cobra.CheckErr(viper.WriteConfig())
-
 		if err := viper.WriteConfig(); err != nil {
 			logrus.WithField("error", err).Error("Error while saving config")
 
 			sp.FinalMSG = "An error occurred while saving data."
 			sp.Stop()
 
-			cmd.PrintErr(err)
-			return
+			return err
 		}
 
 		logrus.Debug("config updated")
 
 		me, err := api.Me(res.AccessToken)
 		if err != nil {
-			logrus.Fatal("Error while fetching user data: ", err)
-
 			sp.FinalMSG = "An error occured while fetching your data."
 			sp.Stop()
 
-			cobra.CheckErr(err)
+			return err
 		}
 
 		sp.Stop()
 		fmt.Println(fmt.Sprintf("Welcome %s!", console.Yellow(me.Username)))
 
 		viper.Set("user_id", me.Id)
-		_ = viper.WriteConfig()
+		return viper.WriteConfig()
 	},
 }
 
@@ -106,7 +116,7 @@ func init() {
 	cobra.CheckErr(err)
 }
 
-func loginServer(code chan string, api *unsplash.Api, ctx context.Context) {
+func loginServer(code chan string, api *unsplash.Api, ctx context.Context) error {
 	authenticationUrl := api.BuildAuthenticationUrl(
 		"read_user",
 		"write_likes",
@@ -115,24 +125,30 @@ func loginServer(code chan string, api *unsplash.Api, ctx context.Context) {
 		"write_collections",
 	)
 
+	mux := http.NewServeMux()
 	srv := http.Server{
-		Addr: ":5835",
+		Addr:    ":5835",
+		Handler: mux,
 	}
+	stop := context.AfterFunc(ctx, func() { _ = srv.Close() })
+	defer stop()
+	defer srv.Close()
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("code") != "" {
-			code <- r.URL.Query().Get("code")
-			if err := srv.Shutdown(ctx); err != nil {
-				panic(err.Error())
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if authCode := r.URL.Query().Get("code"); authCode != "" {
+			select {
+			case code <- authCode:
+			case <-ctx.Done():
 			}
 		}
 	})
 
-	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, authenticationUrl, http.StatusTemporaryRedirect)
 	})
 
-	if err := srv.ListenAndServe(); err != http.ErrServerClosed && err != nil {
-		panic(err.Error())
+	if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		return err
 	}
+	return ctx.Err()
 }

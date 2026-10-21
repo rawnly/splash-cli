@@ -2,11 +2,9 @@ package auth
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/rawnly/splash-cli/lib/console"
 	"github.com/rawnly/splash-cli/lib/keys"
-	"github.com/rawnly/splash-cli/unsplash"
 	"github.com/rawnly/splash-cli/unsplash/tokens"
 	"github.com/spf13/cobra"
 )
@@ -17,26 +15,25 @@ var whoamiCmd = &cobra.Command{
 	Long:    "Info about the current user",
 	Aliases: []string{"user", "me"},
 	Example: "splash auth whoami",
-	PreRun: func(cmd *cobra.Command, args []string) {
+	PreRunE: func(cmd *cobra.Command, args []string) error {
 		ctx := cmd.Context()
 
 		if keys.IsLoggedIn(ctx) {
-			return
+			return nil
 		}
 
 		cmd.Println("You are not logged in.")
 		fmt.Println("Please login first.")
 
-		os.Exit(1)
+		return fmt.Errorf("not logged in")
 	},
-	Run: func(cmd *cobra.Command, args []string) {
-		api := cmd.Context().Value("api").(unsplash.Api)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		api := keys.GetAPIInstance(cmd.Context())
 
 		accessToken := tokens.GetAccessToken()
 		me, err := api.Me(accessToken)
 		if err != nil {
-			cmd.PrintErr(err)
-			return
+			return err
 		}
 
 		fmt.Println("")
@@ -44,5 +41,6 @@ var whoamiCmd = &cobra.Command{
 		fmt.Println(fmt.Sprintf("%s %s", console.Yellow("Name:"), me.FirstName+" "+me.LastName))
 		fmt.Println(fmt.Sprintf("%s %s", console.Yellow("Bio:"), me.Bio))
 		fmt.Println("")
+		return nil
 	},
 }

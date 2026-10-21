@@ -1,13 +1,14 @@
 package analytics
 
 import (
+	"context"
 	"runtime"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/posthog/posthog-go"
 	"github.com/rawnly/splash-cli/config"
+	"github.com/rawnly/splash-cli/lib/terminal"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
@@ -31,7 +32,7 @@ func New(apiKey string) *Analytics {
 	)
 	if err != nil {
 		logrus.Debug("Error while initializing posthog client: ", err)
-		return nil
+		return &Analytics{Enabled: false}
 	}
 
 	return &Analytics{
@@ -48,16 +49,19 @@ func (a *Analytics) Close() error {
 	return a.client.Close()
 }
 
-func (a *Analytics) PromptConsent() bool {
+func (a *Analytics) PromptConsent(ctx context.Context) (bool, error) {
 	confirm := true
 	prompt := &survey.Confirm{
 		Default: true,
 		Message: "Would you like to help us improve the app by sending anonymous analytics?",
 	}
 
+	status := terminal.Status(ctx)
+	status.Report("blocked", "permission", prompt.Message)
 	if err := survey.AskOne(prompt, &confirm); err != nil {
-		return false
+		return false, err
 	}
+	status.Report("working", "", "Saving analytics preference")
 
 	viper.Set("user_opt_out_analytics", !confirm)
 
@@ -67,14 +71,14 @@ func (a *Analytics) PromptConsent() bool {
 		a.Enabled = config.IsPostHogEnabled()
 	}
 
-	_ = a.Capture("user_opt_out_analytics", map[string]interface{}{
+	_ = a.Capture("user_opt_out_analytics", map[string]any{
 		"opt_out": !confirm,
 	})
 
-	return confirm
+	return confirm, nil
 }
 
-func (analytics *Analytics) Capture(event string, properties map[string]interface{}) error {
+func (analytics *Analytics) Capture(event string, properties map[string]any) error {
 	if !analytics.Enabled {
 		logrus.Tracef("Analytics disabled skipping event: %s", event)
 		return nil
@@ -95,13 +99,10 @@ func (analytics *Analytics) Capture(event string, properties map[string]interfac
 
 	logrus.Tracef("Capturing event: %s", event)
 
-	err := analytics.client.Enqueue(posthog.Capture{
+	return analytics.client.Enqueue(posthog.Capture{
 		// TODO: : generate a uuid or use the unsplash id
 		DistinctId: viper.GetString("user_id"),
 		Event:      event,
 		Properties: props,
 	})
-	cobra.CheckErr(err)
-
-	return nil
 }

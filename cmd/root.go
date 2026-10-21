@@ -2,16 +2,19 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
+	surveyterminal "github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/MakeNowJust/heredoc"
 	"github.com/briandowns/spinner"
 	"github.com/cli/browser"
 	"github.com/eiannone/keyboard"
-	"github.com/getsentry/sentry-go"
 	"github.com/rawnly/go-wallpaper"
 	"github.com/rawnly/splash-cli/cmd/alias"
 	"github.com/rawnly/splash-cli/cmd/auth"
@@ -44,26 +47,19 @@ const (
 	SpinnerType  = 39
 )
 
-func handleSpinnerError(
-	err error,
-	s *spinner.Spinner,
-	_ *cobra.Command,
-	message string,
-) {
-	if err == nil {
-		return
+func handleSpinnerError(err error, s *spinner.Spinner, message string) error {
+	if err != nil {
+		s.FinalMSG = message
+		s.Stop()
 	}
-
-	s.FinalMSG = message
-	s.Stop()
-
-	cobra.CheckErr(err)
+	return err
 }
 
 func newSpinner(cmd *cobra.Command, message string) *spinner.Spinner {
 	s := spinner.New(spinner.CharSets[SpinnerType], SpinnerSpeed)
 	s.Writer = cmd.OutOrStdout()
 	s.Suffix = " " + message
+	terminal.Status(cmd.Context()).Report("working", "", message)
 
 	return s
 }
@@ -84,7 +80,23 @@ var rootCmd = &cobra.Command{
 				--query "mountains"
 			`),
 	},
-	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		plain, _ := cmd.Flags().GetBool("plain")
+		status := terminal.Status(cmd.Context())
+		if plain {
+			status.Disable()
+		}
+		if isUtilityCommand(cmd) {
+			status.Disable()
+			return
+		}
+		status.Report("working", "", "Running "+cmd.CommandPath())
+	},
+	PersistentPostRunE: func(cmd *cobra.Command, args []string) error {
+		if isUtilityCommand(cmd) {
+			return nil
+		}
+		terminal.Status(cmd.Context()).Report("working", "", "Checking for updates")
 		log.Debug().Msg("Checking for updates")
 
 		lastCheck := viper.GetTime("update.last_update")
@@ -97,13 +109,13 @@ var rootCmd = &cobra.Command{
 				Str("current_version", config.GetVersion()).
 				Msg("Update check performed in the last 24 hours. Aborting check...")
 
-			return
+			return nil
 		}
 
 		updateNeeded, version, err := github.NeedsToUpdate()
 		if err != nil {
 			log.Debug().Err(err).Msg("Update check failed")
-			return
+			return nil
 		}
 
 		log.Debug().Bool("updateNeeded", updateNeeded).Any("version", version).Msg("Checking for updates")
@@ -119,22 +131,28 @@ var rootCmd = &cobra.Command{
 			}
 
 			confirm := true
-			if err := survey.AskOne(prompt, &confirm); err != nil {
-				return
+			status := terminal.Status(cmd.Context())
+			status.Report("blocked", "permission", prompt.Message)
+			err := survey.AskOne(prompt, &confirm)
+			status.Report("working", "", "Finishing update check")
+			if err != nil {
+				return err
 			}
 
 			if !confirm {
-				return
+				return nil
 			}
 
 			_ = browser.OpenURL("https://github.com/rawnly/splash-cli/releases/latest")
 		}
+		return nil
 	},
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		var photo *models.Photo
 		var err error
 
 		ctx := cmd.Context()
+		status := terminal.Status(ctx)
 		api := keys.GetAPIInstance(ctx)
 		analytics := keys.GetAnalyticsInstance(ctx)
 
@@ -148,37 +166,58 @@ var rootCmd = &cobra.Command{
 
 		connectionSpinner := newSpinner(cmd, ConnectionSpinnerSuffix[0])
 		connectionSpinner.Start()
+		defer connectionSpinner.Stop()
 
 		// Parse Flags
 		dayFlag, err := cmd.Flags().GetBool("day")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		screenFlag, err := cmd.Flags().GetInt("screen")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		ignoreCacheFlag, err := cmd.Flags().GetBool("no-cache")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		orientationFlag, err := cmd.Flags().GetString("orientation")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		queryFlag, err := cmd.Flags().GetString("query")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		idFlag, err := cmd.Flags().GetString("id")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		userFlag, err := cmd.Flags().GetString("user")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		topicsFlag, err := cmd.Flags().GetStringSlice("topics")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		collectionsFlag, err := cmd.Flags().GetStringSlice("collections")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		saveFlag, err := cmd.Flags().GetBool("save")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		if dayFlag {
 			analytics.Capture("photo_of_the_day", nil)
@@ -188,8 +227,7 @@ var rootCmd = &cobra.Command{
 			} else {
 				photo, err = api.GetPhotoOfTheDay()
 				if err != nil {
-					fmt.Println("Failed to get photo of the day")
-					cobra.CheckErr(err)
+					return fmt.Errorf("failed to get photo of the day: %w", err)
 				}
 
 				viper.Set("photo_of_the_day.id", photo.Id)
@@ -197,16 +235,13 @@ var rootCmd = &cobra.Command{
 
 				if err = viper.WriteConfig(); err != nil {
 					connectionSpinner.Stop()
-					fmt.Println("Failed to save settings")
-					cobra.CheckErr(err)
-				}
-
-				if err = viper.WriteConfig(); err != nil {
-					handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[2])
+					return fmt.Errorf("failed to save settings: %w", err)
 				}
 			}
 
-			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
+			if err := handleSpinnerError(err, connectionSpinner, ConnectionSpinnerSuffix[1]); err != nil {
+				return err
+			}
 		} else if idFlag != "" {
 			idFlag = lib.ParsePhotoIDFromURL(idFlag)
 
@@ -215,7 +250,9 @@ var rootCmd = &cobra.Command{
 			})
 
 			photo, err = api.GetPhoto(idFlag)
-			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
+			if err := handleSpinnerError(err, connectionSpinner, ConnectionSpinnerSuffix[1]); err != nil {
+				return err
+			}
 		} else {
 			analytics.Capture("random_photo", nil)
 
@@ -229,11 +266,17 @@ var rootCmd = &cobra.Command{
 				Collections: lib.ParseCollections(collectionsFlag),
 			})
 
-			handleSpinnerError(err, connectionSpinner, cmd, ConnectionSpinnerSuffix[1])
+			if err := handleSpinnerError(err, connectionSpinner, ConnectionSpinnerSuffix[1]); err != nil {
+				return err
+			}
 
 			if len(photos) > 0 {
 				photo = &photos[0]
 			}
+		}
+
+		if photo == nil {
+			return errors.New("no photos found")
 		}
 
 		connectionSpinner.FinalMSG = ConnectionSpinnerSuffix[2]
@@ -243,13 +286,16 @@ var rootCmd = &cobra.Command{
 
 		downloadSpinner := newSpinner(cmd, DownloadSpinnerSuffix[0])
 		downloadSpinner.Start()
+		defer downloadSpinner.Stop()
 
 		downloadFolder := viper.GetString("download_dir")
 
 		if downloadFolder == "" {
 			var folder string
 			folder, err = lib.HomePath("Pictures")
-			handleSpinnerError(err, downloadSpinner, cmd, DownloadSpinnerSuffix[1])
+			if err := handleSpinnerError(err, downloadSpinner, DownloadSpinnerSuffix[1]); err != nil {
+				return err
+			}
 
 			downloadFolder = folder
 		}
@@ -275,7 +321,9 @@ var rootCmd = &cobra.Command{
 		} else {
 			location, err = lib.DownloadFile(photo.Urls.Raw, downloadLocation)
 			if err != nil {
-				cobra.CheckErr(err)
+				if saveFlag {
+					return fmt.Errorf("failed to download photo: %w", err)
+				}
 				downloadSpinner.FinalMSG = "[FAILED] Download"
 				downloadSpinner.Stop()
 
@@ -289,11 +337,11 @@ var rootCmd = &cobra.Command{
 				fmt.Println("Would you like to set it from the URL?")
 				fmt.Println("")
 
+				status.Report("blocked", "permission", "Download failed. Set wallpaper from the URL?")
 				var key keyboard.Key
 				_, key, err = keyboard.GetSingleKey()
 				if err != nil {
-					eventID := sentry.CaptureException(err)
-					log.Fatal().Any("event_id", eventID).Err(err).Send()
+					return err
 				}
 
 				switch key {
@@ -302,16 +350,19 @@ var rootCmd = &cobra.Command{
 					wallpaperSpinner.FinalMSG = ""
 					wallpaperSpinner.Start()
 
+					status.Report("working", "", "Setting wallpaper from URL")
 					err = wallpaper.SetFromURL(photo.Urls.Full, screenFlag)
-					handleSpinnerError(err, wallpaperSpinner, cmd, SetWallpaperSpinnerSuffix[1])
+					if err := handleSpinnerError(err, wallpaperSpinner, SetWallpaperSpinnerSuffix[1]); err != nil {
+						return err
+					}
 
 					wallpaperSpinner.FinalMSG = SetWallpaperSpinnerSuffix[2]
 					wallpaperSpinner.Stop()
 
-					os.Exit(0)
+					return nil
 				default:
 					fmt.Println("Wallpaper not set.")
-					os.Exit(1)
+					return errCancelled
 				}
 			}
 
@@ -323,14 +374,16 @@ var rootCmd = &cobra.Command{
 
 		if saveFlag {
 			fmt.Println("[SKIPPED] Wallpaper")
-			return
+			return nil
 		}
 
 		wallpaperSpinner := newSpinner(cmd, SetWallpaperSpinnerSuffix[0])
 		wallpaperSpinner.Start()
 
 		err = wallpaper.SetFromFile(location, screenFlag)
-		handleSpinnerError(err, wallpaperSpinner, cmd, SetWallpaperSpinnerSuffix[1])
+		if err := handleSpinnerError(err, wallpaperSpinner, SetWallpaperSpinnerSuffix[1]); err != nil {
+			return err
+		}
 
 		wallpaperSpinner.FinalMSG = SetWallpaperSpinnerSuffix[2]
 		wallpaperSpinner.Stop()
@@ -348,7 +401,9 @@ var rootCmd = &cobra.Command{
 
 			Shot by {{ color "cyan+b" .User.Name }} (@{{ color "yellow" .User.Username }})
 		`), photo)
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		fmt.Println(text)
 
@@ -361,30 +416,37 @@ var rootCmd = &cobra.Command{
 			autoLikeEnabled := viper.GetBool(config.DefaultUserConfig.AutoLikePhotos.Key)
 
 			if autoLikeEnabled {
-				cobra.CheckErr(
-					api.Like(photo.Id),
-				)
+				status.Report("working", "", "Liking photo")
+				if err := api.Like(photo.Id); err != nil {
+					return err
+				}
 
 				fmt.Println("Liked!")
 
-				return
+				return nil
 			}
 
 			shouldLike := false
+			status.Report("blocked", "question", "Do you like this photo?")
 
 			err := survey.AskOne(&survey.Confirm{
 				Default: false,
 				Message: "Do you like this photo?",
 			}, &shouldLike)
-			cobra.CheckErr(err)
+			if err != nil {
+				return err
+			}
+			status.Report("working", "", "Finishing photo")
 
 			if shouldLike {
-				err := api.Like(photo.Id)
-				cobra.CheckErr(err)
+				if err := api.Like(photo.Id); err != nil {
+					return err
+				}
 
 				fmt.Println("Liked!")
 			}
 		}
+		return nil
 	},
 }
 
@@ -411,8 +473,79 @@ func init() {
 	rootCmd.SetVersionTemplate("{{ .Version }}")
 }
 
-func Execute(ctx context.Context) {
-	if err := rootCmd.ExecuteContext(ctx); err != nil {
-		os.Exit(1)
+var errCancelled = errors.New("cancelled")
+
+// Execute runs commands with terminal status reporting. prepare runs after flag
+// parsing and status setup, before command work, but never for help or completion.
+func Execute(ctx context.Context, prepare func(*cobra.Command) error) error {
+	status := terminal.NewProgramStatus(rootCmd.OutOrStdout(), terminal.SupportsProgramStatus(rootCmd.OutOrStdout()))
+	ctx = terminal.WithProgramStatus(ctx, status)
+	interrupts := make(chan os.Signal, 1)
+	signal.Notify(interrupts, os.Interrupt, syscall.SIGTERM)
+	defer signal.Stop(interrupts)
+	done := make(chan struct{})
+	defer close(done)
+	go func() {
+		select {
+		case <-interrupts:
+			status.Finish("idle", "Cancelled")
+			os.Exit(130)
+		case <-done:
+		}
+	}()
+	return execute(ctx, rootCmd, prepare)
+}
+
+func isUtilityCommand(cmd *cobra.Command) bool {
+	for current := cmd; current != nil; current = current.Parent() {
+		switch current.Name() {
+		case "help", "completion", "__complete", "__completeNoDesc":
+			return true
+		}
 	}
+	return false
+}
+
+func execute(ctx context.Context, command *cobra.Command, prepare func(*cobra.Command) error) error {
+	status := terminal.Status(ctx)
+	defer func() {
+		if failure := recover(); failure != nil {
+			status.Finish("error", fmt.Sprint(failure))
+			panic(failure)
+		}
+	}()
+	originalPreRunE := command.PersistentPreRunE
+	command.PersistentPreRunE = func(cmd *cobra.Command, args []string) error {
+		if originalPreRunE != nil {
+			if err := originalPreRunE(cmd, args); err != nil {
+				return err
+			}
+		} else if command.PersistentPreRun != nil {
+			command.PersistentPreRun(cmd, args)
+		}
+		if prepare != nil && !isUtilityCommand(cmd) {
+			return prepare(cmd)
+		}
+		return nil
+	}
+	defer func() { command.PersistentPreRunE = originalPreRunE }()
+
+	executed, err := command.ExecuteContextC(ctx)
+	// Flag and argument failures occur before pre-run hooks. Still leave an
+	// error result, respecting plain output and completion suppression.
+	if executed != nil {
+		plain, _ := executed.Flags().GetBool("plain")
+		if plain || isUtilityCommand(executed) {
+			status.Disable()
+		}
+	}
+	switch {
+	case errors.Is(err, errCancelled), errors.Is(err, surveyterminal.InterruptErr), errors.Is(err, context.Canceled):
+		status.Finish("idle", "Cancelled")
+	case err != nil:
+		status.Finish("error", err.Error())
+	default:
+		status.Finish("done", "Finished "+executed.CommandPath())
+	}
+	return err
 }

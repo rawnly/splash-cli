@@ -1,18 +1,19 @@
 package tokens
 
 import (
+	"errors"
 	"os/user"
 	"strings"
 
-	"github.com/spf13/cobra"
 	"github.com/zalando/go-keyring"
 )
 
-func username() string {
+func username() (string, error) {
 	u, err := user.Current()
-	cobra.CheckErr(err)
-
-	return u.Username
+	if err != nil {
+		return "", err
+	}
+	return u.Username, nil
 }
 
 const (
@@ -26,46 +27,48 @@ func Key(s string) string {
 }
 
 func SetAccessToken(token string) error {
-	key := Key(accessTokenKeyName)
-	return keyring.Set(key, username(), token)
+	name, err := username()
+	if err != nil {
+		return err
+	}
+	return keyring.Set(Key(accessTokenKeyName), name, token)
 }
 
 func SetRefreshToken(token string) error {
-	key := Key(refreshTokenKeyName)
-	return keyring.Set(key, username(), token)
+	name, err := username()
+	if err != nil {
+		return err
+	}
+	return keyring.Set(Key(refreshTokenKeyName), name, token)
 }
 
 func GetAccessToken() string {
-	key := Key(accessTokenKeyName)
-	token, err := keyring.Get(key, username())
+	name, err := username()
 	if err != nil {
 		return ""
 	}
-
+	token, _ := keyring.Get(Key(accessTokenKeyName), name)
 	return token
 }
 
 func GetRefreshToken() string {
-	key := Key(refreshTokenKeyName)
-	token, err := keyring.Get(key, username())
+	name, err := username()
 	if err != nil {
 		return ""
 	}
-
+	token, _ := keyring.Get(Key(refreshTokenKeyName), name)
 	return token
 }
 
 func Clear() error {
-	accessTokenKey := Key(accessTokenKeyName)
-	refreshTokenKey := Key(refreshTokenKeyName)
-
-	if err := keyring.Delete(accessTokenKey, username()); err != nil {
+	name, err := username()
+	if err != nil {
 		return err
 	}
-
-	if err := keyring.Delete(refreshTokenKey, username()); err != nil {
-		return err
+	for _, key := range []string{accessTokenKeyName, refreshTokenKeyName} {
+		if err := keyring.Delete(Key(key), name); err != nil && !errors.Is(err, keyring.ErrNotFound) {
+			return err
+		}
 	}
-
 	return nil
 }

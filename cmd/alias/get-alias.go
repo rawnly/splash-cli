@@ -14,7 +14,9 @@ var getAliasCmd = &cobra.Command{
 	Args:    cobra.RangeArgs(0, 1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		isRawOutput, err := cmd.Flags().GetBool("plain")
-		cobra.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		if !isRawOutput {
 			terminal.Clear()

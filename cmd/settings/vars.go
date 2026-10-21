@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/rawnly/splash-cli/lib"
 	"github.com/rawnly/splash-cli/lib/terminal"
-	"github.com/spf13/cobra"
-	"os"
 )
 
 const SETTINGS_AUTO_LIKE = "auto_like_photos"
@@ -18,13 +16,15 @@ var KeyMapping = map[string]string{
 	"username-storage": SETTINGS_STORE_BY_USERNAME,
 }
 
-func UnknownKey(key string) {
+func UnknownKey(key string) error {
 	template := "Settings key: {{ color \"cyan+b\" .key }} {{ color \"red+b\" \"NOT\" }} available.\n"
 
 	text, err := lib.StringTemplate(template, map[string]string{
 		"key": key,
 	})
-	cobra.CheckErr(err)
+	if err != nil {
+		return err
+	}
 
 	terminal.Clear()
 	fmt.Println("")
@@ -35,5 +35,5 @@ func UnknownKey(key string) {
 		fmt.Println("  - " + key)
 	}
 
-	os.Exit(1)
+	return fmt.Errorf("unknown settings key: %s", key)
 }
