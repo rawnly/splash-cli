@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/getsentry/sentry-go"
@@ -40,8 +41,16 @@ func init() {
 
 	viper.SetConfigType("json")
 	viper.SetConfigName("splash-cli")
-	viper.AddConfigPath("$HOME/.config")
-	viper.AddConfigPath("$HOME/.splash-cli")
+
+	// os.UserHomeDir is cross-platform ($HOME on unix, %USERPROFILE% on Windows)
+	if home, err := os.UserHomeDir(); err == nil {
+		configDir := filepath.Join(home, ".config")
+		viper.AddConfigPath(configDir)
+		viper.AddConfigPath(filepath.Join(home, ".splash-cli"))
+
+		// make sure the directory exists, otherwise SafeWriteConfig fails
+		_ = os.MkdirAll(configDir, 0o755)
+	}
 
 	config.DefaultUserConfig.LoadDefaults()
 
